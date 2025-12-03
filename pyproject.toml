@@ -1,0 +1,12 @@
+[tool.uv.workspace]
+members = [
+    "elt_ingest_rest"
+]
+
+# Optional: shared dev dependencies for all sub-projects
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+    "black>=24.0.0",
+    "ruff>=0.1.0",
+]
