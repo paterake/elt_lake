@@ -1,0 +1,25 @@
+{
+  "base_url": "https://pokeapi.co",
+  "endpoint": "/api/v2/pokemon",
+  "method": "GET",
+  "headers": {},
+  "params": {},
+  "timeout": 30,
+  "verify_ssl": true,
+  "pagination": {
+    "type": "offset_limit",
+    "page_size": 20,
+    "offset_param": "offset",
+    "limit_param": "limit",
+    "data_path": "results",
+    "max_pages": 5,
+    "max_records": 0
+  },
+  "output_dir": "./output/pokemon",
+  "output_filename": "pokemon_list.json",
+  "save_mode": "single",
+  "batch_size": 1000,
+  "max_retries": 3,
+  "backoff_factor": 0.3,
+  "retry_status_codes": [429, 500, 502, 503, 504]
+}

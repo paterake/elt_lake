@@ -2,6 +2,7 @@
 
 from .ingest_rest import (
     IngestConfig,
+    IngestConfigJson,
     PaginationConfig,
     PaginationType,
     RestApiIngester,
@@ -9,6 +10,7 @@ from .ingest_rest import (
 
 __all__ = [
     "IngestConfig",
+    "IngestConfigJson",
     "PaginationConfig",
     "PaginationType",
     "RestApiIngester",

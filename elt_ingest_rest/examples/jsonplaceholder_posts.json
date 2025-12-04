@@ -1,0 +1,24 @@
+{
+  "base_url": "https://jsonplaceholder.typicode.com",
+  "endpoint": "/posts",
+  "method": "GET",
+  "headers": {},
+  "params": {},
+  "timeout": 30,
+  "verify_ssl": true,
+  "pagination": {
+    "type": "offset_limit",
+    "page_size": 10,
+    "offset_param": "_start",
+    "limit_param": "_limit",
+    "data_path": "",
+    "max_pages": 3,
+    "max_records": 0
+  },
+  "output_dir": "./output/posts",
+  "save_mode": "batch",
+  "batch_size": 15,
+  "max_retries": 3,
+  "backoff_factor": 0.3,
+  "retry_status_codes": [429, 500, 502, 503, 504]
+}

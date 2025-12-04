@@ -1,0 +1,28 @@
+{
+  "base_url": "https://api.github.com",
+  "endpoint": "/users/octocat/repos",
+  "method": "GET",
+  "headers": {
+    "Accept": "application/vnd.github.v3+json",
+    "User-Agent": "Python-REST-Ingester"
+  },
+  "params": {},
+  "timeout": 30,
+  "verify_ssl": true,
+  "pagination": {
+    "type": "page_number",
+    "page_size": 30,
+    "page_param": "page",
+    "page_size_param": "per_page",
+    "data_path": "",
+    "max_pages": 0,
+    "max_records": 0
+  },
+  "output_dir": "./output/github",
+  "output_filename": null,
+  "save_mode": "single",
+  "batch_size": 1000,
+  "max_retries": 3,
+  "backoff_factor": 0.3,
+  "retry_status_codes": [429, 500, 502, 503, 504]
+}

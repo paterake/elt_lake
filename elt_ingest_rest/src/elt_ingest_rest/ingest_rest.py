@@ -93,6 +93,131 @@ class IngestConfig:
     retry_status_codes: list[int] = field(default_factory=lambda: [429, 500, 502, 503, 504])
 
 
+class IngestConfigJson:
+    """JSON configuration handler for REST API ingestion.
+
+    This class handles loading configurations from JSON and converting them
+    to IngestConfig instances. It keeps IngestConfig clean and separates
+    JSON handling concerns.
+    """
+
+    @staticmethod
+    def from_json(json_data: str | dict | Path) -> IngestConfig:
+        """Create IngestConfig from JSON data.
+
+        Args:
+            json_data: JSON string, dict, or Path to JSON file
+
+        Returns:
+            IngestConfig instance
+
+        Examples:
+            # From JSON file
+            config = IngestConfigJson.from_json(Path("config.json"))
+
+            # From JSON string
+            config = IngestConfigJson.from_json('{"base_url": "https://api.example.com"}')
+
+            # From dict
+            config = IngestConfigJson.from_json({"base_url": "https://api.example.com"})
+        """
+        # Load JSON data
+        if isinstance(json_data, Path):
+            with open(json_data, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        elif isinstance(json_data, str):
+            data = json.loads(json_data)
+        elif isinstance(json_data, dict):
+            data = json_data.copy()  # Copy to avoid mutating input
+        else:
+            raise TypeError(f"json_data must be str, dict, or Path, got {type(json_data)}")
+
+        # Parse pagination config if present
+        pagination_data = data.pop("pagination", {})
+        if pagination_data:
+            # Convert pagination type string to enum
+            if "type" in pagination_data:
+                pagination_data["type"] = PaginationType(pagination_data["type"])
+            pagination = PaginationConfig(**pagination_data)
+        else:
+            pagination = PaginationConfig()
+
+        # Convert output_dir to Path
+        if "output_dir" in data:
+            data["output_dir"] = Path(data["output_dir"])
+
+        # Convert auth list to tuple
+        if "auth" in data and isinstance(data["auth"], list):
+            data["auth"] = tuple(data["auth"])
+
+        # Create and return IngestConfig
+        return IngestConfig(pagination=pagination, **data)
+
+    @staticmethod
+    def to_json(config: IngestConfig, filepath: Optional[Path] = None, indent: int = 2) -> str:
+        """Export IngestConfig to JSON.
+
+        Args:
+            config: IngestConfig instance to export
+            filepath: Optional path to save JSON file
+            indent: JSON indentation (default: 2)
+
+        Returns:
+            JSON string
+
+        Examples:
+            config = IngestConfig(base_url="https://api.example.com")
+
+            # Get JSON string
+            json_str = IngestConfigJson.to_json(config)
+
+            # Save to file
+            IngestConfigJson.to_json(config, Path("config.json"))
+        """
+        data = {
+            "base_url": config.base_url,
+            "endpoint": config.endpoint,
+            "method": config.method,
+            "headers": config.headers,
+            "params": config.params,
+            "body": config.body,
+            "auth": list(config.auth) if config.auth else None,
+            "timeout": config.timeout,
+            "verify_ssl": config.verify_ssl,
+            "pagination": {
+                "type": config.pagination.type.value,
+                "page_size": config.pagination.page_size,
+                "offset_param": config.pagination.offset_param,
+                "limit_param": config.pagination.limit_param,
+                "page_param": config.pagination.page_param,
+                "page_size_param": config.pagination.page_size_param,
+                "cursor_param": config.pagination.cursor_param,
+                "cursor_path": config.pagination.cursor_path,
+                "next_url_path": config.pagination.next_url_path,
+                "link_header_name": config.pagination.link_header_name,
+                "data_path": config.pagination.data_path,
+                "max_pages": config.pagination.max_pages,
+                "max_records": config.pagination.max_records,
+            },
+            "output_dir": str(config.output_dir),
+            "output_filename": config.output_filename,
+            "save_mode": config.save_mode,
+            "batch_size": config.batch_size,
+            "max_retries": config.max_retries,
+            "backoff_factor": config.backoff_factor,
+            "retry_status_codes": config.retry_status_codes,
+        }
+
+        json_str = json.dumps(data, indent=indent, ensure_ascii=False)
+
+        if filepath:
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(json_str)
+            logger.info(f"Configuration saved to {filepath}")
+
+        return json_str
+
+
 class RestApiIngester:
     """Ingest data from REST APIs with support for various pagination types."""
 
