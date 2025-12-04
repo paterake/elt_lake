@@ -236,7 +236,7 @@ class TestLinkHeaderPagination:
         ingester = RestApiIngester(config)
         data, output_path = ingester.ingest()
 
-        assert len(data) >= 10  # Should get at least 10 repos
+        assert len(data) >= 9  # torvalds has 9 repos
         assert "name" in data[0]
         assert output_path.exists()
 
@@ -362,6 +362,13 @@ class TestBatchSaving:
 
     def test_batch_save_mode(self):
         """Test saving data in multiple batch files."""
+        import shutil
+
+        # Clean up output directory before test
+        output_dir = Path("./output/test/batch_save")
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+
         config = IngestConfig(
             base_url="https://jsonplaceholder.typicode.com",
             endpoint="/posts",
@@ -373,7 +380,7 @@ class TestBatchSaving:
                 data_path="",
                 max_pages=5,  # 50 records total
             ),
-            output_dir=Path("./output/test/batch_save"),
+            output_dir=output_dir,
             save_mode="batch",
             batch_size=20,  # 20 records per file
         )
