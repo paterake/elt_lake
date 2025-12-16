@@ -76,13 +76,12 @@ elt_ingest_rest/
 
 ---
 
-### Test Files (3 files, ~1,400 lines)
+### Test Files (2 files, ~1,150 lines)
 
 | File | Lines | Tests | Purpose |
 |------|-------|-------|---------|
 | `test/test_pagination_types.py` | ~600 | 17 | Pagination type tests |
 | `test/test_json_config.py` | ~300 | 14 | JSON config tests |
-| `test/usage_examples.py` | ~260 | 0 | Example code (docs) |
 
 **Total Tests**: 31 (30 passed, 1 skipped)
 
@@ -132,19 +131,19 @@ elt_ingest_rest/
 ### By Type
 
 ```
-Python Code:        ~1,750 lines
+Python Code:        ~1,490 lines
 Documentation:      ~2,700 lines
 JSON Configs:       ~90 lines
 Configuration:      ~50 lines
 ─────────────────────────────────
-Total:              ~4,590 lines
+Total:              ~4,330 lines
 ```
 
 ### By Purpose
 
 ```
 Implementation:     305 lines  (core logic)
-Tests:              1,400 lines (quality assurance)
+Tests:              1,150 lines (quality assurance)
 Documentation:      2,700 lines (knowledge)
 Examples:           90 lines   (usage)
 Tools:              60 lines   (CLI)
@@ -154,12 +153,12 @@ Config:             50 lines   (setup)
 ### Code-to-Doc Ratio
 
 ```
-Code:               1,750 lines (38%)
-Documentation:      2,700 lines (59%)
+Code:               1,490 lines (34%)
+Documentation:      2,700 lines (62%)
 Config/Other:       140 lines  (3%)
 ```
 
-**Assessment**: Excellent documentation-to-code ratio (1.5:1)
+**Assessment**: Excellent documentation-to-code ratio (1.8:1)
 
 ---
 
@@ -339,8 +338,8 @@ python examples/run_from_json.py examples/github_repos.json
 
 ## Summary
 
-- **Total Files**: ~20 Python/JSON files + 10 documentation files
-- **Total Lines**: ~4,600 lines (code + docs)
+- **Total Files**: ~19 Python/JSON files + 10 documentation files
+- **Total Lines**: ~4,330 lines (code + docs)
 - **Code Coverage**: 84%
 - **Test Coverage**: 31 tests
 - **Documentation**: 10 comprehensive guides
