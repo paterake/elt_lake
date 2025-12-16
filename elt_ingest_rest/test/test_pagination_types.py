@@ -2,7 +2,7 @@
 
 import pytest
 from pathlib import Path
-from elt_ingest_rest.ingest_rest import (
+from elt_ingest_rest import (
     IngestConfig,
     PaginationConfig,
     PaginationType,
@@ -346,7 +346,7 @@ class TestEdgeCases:
                 "Accept": "application/json",
                 "Custom-Header": "test-value",
             },
-            pagination=PaginationConfig(type=PaginationType.NONE),
+            pagination=PaginationConfig(type=PaginationType.NONE, data_path=""),
             output_dir=Path("./output/test/edge_cases"),
         )
 

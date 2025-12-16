@@ -3,7 +3,7 @@
 import json
 import pytest
 from pathlib import Path
-from elt_ingest_rest.ingest_rest import (
+from elt_ingest_rest import (
     IngestConfig,
     IngestConfigJson,
     PaginationConfig,
