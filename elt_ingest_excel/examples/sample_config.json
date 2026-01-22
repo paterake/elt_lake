@@ -1,0 +1,26 @@
+[
+  {
+    "workbookFileName": "/path/to/sales_data.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Monthly Sales",
+        "targetTableName": "monthly_sales"
+      },
+      {
+        "sheetName": "Product Catalog",
+        "targetTableName": "products"
+      }
+    ]
+  },
+  {
+    "workbookFileName": "/path/to/employee_data.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Employees",
+        "targetTableName": "employees",
+        "headerRow": 2,
+        "skipRows": 1
+      }
+    ]
+  }
+]

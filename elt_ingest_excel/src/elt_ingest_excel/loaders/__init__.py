@@ -1,0 +1,7 @@
+"""Loaders for Excel data extraction."""
+
+from .excel_loader import ExcelLoader
+
+__all__ = [
+    "ExcelLoader",
+]
