@@ -33,6 +33,7 @@ from .models import (
 from .parsers import JsonConfigParser
 from .loaders import ExcelLoader
 from .ingester import ExcelIngester, LoadResult
+from .excelReader import ExcelReader
 
 __all__ = [
     # Models
@@ -46,6 +47,8 @@ __all__ = [
     # Ingester
     "ExcelIngester",
     "LoadResult",
+    # Reader
+    "ExcelReader",
 ]
 
 __version__ = "0.1.0"

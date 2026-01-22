@@ -1,0 +1,15 @@
+[
+  {
+    "workbookFileName": "${WORKBOOK_PATH}",
+    "sheets": [
+      {
+        "sheetName": "Sheet1",
+        "targetTableName": "people"
+      },
+      {
+        "sheetName": "Sheet2",
+        "targetTableName": "products"
+      }
+    ]
+  }
+]

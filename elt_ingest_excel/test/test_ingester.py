@@ -1,5 +1,6 @@
 """Tests for Excel ingestion into DuckDB."""
 
+import json
 import tempfile
 from pathlib import Path
 
@@ -9,12 +10,44 @@ from openpyxl import Workbook
 
 from elt_ingest_excel import (
     ExcelIngester,
-    ExcelIngestConfig,
-    WorkbookConfig,
-    SheetConfig,
     JsonConfigParser,
     ExcelLoader,
+    SheetConfig,
 )
+
+
+# Path to test fixtures
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
+
+
+def load_config_with_substitution(
+    fixture_name: str,
+    database_path: str,
+    workbook_path: str | None = None,
+) -> dict:
+    """Load a JSON fixture file and substitute placeholder values.
+
+    Args:
+        fixture_name: Name of the fixture file (without .json extension).
+        database_path: Path to the DuckDB database.
+        workbook_path: Path to the Excel workbook (substitutes ${WORKBOOK_PATH}).
+
+    Returns:
+        ExcelIngestConfig loaded from the fixture with substitutions applied.
+    """
+    fixture_path = FIXTURES_DIR / f"{fixture_name}.json"
+    content = fixture_path.read_text()
+
+    # Substitute placeholders
+    if workbook_path:
+        content = content.replace("${WORKBOOK_PATH}", workbook_path)
+
+    config_data = json.loads(content)
+
+    return JsonConfigParser.from_json(
+        config_data,
+        database_path=database_path,
+    )
 
 
 @pytest.fixture
@@ -92,10 +125,12 @@ class TestExcelLoader:
 
     def test_load_simple_sheet(self, sample_workbook):
         """Test loading a simple sheet."""
-        sheet_config = SheetConfig(
-            sheet_name="Sheet1",
-            target_table_name="test_table",
+        config = load_config_with_substitution(
+            "ingest_single_sheet",
+            database_path="/tmp/test.duckdb",
+            workbook_path=sample_workbook,
         )
+        sheet_config = config.workbooks[0].sheets[0]
 
         with ExcelLoader(sample_workbook) as loader:
             data = loader.load_sheet(sheet_config)
@@ -108,12 +143,12 @@ class TestExcelLoader:
 
     def test_load_sheet_with_custom_header(self, sample_workbook):
         """Test loading a sheet with custom header row."""
-        sheet_config = SheetConfig(
-            sheet_name="Sheet3",
-            target_table_name="test_table",
-            header_row=3,
-            skip_rows=0,
+        config = load_config_with_substitution(
+            "ingest_custom_header",
+            database_path="/tmp/test.duckdb",
+            workbook_path=sample_workbook,
         )
+        sheet_config = config.workbooks[0].sheets[0]
 
         with ExcelLoader(sample_workbook) as loader:
             data = loader.load_sheet(sheet_config)
@@ -155,19 +190,10 @@ class TestExcelIngester:
 
     def test_ingest_single_sheet(self, sample_workbook, temp_database):
         """Test ingesting a single sheet."""
-        config = ExcelIngestConfig(
-            database_path=Path(temp_database),
-            workbooks=[
-                WorkbookConfig(
-                    workbook_file_name=sample_workbook,
-                    sheets=[
-                        SheetConfig(
-                            sheet_name="Sheet1",
-                            target_table_name="people",
-                        )
-                    ],
-                )
-            ],
+        config = load_config_with_substitution(
+            "ingest_single_sheet",
+            database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         with ExcelIngester(config) as ingester:
@@ -188,23 +214,10 @@ class TestExcelIngester:
 
     def test_ingest_multiple_sheets(self, sample_workbook, temp_database):
         """Test ingesting multiple sheets from one workbook."""
-        config = ExcelIngestConfig(
-            database_path=Path(temp_database),
-            workbooks=[
-                WorkbookConfig(
-                    workbook_file_name=sample_workbook,
-                    sheets=[
-                        SheetConfig(
-                            sheet_name="Sheet1",
-                            target_table_name="people",
-                        ),
-                        SheetConfig(
-                            sheet_name="Sheet2",
-                            target_table_name="products",
-                        ),
-                    ],
-                )
-            ],
+        config = load_config_with_substitution(
+            "ingest_multiple_sheets",
+            database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         with ExcelIngester(config) as ingester:
@@ -217,20 +230,11 @@ class TestExcelIngester:
         assert results[1].row_count == 2
 
     def test_ingest_from_json_config(self, sample_workbook, temp_database):
-        """Test ingesting using JSON configuration."""
-        config_data = [
-            {
-                "workbookFileName": sample_workbook,
-                "sheets": [
-                    {"sheetName": "Sheet1", "targetTableName": "people"},
-                    {"sheetName": "Sheet2", "targetTableName": "products"},
-                ],
-            }
-        ]
-
-        config = JsonConfigParser.from_json(
-            config_data,
+        """Test ingesting using JSON configuration file."""
+        config = load_config_with_substitution(
+            "ingest_multiple_sheets",
             database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         with ExcelIngester(config) as ingester:
@@ -249,20 +253,10 @@ class TestExcelIngester:
 
     def test_ingest_with_custom_header_row(self, sample_workbook, temp_database):
         """Test ingesting sheet with custom header row."""
-        config = ExcelIngestConfig(
-            database_path=Path(temp_database),
-            workbooks=[
-                WorkbookConfig(
-                    workbook_file_name=sample_workbook,
-                    sheets=[
-                        SheetConfig(
-                            sheet_name="Sheet3",
-                            target_table_name="report_data",
-                            header_row=3,
-                        ),
-                    ],
-                )
-            ],
+        config = load_config_with_substitution(
+            "ingest_custom_header",
+            database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         with ExcelIngester(config) as ingester:
@@ -281,20 +275,10 @@ class TestExcelIngester:
 
     def test_replace_data(self, sample_workbook, temp_database):
         """Test that replace_data=True replaces existing data."""
-        config = ExcelIngestConfig(
-            database_path=Path(temp_database),
-            workbooks=[
-                WorkbookConfig(
-                    workbook_file_name=sample_workbook,
-                    sheets=[
-                        SheetConfig(
-                            sheet_name="Sheet1",
-                            target_table_name="people",
-                        )
-                    ],
-                )
-            ],
-            replace_data=True,
+        config = load_config_with_substitution(
+            "ingest_single_sheet",
+            database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         # Run twice
@@ -309,19 +293,10 @@ class TestExcelIngester:
 
     def test_print_summary(self, sample_workbook, temp_database, capsys):
         """Test that print_summary outputs correctly."""
-        config = ExcelIngestConfig(
-            database_path=Path(temp_database),
-            workbooks=[
-                WorkbookConfig(
-                    workbook_file_name=sample_workbook,
-                    sheets=[
-                        SheetConfig(
-                            sheet_name="Sheet1",
-                            target_table_name="people",
-                        )
-                    ],
-                )
-            ],
+        config = load_config_with_substitution(
+            "ingest_single_sheet",
+            database_path=temp_database,
+            workbook_path=sample_workbook,
         )
 
         with ExcelIngester(config) as ingester:
