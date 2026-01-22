@@ -14,23 +14,17 @@ from elt_ingest_excel import (
 )
 
 
+# Path to test fixtures
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
+
+
 class TestJsonConfigParser:
     """Tests for JsonConfigParser."""
 
-    def test_from_json_dict(self):
-        """Test loading config from a Python dict."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [
-                {
-                    "sheetName": "Sheet1",
-                    "targetTableName": "table1",
-                }
-            ],
-        }
-
+    def test_from_json_file_single_workbook(self):
+        """Test loading config from a JSON file with single workbook."""
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "single_workbook.json",
             database_path="/path/to/db.duckdb",
         )
 
@@ -42,21 +36,10 @@ class TestJsonConfigParser:
         assert config.workbooks[0].sheets[0].sheet_name == "Sheet1"
         assert config.workbooks[0].sheets[0].target_table_name == "table1"
 
-    def test_from_json_list(self):
-        """Test loading config from a list of workbooks."""
-        config_data = [
-            {
-                "workbookFileName": "/path/to/workbook1.xlsx",
-                "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-            },
-            {
-                "workbookFileName": "/path/to/workbook2.xlsx",
-                "sheets": [{"sheetName": "Sheet2", "targetTableName": "table2"}],
-            },
-        ]
-
+    def test_from_json_file_multiple_workbooks(self):
+        """Test loading config from a JSON file with multiple workbooks."""
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "multiple_workbooks.json",
             database_path="/path/to/db.duckdb",
         )
 
@@ -64,62 +47,20 @@ class TestJsonConfigParser:
         assert config.workbooks[0].workbook_file_name == "/path/to/workbook1.xlsx"
         assert config.workbooks[1].workbook_file_name == "/path/to/workbook2.xlsx"
 
-    def test_from_json_string(self):
-        """Test loading config from a JSON string."""
-        json_str = json.dumps([
-            {
-                "workbookFileName": "/path/to/workbook.xlsx",
-                "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-            }
-        ])
-
+    def test_from_json_string_path(self):
+        """Test loading config using string path."""
         config = JsonConfigParser.from_json(
-            json_str,
+            str(FIXTURES_DIR / "single_workbook.json"),
             database_path="/path/to/db.duckdb",
         )
 
         assert len(config.workbooks) == 1
         assert config.workbooks[0].workbook_file_name == "/path/to/workbook.xlsx"
 
-    def test_from_json_file(self):
-        """Test loading config from a JSON file."""
-        config_data = [
-            {
-                "workbookFileName": "/path/to/workbook.xlsx",
-                "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-            }
-        ]
-
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-            json.dump(config_data, f)
-            temp_path = f.name
-
-        try:
-            # Test with string path
-            config = JsonConfigParser.from_json(
-                temp_path,
-                database_path="/path/to/db.duckdb",
-            )
-            assert len(config.workbooks) == 1
-
-            # Test with Path object
-            config = JsonConfigParser.from_json(
-                Path(temp_path),
-                database_path="/path/to/db.duckdb",
-            )
-            assert len(config.workbooks) == 1
-        finally:
-            Path(temp_path).unlink()
-
-    def test_sheet_optional_fields(self):
+    def test_sheet_optional_fields_defaults(self):
         """Test that sheet optional fields have correct defaults."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-        }
-
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "single_workbook.json",
             database_path="/path/to/db.duckdb",
         )
 
@@ -129,20 +70,8 @@ class TestJsonConfigParser:
 
     def test_sheet_custom_header_row(self):
         """Test loading sheet with custom header row settings."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [
-                {
-                    "sheetName": "Sheet1",
-                    "targetTableName": "table1",
-                    "headerRow": 3,
-                    "skipRows": 2,
-                }
-            ],
-        }
-
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "custom_header_row.json",
             database_path="/path/to/db.duckdb",
         )
 
@@ -152,13 +81,8 @@ class TestJsonConfigParser:
 
     def test_config_defaults(self):
         """Test that config has correct default values."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-        }
-
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "single_workbook.json",
             database_path="/path/to/db.duckdb",
         )
 
@@ -167,13 +91,8 @@ class TestJsonConfigParser:
 
     def test_config_custom_flags(self):
         """Test setting custom create_tables and replace_data flags."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-        }
-
         config = JsonConfigParser.from_json(
-            config_data,
+            FIXTURES_DIR / "single_workbook.json",
             database_path="/path/to/db.duckdb",
             create_tables=False,
             replace_data=False,
@@ -243,41 +162,61 @@ class TestJsonConfigParser:
         finally:
             Path(temp_path).unlink()
 
+    def test_roundtrip_json(self):
+        """Test that config can be serialized and deserialized."""
+        # Load original config
+        original_config = JsonConfigParser.from_json(
+            FIXTURES_DIR / "custom_header_row.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+        # Serialize to temp file
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            temp_path = f.name
+
+        try:
+            JsonConfigParser.to_json(original_config, filepath=temp_path)
+
+            # Deserialize back
+            reloaded_config = JsonConfigParser.from_json(
+                temp_path,
+                database_path="/path/to/db.duckdb",
+            )
+
+            # Verify roundtrip
+            assert len(reloaded_config.workbooks) == len(original_config.workbooks)
+            assert (
+                reloaded_config.workbooks[0].workbook_file_name
+                == original_config.workbooks[0].workbook_file_name
+            )
+            assert (
+                reloaded_config.workbooks[0].sheets[0].header_row
+                == original_config.workbooks[0].sheets[0].header_row
+            )
+        finally:
+            Path(temp_path).unlink()
+
     def test_missing_workbook_filename(self):
         """Test error when workbookFileName is missing."""
-        config_data = {
-            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
-        }
-
         with pytest.raises(ValueError, match="Missing required field: workbookFileName"):
             JsonConfigParser.from_json(
-                config_data,
+                FIXTURES_DIR / "missing_workbook_filename.json",
                 database_path="/path/to/db.duckdb",
             )
 
     def test_missing_sheet_name(self):
         """Test error when sheetName is missing."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [{"targetTableName": "table1"}],
-        }
-
         with pytest.raises(ValueError, match="Missing required field: sheetName"):
             JsonConfigParser.from_json(
-                config_data,
+                FIXTURES_DIR / "missing_sheet_name.json",
                 database_path="/path/to/db.duckdb",
             )
 
     def test_missing_target_table_name(self):
         """Test error when targetTableName is missing."""
-        config_data = {
-            "workbookFileName": "/path/to/workbook.xlsx",
-            "sheets": [{"sheetName": "Sheet1"}],
-        }
-
         with pytest.raises(ValueError, match="Missing required field: targetTableName"):
             JsonConfigParser.from_json(
-                config_data,
+                FIXTURES_DIR / "missing_target_table_name.json",
                 database_path="/path/to/db.duckdb",
             )
 
@@ -289,10 +228,17 @@ class TestJsonConfigParser:
                 database_path="/path/to/db.duckdb",
             )
 
-    def test_invalid_json(self):
-        """Test error when JSON is invalid."""
-        with pytest.raises(json.JSONDecodeError):
-            JsonConfigParser.from_json(
-                "not valid json",
-                database_path="/path/to/db.duckdb",
-            )
+    def test_invalid_json_file(self):
+        """Test error when JSON file contains invalid JSON."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            f.write("not valid json")
+            temp_path = f.name
+
+        try:
+            with pytest.raises(json.JSONDecodeError):
+                JsonConfigParser.from_json(
+                    temp_path,
+                    database_path="/path/to/db.duckdb",
+                )
+        finally:
+            Path(temp_path).unlink()
