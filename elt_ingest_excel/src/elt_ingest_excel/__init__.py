@@ -33,7 +33,7 @@ from .models import (
 from .parsers import JsonConfigParser
 from .loaders import ExcelLoader
 from .ingester import ExcelIngester, LoadResult
-from .excelReader import ExcelReader
+from .excel_reader import ExcelReader
 
 __all__ = [
     # Models
