@@ -8,12 +8,12 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 50)
 
 if __name__ == "__main__":
-    loader = ExcelReader(
-        file_path="~/Documents/__data/excel/FIN_Supplier.xlsm",
-        sheet_name="Supplier Name",
+    reader = ExcelReader(
+        file_path="~/Documents/__data/excel/FA Creditors with Activity Last 3 Years.xlsx",
+        sheet_name="Lasst Purchase Date",
         header_row=2,
         dtype=str
     )
-    df = loader.load()
-    loader.preview()
+    df = reader.load()
+    reader.preview()
     print(df.iloc[0].to_dict())
