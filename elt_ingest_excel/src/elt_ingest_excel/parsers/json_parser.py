@@ -185,3 +185,48 @@ class JsonConfigParser:
             path.write_text(json_str)
 
         return json_str
+
+    @staticmethod
+    def find_workbook(
+        config: ExcelIngestConfig,
+        file_name: str,
+    ) -> WorkbookConfig | None:
+        """Find a workbook configuration by file name.
+
+        Args:
+            config: ExcelIngestConfig containing workbook definitions.
+            file_name: Workbook file name to match (supports ~ expansion).
+
+        Returns:
+            WorkbookConfig if found, None otherwise.
+        """
+        file_name_expanded = str(Path(file_name).expanduser())
+
+        for workbook in config.workbooks:
+            workbook_path_expanded = str(Path(workbook.workbook_file_name).expanduser())
+            if workbook_path_expanded == file_name_expanded:
+                return workbook
+
+        return None
+
+    @staticmethod
+    def get_sheets(
+        workbook: WorkbookConfig,
+        sheet_filter: str = "*",
+    ) -> list[SheetConfig]:
+        """Get sheets from a workbook with optional filtering.
+
+        Args:
+            workbook: WorkbookConfig containing sheet definitions.
+            sheet_filter: Sheet name to filter on, or "*" for all sheets.
+
+        Returns:
+            List of SheetConfig matching the filter.
+        """
+        if sheet_filter == "*":
+            return workbook.sheets
+
+        return [
+            sheet for sheet in workbook.sheets
+            if sheet.sheet_name == sheet_filter
+        ]
