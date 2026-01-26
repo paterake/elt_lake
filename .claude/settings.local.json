@@ -4,7 +4,8 @@
       "Bash(uv sync:*)",
       "Bash(uv run pytest:*)",
       "Bash(git add:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(uv run python:*)"
     ],
     "additionalDirectories": [
       "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/*"
