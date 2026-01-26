@@ -33,6 +33,7 @@ from .models import (
 )
 from .parsers import JsonConfigParser
 from .loaders import ExcelLoader, ExcelReader
+from .writers import SaveMode, DuckDBWriter, WriteResult
 from .ingester import ExcelIngester, LoadResult
 from .file_ingestor import FileIngestor
 
@@ -47,6 +48,10 @@ __all__ = [
     # Loaders
     "ExcelLoader",
     "ExcelReader",
+    # Writers
+    "SaveMode",
+    "DuckDBWriter",
+    "WriteResult",
     # Ingester
     "ExcelIngester",
     "LoadResult",
