@@ -242,3 +242,150 @@ class TestJsonConfigParser:
                 )
         finally:
             Path(temp_path).unlink()
+
+
+class TestFindWorkbookAndGetSheets:
+    """Tests for find_workbook and get_sheets helper methods."""
+
+    @pytest.fixture
+    def config_with_multiple_sheets(self):
+        """Load config with multiple workbooks and sheets."""
+        return JsonConfigParser.from_json(
+            FIXTURES_DIR / "workbook_multiple_sheets.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+    def test_find_workbook_exact_match(self, config_with_multiple_sheets):
+        """Test finding workbook by exact file path."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        assert workbook is not None
+        assert workbook.workbook_file_name == "/data/sales.xlsx"
+        assert len(workbook.sheets) == 3
+
+    def test_find_workbook_with_tilde_expansion(self, config_with_multiple_sheets):
+        """Test finding workbook with ~ path expansion."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "~/Documents/finance.xlsx",
+        )
+
+        assert workbook is not None
+        assert workbook.workbook_file_name == "~/Documents/finance.xlsx"
+        assert len(workbook.sheets) == 2
+
+    def test_find_workbook_not_found(self, config_with_multiple_sheets):
+        """Test finding workbook that doesn't exist returns None."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/nonexistent/workbook.xlsx",
+        )
+
+        assert workbook is None
+
+    def test_get_sheets_all(self, config_with_multiple_sheets):
+        """Test getting all sheets with '*' filter."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        sheets = JsonConfigParser.get_sheets(workbook, "*")
+
+        assert len(sheets) == 3
+        assert sheets[0].sheet_name == "Q1"
+        assert sheets[1].sheet_name == "Q2"
+        assert sheets[2].sheet_name == "Q3"
+
+    def test_get_sheets_default_filter(self, config_with_multiple_sheets):
+        """Test getting all sheets with default filter (no argument)."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        sheets = JsonConfigParser.get_sheets(workbook)
+
+        assert len(sheets) == 3
+
+    def test_get_sheets_specific_sheet(self, config_with_multiple_sheets):
+        """Test filtering to a specific sheet by name."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        sheets = JsonConfigParser.get_sheets(workbook, "Q2")
+
+        assert len(sheets) == 1
+        assert sheets[0].sheet_name == "Q2"
+        assert sheets[0].target_table_name == "sales_q2"
+
+    def test_get_sheets_no_match(self, config_with_multiple_sheets):
+        """Test filtering with sheet name that doesn't exist."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        sheets = JsonConfigParser.get_sheets(workbook, "NonexistentSheet")
+
+        assert len(sheets) == 0
+
+    def test_iterate_workbooks_and_sheets(self, config_with_multiple_sheets):
+        """Test iterating over config using find_workbook and get_sheets."""
+        # Simulate test_read_excel.py pattern
+        file_names = ["/data/sales.xlsx", "~/Documents/finance.xlsx"]
+        results = []
+
+        for file_name in file_names:
+            workbook = JsonConfigParser.find_workbook(
+                config_with_multiple_sheets,
+                file_name,
+            )
+            assert workbook is not None
+
+            for sheet in JsonConfigParser.get_sheets(workbook, "*"):
+                results.append({
+                    "workbook": workbook.workbook_file_name,
+                    "sheet": sheet.sheet_name,
+                    "table": sheet.target_table_name,
+                })
+
+        assert len(results) == 5
+        assert results[0]["sheet"] == "Q1"
+        assert results[3]["sheet"] == "Revenue"
+        assert results[4]["table"] == "finance_expenses"
+
+    def test_iterate_with_sheet_filter(self, config_with_multiple_sheets):
+        """Test iterating with specific sheet filter."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        # Only process Q1 and Q3
+        results = []
+        for sheet_filter in ["Q1", "Q3"]:
+            for sheet in JsonConfigParser.get_sheets(workbook, sheet_filter):
+                results.append(sheet.sheet_name)
+
+        assert results == ["Q1", "Q3"]
+
+    def test_sheet_config_preserved(self, config_with_multiple_sheets):
+        """Test that sheet config values are preserved through iteration."""
+        workbook = JsonConfigParser.find_workbook(
+            config_with_multiple_sheets,
+            "/data/sales.xlsx",
+        )
+
+        sheets = JsonConfigParser.get_sheets(workbook, "Q3")
+
+        assert len(sheets) == 1
+        sheet = sheets[0]
+        assert sheet.header_row == 2
+        assert sheet.data_row == 3
+        assert sheet.target_table_name == "sales_q3"
