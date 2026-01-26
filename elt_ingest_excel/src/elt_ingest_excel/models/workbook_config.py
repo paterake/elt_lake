@@ -11,12 +11,17 @@ class SheetConfig:
         sheet_name: Name of the worksheet in the Excel workbook.
         target_table_name: Name of the DuckDB table to load data into.
         header_row: Row number containing headers (1-indexed, default 1).
-        skip_rows: Number of rows to skip before header row (default 0).
+        data_row: Row number where data starts (1-indexed, default is header_row + 1).
     """
     sheet_name: str
     target_table_name: str
     header_row: int = 1
-    skip_rows: int = 0
+    data_row: int | None = None
+
+    def __post_init__(self):
+        """Set data_row default if not provided."""
+        if self.data_row is None:
+            self.data_row = self.header_row + 1
 
 
 @dataclass

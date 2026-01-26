@@ -66,7 +66,7 @@ class TestJsonConfigParser:
 
         sheet = config.workbooks[0].sheets[0]
         assert sheet.header_row == 1
-        assert sheet.skip_rows == 0
+        assert sheet.data_row == 2  # Default is header_row + 1
 
     def test_sheet_custom_header_row(self):
         """Test loading sheet with custom header row settings."""
@@ -77,7 +77,7 @@ class TestJsonConfigParser:
 
         sheet = config.workbooks[0].sheets[0]
         assert sheet.header_row == 3
-        assert sheet.skip_rows == 2
+        assert sheet.data_row == 4
 
     def test_config_defaults(self):
         """Test that config has correct default values."""
@@ -113,7 +113,7 @@ class TestJsonConfigParser:
                             sheet_name="Sheet1",
                             target_table_name="table1",
                             header_row=2,
-                            skip_rows=1,
+                            data_row=3,
                         )
                     ],
                 )
@@ -128,7 +128,7 @@ class TestJsonConfigParser:
         assert data[0]["sheets"][0]["sheetName"] == "Sheet1"
         assert data[0]["sheets"][0]["targetTableName"] == "table1"
         assert data[0]["sheets"][0]["headerRow"] == 2
-        assert data[0]["sheets"][0]["skipRows"] == 1
+        assert data[0]["sheets"][0]["dataRow"] == 3
 
     def test_to_json_file(self):
         """Test serializing config to a JSON file."""

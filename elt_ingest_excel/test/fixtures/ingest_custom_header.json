@@ -5,7 +5,8 @@
       {
         "sheetName": "Sheet3",
         "targetTableName": "report_data",
-        "headerRow": 3
+        "headerRow": 3,
+        "dataRow": 4
       }
     ]
   }

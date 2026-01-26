@@ -24,7 +24,7 @@ class JsonConfigParser:
                     "sheetName": "Sheet1",
                     "targetTableName": "my_table",
                     "headerRow": 1,
-                    "skipRows": 0
+                    "dataRow": 2
                 }
             ]
         }
@@ -130,11 +130,19 @@ class JsonConfigParser:
             if "targetTableName" not in sheet_data:
                 raise ValueError("Missing required field: targetTableName")
 
+            # Parse headerRow (handle string or int)
+            header_row_raw = sheet_data.get("headerRow", 1)
+            header_row = int(header_row_raw) if header_row_raw is not None else 1
+
+            # Parse dataRow (handle string or int, None means default)
+            data_row_raw = sheet_data.get("dataRow")
+            data_row = int(data_row_raw) if data_row_raw is not None else None
+
             sheet = SheetConfig(
                 sheet_name=sheet_data["sheetName"],
                 target_table_name=sheet_data["targetTableName"],
-                header_row=sheet_data.get("headerRow", 1),
-                skip_rows=sheet_data.get("skipRows", 0),
+                header_row=header_row,
+                data_row=data_row,
             )
             sheets.append(sheet)
 
@@ -163,7 +171,7 @@ class JsonConfigParser:
                         "sheetName": sheet.sheet_name,
                         "targetTableName": sheet.target_table_name,
                         "headerRow": sheet.header_row,
-                        "skipRows": sheet.skip_rows,
+                        "dataRow": sheet.data_row,
                     }
                     for sheet in workbook.sheets
                 ],

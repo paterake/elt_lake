@@ -4,17 +4,20 @@
     "sheets": [
       {
         "sheetName": "Lasst Purchase Date",
-        "headerRow": "2",
+        "headerRow": "1",
+        "dataRow": "2",
         "targetTableName": "finance_supplier_creditor_last_purchase_date"
       },
       {
         "sheetName": "Last Payment Date",
-        "headerRow": "2",
+        "headerRow": "1",
+        "dataRow": "2",
         "targetTableName": "finance_supplier_creditor_last_payment_date"
       },
       {
         "sheetName": "Created Date",
-        "headerRow": "2",
+        "headerRow": "1",
+        "dataRow": "2",
         "targetTableName": "finance_supplier_creditor_created_date"
       }
     ]

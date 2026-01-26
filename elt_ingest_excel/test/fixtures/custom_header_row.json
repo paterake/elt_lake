@@ -6,7 +6,7 @@
         "sheetName": "Sheet1",
         "targetTableName": "table1",
         "headerRow": 3,
-        "skipRows": 2
+        "dataRow": 4
       }
     ]
   }

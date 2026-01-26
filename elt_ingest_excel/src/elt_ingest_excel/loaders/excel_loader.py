@@ -86,8 +86,8 @@ class ExcelLoader:
         if not rows:
             return []
 
-        # Calculate the actual header row index (0-based)
-        header_idx = sheet_config.skip_rows + sheet_config.header_row - 1
+        # Calculate the actual header row index (0-based from 1-indexed config)
+        header_idx = sheet_config.header_row - 1
 
         if header_idx >= len(rows):
             return []
@@ -95,8 +95,8 @@ class ExcelLoader:
         # Extract headers
         headers = self._clean_headers(rows[header_idx])
 
-        # Extract data rows (everything after header)
-        data_start_idx = header_idx + 1
+        # Calculate data start index (0-based from 1-indexed config)
+        data_start_idx = sheet_config.data_row - 1
         data = []
 
         for row in rows[data_start_idx:]:
