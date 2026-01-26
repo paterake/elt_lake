@@ -1,4 +1,4 @@
-# src/elt_ingest_excel/excel_reader.py
+# src/elt_ingest_excel/loader/excel_reader.py
 import pandas as pd
 from pathlib import Path
 

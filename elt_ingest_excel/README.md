@@ -2,6 +2,47 @@
 
 ELT module for ingesting Excel workbooks into DuckDB.
 
+## Setup
+
+### Prerequisites
+
+- Python 3.14+
+- [uv](https://docs.astral.sh/uv/) package manager
+
+### Create and sync the virtual environment
+
+```bash
+cd elt_ingest_excel
+uv sync
+```
+
+This creates a `.venv/` directory and installs all dependencies.
+
+### Running code
+
+Use `uv run` to execute Python scripts within the virtual environment:
+
+```bash
+# Run a script
+uv run python examples/test_read_excel.py
+
+# Run tests
+uv run pytest test/ -v
+
+# Start a Python REPL with dependencies available
+uv run python
+```
+
+### Adding dependencies
+
+```bash
+# Add a runtime dependency
+uv add requests
+
+# Add a dev dependency
+uv add --group dev black
+```
+
 ## Features
 
 - Load Excel workbooks (.xlsx) into DuckDB tables
@@ -9,13 +50,6 @@ ELT module for ingesting Excel workbooks into DuckDB.
 - Automatic schema inference from Excel data
 - Support for custom header rows and row skipping
 - Validation of loaded data via table counts
-
-## Installation
-
-```bash
-cd elt_ingest_excel
-uv sync
-```
 
 ## Quick Start
 
@@ -59,7 +93,7 @@ with ExcelIngester(config) as ingester:
 ### 3. Or use the CLI
 
 ```bash
-python examples/run_from_json.py config.json my_database.duckdb --verbose
+uv run python examples/run_from_json.py config.json my_database.duckdb --verbose
 ```
 
 ## Configuration
@@ -153,7 +187,6 @@ with ExcelLoader("/path/to/workbook.xlsx") as loader:
 ## Testing
 
 ```bash
-cd elt_ingest_excel
 uv run pytest test/ -v
 ```
 

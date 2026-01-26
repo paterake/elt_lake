@@ -31,9 +31,8 @@ from .models import (
     SheetConfig,
 )
 from .parsers import JsonConfigParser
-from .loaders import ExcelLoader
+from .loaders import ExcelLoader, ExcelReader
 from .ingester import ExcelIngester, LoadResult
-from .excel_reader import ExcelReader
 
 __all__ = [
     # Models
@@ -47,7 +46,6 @@ __all__ = [
     # Ingester
     "ExcelIngester",
     "LoadResult",
-    # Reader
     "ExcelReader",
 ]
 
