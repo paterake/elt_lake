@@ -9,6 +9,7 @@ import pytest
 from elt_ingest_excel import (
     JsonConfigParser,
     ExcelIngestConfig,
+    FileType,
     WorkbookConfig,
     SheetConfig,
 )
@@ -389,3 +390,101 @@ class TestFindWorkbookAndGetSheets:
         assert sheet.header_row == 2
         assert sheet.data_row == 3
         assert sheet.target_table_name == "sales_q3"
+
+
+class TestFileType:
+    """Tests for FileType parsing and handling."""
+
+    def test_file_type_default_is_excel(self):
+        """Test that file_type defaults to EXCEL when not specified."""
+        config = JsonConfigParser.from_json(
+            FIXTURES_DIR / "single_workbook.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+        assert config.workbooks[0].file_type == FileType.EXCEL
+
+    def test_file_type_explicit_excel(self):
+        """Test parsing explicit EXCEL fileType."""
+        config = JsonConfigParser.from_json(
+            FIXTURES_DIR / "with_file_type.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+        assert config.workbooks[0].file_type == FileType.EXCEL
+        assert config.workbooks[0].workbook_file_name == "/path/to/workbook.xlsx"
+
+    def test_file_type_delimited(self):
+        """Test parsing DELIMITED fileType."""
+        config = JsonConfigParser.from_json(
+            FIXTURES_DIR / "with_file_type.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+        assert config.workbooks[1].file_type == FileType.DELIMITED
+        assert config.workbooks[1].workbook_file_name == "/path/to/data.csv"
+
+    def test_file_type_case_insensitive(self):
+        """Test that fileType parsing is case insensitive."""
+        json_data = [{
+            "workbookFileName": "/path/to/file.xlsx",
+            "fileType": "excel",
+            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
+        }]
+
+        config = JsonConfigParser.from_json(
+            json_data,
+            database_path="/path/to/db.duckdb",
+        )
+
+        assert config.workbooks[0].file_type == FileType.EXCEL
+
+    def test_file_type_invalid(self):
+        """Test error for invalid fileType."""
+        json_data = [{
+            "workbookFileName": "/path/to/file.xlsx",
+            "fileType": "INVALID_TYPE",
+            "sheets": [{"sheetName": "Sheet1", "targetTableName": "table1"}],
+        }]
+
+        with pytest.raises(ValueError, match="Unsupported fileType"):
+            JsonConfigParser.from_json(
+                json_data,
+                database_path="/path/to/db.duckdb",
+            )
+
+    def test_file_type_in_to_json(self):
+        """Test that fileType is included in serialized JSON."""
+        config = ExcelIngestConfig(
+            database_path=Path("/path/to/db.duckdb"),
+            workbooks=[
+                WorkbookConfig(
+                    workbook_file_name="/path/to/workbook.xlsx",
+                    file_type=FileType.EXCEL,
+                    sheets=[
+                        SheetConfig(
+                            sheet_name="Sheet1",
+                            target_table_name="table1",
+                        )
+                    ],
+                )
+            ],
+        )
+
+        json_str = JsonConfigParser.to_json(config)
+        data = json.loads(json_str)
+
+        assert data[0]["fileType"] == "EXCEL"
+
+    def test_file_type_roundtrip(self):
+        """Test fileType survives JSON roundtrip."""
+        config = JsonConfigParser.from_json(
+            FIXTURES_DIR / "with_file_type.json",
+            database_path="/path/to/db.duckdb",
+        )
+
+        json_str = JsonConfigParser.to_json(config)
+        data = json.loads(json_str)
+
+        assert data[0]["fileType"] == "EXCEL"
+        assert data[1]["fileType"] == "DELIMITED"

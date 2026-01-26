@@ -27,26 +27,31 @@ Example usage:
 
 from .models import (
     ExcelIngestConfig,
+    FileType,
     WorkbookConfig,
     SheetConfig,
 )
 from .parsers import JsonConfigParser
 from .loaders import ExcelLoader, ExcelReader
 from .ingester import ExcelIngester, LoadResult
+from .file_ingestor import FileIngestor
 
 __all__ = [
     # Models
     "ExcelIngestConfig",
+    "FileType",
     "WorkbookConfig",
     "SheetConfig",
     # Parsers
     "JsonConfigParser",
     # Loaders
     "ExcelLoader",
+    "ExcelReader",
     # Ingester
     "ExcelIngester",
     "LoadResult",
-    "ExcelReader",
+    # File Ingestor (main workflow)
+    "FileIngestor",
 ]
 
 __version__ = "0.1.0"

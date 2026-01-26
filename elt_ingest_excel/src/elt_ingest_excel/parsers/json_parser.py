@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Union
 
-from ..models import ExcelIngestConfig, WorkbookConfig, SheetConfig
+from ..models import ExcelIngestConfig, FileType, WorkbookConfig, SheetConfig
 
 
 class JsonConfigParser:
@@ -105,9 +105,17 @@ class JsonConfigParser:
 
             sheets = JsonConfigParser._parse_sheets(wb_data.get("sheets", []))
 
+            # Parse fileType (default to EXCEL if not specified)
+            file_type_str = wb_data.get("fileType", "EXCEL").upper()
+            try:
+                file_type = FileType(file_type_str)
+            except ValueError:
+                raise ValueError(f"Unsupported fileType: {file_type_str}")
+
             workbook = WorkbookConfig(
                 workbook_file_name=wb_data["workbookFileName"],
                 sheets=sheets,
+                file_type=file_type,
             )
             workbooks.append(workbook)
 
@@ -166,6 +174,7 @@ class JsonConfigParser:
         for workbook in config.workbooks:
             wb_data = {
                 "workbookFileName": workbook.workbook_file_name,
+                "fileType": workbook.file_type.value,
                 "sheets": [
                     {
                         "sheetName": sheet.sheet_name,

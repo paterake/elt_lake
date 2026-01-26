@@ -1,6 +1,13 @@
 """Configuration models for workbook and sheet definitions."""
 
 from dataclasses import dataclass, field
+from enum import Enum
+
+
+class FileType(Enum):
+    """Supported file types for ingestion."""
+    EXCEL = "EXCEL"
+    DELIMITED = "DELIMITED"
 
 
 @dataclass
@@ -26,11 +33,13 @@ class SheetConfig:
 
 @dataclass
 class WorkbookConfig:
-    """Configuration for a single Excel workbook.
+    """Configuration for a single workbook/file.
 
     Attributes:
-        workbook_file_name: Path to the Excel workbook file.
+        workbook_file_name: Path to the workbook/file.
         sheets: List of sheet configurations to process.
+        file_type: Type of file (EXCEL, DELIMITED, etc.). Defaults to EXCEL.
     """
     workbook_file_name: str
     sheets: list[SheetConfig] = field(default_factory=list)
+    file_type: FileType = FileType.EXCEL
