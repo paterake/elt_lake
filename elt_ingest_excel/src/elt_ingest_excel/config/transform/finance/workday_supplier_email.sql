@@ -11,7 +11,7 @@ SELECT
      , TRUE                                                       public_flag
      , TRUE                                                       primary_flag
      , TRUE                                                       default_po
-     , 'Business'                                                 type
+     , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
      , FALSE                                                      delete_flag
@@ -35,7 +35,7 @@ SELECT
      , TRUE                                                       public_flag
      , FALSE                                                      primary_flag
      , FALSE                                                      default_po
-     , 'Business'                                                 type
+     , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
      , FALSE                                                      delete_flag
@@ -59,7 +59,7 @@ SELECT
      , TRUE                                                       public_flag
      , FALSE                                                      primary_flag
      , FALSE                                                      default_po
-     , 'Business'                                                 type
+     , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
      , FALSE                                                      delete_flag

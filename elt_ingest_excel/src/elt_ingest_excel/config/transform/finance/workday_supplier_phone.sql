@@ -35,7 +35,7 @@ SELECT
      , 'Landline'                                                 phone_device_type
      , TRUE                                                       public_flag
      , TRUE                                                       primary_flag
-     , 'Business'                                                 type
+     , 'Business'                                                 phone_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
      , NULL                                                       comments

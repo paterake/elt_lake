@@ -46,7 +46,8 @@ class ExcelReader:
             self.file_path,
             sheet_name=self.sheet_name,
             header=self.header_row,
-            dtype=self.dtype
+            dtype=str,
+            na_filter=False
         )
         # Clean up column names for database compatibility
         self.df.columns = [self.clean_column_name(col) for col in self.df.columns]

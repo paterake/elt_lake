@@ -35,7 +35,7 @@ SELECT
      , TRUE                                                               public_flag
      , TRUE                                                               primary_flag
      , COALESCE(created_date, CURRENT_DATE)                               effective_date
-     , 'Business'                                                         type
+     , 'Business'                                                         address_type
      , CASE COALESCE(UPPER(TRIM(vendor_address_code_primary)), 'MAIN')
          WHEN 'MAIN'      THEN 'Business'
          WHEN 'PRIMARY'   THEN 'Business'
