@@ -35,7 +35,7 @@ from .parsers import JsonConfigParser
 from .loaders import ExcelLoader, ExcelReader
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .ingester import ExcelIngester, LoadResult
-from .file_ingestor import FileIngestor
+from .file_ingestor import FileIngestor, TransformResult
 
 __all__ = [
     # Models
@@ -55,8 +55,9 @@ __all__ = [
     # Ingester
     "ExcelIngester",
     "LoadResult",
-    # File Ingestor (main workflow)
+    # File Ingestor (main ELT workflow)
     "FileIngestor",
+    "TransformResult",
 ]
 
 __version__ = "0.1.0"

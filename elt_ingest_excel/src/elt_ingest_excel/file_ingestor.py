@@ -1,8 +1,10 @@
-"""Main workflow module for file ingestion."""
+"""Main workflow module for file ingestion and transformation."""
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Union
 
+import duckdb
 import pandas as pd
 
 from .loaders import ExcelReader
@@ -11,14 +13,31 @@ from .parsers import JsonConfigParser
 from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
-class FileIngestor:
-    """Main file ingestion workflow.
+# Base path for config files (relative to this module)
+CONFIG_BASE_PATH = Path(__file__).parent / "config"
 
-    This class orchestrates the file ingestion process:
-    1. Load configuration from JSON
-    2. Find workbook by file name
-    3. Filter sheets as needed
-    4. Read each sheet and write to DuckDB
+
+@dataclass
+class TransformResult:
+    """Result of executing a transform SQL file.
+
+    Attributes:
+        sql_file: Name of the SQL file executed.
+        success: Whether execution succeeded.
+        error: Error message if failed, None otherwise.
+    """
+    sql_file: str
+    success: bool
+    error: str | None = None
+
+
+class FileIngestor:
+    """Main ELT workflow orchestrator.
+
+    This class orchestrates the full ELT process:
+    1. Extract - Read data from source files (Excel, CSV, etc.)
+    2. Load - Write raw data to DuckDB tables
+    3. Transform - Execute SQL transformations
 
     Supports multiple file types (EXCEL, DELIMITED), though
     currently only EXCEL is implemented.
@@ -26,8 +45,10 @@ class FileIngestor:
 
     def __init__(
         self,
-        config_path: Union[str, Path],
-        data_path_name: str,
+        cfg_ingest_path: str,
+        cfg_transform_path: str,
+        config_name: str,
+        data_path: Union[str, Path],
         data_file_name: str,
         database_path: Union[str, Path],
         sheet_filter: str = "*",
@@ -36,32 +57,40 @@ class FileIngestor:
         """Initialize the file ingestor.
 
         Args:
-            config_path: Path to JSON configuration file.
-            data_path_name: Path name of the data to process.
-            data_file_name: File name of the data to process.
+            cfg_ingest_path: Relative path to ingest config (e.g., "ingest/finance").
+            cfg_transform_path: Relative path to transform config (e.g., "transform/finance").
+            config_name: Name of the JSON config file (e.g., "supplier.json").
+            data_path: Path to the data files directory.
+            data_file_name: Name of the data file to process.
             database_path: Path to DuckDB database file.
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
         """
-        self.config_path = Path(config_path)
-        self.data_path_name = data_path_name
+        self.cfg_ingest_path = cfg_ingest_path
+        self.cfg_transform_path = cfg_transform_path
+        self.config_name = config_name
+        self.data_path = Path(data_path).expanduser()
         self.data_file_name = data_file_name
         self.database_path = Path(database_path).expanduser()
         self.sheet_filter = sheet_filter
         self.save_mode = save_mode
+
+        # Build full config paths
+        self.ingest_config_path = CONFIG_BASE_PATH / cfg_ingest_path / config_name
+        self.transform_config_path = CONFIG_BASE_PATH / cfg_transform_path
 
         # Configure pandas display
         pd.set_option('display.max_columns', None)
         pd.set_option('display.width', None)
         pd.set_option('display.max_colwidth', 50)
 
-        # Load configuration
+        # Load ingest configuration
         self.config = JsonConfigParser.from_json(
-            self.config_path,
+            self.ingest_config_path,
             database_path=str(self.database_path),
         )
 
-        # Find workbook
+        # Find workbook config by filename
         self.workbook = JsonConfigParser.find_workbook(
             self.config,
             self.data_file_name,
@@ -74,33 +103,138 @@ class FileIngestor:
         self.sheets = JsonConfigParser.get_sheets(self.workbook, self.sheet_filter)
 
         # Store results
-        self.results: list[WriteResult] = []
+        self.load_results: list[WriteResult] = []
+        self.transform_results: list[TransformResult] = []
 
-    def process(self) -> list[WriteResult]:
-        """Process all sheets in the workbook.
+    def extract_and_load(self) -> list[WriteResult]:
+        """Execute Extract and Load phases.
 
-        For EXCEL files, reads each sheet and writes to DuckDB.
-        Other file types will be supported in future versions.
+        Reads data from source file and writes to DuckDB tables.
 
         Returns:
             List of WriteResult objects for each sheet processed.
         """
-        print(f"Loaded config for: {self.workbook.workbook_file_name}")
+        print("\n" + "=" * 60)
+        print("EXTRACT & LOAD PHASE")
+        print("=" * 60)
+        print(f"Config: {self.ingest_config_path}")
+        print(f"Data file: {self.data_path / self.data_file_name}")
         print(f"File type: {self.workbook.file_type.value}")
         print(f"Database: {self.database_path}")
         print(f"Save mode: {self.save_mode.value}")
         print(f"Processing {len(self.sheets)} sheet(s)")
 
-        self.results = []
+        self.load_results = []
 
         with DuckDBWriter(self.database_path) as writer:
             for sheet_config in self.sheets:
                 result = self._process_sheet(sheet_config, writer)
                 if result:
-                    self.results.append(result)
+                    self.load_results.append(result)
 
-        self._print_summary()
-        return self.results
+        self._print_load_summary()
+        return self.load_results
+
+    def transform(self) -> list[TransformResult]:
+        """Execute Transform phase.
+
+        Reads order.txt from transform config path and executes
+        SQL files in the specified order.
+
+        Returns:
+            List of TransformResult objects for each SQL file executed.
+        """
+        print("\n" + "=" * 60)
+        print("TRANSFORM PHASE")
+        print("=" * 60)
+        print(f"Transform path: {self.transform_config_path}")
+
+        order_file = self.transform_config_path / "order.txt"
+        if not order_file.exists():
+            print(f"No order.txt found at {order_file}")
+            return []
+
+        # Read order.txt to get list of SQL files
+        sql_files = self._read_order_file(order_file)
+        print(f"SQL files to execute: {len(sql_files)}")
+
+        self.transform_results = []
+
+        with duckdb.connect(str(self.database_path)) as conn:
+            for sql_file in sql_files:
+                result = self._execute_sql_file(conn, sql_file)
+                self.transform_results.append(result)
+
+        self._print_transform_summary()
+        return self.transform_results
+
+    def process(self) -> tuple[list[WriteResult], list[TransformResult]]:
+        """Execute full ELT pipeline: Extract, Load, and Transform.
+
+        Returns:
+            Tuple of (load_results, transform_results).
+        """
+        load_results = self.extract_and_load()
+        transform_results = self.transform()
+        return load_results, transform_results
+
+    def _read_order_file(self, order_file: Path) -> list[str]:
+        """Read order.txt and return list of SQL file names.
+
+        Args:
+            order_file: Path to order.txt file.
+
+        Returns:
+            List of SQL file names to execute.
+        """
+        content = order_file.read_text()
+        files = []
+        for line in content.strip().split('\n'):
+            line = line.strip()
+            if line and not line.startswith('#'):  # Skip empty lines and comments
+                files.append(line)
+        return files
+
+    def _execute_sql_file(
+        self,
+        conn: duckdb.DuckDBPyConnection,
+        sql_file: str,
+    ) -> TransformResult:
+        """Execute a single SQL file.
+
+        Args:
+            conn: DuckDB connection.
+            sql_file: Name of the SQL file to execute.
+
+        Returns:
+            TransformResult with execution status.
+        """
+        sql_path = self.transform_config_path / sql_file
+        print(f"\n  Executing: {sql_file}")
+
+        if not sql_path.exists():
+            error = f"SQL file not found: {sql_path}"
+            print(f"    ERROR: {error}")
+            return TransformResult(sql_file=sql_file, success=False, error=error)
+
+        try:
+            sql_content = sql_path.read_text()
+
+            # Split by semicolon and execute each statement
+            statements = [s.strip() for s in sql_content.split(';') if s.strip()]
+
+            for i, statement in enumerate(statements, 1):
+                if statement:
+                    conn.execute(statement)
+                    print(f"    Statement {i} executed")
+
+            print(f"    SUCCESS")
+            return TransformResult(sql_file=sql_file, success=True)
+
+        except Exception as e:
+            error = str(e)
+            print(f"    ERROR: {error}")
+            return TransformResult(sql_file=sql_file, success=False, error=error)
 
     def _process_sheet(
         self,
@@ -116,12 +250,9 @@ class FileIngestor:
         Returns:
             WriteResult if data was written, None otherwise.
         """
-        print(f"\n{'='*60}")
-        print(f"Sheet: {sheet_config.sheet_name}")
-        print(f"  Target table: {sheet_config.target_table_name}")
-        print(f"  Header row: {sheet_config.header_row}")
-        print(f"  Data row: {sheet_config.data_row}")
-        print(f"{'='*60}")
+        print(f"\n  Sheet: {sheet_config.sheet_name}")
+        print(f"    Target table: {sheet_config.target_table_name}")
+        print(f"    Header row: {sheet_config.header_row}, Data row: {sheet_config.data_row}")
 
         if self.workbook.file_type == FileType.EXCEL:
             return self._process_excel_sheet(sheet_config, writer)
@@ -145,27 +276,19 @@ class FileIngestor:
             WriteResult with details of the write operation.
         """
         reader = ExcelReader(
-            file_path=Path(self.data_path_name) / self.data_file_name,
+            file_path=self.data_path / self.data_file_name,
             sheet_name=sheet_config.sheet_name,
             header_row=sheet_config.header_row - 1,  # pandas uses 0-indexed
             dtype=str,
         )
         df = reader.load()
 
-        # Preview the data
-        reader.preview()
-
-        if not df.empty:
-            print(f"\nFirst row as dict:")
-            print(df.iloc[0].to_dict())
-
-        print(f"\nTotal rows read: {len(df)}")
+        print(f"    Rows read: {len(df)}")
 
         # Write to DuckDB
         result = writer.write(df, sheet_config.target_table_name, self.save_mode)
 
-        print(f"Rows written: {result.rows_written}")
-        print(f"Table row count: {result.row_count}")
+        print(f"    Rows written: {result.rows_written}")
 
         return result
 
@@ -188,25 +311,25 @@ class FileIngestor:
         """
         raise NotImplementedError("DELIMITED file type not yet supported")
 
-    def _print_summary(self) -> None:
-        """Print a summary of the ingestion results."""
-        print("\n" + "=" * 60)
-        print("INGESTION SUMMARY")
-        print("=" * 60)
-
+    def _print_load_summary(self) -> None:
+        """Print a summary of the load results."""
+        print("\n" + "-" * 40)
+        print("Load Summary:")
         total_rows = 0
-        for result in self.results:
-            print(f"\n  Table: {result.table_name}")
-            print(f"    Save mode: {result.save_mode.value}")
-            print(f"    Rows written: {result.rows_written}")
-            print(f"    Table count: {result.row_count}")
-
-            if result.rows_written != result.row_count and result.save_mode != SaveMode.APPEND:
-                print(f"    WARNING: Row count mismatch!")
-
+        for result in self.load_results:
+            print(f"  {result.table_name}: {result.row_count} rows")
             total_rows += result.row_count
+        print(f"Total: {len(self.load_results)} tables, {total_rows} rows")
 
-        print("\n" + "-" * 60)
-        print(f"Total tables processed: {len(self.results)}")
-        print(f"Total rows: {total_rows}")
-        print("=" * 60 + "\n")
+    def _print_transform_summary(self) -> None:
+        """Print a summary of the transform results."""
+        print("\n" + "-" * 40)
+        print("Transform Summary:")
+        success_count = sum(1 for r in self.transform_results if r.success)
+        fail_count = len(self.transform_results) - success_count
+
+        for result in self.transform_results:
+            status = "OK" if result.success else f"FAILED: {result.error}"
+            print(f"  {result.sql_file}: {status}")
+
+        print(f"Total: {success_count} succeeded, {fail_count} failed")

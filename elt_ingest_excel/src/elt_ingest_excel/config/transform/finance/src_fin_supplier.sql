@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS src_fin_supplier
+;
   WITH cte_supplier 
     AS (
 SELECT * FROM rpatel.main.fin_supplier_creditor_created_date       
@@ -22,6 +24,9 @@ SELECT t.*
        ) data_rnk
   FROM cte_supplier_distinct                     t
        )
+CREATE TABLE src_fin_supplier
+    AS        
 SELECT *
   FROM cte_supplier_rnk
  WHERE data_rnk = 1
+;

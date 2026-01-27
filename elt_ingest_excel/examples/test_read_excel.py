@@ -1,31 +1,39 @@
 # examples/test_read_excel.py
-"""Example script to read Excel workbooks and write to DuckDB."""
-
-from pathlib import Path
+"""Example script demonstrating the full ELT pipeline."""
 
 from elt_ingest_excel import FileIngestor, SaveMode
 
 
-# Path to examples directory (where config files are located)
-EXAMPLES_DIR = Path(__file__).parent
-
-
 if __name__ == "__main__":
-    # Configuration
-    config_name = "finance_supplier.json"
-    path_name = "~/Documents/__data/excel/finance_ref"
-    file_name = "FA Creditors with Activity Last 3 Years.xlsx"
-    sheet_name_filter = "*"  # "*" for all sheets, or specific sheet name
+    # Configuration paths (relative to config/ directory)
+    cfg_ingest_path = "ingest/finance"
+    cfg_transform_path = "transform/finance"
+    config_name = "supplier.json"
+
+    # Data file location
+    data_path = "~/Documents/__data/excel/finance_ref"
+    data_file_name = "FA Creditors with Activity Last 3 Years.xlsx"
+
+    # Database and processing options
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
+    sheet_name_filter = "*"  # "*" for all sheets, or specific sheet name
     save_mode = SaveMode.RECREATE  # DROP, RECREATE, OVERWRITE, APPEND
 
-    # Run ingestion workflow
+    # Create ingestor
     ingestor = FileIngestor(
-        config_path=EXAMPLES_DIR / config_name,
-        data_path_name=path_name,
-        data_file_name=file_name,
+        cfg_ingest_path=cfg_ingest_path,
+        cfg_transform_path=cfg_transform_path,
+        config_name=config_name,
+        data_path=data_path,
+        data_file_name=data_file_name,
         database_path=database_path,
         sheet_filter=sheet_name_filter,
         save_mode=save_mode,
     )
-    results = ingestor.process()
+
+    # Run full ELT pipeline (Extract, Load, Transform)
+    load_results, transform_results = ingestor.process()
+
+    # Or run phases separately:
+    # load_results = ingestor.extract_and_load()
+    # transform_results = ingestor.transform()
