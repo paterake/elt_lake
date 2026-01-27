@@ -1,1 +1,15 @@
 src_fin_supplier.sql
+workday_supplier_name.sql
+workday_supplier_groups.sql
+workday_supplier_alternate_name.sql
+workday_supplier_currencies.sql
+workday_supplier_tax.sql
+workday_supplier_payment.sql
+workday_supplier_procurement.sql
+workday_supplier_company_restrictions.sql
+workday_supplier_settlement_account.sql
+workday_supplier_intermediary_account.sql
+workday_supplier_address.sql
+workday_supplier_phone.sql
+workday_supplier_email.sql
+validation.sql

@@ -1,0 +1,22 @@
+-- ============================================================================
+-- DEPRECATED: This file has been split into individual SQL files
+-- ============================================================================
+-- All transforms have been moved to separate files and are executed
+-- via order.txt in the following sequence:
+--
+-- 1.  src_fin_supplier.sql
+-- 2.  workday_supplier_name.sql
+-- 3.  workday_supplier_groups.sql
+-- 4.  workday_supplier_alternate_name.sql
+-- 5.  workday_supplier_currencies.sql
+-- 6.  workday_supplier_tax.sql
+-- 7.  workday_supplier_payment.sql
+-- 8.  workday_supplier_procurement.sql
+-- 9.  workday_supplier_company_restrictions.sql
+-- 10. workday_supplier_settlement_account.sql
+-- 11. workday_supplier_intermediary_account.sql
+-- 12. workday_supplier_address.sql
+-- 13. workday_supplier_phone.sql
+-- 14. workday_supplier_email.sql
+-- 15. validation.sql
+-- ============================================================================
