@@ -46,8 +46,12 @@ SELECT
      , FALSE                                                              for_supplier_connections_only
      , CASE WHEN eft_pre_note_date IS NOT NULL THEN TRUE ELSE FALSE END   requires_prenote
      , CASE WHEN eft_pre_note_date IS NOT NULL THEN 'ACH' ELSE NULL END   payment_type_prenote
-     , CASE WHEN COALESCE(inactive, 0) = 1 OR vendor_status = 'Inactive'
-            THEN TRUE ELSE FALSE END                                      inactive
+     , CASE 
+        WHEN TRIM(UPPER(inactive))      = UPPER('YES')
+          OR TRIM(UPPER(vendor_status)) = UPPER('Inactive')
+        THEN TRUE 
+        ELSE FALSE 
+       END                                                                inactive
      , TRIM(additional_information)                                       bank_instructions
   FROM src_fin_supplier
  WHERE (eft_bank_account IS NOT NULL OR iban IS NOT NULL)

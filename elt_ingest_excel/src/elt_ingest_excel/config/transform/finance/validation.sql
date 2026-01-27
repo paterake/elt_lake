@@ -79,6 +79,3 @@ SELECT 'data_quality', 'invalid_email_addresses', COUNT(*)
  WHERE email_to_address IS NOT NULL
    AND email_to_address !~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 ;
-
-COMMIT
-;
