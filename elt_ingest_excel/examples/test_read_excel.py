@@ -13,15 +13,17 @@ EXAMPLES_DIR = Path(__file__).parent
 if __name__ == "__main__":
     # Configuration
     config_name = "finance_supplier.json"
-    file_name = "~/Documents/__data/excel/FA Creditors with Activity Last 3 Years.xlsx"
-    sheet_name_filter = "Lasst Purchase Date"  # "*" for all sheets, or specific sheet name
+    path_name = "~/Documents/__data/excel"
+    file_name = "FA Creditors with Activity Last 3 Years.xlsx"
+    sheet_name_filter = "*"  # "*" for all sheets, or specific sheet name
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
     save_mode = SaveMode.RECREATE  # DROP, RECREATE, OVERWRITE, APPEND
 
     # Run ingestion workflow
     ingestor = FileIngestor(
         config_path=EXAMPLES_DIR / config_name,
-        workbook_file_name=file_name,
+        data_path_name=path_name,
+        data_file_name=file_name,
         database_path=database_path,
         sheet_filter=sheet_name_filter,
         save_mode=save_mode,

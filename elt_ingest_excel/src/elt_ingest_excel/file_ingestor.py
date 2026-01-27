@@ -27,7 +27,8 @@ class FileIngestor:
     def __init__(
         self,
         config_path: Union[str, Path],
-        workbook_file_name: str,
+        data_path_name: str,
+        data_file_name: str,
         database_path: Union[str, Path],
         sheet_filter: str = "*",
         save_mode: SaveMode = SaveMode.RECREATE,
@@ -36,13 +37,15 @@ class FileIngestor:
 
         Args:
             config_path: Path to JSON configuration file.
-            workbook_file_name: File name of the workbook to process.
+            data_path_name: Path name of the data to process.
+            data_file_name: File name of the data to process.
             database_path: Path to DuckDB database file.
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
         """
         self.config_path = Path(config_path)
-        self.workbook_file_name = workbook_file_name
+        self.data_path_name = data_path_name
+        self.data_file_name = data_file_name
         self.database_path = Path(database_path).expanduser()
         self.sheet_filter = sheet_filter
         self.save_mode = save_mode
@@ -61,11 +64,11 @@ class FileIngestor:
         # Find workbook
         self.workbook = JsonConfigParser.find_workbook(
             self.config,
-            self.workbook_file_name,
+            self.data_file_name,
         )
 
         if self.workbook is None:
-            raise ValueError(f"No workbook config found for: {workbook_file_name}")
+            raise ValueError(f"No workbook config found for: {data_file_name}")
 
         # Get sheets (filtered)
         self.sheets = JsonConfigParser.get_sheets(self.workbook, self.sheet_filter)
@@ -142,7 +145,7 @@ class FileIngestor:
             WriteResult with details of the write operation.
         """
         reader = ExcelReader(
-            file_path=self.workbook.workbook_file_name,
+            file_path=Path(self.data_path_name) / self.data_file_name,
             sheet_name=sheet_config.sheet_name,
             header_row=sheet_config.header_row - 1,  # pandas uses 0-indexed
             dtype=str,
