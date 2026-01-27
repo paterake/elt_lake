@@ -13,7 +13,7 @@ EXAMPLES_DIR = Path(__file__).parent
 if __name__ == "__main__":
     # Configuration
     config_name = "finance_supplier.json"
-    path_name = "~/Documents/__data/excel"
+    path_name = "~/Documents/__data/excel/finance_ref"
     file_name = "FA Creditors with Activity Last 3 Years.xlsx"
     sheet_name_filter = "*"  # "*" for all sheets, or specific sheet name
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
