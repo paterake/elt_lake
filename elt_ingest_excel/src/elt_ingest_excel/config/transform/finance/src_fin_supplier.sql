@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS src_fin_supplier
 ;
-  WITH cte_supplier 
+CREATE TABLE src_fin_supplier AS
+  WITH cte_supplier
     AS (
-SELECT * FROM rpatel.main.fin_supplier_creditor_created_date       
+SELECT * FROM rpatel.main.fin_supplier_creditor_created_date
 UNION
 SELECT * FROM rpatel.main.fin_supplier_creditor_last_payment_date
 UNION
@@ -17,15 +18,13 @@ SELECT DISTINCT *
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER (PARTITION BY vendor_id
-            ORDER BY 
+            ORDER BY
               last_payment_date  DESC NULLS LAST
             , last_purchase_date DESC NULLS LAST
             , created_date       DESC NULLS LAST
        ) data_rnk
   FROM cte_supplier_distinct                     t
        )
-CREATE TABLE src_fin_supplier
-    AS        
 SELECT *
   FROM cte_supplier_rnk
  WHERE data_rnk = 1
