@@ -1,0 +1,25 @@
+[
+  {
+    "workbookFileName": "FA Creditors with Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Lasst Purchase Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_purchase_date"
+      },
+      {
+        "sheetName": "Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_payment_date"
+      },
+      {
+        "sheetName": "Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_created_date"
+      }
+    ]
+  }
+]
