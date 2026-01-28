@@ -1,7 +1,7 @@
 """Data models for Excel ingestion and publish configuration."""
 
-from .workbook_config import FileType, SheetConfig, WorkbookConfig
-from .config import ExcelIngestConfig
+from .ingest_config import FileType, SheetConfig, WorkbookConfig
+from .ingest_config_excel import ExcelIngestConfig
 from .publish_config import PublishSheetConfig, PublishWorkbookConfig, PublishConfig
 
 __all__ = [

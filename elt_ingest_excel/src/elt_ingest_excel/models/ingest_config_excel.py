@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .workbook_config import WorkbookConfig
+from .ingest_config import WorkbookConfig
 
 
 @dataclass

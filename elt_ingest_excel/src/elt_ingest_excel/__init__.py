@@ -39,7 +39,7 @@ from .loaders import ExcelLoader, ExcelReader
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .publish import ExcelPublisher, PublishResult
 from .ingester import ExcelIngester, LoadResult
-from .file_ingestor import FileIngestor, TransformResult
+from .elt_pipeline import FileIngestor, TransformResult
 
 __all__ = [
     # Models - Ingest
