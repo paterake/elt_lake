@@ -14,4 +14,4 @@
 * Supplier Intermediary Account : Does this need populating
 * Supplier Address              : Review population
 * Supplier Phone                : Country Code and Country population not consistent
-* Supplier Email                : 
+* Supplier Email                : check population
