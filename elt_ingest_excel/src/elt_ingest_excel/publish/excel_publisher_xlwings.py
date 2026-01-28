@@ -105,8 +105,19 @@ class ExcelPublisherXlwings:
         print(f"  Cloning template to target...")
         shutil.copy2(src_path, tgt_path)
 
-        # Open Excel in background (not visible)
+        # Open Excel in background (not visible, silent mode)
         app = xw.App(visible=False)
+        app.display_alerts = False
+        app.screen_updating = False
+
+        # On Mac, try to set macro security to enable all macros
+        # This avoids the "Enable Macros" prompt
+        try:
+            # msoAutomationSecurityLow = 1 (enable all macros)
+            app.api.AutomationSecurity = 1
+        except (AttributeError, Exception):
+            # May not be available on all platforms/versions
+            pass
 
         try:
             # Open the target workbook
@@ -127,6 +138,14 @@ class ExcelPublisherXlwings:
                 wb.close()
 
         finally:
+            # Restore Excel settings before quitting
+            try:
+                app.display_alerts = True
+                app.screen_updating = True
+                # msoAutomationSecurityByUI = 2 (use UI settings)
+                app.api.AutomationSecurity = 2
+            except (AttributeError, Exception):
+                pass
             app.quit()
 
         return results
