@@ -7,7 +7,7 @@ from elt_ingest_excel import FileIngestor, SaveMode
 if __name__ == "__main__":
     # Configuration paths (relative to config/ directory)
     cfg_ingest_path = "ingest/finance"
-    cfg_transform_path = "transform/finance"
+    cfg_transform_path = "transform/sql/finance"
     config_name = "supplier.json"
 
     # Data file location

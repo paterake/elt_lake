@@ -1,0 +1,28 @@
+[
+  {
+    "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/Supplier and Customer Master Record workbooks & Instructions Guide",
+    "srcWorkbookFileName": "FIN Supplier Workbook (Blank).xlsm",
+    "tgtWorkbookPathName": "/Users/rpatel/Documents",
+    "tgtWorkbookFileName": "",
+    "sheets": [
+      {
+        "sheetName": "Lasst Purchase Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_purchase_date"
+      },
+      {
+        "sheetName": "Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_payment_date"
+      },
+      {
+        "sheetName": "Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_created_date"
+      }
+    ]
+  }
+]
