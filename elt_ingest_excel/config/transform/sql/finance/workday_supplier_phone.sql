@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS workday_supplier_phone
 ;
-CREATE TABLE workday_supplier_phone AS
+CREATE TABLE workday_supplier_phone 
+    AS
   WITH cte_country_phone_code 
     AS (
 SELECT 'GB' country_code, '+44'  phone_code UNION ALL
@@ -39,9 +40,9 @@ SELECT 'MX',              '+52'
        )
 -- Phone Number 1 (Primary)
 SELECT
-       TRIM(s.vendor_id)                                          supplier_id
+       TRIM(s.supplier_id)                                        supplier_id
      , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.vendor_id) || '_PH1'                                phone_id
+     , TRIM(s.supplier_id) || '_PH1'                              phone_id
      , TRIM(s.country)                                            phone_country
      , TRIM(UPPER(s.country_code))                                country_code
      , COALESCE(p.phone_code, '+44')                              international_phone_code
@@ -67,9 +68,9 @@ UNION ALL
 
 -- Phone Number 2
 SELECT
-       TRIM(s.vendor_id)                                          supplier_id
+       TRIM(s.supplier_id)                                        supplier_id
      , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.vendor_id) || '_PH2'                                phone_id
+     , TRIM(s.supplier_id) || '_PH2'                              phone_id
      , TRIM(s.country)                                            phone_country
      , TRIM(UPPER(s.country_code))                                country_code
      , COALESCE(p.phone_code, '+44')                              international_phone_code
@@ -95,9 +96,9 @@ UNION ALL
 
 -- Phone 3
 SELECT
-       TRIM(s.vendor_id)                                          supplier_id
+       TRIM(s.supplier_id)                                        supplier_id
      , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.vendor_id) || '_PH3'                                phone_id
+     , TRIM(s.supplier_id) || '_PH3'                              phone_id
      , TRIM(s.country)                                            phone_country
      , TRIM(UPPER(s.country_code))                                country_code
      , COALESCE(p.phone_code, '+44')                              international_phone_code
@@ -123,9 +124,9 @@ UNION ALL
 
 -- Fax Number
 SELECT
-       TRIM(s.vendor_id)                                          supplier_id
+       TRIM(s.supplier_id)                                        supplier_id
      , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.vendor_id) || '_FAX'                                phone_id
+     , TRIM(s.supplier_id) || '_FAX'                              phone_id
      , TRIM(s.country)                                            phone_country
      , TRIM(UPPER(s.country_code))                                country_code
      , COALESCE(p.phone_code, '+44')                              international_phone_code

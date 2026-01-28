@@ -1,13 +1,14 @@
 DROP TABLE IF EXISTS workday_supplier_email
 ;
-CREATE TABLE workday_supplier_email AS
+CREATE TABLE workday_supplier_email 
+    AS
 -- Email To Address (Primary)
 SELECT
-       TRIM(vendor_id)                                            supplier_id
+       TRIM(supplier_id)                                          supplier_id
      , TRIM(vendor_name)                                          supplier_name
      , TRIM(LOWER(email_to_address))                              email_address
      , NULL                                                       email_comment
-     , TRIM(vendor_id) || '_EM1'                                  email_id
+     , TRIM(supplier_id) || '_EM1'                                email_id
      , TRUE                                                       public_flag
      , TRUE                                                       primary_flag
      , TRUE                                                       default_po
@@ -27,11 +28,11 @@ UNION ALL
 
 -- Email Cc Address
 SELECT
-       TRIM(vendor_id)                                            supplier_id
+       TRIM(supplier_id)                                          supplier_id
      , TRIM(vendor_name)                                          supplier_name
      , TRIM(LOWER(email_cc_address))                              email_address
      , NULL                                                       email_comment
-     , TRIM(vendor_id) || '_EM2'                                  email_id
+     , TRIM(supplier_id) || '_EM2'                                email_id
      , TRUE                                                       public_flag
      , FALSE                                                      primary_flag
      , FALSE                                                      default_po
@@ -51,11 +52,11 @@ UNION ALL
 
 -- Email Bcc Address
 SELECT
-       TRIM(vendor_id)                                            supplier_id
+       TRIM(supplier_id)                                          supplier_id
      , TRIM(vendor_name)                                          supplier_name
      , TRIM(LOWER(email_bcc_address))                             email_address
      , NULL                                                       email_comment
-     , TRIM(vendor_id) || '_EM3'                                  email_id
+     , TRIM(supplier_id) || '_EM3'                                email_id
      , TRUE                                                       public_flag
      , FALSE                                                      primary_flag
      , FALSE                                                      default_po

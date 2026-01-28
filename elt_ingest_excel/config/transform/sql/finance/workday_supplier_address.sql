@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_address
 ;
-CREATE TABLE workday_supplier_address AS
+CREATE TABLE workday_supplier_address 
+    AS
 SELECT
-       TRIM(vendor_id)                                                     supplier_id
+       TRIM(supplier_id)                                                   supplier_id
      , TRIM(vendor_name)                                                   supplier_name
      , NULL                                                                formatted_address
      , NULL                                                                address_format_type
@@ -11,7 +12,7 @@ SELECT
      , NULL                                                                do_not_replace_all
      , created_date                                                        last_modified
      , COALESCE(TRIM(vendor_address_code_primary), 'MAIN')                 descriptor
-     , TRIM(vendor_id) || '_' || COALESCE(TRIM(vendor_address_code_primary), 'MAIN')
+     , TRIM(supplier_id) || '_' || COALESCE(TRIM(vendor_address_code_primary), 'MAIN')
                                                                            address_id
      , TRIM(country)                                                       country
      , TRIM(UPPER(country_code))                                           country_code

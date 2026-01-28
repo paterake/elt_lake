@@ -1,11 +1,12 @@
 DROP TABLE IF EXISTS workday_supplier_intermediary_account
 ;
-CREATE TABLE workday_supplier_intermediary_account AS
+CREATE TABLE workday_supplier_intermediary_account 
+    AS
 SELECT
-       TRIM(vendor_id) || '_BANK'                                 settlement_bank_account_id
+       TRIM(supplier_id) || '_BANK'                               settlement_bank_account_id
      , TRIM(vendor_name)                                          supplier_name
-     , TRIM(vendor_id)                                            supplier_id
-     , TRIM(vendor_id) || '_INTBANK'                              intermediary_bank_account_id
+     , TRIM(supplier_id)                                          supplier_id
+     , TRIM(supplier_id) || '_INTBANK'                            intermediary_bank_account_id
      , NULL                                                       bank_country
      , COALESCE(TRIM(currencyid), TRIM(currency_id), 'GBP')       currency
      , 'CHECKING'                                                 bank_account_type

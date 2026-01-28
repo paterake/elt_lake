@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_tax
 ;
-CREATE TABLE workday_supplier_tax AS
+CREATE TABLE workday_supplier_tax 
+    AS
 SELECT
-       TRIM(vendor_id)                                                supplier_id
+       TRIM(supplier_id)                                                supplier_id
      , TRIM(vendor_name)                                              supplier_name
      , COALESCE(TRIM(UPPER(country_code)), 'GB')                      tax_id_country
      , TRIM(REPLACE(REPLACE(tax_id_number, ' ', ''), '-', ''))        tax_id

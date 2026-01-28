@@ -1,10 +1,11 @@
 DROP TABLE IF EXISTS workday_supplier_settlement_account
 ;
-CREATE TABLE workday_supplier_settlement_account AS
+CREATE TABLE workday_supplier_settlement_account 
+    AS
 SELECT
-       TRIM(vendor_id)                                                    supplier_id
+       TRIM(supplier_id)                                                    supplier_id
      , TRIM(vendor_name)                                                  supplier_name
-     , TRIM(vendor_id) || '_BANK'                                         settlement_bank_account_id
+     , TRIM(supplier_id) || '_BANK'                                         settlement_bank_account_id
      , COALESCE(TRIM(UPPER(bank_country_code)), 'GB')                     bank_country
      , COALESCE(TRIM(currencyid), TRIM(currency_id), 'GBP')               currency
      , CASE UPPER(TRIM(COALESCE(eft_account_type, 'C')))

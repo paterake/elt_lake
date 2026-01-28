@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_procurement
 ;
-CREATE TABLE workday_supplier_procurement AS
+CREATE TABLE workday_supplier_procurement 
+    AS
 SELECT
-       TRIM(vendor_id)                                             supplier_id
+       TRIM(supplier_id)                                             supplier_id
      , TRIM(vendor_name)                                           supplier_name
      , CASE
          WHEN email_to_address IS NOT NULL AND TRIM(email_to_address) != ''

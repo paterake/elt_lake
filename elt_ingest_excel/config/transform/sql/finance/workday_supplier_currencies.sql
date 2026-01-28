@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_currencies
 ;
-CREATE TABLE workday_supplier_currencies AS
+CREATE TABLE workday_supplier_currencies 
+    AS
 SELECT
-       TRIM(vendor_id)                             supplier_id
+       TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
      , COALESCE(
          NULLIF(TRIM(currencyid), '')

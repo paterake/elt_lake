@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_payment
 ;
-CREATE TABLE workday_supplier_payment AS
+CREATE TABLE workday_supplier_payment 
+    AS
 SELECT
-       TRIM(vendor_id)                             supplier_id
+       TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
      , TRIM(payment_terms_id)                      payment_terms
      , CASE

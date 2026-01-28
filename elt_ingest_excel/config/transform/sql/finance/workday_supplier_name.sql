@@ -1,10 +1,11 @@
 DROP TABLE IF EXISTS workday_supplier_name
 ;
-CREATE TABLE workday_supplier_name AS
+CREATE TABLE workday_supplier_name 
+    AS
 SELECT 
-       TRIM(vendor_id)                             supplier_id
+       TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
-     , TRIM(vendor_id) as                          reference_id
+     , TRIM(vendor_id)                             reference_id
      , CASE 
          WHEN TRIM(vendor_class_id) = 'GENERAL'    THEN 'General Suppliers'
          WHEN TRIM(vendor_class_id) = 'CONSULTING' THEN 'Professional Services'

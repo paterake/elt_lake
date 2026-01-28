@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS workday_supplier_company_restrictions
 ;
-CREATE TABLE workday_supplier_company_restrictions AS
+CREATE TABLE workday_supplier_company_restrictions 
+    AS
 SELECT
-       TRIM(vendor_id)                             supplier_id
+       TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
      , CASE TRIM(company)
          WHEN 'FA' THEN 'The Football Association'
