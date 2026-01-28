@@ -1,9 +1,9 @@
-# examples/test_read_excel.py
-"""Example script demonstrating the full ELTP pipeline (Extract, Load, Transform, Publish)."""
+# examples/hcm_contingent_worker.py
+"""Example script demonstrating the ELTP pipeline (Extract, Load, Transform, Publish)."""
 
 from pathlib import Path
 
-from elt_ingest_excel import FileIngestor, SaveMode
+from elt_ingest_excel import FileIngestor, SaveMode, PipelinePhase
 
 
 if __name__ == "__main__":
@@ -12,14 +12,14 @@ if __name__ == "__main__":
     config_base_path = Path(__file__).parent.parent / "config"
 
     # Configuration paths (relative to config_base_path)
-    cfg_ingest_path = "ingest/finance"
-    cfg_transform_path = "transform/sql/finance"
-    cfg_publish_path = "publish/finance"
-    config_name = "supplier.json"
+    cfg_ingest_path = "ingest/hcm"
+    cfg_transform_path = "transform/sql/hcm"
+    cfg_publish_path = "publish/hcm"
+    config_name = "contingent_worker.json"
 
     # Data file location
-    data_path = "~/Documents/__data/excel/finance_ref"
-    data_file_name = "FA Creditors with Activity Last 3 Years.xlsx"
+    data_path = "~/Documents/__data/excel/hcm"
+    data_file_name = "Employment type update.xlsx"
 
     # Database and processing options
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
@@ -27,9 +27,15 @@ if __name__ == "__main__":
     save_mode = SaveMode.RECREATE  # DROP, RECREATE, OVERWRITE, APPEND
 
     # Publisher type for Publish phase
-    # - "openpyxl": Default, no Excel required, but may lose drawing shapes in .xlsm files
+    # - "openpyxl": No Excel required, but may lose drawing shapes in .xlsm files
     # - "xlwings": Requires Excel installed, preserves all shapes/macros/formatting
     publisher_type = "xlwings"
+
+    # Pipeline phase to run up to (inclusive)
+    # - "ingest" or PipelinePhase.INGEST: Extract and load only
+    # - "transform" or PipelinePhase.TRANSFORM: Ingest + SQL transformations
+    # - "publish" or PipelinePhase.PUBLISH: Full pipeline (default)
+    run_to_phase = PipelinePhase.INGEST
 
     # Create ingestor
     ingestor = FileIngestor(
@@ -46,8 +52,8 @@ if __name__ == "__main__":
         publisher_type=publisher_type,
     )
 
-    # Run full ELTP pipeline (Extract, Load, Transform, Publish)
-    load_results, transform_results, publish_results = ingestor.process()
+    # Run pipeline up to specified phase
+    load_results, transform_results, publish_results = ingestor.process(run_to_phase)
 
     # Or run phases separately:
     # load_results = ingestor.extract_and_load()

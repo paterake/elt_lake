@@ -39,7 +39,7 @@ from .loaders import ExcelLoader, ExcelReader
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .publish import ExcelPublisher, PublishResult
 from .ingester import ExcelIngester, LoadResult
-from .elt_pipeline import FileIngestor, TransformResult
+from .elt_pipeline import FileIngestor, TransformResult, PipelinePhase
 
 __all__ = [
     # Models - Ingest
@@ -70,6 +70,7 @@ __all__ = [
     # File Ingestor (main ELTP workflow)
     "FileIngestor",
     "TransformResult",
+    "PipelinePhase",
 ]
 
 __version__ = "0.1.0"

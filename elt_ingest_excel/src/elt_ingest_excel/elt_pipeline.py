@@ -1,8 +1,22 @@
 """Main workflow module for file ingestion and transformation."""
 
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Union
+
+
+class PipelinePhase(Enum):
+    """Pipeline phases for controlling execution scope.
+
+    Phases are cumulative - each phase includes all previous phases:
+    - INGEST: Extract and load data only
+    - TRANSFORM: Ingest + run SQL transformations
+    - PUBLISH: Ingest + transform + publish to Excel
+    """
+    INGEST = "ingest"
+    TRANSFORM = "transform"
+    PUBLISH = "publish"
 
 import duckdb
 import pandas as pd
@@ -225,14 +239,39 @@ class FileIngestor:
         self._print_publish_summary()
         return self.publish_results
 
-    def process(self) -> tuple[list[WriteResult], list[TransformResult], list[PublishResult]]:
-        """Execute full ELT pipeline: Extract, Load, Transform, and Publish.
+    def process(
+        self,
+        run_to_phase: PipelinePhase | str = PipelinePhase.PUBLISH,
+    ) -> tuple[list[WriteResult], list[TransformResult], list[PublishResult]]:
+        """Execute ELT pipeline up to the specified phase.
+
+        Args:
+            run_to_phase: Phase to run up to (inclusive). Can be:
+                - PipelinePhase.INGEST or "ingest": Extract and load only
+                - PipelinePhase.TRANSFORM or "transform": Ingest + transform
+                - PipelinePhase.PUBLISH or "publish": Full pipeline (default)
 
         Returns:
             Tuple of (load_results, transform_results, publish_results).
+            Later phases return empty lists if not executed.
         """
+        # Normalize to enum
+        if isinstance(run_to_phase, str):
+            run_to_phase = PipelinePhase(run_to_phase.lower())
+
+        # Always run ingest
         load_results = self.extract_and_load()
+
+        if run_to_phase == PipelinePhase.INGEST:
+            return load_results, [], []
+
+        # Run transform
         transform_results = self.transform()
+
+        if run_to_phase == PipelinePhase.TRANSFORM:
+            return load_results, transform_results, []
+
+        # Run publish
         publish_results = self.publish()
         return load_results, transform_results, publish_results
 
