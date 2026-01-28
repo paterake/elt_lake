@@ -1,41 +1,35 @@
-"""Excel publisher for writing DuckDB data to Excel workbooks."""
+"""Excel publisher using xlwings for writing DuckDB data to Excel workbooks.
+
+This implementation uses xlwings which controls Excel directly via COM (Windows)
+or AppleScript (Mac). This preserves all Excel features including:
+- Drawing shapes
+- VBA macros
+- Charts
+- Formatting
+
+Requires Excel to be installed on the machine.
+"""
 
 import shutil
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Union
 
 import duckdb
-from openpyxl import load_workbook
+import xlwings as xw
 
 from ..models import PublishConfig, PublishWorkbookConfig, PublishSheetConfig
+from .base import PublishResult
 
 
-@dataclass
-class PublishResult:
-    """Result of publishing data to a sheet.
-
-    Attributes:
-        sheet_name: Name of the sheet written to.
-        table_name: Source DuckDB table.
-        rows_written: Number of rows written.
-        success: Whether the publish succeeded.
-        error: Error message if failed, None otherwise.
-    """
-    sheet_name: str
-    table_name: str
-    rows_written: int
-    success: bool
-    error: str | None = None
-
-
-class ExcelPublisher:
-    """Publisher for writing DuckDB data to Excel workbooks.
+class ExcelPublisherXlwings:
+    """Publisher for writing DuckDB data to Excel workbooks using xlwings.
 
     This class handles:
     1. Cloning a template workbook to target location
     2. Querying DuckDB tables for data
     3. Writing data to specific sheets in the workbook
+
+    Uses xlwings to control Excel directly, preserving all features.
     """
 
     def __init__(
@@ -107,26 +101,33 @@ class ExcelPublisher:
             print(f"  Deleting existing target: {tgt_path}")
             tgt_path.unlink()
 
-        # Clone the template
+        # Clone the template (preserves everything at filesystem level)
         print(f"  Cloning template to target...")
         shutil.copy2(src_path, tgt_path)
 
-        # Open the target workbook
-        wb = load_workbook(tgt_path, keep_vba=True)  # keep_vba for .xlsm files
+        # Open Excel in background (not visible)
+        app = xw.App(visible=False)
 
         try:
-            # Process each sheet
-            for sheet_config in workbook_config.sheets:
-                result = self._publish_sheet(wb, sheet_config)
-                results.append(result)
+            # Open the target workbook
+            wb = app.books.open(str(tgt_path))
 
-            # Save the workbook
-            print(f"  Saving workbook...")
-            wb.save(tgt_path)
-            print(f"  Workbook saved: {tgt_path}")
+            try:
+                # Process each sheet
+                for sheet_config in workbook_config.sheets:
+                    result = self._publish_sheet(wb, sheet_config)
+                    results.append(result)
+
+                # Save the workbook
+                print(f"  Saving workbook...")
+                wb.save()
+                print(f"  Workbook saved: {tgt_path}")
+
+            finally:
+                wb.close()
 
         finally:
-            wb.close()
+            app.quit()
 
         return results
 
@@ -138,7 +139,7 @@ class ExcelPublisher:
         """Publish data to a single sheet.
 
         Args:
-            workbook: openpyxl Workbook object.
+            workbook: xlwings Book object.
             sheet_config: Configuration for the sheet.
 
         Returns:
@@ -153,7 +154,8 @@ class ExcelPublisher:
 
         try:
             # Check if sheet exists
-            if sheet_name not in workbook.sheetnames:
+            sheet_names = [s.name for s in workbook.sheets]
+            if sheet_name not in sheet_names:
                 error = f"Sheet '{sheet_name}' not found in workbook"
                 print(f"    ERROR: {error}")
                 return PublishResult(
@@ -164,7 +166,7 @@ class ExcelPublisher:
                     error=error,
                 )
 
-            ws = workbook[sheet_name]
+            ws = workbook.sheets[sheet_name]
 
             # Query DuckDB table
             query = f"SELECT * FROM {table_name}"
@@ -173,12 +175,10 @@ class ExcelPublisher:
 
             print(f"    Rows from table: {len(rows)}")
 
-            # Write data to sheet starting at data_row
-            for row_idx, row_data in enumerate(rows):
-                excel_row = data_row + row_idx
-                for col_idx, value in enumerate(row_data):
-                    col = col_idx + 1  # Excel columns are 1-indexed
-                    ws.cell(row=excel_row, column=col, value=value)
+            if rows:
+                # Write all data at once using xlwings range
+                # xlwings uses 1-indexed rows/columns
+                ws.range((data_row, 1)).value = rows
 
             print(f"    Rows written: {len(rows)}")
 

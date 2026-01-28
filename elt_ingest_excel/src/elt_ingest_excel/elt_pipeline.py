@@ -10,7 +10,7 @@ import pandas as pd
 from .loaders import ExcelReader
 from .models import FileType, SheetConfig
 from .parsers import JsonConfigParser, PublishConfigParser
-from .publish import ExcelPublisher, PublishResult
+from .publish import ExcelPublisherOpenpyxl, ExcelPublisherXlwings, PublishResult
 from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
@@ -53,6 +53,7 @@ class FileIngestor:
         save_mode: SaveMode = SaveMode.RECREATE,
         cfg_publish_path: str | None = None,
         cfg_publish_name: str = "publish.json",
+        publisher_type: str = "xlwings",
     ):
         """Initialize the file ingestor.
 
@@ -68,12 +69,16 @@ class FileIngestor:
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
             cfg_publish_path: Relative path to publish config (e.g., "publish/finance").
             cfg_publish_name: Name of the publish JSON config file.
+            publisher_type: Excel publisher to use - "xlwings" (default) or "openpyxl".
+                           "xlwings" preserves drawing shapes (requires Excel installed).
+                           "openpyxl" works without Excel but may lose shapes in .xlsm files.
         """
         self.config_base_path = Path(config_base_path).expanduser()
         self.cfg_ingest_path = cfg_ingest_path
         self.cfg_transform_path = cfg_transform_path
         self.cfg_publish_path = cfg_publish_path
         self.cfg_publish_name = cfg_publish_name
+        self.publisher_type = publisher_type
         self.config_name = config_name
         self.data_path = Path(data_path).expanduser()
         self.data_file_name = data_file_name
@@ -200,6 +205,7 @@ class FileIngestor:
             return []
 
         print(f"Publish config: {self.publish_config_path}")
+        print(f"Publisher: {self.publisher_type}")
 
         # Load publish configuration
         publish_config = PublishConfigParser.from_json(self.publish_config_path)
@@ -207,7 +213,13 @@ class FileIngestor:
 
         self.publish_results = []
 
-        with ExcelPublisher(self.database_path) as publisher:
+        # Select publisher based on type
+        if self.publisher_type == "xlwings":
+            publisher_class = ExcelPublisherXlwings
+        else:
+            publisher_class = ExcelPublisherOpenpyxl
+
+        with publisher_class(self.database_path) as publisher:
             self.publish_results = publisher.publish(publish_config)
 
         self._print_publish_summary()

@@ -26,6 +26,11 @@ if __name__ == "__main__":
     sheet_name_filter = "*"  # "*" for all sheets, or specific sheet name
     save_mode = SaveMode.RECREATE  # DROP, RECREATE, OVERWRITE, APPEND
 
+    # Publisher type for Publish phase
+    # - "openpyxl": Default, no Excel required, but may lose drawing shapes in .xlsm files
+    # - "xlwings": Requires Excel installed, preserves all shapes/macros/formatting
+    publisher_type = "xlwings"
+
     # Create ingestor
     ingestor = FileIngestor(
         config_base_path=config_base_path,
@@ -38,6 +43,7 @@ if __name__ == "__main__":
         database_path=database_path,
         sheet_filter=sheet_name_filter,
         save_mode=save_mode,
+        publisher_type=publisher_type,
     )
 
     # Run full ELTP pipeline (Extract, Load, Transform, Publish)
