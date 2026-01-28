@@ -4,6 +4,15 @@ ELT module for ingesting Excel workbooks into DuckDB.
 
 ## Setup
 
+### Quick Run
+
+```bash
+cd elt_ingest_excel
+uv sync --reinstall  
+uv run python examples/test_read_excel.py
+```
+
+
 ### Prerequisites
 
 - Python 3.14+
