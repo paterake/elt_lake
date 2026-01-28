@@ -5,15 +5,14 @@ CREATE TABLE workday_supplier_currencies
 SELECT
        TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
-     , COALESCE(
-         NULLIF(TRIM(currencyid), '')
-       , NULLIF(TRIM(currency_id), '')
-       , 'GBP'
-       )                                           accepted_currencies_plus
-     , COALESCE(
-         NULLIF(TRIM(currencyid), '')
-       , NULLIF(TRIM(currency_id), '')
-       , 'GBP'
-       )                                           default_currency
+     , CASE
+         WHEN NULLIF(TRIM(currency_id), '') IS NOT NULL
+          AND NULLIF(TRIM(currencyid ), '') IS NOT NULL
+          AND TRIM(currency_id) != TRIM(currencyid)
+         THEN TRIM(currency_id) || '|' || TRIM(currencyid)
+         ELSE COALESCE(NULLIF(TRIM(currency_id), ''), NULLIF(TRIM(currencyid), ''))
+       END                                         accepted_currencies_plus
+     , COALESCE(NULLIF(TRIM(currency_id), ''), NULLIF(TRIM(currencyid), 'GBP'))
+                                                   default_currency
   FROM src_fin_supplier
 ;

@@ -9,14 +9,14 @@ SELECT
      , TRIM(LOWER(email_to_address))                              email_address
      , NULL                                                       email_comment
      , TRIM(supplier_id) || '_EM1'                                email_id
-     , TRUE                                                       public_flag
-     , TRUE                                                       primary_flag
-     , TRUE                                                       default_po
+     , 'Yes'                                                      public_flag
+     , 'Yes'                                                      primary_flag
+     , 'Yes'                                                      default_po
      , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
-     , FALSE                                                      delete_flag
-     , FALSE                                                      do_not_replace_all
+     , NULL                                                       delete_flag
+     , NULL                                                       do_not_replace_all
      , NULL                                                       additional_comments
      , TRIM(LOWER(email_to_address))                              email
   FROM src_fin_supplier
@@ -33,14 +33,14 @@ SELECT
      , TRIM(LOWER(email_cc_address))                              email_address
      , NULL                                                       email_comment
      , TRIM(supplier_id) || '_EM2'                                email_id
-     , TRUE                                                       public_flag
-     , FALSE                                                      primary_flag
-     , FALSE                                                      default_po
+     , 'Yes'                                                      public_flag
+     , 'No'                                                       primary_flag
+     , 'No'                                                       default_po
      , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
-     , FALSE                                                      delete_flag
-     , FALSE                                                      do_not_replace_all
+     , NULL                                                       delete_flag
+     , NULL                                                       do_not_replace_all
      , NULL                                                       additional_comments
      , TRIM(LOWER(email_cc_address))                              email
   FROM src_fin_supplier
@@ -57,14 +57,14 @@ SELECT
      , TRIM(LOWER(email_bcc_address))                             email_address
      , NULL                                                       email_comment
      , TRIM(supplier_id) || '_EM3'                                email_id
-     , TRUE                                                       public_flag
-     , FALSE                                                      primary_flag
-     , FALSE                                                      default_po
+     , 'Yes'                                                      public_flag
+     , 'No'                                                       primary_flag
+     , 'No'                                                       default_po
      , 'Business'                                                 email_type
      , 'Business'                                                 use_for
      , NULL                                                       use_for_tenanted
-     , FALSE                                                      delete_flag
-     , FALSE                                                      do_not_replace_all
+     , NULL                                                       delete_flag
+     , NULL                                                       do_not_replace_all
      , NULL                                                       additional_comments
      , TRIM(LOWER(email_bcc_address))                             email
   FROM src_fin_supplier

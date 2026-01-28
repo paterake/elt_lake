@@ -40,111 +40,102 @@ SELECT 'MX',              '+52'
        )
 -- Phone Number 1 (Primary)
 SELECT
-       TRIM(s.supplier_id)                                        supplier_id
-     , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.supplier_id) || '_PH1'                              phone_id
-     , TRIM(s.country)                                            phone_country
-     , TRIM(UPPER(s.country_code))                                country_code
-     , COALESCE(p.phone_code, '+44')                              international_phone_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_number_1, '[^0-9]', ''), 1, 3)
-                                                                  area_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_number_1, '[^0-9]', ''), 4)
-                                                                  phone_number
-     , NULL                                                       phone_number_extension
-     , 'Landline'                                                 phone_device_type
-     , TRUE                                                       public_flag
-     , TRUE                                                       primary_flag
-     , 'Business'                                                 phone_type
-     , 'Business'                                                 use_for
-     , NULL                                                       use_for_tenanted
-     , NULL                                                       phone_comments
-  FROM src_fin_supplier                                           s
-  LEFT JOIN cte_country_phone_code                                p
-    ON TRIM(UPPER(COALESCE(s.country_code, 'GB'))) = p.country_code
- WHERE s.phone_number_1 IS NOT NULL
-   AND TRIM(s.phone_number_1) != ''
+       TRIM(s.supplier_id)                                           supplier_id
+     , TRIM(s.vendor_name)                                           supplier_name
+     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+     , TRIM(s.country)                                               phone_country
+     , TRIM(UPPER(s.country_code))                                   country_code
+     , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , SUBSTRING(REGEXP_REPLACE(s.phone_number_1, '[^0-9]', ''), 4)  phone_number
+     , NULL                                                          phone_number_extension
+     , 'Landline'                                                    phone_device_type
+     , 'Yes'                                                         public_flag
+     , 'Yes'                                                         primary_flag
+     , 'Business'                                                    phone_type
+     , 'Business'                                                    use_for
+     , NULL                                                          use_for_tenanted
+     , NULL                                                          phone_comments
+  FROM src_fin_supplier                s
+       LEFT OUTER JOIN 
+       cte_country_phone_code          p
+          ON p.country_code            = TRIM(UPPER(COALESCE(s.country_code, 'GB')))
+ WHERE s.phone_number_1                IS NOT NULL
+   AND TRIM(s.phone_number_1)          != ''
 
 UNION ALL
 
 -- Phone Number 2
 SELECT
-       TRIM(s.supplier_id)                                        supplier_id
-     , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.supplier_id) || '_PH2'                              phone_id
-     , TRIM(s.country)                                            phone_country
-     , TRIM(UPPER(s.country_code))                                country_code
-     , COALESCE(p.phone_code, '+44')                              international_phone_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_number_2, '[^0-9]', ''), 1, 3)
-                                                                  area_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_number_2, '[^0-9]', ''), 4)
-                                                                  phone_number
-     , NULL                                                       phone_number_extension
-     , 'Landline'                                                 phone_device_type
-     , TRUE                                                       public_flag
-     , FALSE                                                      primary_flag
-     , 'Business'                                                 phone_type
-     , 'Business'                                                 use_for
-     , NULL                                                       use_for_tenanted
-     , NULL                                                       phone_comments
-  FROM src_fin_supplier                                           s
-  LEFT JOIN cte_country_phone_code                                p
-    ON TRIM(UPPER(COALESCE(s.country_code, 'GB'))) = p.country_code
- WHERE s.phone_number_2 IS NOT NULL
-   AND TRIM(s.phone_number_2) != ''
+       TRIM(s.supplier_id)                                           supplier_id
+     , TRIM(s.vendor_name)                                           supplier_name
+     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+     , TRIM(s.country)                                               phone_country
+     , TRIM(UPPER(s.country_code))                                   country_code
+     , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , SUBSTRING(REGEXP_REPLACE(s.phone_number_2, '[^0-9]', ''), 4)  phone_number
+     , NULL                                                          phone_number_extension
+     , 'Landline'                                                    phone_device_type
+     , 'Yes'                                                         public_flag
+     , 'Yes'                                                         primary_flag
+     , 'Business'                                                    phone_type
+     , 'Business'                                                    use_for
+     , NULL                                                          use_for_tenanted
+     , NULL                                                          phone_comments
+  FROM src_fin_supplier                s
+       LEFT OUTER JOIN 
+       cte_country_phone_code          p
+          ON p.country_code            = TRIM(UPPER(COALESCE(s.country_code, 'GB')))
+ WHERE s.phone_number_2                IS NOT NULL
+   AND TRIM(s.phone_number_2)          != ''
 
 UNION ALL
 
 -- Phone 3
 SELECT
-       TRIM(s.supplier_id)                                        supplier_id
-     , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.supplier_id) || '_PH3'                              phone_id
-     , TRIM(s.country)                                            phone_country
-     , TRIM(UPPER(s.country_code))                                country_code
-     , COALESCE(p.phone_code, '+44')                              international_phone_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_3, '[^0-9]', ''), 1, 3)
-                                                                  area_code
-     , SUBSTRING(REGEXP_REPLACE(s.phone_3, '[^0-9]', ''), 4)
-                                                                  phone_number
-     , NULL                                                       phone_number_extension
-     , 'Landline'                                                 phone_device_type
-     , TRUE                                                       public_flag
-     , FALSE                                                      primary_flag
-     , 'Business'                                                 phone_type
-     , 'Business'                                                 use_for
-     , NULL                                                       use_for_tenanted
-     , NULL                                                       phone_comments
-  FROM src_fin_supplier                                           s
-  LEFT JOIN cte_country_phone_code                                p
-    ON TRIM(UPPER(COALESCE(s.country_code, 'GB'))) = p.country_code
- WHERE s.phone_3 IS NOT NULL
-   AND TRIM(s.phone_3) != ''
+       TRIM(s.supplier_id)                                           supplier_id
+     , TRIM(s.vendor_name)                                           supplier_name
+     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+     , TRIM(s.country)                                               phone_country
+     , TRIM(UPPER(s.country_code))                                   country_code
+     , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , SUBSTRING(REGEXP_REPLACE(s.phone_3, '[^0-9]', ''), 4)         phone_number
+     , NULL                                                          phone_number_extension
+     , 'Landline'                                                    phone_device_type
+     , 'Yes'                                                         public_flag
+     , 'Yes'                                                         primary_flag
+     , 'Business'                                                    phone_type
+     , 'Business'                                                    use_for
+     , NULL                                                          use_for_tenanted
+     , NULL                                                          phone_comments
+  FROM src_fin_supplier                s
+       LEFT OUTER JOIN 
+       cte_country_phone_code          p
+          ON p.country_code            = TRIM(UPPER(COALESCE(s.country_code, 'GB')))
+ WHERE s.phone_3                       IS NOT NULL
+   AND TRIM(s.phone_3)                 != ''
 
 UNION ALL
 
 -- Fax Number
 SELECT
-       TRIM(s.supplier_id)                                        supplier_id
-     , TRIM(s.vendor_name)                                        supplier_name
-     , TRIM(s.supplier_id) || '_FAX'                              phone_id
-     , TRIM(s.country)                                            phone_country
-     , TRIM(UPPER(s.country_code))                                country_code
-     , COALESCE(p.phone_code, '+44')                              international_phone_code
-     , SUBSTRING(REGEXP_REPLACE(s.fax_number, '[^0-9]', ''), 1, 3)
-                                                                  area_code
-     , SUBSTRING(REGEXP_REPLACE(s.fax_number, '[^0-9]', ''), 4)
-                                                                  phone_number
-     , NULL                                                       phone_number_extension
-     , 'Fax'                                                      phone_device_type
-     , TRUE                                                       public_flag
-     , FALSE                                                      primary_flag
-     , 'Business'                                                 phone_type
-     , 'Business'                                                 use_for
-     , NULL                                                       use_for_tenanted
-     , NULL                                                       phone_comments
-  FROM src_fin_supplier                                           s
-  LEFT JOIN cte_country_phone_code                                p
-    ON TRIM(UPPER(COALESCE(s.country_code, 'GB'))) = p.country_code
- WHERE s.fax_number IS NOT NULL
-   AND TRIM(s.fax_number) != ''
-;
+       TRIM(s.supplier_id)                                           supplier_id
+     , TRIM(s.vendor_name)                                           supplier_name
+     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+     , TRIM(s.country)                                               phone_country
+     , TRIM(UPPER(s.country_code))                                   country_code
+     , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , SUBSTRING(REGEXP_REPLACE(s.fax_number, '[^0-9]', ''), 4)      phone_number
+     , NULL                                                          phone_number_extension
+     , 'Fax'.                                                        phone_device_type
+     , 'Yes'                                                         public_flag
+     , 'Yes'                                                         primary_flag
+     , 'Business'                                                    phone_type
+     , 'Business'                                                    use_for
+     , NULL                                                          use_for_tenanted
+     , NULL                                                          phone_comments
+  FROM src_fin_supplier                s
+       LEFT OUTER JOIN 
+       cte_country_phone_code          p
+          ON p.country_code            = TRIM(UPPER(COALESCE(s.country_code, 'GB')))
+ WHERE s.fax_number                    IS NOT NULL
+   AND TRIM(s.fax_number)              != ''

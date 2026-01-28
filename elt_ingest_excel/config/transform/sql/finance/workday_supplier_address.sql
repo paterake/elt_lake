@@ -11,7 +11,7 @@ SELECT
      , NULL                                                                delete_flag
      , NULL                                                                do_not_replace_all
      , created_date                                                        last_modified
-     , COALESCE(TRIM(vendor_address_code_primary), 'MAIN')                 descriptor
+     , NULL                                                                descriptor
      , TRIM(supplier_id) || '_' || COALESCE(TRIM(vendor_address_code_primary), 'MAIN')
                                                                            address_id
      , TRIM(country)                                                       country
@@ -25,21 +25,14 @@ SELECT
      , NULLIF(TRIM(address_3), '')                                         address_line_3
      , NULLIF(TRIM(addressline_4), '')                                     address_line_4
      , TRIM(UPPER(post_code))                                              postal_code
-     , TRUE                                                                public_flag
-     , TRUE                                                                primary_flag
+     , 'Yes'                                                               public_flag
+     , 'Yes'                                                               primary_flag
      , created_date                                                        effective_date
-     , 'Business'                                                          address_type
-     , CASE COALESCE(UPPER(TRIM(vendor_address_code_primary)), 'MAIN')
-         WHEN 'MAIN'      THEN 'Business'
-         WHEN 'PRIMARY'   THEN 'Business'
-         WHEN 'REMIT'     THEN 'Payment'
-         WHEN 'PURCHASE'  THEN 'Purchase_Order'
-         WHEN 'SHIP FROM' THEN 'Shipping'
-         ELSE 'Business'
-       END                                                                 use_for
+     , TRIM(vendor_address_code_primary)                                   address_type
+     , TRIM(vendor_address_code_primary)                                   use_for
      , NULL                                                                use_for_tenanted
      , TRIM(COALESCE(comment1, comment2))                                  address_comments
-     , NULL::INTEGER                                                       number_of_days
+     , NULL                                                                number_of_days
      , NULL                                                                municipality_local
   FROM src_fin_supplier
  WHERE address_1 IS NOT NULL

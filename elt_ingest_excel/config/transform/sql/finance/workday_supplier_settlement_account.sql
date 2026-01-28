@@ -3,18 +3,12 @@ DROP TABLE IF EXISTS workday_supplier_settlement_account
 CREATE TABLE workday_supplier_settlement_account 
     AS
 SELECT
-       TRIM(supplier_id)                                                    supplier_id
+       TRIM(supplier_id)                                                  supplier_id
      , TRIM(vendor_name)                                                  supplier_name
-     , TRIM(supplier_id) || '_BANK'                                         settlement_bank_account_id
+     , TRIM(eft_bank_account)                                             settlement_bank_account_id
      , COALESCE(TRIM(UPPER(bank_country_code)), 'GB')                     bank_country
      , COALESCE(TRIM(currencyid), TRIM(currency_id), 'GBP')               currency
-     , CASE UPPER(TRIM(COALESCE(eft_account_type, 'C')))
-         WHEN 'C'        THEN 'CHECKING'
-         WHEN 'S'        THEN 'SAVINGS'
-         WHEN 'CHECKING' THEN 'CHECKING'
-         WHEN 'SAVINGS'  THEN 'SAVINGS'
-         ELSE 'CHECKING'
-       END                                                                bank_account_type
+     , TRIM(eft_account_type, 'C')                                        bank_account_type
      , TRIM(bank_name)                                                    bank_name
      , TRIM(vendor_check_name)                                            name_on_account
      , TRIM(REPLACE(eft_bank_account, ' ', ''))                           bank_account_number
@@ -32,26 +26,14 @@ SELECT
      , TRIM(eft_bank_check_digit)                                         check_digit
      , TRIM(eft_bank_branch_code)                                         branch_id
      , TRIM(eft_bank_branch)                                              branch_name
-     , CASE UPPER(TRIM(COALESCE(eft_transfer_method, 'ACH')))
-         WHEN 'ACH'        THEN 'ACH'
-         WHEN 'WIRE'       THEN 'Wire'
-         WHEN 'ELECTRONIC' THEN 'ACH'
-         ELSE 'ACH'
-       END                                                                accepts_payment_types_plus
-     , CASE UPPER(TRIM(COALESCE(eft_transfer_method, 'ACH')))
-         WHEN 'ACH'        THEN 'ACH'
-         WHEN 'WIRE'       THEN 'Wire'
-         WHEN 'ELECTRONIC' THEN 'ACH'
-         ELSE 'ACH'
-       END                                                                payment_types_plus
-     , FALSE                                                              for_supplier_connections_only
-     , CASE WHEN eft_pre_note_date IS NOT NULL THEN TRUE ELSE FALSE END   requires_prenote
-     , CASE WHEN eft_pre_note_date IS NOT NULL THEN 'ACH' ELSE NULL END   payment_type_prenote
+     , TRIM(eft_transfer_method)                                          accepts_payment_types_plus
+     , TRIM(eft_transfer_method)                                          payment_types_plus
+     , NULL                                                               for_supplier_connections_only
+     , NULL                                                               requires_prenote
+     , NULL                                                               payment_type_prenote
      , CASE 
-        WHEN TRIM(UPPER(inactive))      = UPPER('YES')
-          OR TRIM(UPPER(vendor_status)) = UPPER('Inactive')
-        THEN TRUE 
-        ELSE FALSE 
+         WHEN UPPER(TRIM(vendor_status)) = 'ACTIVE' THEN 'No'
+         ELSE 'Yes'
        END                                                                inactive
      , TRIM(additional_information)                                       bank_instructions
   FROM src_fin_supplier

@@ -7,7 +7,7 @@ SELECT
        TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
      , TRIM(vendor_short_name)                     alternate_name
-     , 'Short_Name'                                alternate_name_usage_plus
+     , 'Short Name'                                alternate_name_usage_plus
   FROM src_fin_supplier
  WHERE vendor_short_name IS NOT NULL
    AND TRIM(vendor_short_name) != ''
@@ -15,12 +15,12 @@ SELECT
 
 UNION ALL
 
--- Check/Payment Name
+-- Check Name
 SELECT
        TRIM(supplier_id)                           supplier_id
      , TRIM(vendor_name)                           supplier_name
      , TRIM(vendor_check_name)                     alternate_name
-     , 'Payment_Name'                              alternate_name_usage_plus
+     , 'Check Name'                              alternate_name_usage_plus
   FROM src_fin_supplier
  WHERE vendor_check_name IS NOT NULL
    AND TRIM(vendor_check_name) != ''

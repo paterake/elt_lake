@@ -31,10 +31,10 @@ SELECT
          ELSE 'Check'
        END                                         default_payment_type
      , TRIM(shipping_method)                       shipping_terms
-     , FALSE                                       always_separate_payments
-     , FALSE                                       do_not_pay_during_bank_account_updates
-     , FALSE                                       exclude_freight_amount_from_supplier_invoice_discount
-     , FALSE                                       exclude_other_charge_from_supplier_invoice_discount
-     , FALSE                                       exclude_tax_amount_from_supplier_invoice_discount
+     , NULL                                        always_separate_payments
+     , NULL                                        do_not_pay_during_bank_account_updates
+     , NULL                                        exclude_freight_amount_from_supplier_invoice_discount
+     , NULL                                        exclude_other_charge_from_supplier_invoice_discount
+     , NULL                                        exclude_tax_amount_from_supplier_invoice_discount
   FROM src_fin_supplier
 ;

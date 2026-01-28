@@ -21,7 +21,10 @@ SELECT
      , NULL                                                       check_digit
      , NULL                                                       branch_id
      , NULL                                                       branch_name
-     , FALSE                                                      inactive
+     , CASE 
+         WHEN UPPER(TRIM(vendor_status)) = 'ACTIVE' THEN 'No'
+         ELSE 'Yes'
+       END                                                        inactive
      , NULL                                                       bank_instructions
   FROM src_fin_supplier
  WHERE central_bank_code IS NOT NULL

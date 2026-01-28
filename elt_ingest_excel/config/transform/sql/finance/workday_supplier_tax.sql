@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_supplier_tax
 CREATE TABLE workday_supplier_tax 
     AS
 SELECT
-       TRIM(supplier_id)                                                supplier_id
+       TRIM(supplier_id)                                              supplier_id
      , TRIM(vendor_name)                                              supplier_name
      , COALESCE(TRIM(UPPER(country_code)), 'GB')                      tax_id_country
      , TRIM(REPLACE(REPLACE(tax_id_number, ' ', ''), '-', ''))        tax_id
@@ -24,8 +24,8 @@ SELECT
          WHEN 'FI' THEN 'VAT'
          ELSE 'Other'
        END                                                            tax_id_type
-     , TRUE                                                           primary_tax_id
-     , FALSE                                                          transaction_tax_id
+     , NULL                                                           primary_tax_id
+     , NULL                                                           transaction_tax_id
      , COALESCE(TRIM(UPPER(country_code)), 'GB')                      tax_status_country
      , CASE
          WHEN tax_id_number IS NOT NULL AND TRIM(tax_id_number) != ''
@@ -43,13 +43,13 @@ SELECT
      , CASE
          WHEN COALESCE(TRIM(UPPER(country_code)), 'GB') = 'US'
               AND tax_id_number IS NOT NULL
-         THEN TRUE
-         ELSE FALSE
+         THEN 'Yes'
+         ELSE 'No'
        END                                                            irs_1099_supplier
-     , NULL::DATE                                                     tax_document_date
+     , NULL                                                           tax_document_date
      , NULL                                                           default_tax_code
      , NULL                                                           default_withholding_tax_code
-     , FALSE                                                          fatca
+     , 'FALSE'                                                        fatca
      , TRIM(tax_registration_number)                                  business_entity_tax_id
   FROM src_fin_supplier
 ;
