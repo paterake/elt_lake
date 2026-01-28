@@ -1,5 +1,5 @@
 # examples/test_read_excel.py
-"""Example script demonstrating the full ELT pipeline."""
+"""Example script demonstrating the full ELTP pipeline (Extract, Load, Transform, Publish)."""
 
 from pathlib import Path
 
@@ -14,6 +14,7 @@ if __name__ == "__main__":
     # Configuration paths (relative to config_base_path)
     cfg_ingest_path = "ingest/finance"
     cfg_transform_path = "transform/sql/finance"
+    cfg_publish_path = "publish/finance"
     config_name = "supplier.json"
 
     # Data file location
@@ -30,6 +31,7 @@ if __name__ == "__main__":
         config_base_path=config_base_path,
         cfg_ingest_path=cfg_ingest_path,
         cfg_transform_path=cfg_transform_path,
+        cfg_publish_path=cfg_publish_path,
         config_name=config_name,
         data_path=data_path,
         data_file_name=data_file_name,
@@ -38,9 +40,10 @@ if __name__ == "__main__":
         save_mode=save_mode,
     )
 
-    # Run full ELT pipeline (Extract, Load, Transform)
-    load_results, transform_results = ingestor.process()
+    # Run full ELTP pipeline (Extract, Load, Transform, Publish)
+    load_results, transform_results, publish_results = ingestor.process()
 
     # Or run phases separately:
     # load_results = ingestor.extract_and_load()
     # transform_results = ingestor.transform()
+    # publish_results = ingestor.publish()

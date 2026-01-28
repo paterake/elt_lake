@@ -9,7 +9,8 @@ import pandas as pd
 
 from .loaders import ExcelReader
 from .models import FileType, SheetConfig
-from .parsers import JsonConfigParser
+from .parsers import JsonConfigParser, PublishConfigParser
+from .publish import ExcelPublisher, PublishResult
 from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
@@ -50,6 +51,8 @@ class FileIngestor:
         database_path: Union[str, Path],
         sheet_filter: str = "*",
         save_mode: SaveMode = SaveMode.RECREATE,
+        cfg_publish_path: str | None = None,
+        cfg_publish_name: str = "publish.json",
     ):
         """Initialize the file ingestor.
 
@@ -63,10 +66,14 @@ class FileIngestor:
             database_path: Path to DuckDB database file.
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
+            cfg_publish_path: Relative path to publish config (e.g., "publish/finance").
+            cfg_publish_name: Name of the publish JSON config file.
         """
         self.config_base_path = Path(config_base_path).expanduser()
         self.cfg_ingest_path = cfg_ingest_path
         self.cfg_transform_path = cfg_transform_path
+        self.cfg_publish_path = cfg_publish_path
+        self.cfg_publish_name = cfg_publish_name
         self.config_name = config_name
         self.data_path = Path(data_path).expanduser()
         self.data_file_name = data_file_name
@@ -77,6 +84,10 @@ class FileIngestor:
         # Build full config paths
         self.ingest_config_path = self.config_base_path / cfg_ingest_path / config_name
         self.transform_config_path = self.config_base_path / cfg_transform_path
+        self.publish_config_path = (
+            self.config_base_path / cfg_publish_path / cfg_publish_name
+            if cfg_publish_path else None
+        )
 
         # Configure pandas display
         pd.set_option('display.max_columns', None)
@@ -104,6 +115,7 @@ class FileIngestor:
         # Store results
         self.load_results: list[WriteResult] = []
         self.transform_results: list[TransformResult] = []
+        self.publish_results: list[PublishResult] = []
 
     def extract_and_load(self) -> list[WriteResult]:
         """Execute Extract and Load phases.
@@ -167,15 +179,50 @@ class FileIngestor:
         self._print_transform_summary()
         return self.transform_results
 
-    def process(self) -> tuple[list[WriteResult], list[TransformResult]]:
-        """Execute full ELT pipeline: Extract, Load, and Transform.
+    def publish(self) -> list[PublishResult]:
+        """Execute Publish phase.
+
+        Reads publish config and exports transformed data to Excel workbooks.
 
         Returns:
-            Tuple of (load_results, transform_results).
+            List of PublishResult objects for each sheet published.
+        """
+        print("\n" + "=" * 60)
+        print("PUBLISH PHASE")
+        print("=" * 60)
+
+        if not self.publish_config_path:
+            print("No publish config path configured")
+            return []
+
+        if not self.publish_config_path.exists():
+            print(f"Publish config not found: {self.publish_config_path}")
+            return []
+
+        print(f"Publish config: {self.publish_config_path}")
+
+        # Load publish configuration
+        publish_config = PublishConfigParser.from_json(self.publish_config_path)
+        print(f"Workbooks to publish: {len(publish_config.workbooks)}")
+
+        self.publish_results = []
+
+        with ExcelPublisher(self.database_path) as publisher:
+            self.publish_results = publisher.publish(publish_config)
+
+        self._print_publish_summary()
+        return self.publish_results
+
+    def process(self) -> tuple[list[WriteResult], list[TransformResult], list[PublishResult]]:
+        """Execute full ELT pipeline: Extract, Load, Transform, and Publish.
+
+        Returns:
+            Tuple of (load_results, transform_results, publish_results).
         """
         load_results = self.extract_and_load()
         transform_results = self.transform()
-        return load_results, transform_results
+        publish_results = self.publish()
+        return load_results, transform_results, publish_results
 
     def _read_order_file(self, order_file: Path) -> list[str]:
         """Read order.txt and return list of SQL file names.
@@ -332,3 +379,19 @@ class FileIngestor:
             print(f"  {result.sql_file}: {status}")
 
         print(f"Total: {success_count} succeeded, {fail_count} failed")
+
+    def _print_publish_summary(self) -> None:
+        """Print a summary of the publish results."""
+        print("\n" + "-" * 40)
+        print("Publish Summary:")
+        success_count = sum(1 for r in self.publish_results if r.success)
+        fail_count = len(self.publish_results) - success_count
+        total_rows = sum(r.rows_written for r in self.publish_results if r.success)
+
+        for result in self.publish_results:
+            if result.success:
+                print(f"  {result.sheet_name}: {result.rows_written} rows")
+            else:
+                print(f"  {result.sheet_name}: FAILED - {result.error}")
+
+        print(f"Total: {success_count} succeeded, {fail_count} failed, {total_rows} rows written")

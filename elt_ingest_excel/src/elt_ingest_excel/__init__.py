@@ -30,21 +30,30 @@ from .models import (
     FileType,
     WorkbookConfig,
     SheetConfig,
+    PublishConfig,
+    PublishWorkbookConfig,
+    PublishSheetConfig,
 )
-from .parsers import JsonConfigParser
+from .parsers import JsonConfigParser, PublishConfigParser
 from .loaders import ExcelLoader, ExcelReader
 from .writers import SaveMode, DuckDBWriter, WriteResult
+from .publish import ExcelPublisher, PublishResult
 from .ingester import ExcelIngester, LoadResult
 from .file_ingestor import FileIngestor, TransformResult
 
 __all__ = [
-    # Models
+    # Models - Ingest
     "ExcelIngestConfig",
     "FileType",
     "WorkbookConfig",
     "SheetConfig",
+    # Models - Publish
+    "PublishConfig",
+    "PublishWorkbookConfig",
+    "PublishSheetConfig",
     # Parsers
     "JsonConfigParser",
+    "PublishConfigParser",
     # Loaders
     "ExcelLoader",
     "ExcelReader",
@@ -52,10 +61,13 @@ __all__ = [
     "SaveMode",
     "DuckDBWriter",
     "WriteResult",
+    # Publisher
+    "ExcelPublisher",
+    "PublishResult",
     # Ingester
     "ExcelIngester",
     "LoadResult",
-    # File Ingestor (main ELT workflow)
+    # File Ingestor (main ELTP workflow)
     "FileIngestor",
     "TransformResult",
 ]
