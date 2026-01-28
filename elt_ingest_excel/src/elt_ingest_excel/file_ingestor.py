@@ -13,10 +13,6 @@ from .parsers import JsonConfigParser
 from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
-# Base path for config files (relative to this module)
-CONFIG_BASE_PATH = Path(__file__).parent / "config"
-
-
 @dataclass
 class TransformResult:
     """Result of executing a transform SQL file.
@@ -45,6 +41,7 @@ class FileIngestor:
 
     def __init__(
         self,
+        config_base_path: Union[str, Path],
         cfg_ingest_path: str,
         cfg_transform_path: str,
         config_name: str,
@@ -57,6 +54,7 @@ class FileIngestor:
         """Initialize the file ingestor.
 
         Args:
+            config_base_path: Base path to the config directory.
             cfg_ingest_path: Relative path to ingest config (e.g., "ingest/finance").
             cfg_transform_path: Relative path to transform config (e.g., "transform/finance").
             config_name: Name of the JSON config file (e.g., "supplier.json").
@@ -66,6 +64,7 @@ class FileIngestor:
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
         """
+        self.config_base_path = Path(config_base_path).expanduser()
         self.cfg_ingest_path = cfg_ingest_path
         self.cfg_transform_path = cfg_transform_path
         self.config_name = config_name
@@ -76,8 +75,8 @@ class FileIngestor:
         self.save_mode = save_mode
 
         # Build full config paths
-        self.ingest_config_path = CONFIG_BASE_PATH / cfg_ingest_path / config_name
-        self.transform_config_path = CONFIG_BASE_PATH / cfg_transform_path
+        self.ingest_config_path = self.config_base_path / cfg_ingest_path / config_name
+        self.transform_config_path = self.config_base_path / cfg_transform_path
 
         # Configure pandas display
         pd.set_option('display.max_columns', None)

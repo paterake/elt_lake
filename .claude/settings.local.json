@@ -9,7 +9,8 @@
       "Bash(git rm:*)"
     ],
     "additionalDirectories": [
-      "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/*"
+      "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/*",
+      "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/config"
     ]
   }
 }

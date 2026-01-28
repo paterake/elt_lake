@@ -14,7 +14,8 @@ SELECT
      , FALSE                                                       acknowledgement_expected
      , FALSE                                                       enable_asn
      , NULL::INTEGER                                               asn_due_in_days
-     , CAST(COALESCE(minimum_order, '0') AS DECIMAL(18,2))         supplier_minimum_order_amount
+     , CAST(COALESCE(NULLIF(TRIM(minimum_order), ''), '0') AS DECIMAL(18,2))
+                                                                   supplier_minimum_order_amount
      , COALESCE(TRIM(currency_id), TRIM(currencyid), 'GBP')        minimum_order_amount_currency
      , TRIM(comment1)                                              text_for_default_supplier_payment_memo
      , FALSE                                                       use_supplier_reference_as_default_supplier_payment_memo

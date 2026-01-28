@@ -1,11 +1,17 @@
 # examples/test_read_excel.py
 """Example script demonstrating the full ELT pipeline."""
 
+from pathlib import Path
+
 from elt_ingest_excel import FileIngestor, SaveMode
 
 
 if __name__ == "__main__":
-    # Configuration paths (relative to config/ directory)
+    # Config base path (project root config/ directory)
+    # This script is in examples/, config is at ../config/
+    config_base_path = Path(__file__).parent.parent / "config"
+
+    # Configuration paths (relative to config_base_path)
     cfg_ingest_path = "ingest/finance"
     cfg_transform_path = "transform/sql/finance"
     config_name = "supplier.json"
@@ -21,6 +27,7 @@ if __name__ == "__main__":
 
     # Create ingestor
     ingestor = FileIngestor(
+        config_base_path=config_base_path,
         cfg_ingest_path=cfg_ingest_path,
         cfg_transform_path=cfg_transform_path,
         config_name=config_name,
