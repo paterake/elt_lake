@@ -8,7 +8,7 @@ SELECT
      , TRIM(eft_bank_account)                                             settlement_bank_account_id
      , COALESCE(TRIM(UPPER(bank_country_code)), 'GB')                     bank_country
      , COALESCE(TRIM(currencyid), TRIM(currency_id), 'GBP')               currency
-     , TRIM(eft_account_type, 'C')                                        bank_account_type
+     , TRIM(eft_account_type)                                             bank_account_type
      , TRIM(bank_name)                                                    bank_name
      , TRIM(vendor_check_name)                                            name_on_account
      , TRIM(REPLACE(eft_bank_account, ' ', ''))                           bank_account_number
