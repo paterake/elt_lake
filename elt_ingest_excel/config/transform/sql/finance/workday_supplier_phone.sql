@@ -46,6 +46,7 @@ SELECT
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , NULL                                                          area_code
      , SUBSTRING(REGEXP_REPLACE(s.phone_number_1, '[^0-9]', ''), 4)  phone_number
      , NULL                                                          phone_number_extension
      , 'Landline'                                                    phone_device_type
@@ -72,6 +73,7 @@ SELECT
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , NULL                                                          area_code
      , SUBSTRING(REGEXP_REPLACE(s.phone_number_2, '[^0-9]', ''), 4)  phone_number
      , NULL                                                          phone_number_extension
      , 'Landline'                                                    phone_device_type
@@ -98,6 +100,7 @@ SELECT
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , NULL                                                          area_code
      , SUBSTRING(REGEXP_REPLACE(s.phone_3, '[^0-9]', ''), 4)         phone_number
      , NULL                                                          phone_number_extension
      , 'Landline'                                                    phone_device_type
@@ -124,6 +127,7 @@ SELECT
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
+     , NULL                                                          area_code
      , SUBSTRING(REGEXP_REPLACE(s.fax_number, '[^0-9]', ''), 4)      phone_number
      , NULL                                                          phone_number_extension
      , 'Fax'                                                         phone_device_type
