@@ -1,0 +1,7 @@
+src_hcm_contingent_worker.sql
+workday_contingent_worker_companies.sql
+workday_contingent_worker_locations.sql
+workday_contingent_worker_cost_centers.sql
+workday_contingent_worker_grades.sql
+workday_contingent_worker_grade_profiles.sql
+workday_contingent_worker_job_profiles.sql
