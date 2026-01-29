@@ -16,7 +16,7 @@ SELECT
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            additional_comment
      , TRIM(LOWER(email_to_address))                                   email
   FROM src_fin_customer
  WHERE email_to_address IS NOT NULL
@@ -39,7 +39,7 @@ SELECT
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            additional_comment
      , TRIM(LOWER(email_cc_address))                                   email
   FROM src_fin_customer
  WHERE email_cc_address IS NOT NULL
@@ -62,7 +62,7 @@ SELECT
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            additional_comment
      , TRIM(LOWER(email_bcc_address))                                  email
   FROM src_fin_customer
  WHERE email_bcc_address IS NOT NULL

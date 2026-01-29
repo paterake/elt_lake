@@ -31,7 +31,7 @@ SELECT
      , created_date                                  effective_date
      , TRIM(address_code)                            use_for
      , NULL                                          use_for_tenanted
-     , TRIM(COALESCE(comment1, comment2))            comments
+     , TRIM(COALESCE(comment1, comment2))            customer_comment
      , NULL                                          number_of_days
      , NULL                                          municipality_local
      , NULL                                          optional_address

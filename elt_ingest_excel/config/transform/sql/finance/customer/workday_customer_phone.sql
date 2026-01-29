@@ -60,7 +60,7 @@ SELECT
      , NULL                                                            international_formatted_phone
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            phone_comment
      , TRIM(c.phone_1)                                                 phone
   FROM src_fin_customer                  c
        LEFT OUTER JOIN
@@ -93,7 +93,7 @@ SELECT
      , NULL                                                            international_formatted_phone
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            phone_comment
      , TRIM(c.phone_2)                                                 phone
   FROM src_fin_customer                  c
        LEFT OUTER JOIN
@@ -126,7 +126,7 @@ SELECT
      , NULL                                                            international_formatted_phone
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            phone_comment
      , TRIM(c.phone_3)                                                 phone
   FROM src_fin_customer                  c
        LEFT OUTER JOIN
@@ -159,7 +159,7 @@ SELECT
      , NULL                                                            international_formatted_phone
      , NULL                                                            delete_flag
      , NULL                                                            do_not_replace_all
-     , NULL                                                            comments
+     , NULL                                                            phone_comment
      , TRIM(c.fax)                                                     phone
   FROM src_fin_customer                  c
        LEFT OUTER JOIN
