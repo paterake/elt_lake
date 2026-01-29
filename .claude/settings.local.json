@@ -6,7 +6,8 @@
       "Bash(git add:*)",
       "Bash(git reset:*)",
       "Bash(uv run python:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(pip3 list:*)"
     ],
     "additionalDirectories": [
       "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/*",
