@@ -9,9 +9,9 @@ SELECT
      , TRIM(customer_id) || '_EM1'                                     email_id
      , TRIM(LOWER(email_to_address))                                   email_address
      , NULL                                                            email_comment
-     , 'Yes'                                                           public
-     , 'Yes'                                                           primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'Yes'                                                           is_primary
+     , 'Business'                                                      email_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag
@@ -32,9 +32,9 @@ SELECT
      , TRIM(customer_id) || '_EM2'                                     email_id
      , TRIM(LOWER(email_cc_address))                                   email_address
      , NULL                                                            email_comment
-     , 'Yes'                                                           public
-     , 'No'                                                            primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'No'                                                            is_primary
+     , 'Business'                                                      email_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag
@@ -55,9 +55,9 @@ SELECT
      , TRIM(customer_id) || '_EM3'                                     email_id
      , TRIM(LOWER(email_bcc_address))                                  email_address
      , NULL                                                            email_comment
-     , 'Yes'                                                           public
-     , 'No'                                                            primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'No'                                                            is_primary
+     , 'Business'                                                      email_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            delete_flag

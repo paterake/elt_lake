@@ -51,9 +51,9 @@ SELECT
      , NULL                                                            formatted_phone_number
      , NULL                                                            phone_number_extension
      , 'Landline'                                                      phone_device_type
-     , 'Yes'                                                           public
-     , 'Yes'                                                           primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'Yes'                                                           is_primary
+     , 'Business'                                                      phone_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            tenant_formatted_phone
@@ -84,9 +84,9 @@ SELECT
      , NULL                                                            formatted_phone_number
      , NULL                                                            phone_number_extension
      , 'Landline'                                                      phone_device_type
-     , 'Yes'                                                           public
-     , 'No'                                                            primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'No'                                                            is_primary
+     , 'Business'                                                      phone_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            tenant_formatted_phone
@@ -117,9 +117,9 @@ SELECT
      , NULL                                                            formatted_phone_number
      , NULL                                                            phone_number_extension
      , 'Landline'                                                      phone_device_type
-     , 'Yes'                                                           public
-     , 'No'                                                            primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'No'                                                            is_primary
+     , 'Business'                                                      phone_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            tenant_formatted_phone
@@ -150,9 +150,9 @@ SELECT
      , NULL                                                            formatted_phone_number
      , NULL                                                            phone_number_extension
      , 'Fax'                                                           phone_device_type
-     , 'Yes'                                                           public
-     , 'No'                                                            primary
-     , 'Business'                                                      type
+     , 'Yes'                                                           is_public
+     , 'No'                                                            is_primary
+     , 'Business'                                                      phone_type
      , 'Business'                                                      use_for
      , NULL                                                            use_for_tenanted
      , NULL                                                            tenant_formatted_phone

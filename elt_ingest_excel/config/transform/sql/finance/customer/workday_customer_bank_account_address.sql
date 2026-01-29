@@ -18,10 +18,10 @@ SELECT
      , NULLIF(TRIM(address_3), '')                   address_line_3
      , NULL                                          address_line_4
      , TRIM(UPPER(post_code))                        postal_code
-     , 'Yes'                                         public
-     , 'Yes'                                         primary
+     , 'Yes'                                         is_public
+     , 'Yes'                                         is_primary
      , created_date                                  effective_date
-     , TRIM(address_code)                            type
+     , TRIM(address_code)                            address_type
      , TRIM(address_code)                            use_for
      , NULL                                          use_for_tenanted
   FROM src_fin_customer

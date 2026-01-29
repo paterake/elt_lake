@@ -25,16 +25,16 @@ SELECT
      , NULLIF(TRIM(address_3), '')                   address_line_3
      , NULL                                          address_line_4
      , TRIM(UPPER(post_code))                        postal_code
-     , 'Yes'                                         public
-     , 'Yes'                                         primary
-     , TRIM(address_code)                            type
+     , 'Yes'                                         is_public
+     , 'Yes'                                         is_primary
+     , TRIM(address_code)                            address_type
      , created_date                                  effective_date
      , TRIM(address_code)                            use_for
      , NULL                                          use_for_tenanted
      , TRIM(COALESCE(comment1, comment2))            comments
      , NULL                                          number_of_days
      , NULL                                          municipality_local
-     , NULL                                          address
+     , NULL                                          optional_address
   FROM src_fin_customer
  WHERE address_1 IS NOT NULL
    AND TRIM(address_1) != ''
