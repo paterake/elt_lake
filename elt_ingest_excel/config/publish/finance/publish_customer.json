@@ -1,0 +1,106 @@
+[
+  {
+    "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/Supplier and Customer Master Record workbooks & Instructions Guide",
+    "srcWorkbookFileName": "FIN Customer Workbook (Blank).xlsm",
+    "tgtWorkbookPathName": "/Users/rpatel/Documents",
+    "tgtWorkbookFileName": "fin_debtor_customer",
+    "sheets": [
+      {
+        "srcTableName": "workday_customer_name",
+        "sheetName": "Customer Name",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_groups",
+        "sheetName": "Customer Groups",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_related_worktags",
+        "sheetName": "Customer Related Worktags",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_credit",
+        "sheetName": "Customer Credit",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_payment",
+        "sheetName": "Customer Payment",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_currencies",
+        "sheetName": "Customer Currencies",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_company_restrictions",
+        "sheetName": "Customer Company Restrictions",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_document_delivery",
+        "sheetName": "Customer Document Delivery",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_settlement_account",
+        "sheetName": "Customer Settlement Account",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_intermediary_account",
+        "sheetName": "Customer Intermediary Account",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_bank_account_address",
+        "sheetName": "Bank Account Address",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_credit_card",
+        "sheetName": "Customer Credit Card",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_tax",
+        "sheetName": "Customer Tax",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_address",
+        "sheetName": "Customer Address",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_phone",
+        "sheetName": "Customer Phone",
+        "headerRow": "3",
+        "dataRow": "4"
+      },
+      {
+        "srcTableName": "workday_customer_email",
+        "sheetName": "Customer Email",
+        "headerRow": "3",
+        "dataRow": "4"
+      }
+    ]
+  }
+]
