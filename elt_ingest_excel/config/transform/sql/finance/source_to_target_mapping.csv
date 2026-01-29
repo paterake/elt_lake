@@ -1,0 +1,205 @@
+Target Sheet,Target Column,Source Column(s),Transformation/Logic,Notes
+Supplier Name,supplier_id,rnk,"'S-' || LPAD(rnk, 6, '0')",Generated sequential ID
+Supplier Name,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Name,reference_id,vendor_id,TRIM,Direct mapping
+Supplier Name,supplier_category,vendor_class_id,"'IR35' → 'Professional Services', else 'Suppliers'",Category based on vendor class
+Supplier Name,business_entity_name,vendor_name,TRIM,Same as supplier_name
+Supplier Name,do_not_reimburse_contingent_worker_expense_reports,-,NULL,Not populated
+Supplier Name,worktag_only,-,NULL,Not populated
+Supplier Name,integration_system,-,"Constant: 'Microsoft Dynamics GP'",Hardcoded value
+Supplier Name,external_entity_id,vendor_id,TRIM,Direct mapping
+Supplier Name,supplier_source,-,"Constant: 'Legacy Migration'",Hardcoded value
+Supplier Name,supplier_change_source,-,"Constant: 'Migration'",Hardcoded value
+Supplier Name,submit,vendor_status,"'ACTIVE' → 'Yes', else 'No'",Based on vendor status
+Supplier Name,spend_category_or_hierarchy_plus,-,NULL,Not populated
+Supplier Name,supplier_security_segment,-,NULL,Not populated
+Supplier Name,create_supplier_from_customer,-,NULL,Not populated
+Supplier Name,create_supplier_from_financial_institution,-,NULL,Not populated
+Supplier Name,create_supplier_from_tax_authority,-,NULL,Not populated
+Supplier Name,create_supplier_from_investor,-,NULL,Not populated
+Supplier Name,customer_account_number,customer_vendor_id,"NULLIF(TRIM, '')",Only if not blank
+Supplier Name,certificate_of_insurance_date,-,NULL,Not populated
+Supplier Name,duns_number,-,NULL,Not populated
+Supplier Name,unique_entity_identifier,-,NULL,Not populated
+Supplier Address,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Address,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Address,formatted_address,-,NULL,Not populated
+Supplier Address,address_format_type,-,NULL,Not populated
+Supplier Address,defaulted_business_site_address,-,NULL,Not populated
+Supplier Address,delete_flag,-,NULL,Not populated
+Supplier Address,do_not_replace_all,-,NULL,Not populated
+Supplier Address,last_modified,created_date,Direct,Date from source
+Supplier Address,descriptor,-,NULL,Not populated
+Supplier Address,address_id,"supplier_id, vendor_address_code_primary","supplier_id || '_' || COALESCE(address_code, 'MAIN')",Composite ID
+Supplier Address,country,country,TRIM,Direct mapping
+Supplier Address,country_code,country_code,TRIM(UPPER),Uppercase
+Supplier Address,region,county,TRIM,Mapped from county
+Supplier Address,subregion,-,NULL,Not populated
+Supplier Address,city,city,TRIM,Direct mapping
+Supplier Address,submunicipality,-,NULL,Not populated
+Supplier Address,address_line_1,address_1,TRIM,Direct mapping
+Supplier Address,address_line_2,address_2,"NULLIF(TRIM, '')",Only if not blank
+Supplier Address,address_line_3,address_3,"NULLIF(TRIM, '')",Only if not blank
+Supplier Address,address_line_4,addressline_4,"NULLIF(TRIM, '')",Only if not blank
+Supplier Address,postal_code,post_code,TRIM(UPPER),Uppercase
+Supplier Address,public_flag,-,"Constant: 'Yes'",Hardcoded value
+Supplier Address,primary_flag,-,"Constant: 'Yes'",Hardcoded value
+Supplier Address,effective_date,created_date,Direct,Date from source
+Supplier Address,address_type,vendor_address_code_primary,TRIM,Direct mapping
+Supplier Address,use_for,vendor_address_code_primary,TRIM,Direct mapping
+Supplier Address,use_for_tenanted,-,NULL,Not populated
+Supplier Address,address_comments,"comment1, comment2",COALESCE(comment1; comment2),First available comment
+Supplier Address,number_of_days,-,NULL,Not populated
+Supplier Address,municipality_local,-,NULL,Not populated
+Supplier Email,supplier_id,supplier_id,TRIM,Row 1: Primary email
+Supplier Email,supplier_name,vendor_name,TRIM,Row 1: Primary email
+Supplier Email,email_address,email_to_address,TRIM(LOWER),Row 1: Primary email - Validated with regex
+Supplier Email,email_comment,-,NULL,Row 1: Primary email
+Supplier Email,email_id,supplier_id,supplier_id || '_EM1',Row 1: Primary email
+Supplier Email,public_flag,-,"Constant: 'Yes'",Row 1: Primary email
+Supplier Email,primary_flag,-,"Constant: 'Yes'",Row 1: Primary email
+Supplier Email,default_po,-,"Constant: 'Yes'",Row 1: Primary email
+Supplier Email,email_type,-,"Constant: 'Business'",Row 1: Primary email
+Supplier Email,use_for,-,"Constant: 'Business'",Row 1: Primary email
+Supplier Email,email,email_to_address,TRIM(LOWER),Row 1: Primary email
+Supplier Email,supplier_id,supplier_id,TRIM,Row 2: CC email (separate row per supplier)
+Supplier Email,supplier_name,vendor_name,TRIM,Row 2: CC email
+Supplier Email,email_address,email_cc_address,TRIM(LOWER),Row 2: CC email - Validated with regex
+Supplier Email,email_id,supplier_id,supplier_id || '_EM2',Row 2: CC email
+Supplier Email,primary_flag,-,"Constant: 'No'",Row 2: CC email (not primary)
+Supplier Email,default_po,-,"Constant: 'No'",Row 2: CC email
+Supplier Email,supplier_id,supplier_id,TRIM,Row 3: BCC email (separate row per supplier)
+Supplier Email,supplier_name,vendor_name,TRIM,Row 3: BCC email
+Supplier Email,email_address,email_bcc_address,TRIM(LOWER),Row 3: BCC email - Validated with regex
+Supplier Email,email_id,supplier_id,supplier_id || '_EM3',Row 3: BCC email
+Supplier Email,primary_flag,-,"Constant: 'No'",Row 3: BCC email (not primary)
+Supplier Email,default_po,-,"Constant: 'No'",Row 3: BCC email
+Supplier Phone,supplier_id,supplier_id,TRIM,Row 1: Phone 1 (Primary)
+Supplier Phone,supplier_name,vendor_name,TRIM,Row 1: Phone 1
+Supplier Phone,phone_id,supplier_id,supplier_id || '_PH1',Row 1: Phone 1
+Supplier Phone,phone_country,country,TRIM,Row 1: Phone 1
+Supplier Phone,country_code,country_code,TRIM(UPPER),Row 1: Phone 1
+Supplier Phone,international_phone_code,country_code,Lookup from country code (default +44),Row 1: Phone 1
+Supplier Phone,phone_number,phone_number_1,REGEXP_REPLACE - digits only; skip first 3,Row 1: Phone 1
+Supplier Phone,phone_device_type,-,"Constant: 'Landline'",Row 1: Phone 1
+Supplier Phone,public_flag,-,"Constant: 'Yes'",Row 1: Phone 1
+Supplier Phone,primary_flag,-,"Constant: 'Yes'",Row 1: Phone 1
+Supplier Phone,phone_type,-,"Constant: 'Business'",Row 1: Phone 1
+Supplier Phone,use_for,-,"Constant: 'Business'",Row 1: Phone 1
+Supplier Phone,supplier_id,supplier_id,TRIM,Row 2: Phone 2 (separate row per supplier)
+Supplier Phone,phone_number,phone_number_2,REGEXP_REPLACE - digits only; skip first 3,Row 2: Phone 2
+Supplier Phone,supplier_id,supplier_id,TRIM,Row 3: Phone 3 (separate row per supplier)
+Supplier Phone,phone_number,phone_3,REGEXP_REPLACE - digits only; skip first 3,Row 3: Phone 3
+Supplier Phone,supplier_id,supplier_id,TRIM,Row 4: Fax (separate row per supplier)
+Supplier Phone,phone_number,fax_number,REGEXP_REPLACE - digits only; skip first 3,Row 4: Fax
+Supplier Phone,phone_device_type,-,"Constant: 'Fax'",Row 4: Fax - different device type
+Supplier Payment,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Payment,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Payment,payment_terms,payment_terms_id,TRIM,Direct mapping
+Supplier Payment,payment_types_accepted,"eft_transfer_method, checkbook_id","ACH/WIRE/ELECTRONIC → mapped value, else 'Check'",Based on payment method
+Supplier Payment,default_payment_type,"eft_transfer_method, checkbook_id","ACH/WIRE/ELECTRONIC → mapped value, else 'Check'",Same logic as payment_types_accepted
+Supplier Payment,shipping_terms,shipping_method,TRIM,Direct mapping
+Supplier Payment,always_separate_payments,-,NULL,Not populated
+Supplier Payment,do_not_pay_during_bank_account_updates,-,NULL,Not populated
+Supplier Payment,exclude_freight_amount_from_supplier_invoice_discount,-,NULL,Not populated
+Supplier Payment,exclude_other_charge_from_supplier_invoice_discount,-,NULL,Not populated
+Supplier Payment,exclude_tax_amount_from_supplier_invoice_discount,-,NULL,Not populated
+Supplier Tax,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Tax,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Tax,tax_id_country,country_code,"COALESCE(UPPER, 'GB')",Default to GB
+Supplier Tax,tax_id,tax_id_number,Remove spaces and hyphens,Cleaned tax ID
+Supplier Tax,tax_id_type,country_code,"Country-based: GB→VAT_UK, US→EIN, IE→VAT_IE, EU→VAT, else 'Other'",Derived from country
+Supplier Tax,primary_tax_id,-,NULL,Not populated
+Supplier Tax,transaction_tax_id,-,NULL,Not populated
+Supplier Tax,tax_status_country,country_code,"COALESCE(UPPER, 'GB')",Default to GB
+Supplier Tax,tax_status,tax_id_number,"Has tax_id → 'Registered', else 'Not_Registered'",Based on tax ID presence
+Supplier Tax,transaction_tax_status,-,NULL,Not populated
+Supplier Tax,withholding_tax_status,-,NULL,Not populated
+Supplier Tax,tax_authority_form_type,"country_code, tax_id_number","US with tax_id → '1099-MISC', else NULL",US specific
+Supplier Tax,irs_1099_supplier,"country_code, tax_id_number","US with tax_id → 'Yes', else 'No'",US specific
+Supplier Tax,tax_document_date,-,NULL,Not populated
+Supplier Tax,default_tax_code,-,NULL,Not populated
+Supplier Tax,default_withholding_tax_code,-,NULL,Not populated
+Supplier Tax,fatca,-,"Constant: 'FALSE'",Hardcoded value
+Supplier Tax,business_entity_tax_id,tax_registration_number,TRIM,Direct mapping
+Supplier Alternate Name,supplier_id,supplier_id,TRIM,Row 1: Short Name
+Supplier Alternate Name,supplier_name,vendor_name,TRIM,Row 1: Short Name
+Supplier Alternate Name,alternate_name,vendor_short_name,TRIM,Row 1: Short Name - Only if different from vendor_name
+Supplier Alternate Name,alternate_name_usage_plus,-,"Constant: 'Short Name'",Row 1: Short Name
+Supplier Alternate Name,supplier_id,supplier_id,TRIM,Row 2: Check Name (separate row per supplier)
+Supplier Alternate Name,alternate_name,vendor_check_name,TRIM,Row 2: Check Name - Only if different from vendor_name and short_name
+Supplier Alternate Name,alternate_name_usage_plus,-,"Constant: 'Check Name'",Row 2: Check Name
+Supplier Currencies,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Currencies,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Currencies,accepted_currencies_plus,"currency_id, currencyid","If both exist and different: pipe-delimited, else COALESCE",May contain multiple currencies
+Supplier Currencies,default_currency,"currency_id, currencyid","COALESCE, default 'GBP'",First available currency
+Supplier Groups,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Groups,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Groups,supplier_group,vendor_class_id,"Constant: 'GROUP1'",Only if vendor_class_id is not blank
+Supplier Company Restrictions,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Company Restrictions,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Company Restrictions,restricted_to_companies,company,"'FA' → 'The Football Association', else direct",Company name mapping
+Supplier Procurement,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Procurement,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Procurement,purchase_order_issue_option,email_to_address,"Has email → 'Email', else 'Paper'",Based on email presence
+Supplier Procurement,invoice_any_supplier,-,NULL,Not populated
+Supplier Procurement,shipping_method,shipping_method,TRIM,Direct mapping
+Supplier Procurement,acknowledgement_expected,-,NULL,Not populated
+Supplier Procurement,enable_asn,-,NULL,Not populated
+Supplier Procurement,asn_due_in_days,-,NULL,Not populated
+Supplier Procurement,supplier_minimum_order_amount,minimum_order,"COALESCE(TRIM, '0')",Default to 0
+Supplier Procurement,minimum_order_amount_currency,"currency_id, currencyid","COALESCE, default 'GBP'",First available currency
+Supplier Procurement,text_for_default_supplier_payment_memo,comment1,TRIM,Direct mapping
+Supplier Procurement,use_supplier_reference_as_default_supplier_payment_memo,-,NULL,Not populated
+Supplier Procurement,use_invoice_memo_as_default_supplier_payment_memo,-,NULL,Not populated
+Supplier Procurement,use_supplier_connection_memo,-,NULL,Not populated
+Supplier Procurement,enable_global_location_number,-,NULL,Not populated
+Supplier Procurement,disable_change_order,-,NULL,Not populated
+Supplier Procurement,multi_supplier_supplier_link_for_po_issue,-,NULL,Not populated
+Supplier Procurement,procurement_credit_card,-,NULL,Not populated
+Supplier Procurement,edit_portal_taxes,-,NULL,Not populated
+Supplier Procurement,change_order_issue_option,-,NULL,Not populated
+Supplier Settlement Account,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Settlement Account,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Settlement Account,settlement_bank_account_id,eft_bank_account,TRIM,Direct mapping
+Supplier Settlement Account,bank_country,bank_country_code,"COALESCE(UPPER, 'GB')",Default to GB
+Supplier Settlement Account,currency,"currencyid, currency_id","COALESCE, default 'GBP'",First available currency
+Supplier Settlement Account,bank_account_type,eft_account_type,TRIM,Direct mapping
+Supplier Settlement Account,bank_name,bank_name,TRIM,Direct mapping
+Supplier Settlement Account,name_on_account,vendor_check_name,TRIM,Direct mapping
+Supplier Settlement Account,bank_account_number,eft_bank_account,Remove spaces,Cleaned account number
+Supplier Settlement Account,bank_account_nickname,vendor_short_name,vendor_short_name || ' Bank',Derived nickname
+Supplier Settlement Account,routing_number_bank_code,"bank_country_code, eft_bank_code, eft_transit_routing_no","UK/EU → eft_bank_code, US → eft_transit_routing_no",Country-specific routing
+Supplier Settlement Account,iban,iban,Remove spaces/hyphens; UPPER,Cleaned IBAN
+Supplier Settlement Account,swift_bank_identification_code,swift_address,TRIM(UPPER),Uppercase
+Supplier Settlement Account,roll_number,building_society_roll_no,TRIM,Direct mapping
+Supplier Settlement Account,check_digit,eft_bank_check_digit,TRIM,Direct mapping
+Supplier Settlement Account,branch_id,eft_bank_branch_code,TRIM,Direct mapping
+Supplier Settlement Account,branch_name,eft_bank_branch,TRIM,Direct mapping
+Supplier Settlement Account,accepts_payment_types_plus,eft_transfer_method,TRIM,Direct mapping
+Supplier Settlement Account,payment_types_plus,eft_transfer_method,TRIM,Direct mapping
+Supplier Settlement Account,for_supplier_connections_only,-,NULL,Not populated
+Supplier Settlement Account,requires_prenote,-,NULL,Not populated
+Supplier Settlement Account,payment_type_prenote,-,NULL,Not populated
+Supplier Settlement Account,inactive,vendor_status,"'ACTIVE' → 'No', else 'Yes'",Inverse of active status
+Supplier Settlement Account,bank_instructions,additional_information,TRIM,Direct mapping
+Supplier Intermediary Account,settlement_bank_account_id,supplier_id,supplier_id || '_BANK',Derived ID
+Supplier Intermediary Account,supplier_name,vendor_name,TRIM,Direct mapping
+Supplier Intermediary Account,supplier_id,supplier_id,TRIM,Direct mapping
+Supplier Intermediary Account,intermediary_bank_account_id,supplier_id,supplier_id || '_INTBANK',Derived ID
+Supplier Intermediary Account,bank_country,-,NULL,Not populated
+Supplier Intermediary Account,currency,"currencyid, currency_id","COALESCE, default 'GBP'",First available currency
+Supplier Intermediary Account,bank_account_type,-,"Constant: 'CHECKING'",Hardcoded value
+Supplier Intermediary Account,bank_name,-,NULL,Not populated
+Supplier Intermediary Account,name_on_account,-,NULL,Not populated
+Supplier Intermediary Account,bank_account_number,-,NULL,Not populated
+Supplier Intermediary Account,bank_account_nickname,vendor_short_name,vendor_short_name || ' Intermediary',Derived nickname
+Supplier Intermediary Account,routing_number_bank_code,central_bank_code,TRIM,Direct mapping
+Supplier Intermediary Account,iban,-,NULL,Not populated
+Supplier Intermediary Account,swift_bank_identification_code,-,NULL,Not populated
+Supplier Intermediary Account,roll_number,-,NULL,Not populated
+Supplier Intermediary Account,check_digit,-,NULL,Not populated
+Supplier Intermediary Account,branch_id,-,NULL,Not populated
+Supplier Intermediary Account,branch_name,-,NULL,Not populated
+Supplier Intermediary Account,inactive,vendor_status,"'ACTIVE' → 'No', else 'Yes'",Inverse of active status
+Supplier Intermediary Account,bank_instructions,-,NULL,Not populated
