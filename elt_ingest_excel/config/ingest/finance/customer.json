@@ -1,0 +1,25 @@
+[
+  {
+    "workbookFileName": "FA Debtors Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "FA Activity Last 3 Years",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_3_years"
+      },
+      {
+        "sheetName": "FA Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_created_date"
+      },
+      {
+        "sheetName": "FA Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_payment_date"
+      }
+    ]
+  }
+]

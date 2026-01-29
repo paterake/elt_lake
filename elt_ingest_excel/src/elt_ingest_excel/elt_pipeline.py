@@ -58,15 +58,15 @@ class FileIngestor:
         self,
         config_base_path: Union[str, Path],
         cfg_ingest_path: str,
+        cfg_ingest_name: str,
         cfg_transform_path: str,
-        config_name: str,
-        data_path: Union[str, Path],
-        data_file_name: str,
-        database_path: Union[str, Path],
+        cfg_publish_path: str | None = None,
+        cfg_publish_name: str | None = None,
+        data_path: Union[str, Path] = "",
+        data_file_name: str = "",
+        database_path: Union[str, Path] = "",
         sheet_filter: str = "*",
         save_mode: SaveMode = SaveMode.RECREATE,
-        cfg_publish_path: str | None = None,
-        cfg_publish_name: str = "publish.json",
         publisher_type: str = "xlwings",
     ):
         """Initialize the file ingestor.
@@ -74,26 +74,26 @@ class FileIngestor:
         Args:
             config_base_path: Base path to the config directory.
             cfg_ingest_path: Relative path to ingest config (e.g., "ingest/finance").
+            cfg_ingest_name: Name of the ingest JSON config file (e.g., "supplier.json").
             cfg_transform_path: Relative path to transform config (e.g., "transform/finance").
-            config_name: Name of the JSON config file (e.g., "supplier.json").
+            cfg_publish_path: Relative path to publish config (e.g., "publish/finance").
+            cfg_publish_name: Name of the publish JSON config file.
             data_path: Path to the data files directory.
             data_file_name: Name of the data file to process.
             database_path: Path to DuckDB database file.
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
-            cfg_publish_path: Relative path to publish config (e.g., "publish/finance").
-            cfg_publish_name: Name of the publish JSON config file.
             publisher_type: Excel publisher to use - "xlwings" (default) or "openpyxl".
                            "xlwings" preserves drawing shapes (requires Excel installed).
                            "openpyxl" works without Excel but may lose shapes in .xlsm files.
         """
         self.config_base_path = Path(config_base_path).expanduser()
         self.cfg_ingest_path = cfg_ingest_path
+        self.cfg_ingest_name = cfg_ingest_name
         self.cfg_transform_path = cfg_transform_path
         self.cfg_publish_path = cfg_publish_path
         self.cfg_publish_name = cfg_publish_name
         self.publisher_type = publisher_type
-        self.config_name = config_name
         self.data_path = Path(data_path).expanduser()
         self.data_file_name = data_file_name
         self.database_path = Path(database_path).expanduser()
@@ -101,7 +101,7 @@ class FileIngestor:
         self.save_mode = save_mode
 
         # Build full config paths
-        self.ingest_config_path = self.config_base_path / cfg_ingest_path / config_name
+        self.ingest_config_path = self.config_base_path / cfg_ingest_path / cfg_ingest_name
         self.transform_config_path = self.config_base_path / cfg_transform_path
         self.publish_config_path = (
             self.config_base_path / cfg_publish_path / cfg_publish_name

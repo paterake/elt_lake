@@ -13,14 +13,14 @@ if __name__ == "__main__":
 
     # Data file location
     data_path = "~/Documents/__data/excel/finance_ref"
-    data_file_name = "FA Creditors with Activity Last 3 Years.xlsx"
+    data_file_name = "FA Debtors Activity Last 3 Years.xlsx"
 
     # Configuration paths (relative to config_base_path)
     cfg_ingest_path = "ingest/finance"
-    cfg_ingest_name = "supplier.json"
-    cfg_transform_path = "transform/sql/finance/supplier"
+    cfg_ingest_name = "customer.json"
+    cfg_transform_path = "transform/sql/finance/customer"
     cfg_publish_path = "publish/finance"
-    cfg_publish_name = "publish_supplier.json"
+    cfg_publish_name = "publish_customer.json"
 
     # Database and processing options
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
