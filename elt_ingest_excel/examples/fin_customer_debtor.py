@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # - "ingest" or PipelinePhase.INGEST: Extract and load only
     # - "transform" or PipelinePhase.TRANSFORM: Ingest + SQL transformations
     # - "publish" or PipelinePhase.PUBLISH: Full pipeline (default)
-    run_to_phase = PipelinePhase.TRANSFORM
+    run_to_phase = PipelinePhase.PUBLISH
 
     # Create ingestor
     ingestor = FileIngestor(
