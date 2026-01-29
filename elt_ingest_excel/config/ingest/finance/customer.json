@@ -21,5 +21,51 @@
         "targetTableName": "fin_customer_debtor_last_payment_date"
       }
     ]
+  },
+  {
+    "workbookFileName": "NFC Debtors Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "NFC Activity Last 3 Years",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_3_years"
+      },
+      {
+        "sheetName": "NFC Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_created_date"
+      },
+      {
+        "sheetName": "NFC Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_payment_date"
+      }
+    ]
+  },
+  {
+    "workbookFileName": "WNSL Debtors Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "WNSL Activity Last 3 Years",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_3_years"
+      },
+      {
+        "sheetName": "WNSL Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_created_date"
+      },
+      {
+        "sheetName": "WNSL Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_last_payment_date"
+      }
+    ]
   }
 ]
