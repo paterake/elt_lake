@@ -1,4 +1,4 @@
-# examples/hcm_contingent_worker.py
+# examples/fin_supplier_creditor.py
 """Example script demonstrating the ELTP pipeline (Extract, Load, Transform, Publish)."""
 
 from pathlib import Path
@@ -11,15 +11,16 @@ if __name__ == "__main__":
     # This script is in examples/, config is at ../config/
     config_base_path = Path(__file__).parent.parent / "config"
 
-    # Configuration paths (relative to config_base_path)
-    cfg_ingest_path = "ingest/hcm"
-    cfg_transform_path = "transform/sql/hcm"
-    cfg_publish_path = "publish/hcm"
-    config_name = "contingent_worker.json"
-
     # Data file location
     data_path = "~/Documents/__data/excel/hcm"
     data_file_name = "Employment type update.xlsx"
+
+    # Configuration paths (relative to config_base_path)
+    cfg_ingest_path = "ingest/hcm"
+    cfg_ingest_name = "contingent_worker.json"
+    cfg_transform_path = "transform/sql/hcm/contingent_worker"
+    cfg_publish_path = "publish/hcm"
+    cfg_publish_name = "publish_contingent_worker.json"
 
     # Database and processing options
     database_path = "~/Documents/__data/duckdb/rpatel.duckdb"
@@ -41,9 +42,10 @@ if __name__ == "__main__":
     ingestor = FileIngestor(
         config_base_path=config_base_path,
         cfg_ingest_path=cfg_ingest_path,
+        cfg_ingest_name=cfg_ingest_name,
         cfg_transform_path=cfg_transform_path,
         cfg_publish_path=cfg_publish_path,
-        config_name=config_name,
+        cfg_publish_name=cfg_publish_name,
         data_path=data_path,
         data_file_name=data_file_name,
         database_path=database_path,
