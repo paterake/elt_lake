@@ -4,11 +4,11 @@ CREATE TABLE src_fin_supplier
     AS
   WITH cte_supplier_src
     AS (
-SELECT * FROM rpatel.main.fin_supplier_creditor_created_date
+SELECT * FROM fin_supplier_creditor_created_date
 UNION
-SELECT * FROM rpatel.main.fin_supplier_creditor_last_payment_date
+SELECT * FROM fin_supplier_creditor_last_payment_date
 UNION
-SELECT * FROM rpatel.main.fin_supplier_creditor_last_purchase_date
+SELECT * FROM fin_supplier_creditor_last_purchase_date
        )
      , cte_supplier_distinct
     AS (

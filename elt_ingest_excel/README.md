@@ -9,7 +9,8 @@ ELT module for ingesting Excel workbooks into DuckDB.
 ```bash
 cd elt_ingest_excel
 uv sync --reinstall  
-uv run python examples/test_read_excel.py
+uv run python examples/fin_supplier_creditor.py
+uv run python examples/fin_customer_debtor.py
 ```
 
 
