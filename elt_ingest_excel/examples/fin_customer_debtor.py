@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     # Data file location
     data_path = "~/Documents/__data/excel/finance_ref"
-    data_file_name = "WNSL Debtors Activity Last 3 Years.xlsx"
+    data_file_name = "NFC Debtors Activity Last 3 Years.xlsx"
 
     # Configuration paths (relative to config_base_path)
     cfg_ingest_path = "ingest/finance"
