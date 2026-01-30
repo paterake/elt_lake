@@ -1,6 +1,6 @@
 # elt-ingest-excel
 
-ELT module for ingesting Excel workbooks into DuckDB.
+ELT module for ingesting Excel workbooks into DuckDB with transformation and publishing capabilities.
 
 ## Setup
 
@@ -35,7 +35,7 @@ Use `uv run` to execute Python scripts within the virtual environment:
 
 ```bash
 # Run a script
-uv run python examples/test_read_excel.py
+uv run python examples/fin_supplier_creditor.py
 
 # Run tests
 uv run pytest test/ -v
@@ -58,73 +58,59 @@ uv add --group dev black
 
 - Load Excel workbooks (.xlsx) into DuckDB tables
 - JSON-based configuration for workbook/sheet mappings
-- Automatic schema inference from Excel data
+- SQL-based transformations
+- Publish transformed data to Excel workbooks
 - Support for custom header rows and row skipping
-- Validation of loaded data via table counts
 
 ## Quick Start
 
-### 1. Create a JSON configuration file
-
-```json
-[
-  {
-    "workbookFileName": "/path/to/sales_data.xlsx",
-    "sheets": [
-      {
-        "sheetName": "Monthly Sales",
-        "targetTableName": "monthly_sales"
-      },
-      {
-        "sheetName": "Product Catalog",
-        "targetTableName": "products"
-      }
-    ]
-  }
-]
-```
-
-### 2. Run the ingestion
+### Using FileIngestor (ELT Pipeline)
 
 ```python
-from elt_ingest_excel import ExcelIngester, JsonConfigParser
+from elt_ingest_excel import FileIngestor, PipelinePhase
 
-# Load configuration
-config = JsonConfigParser.from_json(
-    "config.json",
-    database_path="my_database.duckdb",
+# Create pipeline
+pipeline = FileIngestor(
+    config_base_path="~/config",
+    cfg_ingest_path="ingest/finance",
+    cfg_ingest_name="supplier.json",
+    cfg_transform_path="transform/finance",
+    cfg_publish_path="publish/finance",
+    cfg_publish_name="supplier_publish.json",
+    data_path="~/data",
+    data_file_name="suppliers.xlsx",
+    database_path="~/output/data.duckdb",
 )
 
-# Run ingestion
-with ExcelIngester(config) as ingester:
-    results = ingester.ingest()
-    ingester.print_summary(results)
-```
+# Run full ELT pipeline (ingest -> transform -> publish)
+load_results, transform_results, publish_results = pipeline.process()
 
-### 3. Or use the CLI
-
-```bash
-uv run python examples/run_from_json.py config.json my_database.duckdb --verbose
+# Or run up to a specific phase
+load_results, _, _ = pipeline.process(run_to_phase=PipelinePhase.INGEST)
+load_results, transform_results, _ = pipeline.process(run_to_phase=PipelinePhase.TRANSFORM)
 ```
 
 ## Configuration
 
-### JSON Config Format
+### Ingest JSON Config Format
 
 ```json
-[
-  {
-    "workbookFileName": "/path/to/workbook.xlsx",
-    "sheets": [
-      {
-        "sheetName": "Sheet1",
-        "targetTableName": "my_table",
-        "headerRow": 1,
-        "skipRows": 0
-      }
-    ]
-  }
-]
+{
+  "workbooks": [
+    {
+      "workbookFileName": "suppliers.xlsx",
+      "fileType": "EXCEL",
+      "sheets": [
+        {
+          "sheetName": "Sheet1",
+          "targetTableName": "raw_suppliers",
+          "headerRow": 1,
+          "dataRow": 2
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ### Sheet Configuration Options
@@ -134,65 +120,16 @@ uv run python examples/run_from_json.py config.json my_database.duckdb --verbose
 | `sheetName` | Yes | - | Name of the worksheet in Excel |
 | `targetTableName` | Yes | - | Name of the DuckDB table to create |
 | `headerRow` | No | 1 | Row number containing column headers (1-indexed) |
-| `skipRows` | No | 0 | Number of rows to skip before the header row |
+| `dataRow` | No | 2 | Row number where data starts (1-indexed) |
 
-### Ingestion Options
+### Transform Configuration
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `create_tables` | `True` | Create tables if they don't exist |
-| `replace_data` | `True` | Replace existing data (vs append) |
+Create an `order.txt` file in the transform config path listing SQL files to execute:
 
-## Programmatic Usage
-
-### Using dataclasses directly
-
-```python
-from pathlib import Path
-from elt_ingest_excel import (
-    ExcelIngester,
-    ExcelIngestConfig,
-    WorkbookConfig,
-    SheetConfig,
-)
-
-config = ExcelIngestConfig(
-    database_path=Path("my_database.duckdb"),
-    workbooks=[
-        WorkbookConfig(
-            workbook_file_name="/path/to/workbook.xlsx",
-            sheets=[
-                SheetConfig(
-                    sheet_name="Sheet1",
-                    target_table_name="my_table",
-                    header_row=1,
-                ),
-            ],
-        ),
-    ],
-    replace_data=True,
-)
-
-with ExcelIngester(config) as ingester:
-    results = ingester.ingest()
-    for result in results:
-        print(f"{result.table_name}: {result.row_count} rows")
 ```
-
-### Reading Excel files without DuckDB
-
-```python
-from elt_ingest_excel import ExcelLoader, SheetConfig
-
-sheet_config = SheetConfig(
-    sheet_name="Sheet1",
-    target_table_name="ignored",
-)
-
-with ExcelLoader("/path/to/workbook.xlsx") as loader:
-    data = loader.load_sheet(sheet_config)
-    print(f"Loaded {len(data)} rows")
-    print(data[0])  # First row as dict
+01_clean_data.sql
+02_transform.sql
+03_aggregate.sql
 ```
 
 ## Testing
@@ -205,3 +142,4 @@ uv run pytest test/ -v
 
 - `openpyxl>=3.1.0` - Excel file reading
 - `duckdb>=1.0.0` - Database storage
+- `pandas>=2.0.0` - Data manipulation

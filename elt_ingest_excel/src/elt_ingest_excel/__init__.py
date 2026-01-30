@@ -4,25 +4,26 @@ This module provides functionality to:
 - Read Excel workbooks using openpyxl
 - Load worksheet data into DuckDB tables
 - Configure ingestion via JSON configuration files
-- Validate loaded data by outputting table counts
+- Transform data using SQL
+- Publish results to Excel workbooks
 
 Example usage:
 
-    from elt_ingest_excel import (
-        ExcelIngester,
-        JsonConfigParser,
+    from elt_ingest_excel import FileIngestor, PipelinePhase
+
+    # Create pipeline
+    pipeline = FileIngestor(
+        config_base_path="~/config",
+        cfg_ingest_path="ingest/finance",
+        cfg_ingest_name="supplier.json",
+        cfg_transform_path="transform/finance",
+        data_path="~/data",
+        data_file_name="suppliers.xlsx",
+        database_path="~/output/data.duckdb",
     )
 
-    # Load configuration from JSON
-    config = JsonConfigParser.from_json(
-        "config.json",
-        database_path="my_database.duckdb",
-    )
-
-    # Run ingestion
-    with ExcelIngester(config) as ingester:
-        results = ingester.ingest()
-        ingester.print_summary(results)
+    # Run full ELT pipeline
+    load_results, transform_results, publish_results = pipeline.process()
 """
 
 from .models import (
@@ -38,7 +39,6 @@ from .parsers import JsonConfigParser, PublishConfigParser
 from .loaders import ExcelLoader, ExcelReader
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .publish import ExcelPublisher, PublishResult
-from .ingester import ExcelIngester, LoadResult
 from .elt_pipeline import FileIngestor, TransformResult, PipelinePhase
 
 __all__ = [
@@ -64,10 +64,7 @@ __all__ = [
     # Publisher
     "ExcelPublisher",
     "PublishResult",
-    # Ingester
-    "ExcelIngester",
-    "LoadResult",
-    # File Ingestor (main ELTP workflow)
+    # ELT Pipeline (main workflow)
     "FileIngestor",
     "TransformResult",
     "PipelinePhase",
