@@ -1,7 +1,7 @@
 """Database writers for saving ingested data."""
 
-from .save_mode import SaveMode
-from .duckdb_writer import DuckDBWriter, WriteResult
+from ..models import SaveMode, WriteResult
+from .duckdb_writer import DuckDBWriter
 
 __all__ = [
     "SaveMode",

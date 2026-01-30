@@ -1,29 +1,12 @@
 """DuckDB database writer for ingested data."""
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Union
 
 import duckdb
 import pandas as pd
 
-from .save_mode import SaveMode
-
-
-@dataclass
-class WriteResult:
-    """Result of writing data to a table.
-
-    Attributes:
-        table_name: Name of the target table.
-        rows_written: Number of rows written.
-        row_count: Verified count from the table after writing.
-        save_mode: The save mode used.
-    """
-    table_name: str
-    rows_written: int
-    row_count: int
-    save_mode: SaveMode
+from ..models import SaveMode, WriteResult
 
 
 class DuckDBWriter:

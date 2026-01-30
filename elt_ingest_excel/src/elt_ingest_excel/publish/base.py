@@ -2,34 +2,20 @@
 
 import shutil
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Union
 
 import duckdb
 
-from ..models import PublishConfig, PublishWorkbookConfig, PublishSheetConfig
+from ..models import (
+    PublishConfig,
+    PublishResult,
+    PublishSheetConfig,
+    PublishWorkbookConfig,
+)
 
 if TYPE_CHECKING:
     from ..reporting import PipelineReporter
-
-
-@dataclass
-class PublishResult:
-    """Result of publishing data to a sheet.
-
-    Attributes:
-        sheet_name: Name of the sheet written to.
-        table_name: Source DuckDB table.
-        rows_written: Number of rows written.
-        success: Whether the publish succeeded.
-        error: Error message if failed, None otherwise.
-    """
-    sheet_name: str
-    table_name: str
-    rows_written: int
-    success: bool
-    error: str | None = None
 
 
 class BaseExcelPublisher(ABC):

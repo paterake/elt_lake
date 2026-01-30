@@ -1,28 +1,14 @@
 """SQL transformation executor for DuckDB."""
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import duckdb
 
+from ..models import TransformResult
+
 if TYPE_CHECKING:
     from ..reporting import PipelineReporter
-
-
-@dataclass
-class TransformResult:
-    """Result of executing a transform SQL file.
-
-    Attributes:
-        sql_file: Name of the SQL file executed.
-        success: Whether execution succeeded.
-        error: Error message if failed, None otherwise.
-    """
-
-    sql_file: str
-    success: bool
-    error: str | None = None
 
 
 class SqlExecutor:

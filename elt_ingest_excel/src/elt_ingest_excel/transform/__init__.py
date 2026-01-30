@@ -1,6 +1,7 @@
 """Transform module for SQL-based data transformations."""
 
-from .sql_executor import SqlExecutor, TransformResult
+from ..models import TransformResult
+from .sql_executor import SqlExecutor
 
 __all__ = [
     "SqlExecutor",

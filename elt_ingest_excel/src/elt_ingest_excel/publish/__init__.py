@@ -1,6 +1,7 @@
 """Publish module for writing data to Excel workbooks."""
 
-from .base import BaseExcelPublisher, PublishResult
+from ..models import PublishResult
+from .base import BaseExcelPublisher
 from .excel_publisher_openpyxl import ExcelPublisherOpenpyxl
 from .excel_publisher_xlwings import ExcelPublisherXlwings
 
