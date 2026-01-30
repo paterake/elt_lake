@@ -36,10 +36,11 @@ from .models import (
     PublishSheetConfig,
 )
 from .parsers import JsonConfigParser, PublishConfigParser
-from .loaders import ExcelLoader, ExcelReader
+from .loaders import ExcelLoader, ExcelReader, SheetProcessor
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .publish import ExcelPublisher, PublishResult
-from .elt_pipeline import FileIngestor, TransformResult, PipelinePhase
+from .transform import SqlExecutor, TransformResult
+from .elt_pipeline import FileIngestor, PipelinePhase
 
 __all__ = [
     # Models - Ingest
@@ -57,6 +58,7 @@ __all__ = [
     # Loaders
     "ExcelLoader",
     "ExcelReader",
+    "SheetProcessor",
     # Writers
     "SaveMode",
     "DuckDBWriter",
@@ -64,9 +66,11 @@ __all__ = [
     # Publisher
     "ExcelPublisher",
     "PublishResult",
+    # Transform
+    "SqlExecutor",
+    "TransformResult",
     # ELT Pipeline (main workflow)
     "FileIngestor",
-    "TransformResult",
     "PipelinePhase",
 ]
 

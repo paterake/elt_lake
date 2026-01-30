@@ -1,9 +1,17 @@
 """Main workflow module for file ingestion and transformation."""
 
-from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Union
+
+import pandas as pd
+
+from .loaders import SheetProcessor
+from .parsers import JsonConfigParser, PublishConfigParser
+from .publish import ExcelPublisherOpenpyxl, ExcelPublisherXlwings, PublishResult
+from .reporting import PipelineReporter
+from .transform import SqlExecutor, TransformResult
+from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
 class PipelinePhase(Enum):
@@ -14,41 +22,21 @@ class PipelinePhase(Enum):
     - TRANSFORM: Ingest + run SQL transformations
     - PUBLISH: Ingest + transform + publish to Excel
     """
+
     INGEST = "ingest"
     TRANSFORM = "transform"
     PUBLISH = "publish"
-
-import duckdb
-import pandas as pd
-
-from .loaders import ExcelReader
-from .models import FileType, SheetConfig
-from .parsers import JsonConfigParser, PublishConfigParser
-from .publish import ExcelPublisherOpenpyxl, ExcelPublisherXlwings, PublishResult
-from .writers import SaveMode, DuckDBWriter, WriteResult
-
-
-@dataclass
-class TransformResult:
-    """Result of executing a transform SQL file.
-
-    Attributes:
-        sql_file: Name of the SQL file executed.
-        success: Whether execution succeeded.
-        error: Error message if failed, None otherwise.
-    """
-    sql_file: str
-    success: bool
-    error: str | None = None
 
 
 class FileIngestor:
     """Main ELT workflow orchestrator.
 
-    This class orchestrates the full ELT process:
-    1. Extract - Read data from source files (Excel, CSV, etc.)
-    2. Load - Write raw data to DuckDB tables
-    3. Transform - Execute SQL transformations
+    This class orchestrates the full ELT process by delegating to
+    specialized modules:
+    1. Extract/Load - SheetProcessor reads source files and writes to DuckDB
+    2. Transform - SqlExecutor runs SQL transformations
+    3. Publish - ExcelPublisher exports data to Excel workbooks
+    4. Reporting - PipelineReporter handles all console output
 
     Supports multiple file types (EXCEL, DELIMITED), though
     currently only EXCEL is implemented.
@@ -105,13 +93,14 @@ class FileIngestor:
         self.transform_config_path = self.config_base_path / cfg_transform_path
         self.publish_config_path = (
             self.config_base_path / cfg_publish_path / cfg_publish_name
-            if cfg_publish_path else None
+            if cfg_publish_path
+            else None
         )
 
         # Configure pandas display
-        pd.set_option('display.max_columns', None)
-        pd.set_option('display.width', None)
-        pd.set_option('display.max_colwidth', 50)
+        pd.set_option("display.max_columns", None)
+        pd.set_option("display.width", None)
+        pd.set_option("display.max_colwidth", 50)
 
         # Load ingest configuration
         self.config = JsonConfigParser.from_json(
@@ -131,6 +120,9 @@ class FileIngestor:
         # Get sheets (filtered)
         self.sheets = JsonConfigParser.get_sheets(self.workbook, self.sheet_filter)
 
+        # Initialize reporter
+        self.reporter = PipelineReporter()
+
         # Store results
         self.load_results: list[WriteResult] = []
         self.transform_results: list[TransformResult] = []
@@ -144,25 +136,27 @@ class FileIngestor:
         Returns:
             List of WriteResult objects for each sheet processed.
         """
-        print("\n" + "=" * 60)
-        print("EXTRACT & LOAD PHASE")
-        print("=" * 60)
-        print(f"Config: {self.ingest_config_path}")
-        print(f"Data file: {self.data_path / self.data_file_name}")
-        print(f"File type: {self.workbook.file_type.value}")
-        print(f"Database: {self.database_path}")
-        print(f"Save mode: {self.save_mode.value}")
-        print(f"Processing {len(self.sheets)} sheet(s)")
+        self.reporter.print_extract_load_header(
+            config_path=self.ingest_config_path,
+            data_file=self.data_path / self.data_file_name,
+            file_type=self.workbook.file_type.value,
+            database_path=self.database_path,
+            save_mode=self.save_mode,
+            sheet_count=len(self.sheets),
+        )
 
-        self.load_results = []
+        # Create sheet processor and delegate extraction/loading
+        processor = SheetProcessor(
+            data_path=self.data_path,
+            data_file_name=self.data_file_name,
+            workbook_config=self.workbook,
+            save_mode=self.save_mode,
+        )
 
         with DuckDBWriter(self.database_path) as writer:
-            for sheet_config in self.sheets:
-                result = self._process_sheet(sheet_config, writer)
-                if result:
-                    self.load_results.append(result)
+            self.load_results = processor.process_sheets(self.sheets, writer)
 
-        self._print_load_summary()
+        self.reporter.print_load_summary(self.load_results)
         return self.load_results
 
     def transform(self) -> list[TransformResult]:
@@ -174,28 +168,26 @@ class FileIngestor:
         Returns:
             List of TransformResult objects for each SQL file executed.
         """
-        print("\n" + "=" * 60)
-        print("TRANSFORM PHASE")
-        print("=" * 60)
-        print(f"Transform path: {self.transform_config_path}")
+        self.reporter.print_transform_header(self.transform_config_path)
 
-        order_file = self.transform_config_path / "order.txt"
-        if not order_file.exists():
-            print(f"No order.txt found at {order_file}")
+        # Create SQL executor and delegate transformation
+        executor = SqlExecutor(
+            transform_path=self.transform_config_path,
+            database_path=self.database_path,
+        )
+
+        sql_count = executor.get_sql_file_count()
+        if sql_count == 0:
+            self.reporter.print_transform_no_order_file(
+                self.transform_config_path / "order.txt"
+            )
             return []
 
-        # Read order.txt to get list of SQL files
-        sql_files = self._read_order_file(order_file)
-        print(f"SQL files to execute: {len(sql_files)}")
+        self.reporter.print_transform_sql_count(sql_count)
 
-        self.transform_results = []
+        self.transform_results = executor.execute()
 
-        with duckdb.connect(str(self.database_path)) as conn:
-            for sql_file in sql_files:
-                result = self._execute_sql_file(conn, sql_file)
-                self.transform_results.append(result)
-
-        self._print_transform_summary()
+        self.reporter.print_transform_summary(self.transform_results)
         return self.transform_results
 
     def publish(self) -> list[PublishResult]:
@@ -206,28 +198,28 @@ class FileIngestor:
         Returns:
             List of PublishResult objects for each sheet published.
         """
-        print("\n" + "=" * 60)
-        print("PUBLISH PHASE")
-        print("=" * 60)
+        self.reporter.print_publish_header()
 
         if not self.publish_config_path:
-            print("No publish config path configured")
+            self.reporter.print_publish_no_config()
             return []
 
         if not self.publish_config_path.exists():
-            print(f"Publish config not found: {self.publish_config_path}")
+            self.reporter.print_publish_config_not_found(self.publish_config_path)
             return []
-
-        print(f"Publish config: {self.publish_config_path}")
-        print(f"Publisher: {self.publisher_type}")
 
         # Load publish configuration
         publish_config = PublishConfigParser.from_json(self.publish_config_path)
-        print(f"Workbooks to publish: {len(publish_config.workbooks)}")
+
+        self.reporter.print_publish_config_info(
+            config_path=self.publish_config_path,
+            publisher_type=self.publisher_type,
+            workbook_count=len(publish_config.workbooks),
+        )
 
         self.publish_results = []
 
-        # Select publisher based on type
+        # Select publisher based on type and delegate publishing
         if self.publisher_type == "xlwings":
             publisher_class = ExcelPublisherXlwings
         else:
@@ -236,7 +228,7 @@ class FileIngestor:
         with publisher_class(self.database_path) as publisher:
             self.publish_results = publisher.publish(publish_config)
 
-        self._print_publish_summary()
+        self.reporter.print_publish_summary(self.publish_results)
         return self.publish_results
 
     def process(
@@ -274,175 +266,3 @@ class FileIngestor:
         # Run publish
         publish_results = self.publish()
         return load_results, transform_results, publish_results
-
-    def _read_order_file(self, order_file: Path) -> list[str]:
-        """Read order.txt and return list of SQL file names.
-
-        Args:
-            order_file: Path to order.txt file.
-
-        Returns:
-            List of SQL file names to execute.
-        """
-        content = order_file.read_text()
-        files = []
-        for line in content.strip().split('\n'):
-            line = line.strip()
-            if line and not line.startswith('#'):  # Skip empty lines and comments
-                files.append(line)
-        return files
-
-    def _execute_sql_file(
-        self,
-        conn: duckdb.DuckDBPyConnection,
-        sql_file: str,
-    ) -> TransformResult:
-        """Execute a single SQL file.
-
-        Args:
-            conn: DuckDB connection.
-            sql_file: Name of the SQL file to execute.
-
-        Returns:
-            TransformResult with execution status.
-        """
-        sql_path = self.transform_config_path / sql_file
-        print(f"\n  Executing: {sql_file}")
-
-        if not sql_path.exists():
-            error = f"SQL file not found: {sql_path}"
-            print(f"    ERROR: {error}")
-            return TransformResult(sql_file=sql_file, success=False, error=error)
-
-        try:
-            sql_content = sql_path.read_text()
-
-            # Split by semicolon and execute each statement
-            statements = [s.strip() for s in sql_content.split(';') if s.strip()]
-
-            for i, statement in enumerate(statements, 1):
-                if statement:
-                    conn.execute(statement)
-                    print(f"    Statement {i} executed")
-
-            print(f"    SUCCESS")
-            return TransformResult(sql_file=sql_file, success=True)
-
-        except Exception as e:
-            error = str(e)
-            print(f"    ERROR: {error}")
-            return TransformResult(sql_file=sql_file, success=False, error=error)
-
-    def _process_sheet(
-        self,
-        sheet_config: SheetConfig,
-        writer: DuckDBWriter,
-    ) -> WriteResult | None:
-        """Process a single sheet.
-
-        Args:
-            sheet_config: Configuration for the sheet to process.
-            writer: DuckDBWriter instance for database operations.
-
-        Returns:
-            WriteResult if data was written, None otherwise.
-        """
-        print(f"\n  Sheet: {sheet_config.sheet_name}")
-        print(f"    Target table: {sheet_config.target_table_name}")
-        print(f"    Header row: {sheet_config.header_row}, Data row: {sheet_config.data_row}")
-
-        if self.workbook.file_type == FileType.EXCEL:
-            return self._process_excel_sheet(sheet_config, writer)
-        elif self.workbook.file_type == FileType.DELIMITED:
-            return self._process_delimited_file(sheet_config, writer)
-        else:
-            raise ValueError(f"Unsupported file type: {self.workbook.file_type}")
-
-    def _process_excel_sheet(
-        self,
-        sheet_config: SheetConfig,
-        writer: DuckDBWriter,
-    ) -> WriteResult:
-        """Process an Excel sheet.
-
-        Args:
-            sheet_config: Configuration for the sheet to process.
-            writer: DuckDBWriter instance for database operations.
-
-        Returns:
-            WriteResult with details of the write operation.
-        """
-        reader = ExcelReader(
-            file_path=self.data_path / self.data_file_name,
-            sheet_name=sheet_config.sheet_name,
-            header_row=sheet_config.header_row - 1,  # pandas uses 0-indexed
-            dtype=str,
-        )
-        df = reader.load()
-
-        print(f"    Rows read: {len(df)}")
-
-        # Write to DuckDB
-        result = writer.write(df, sheet_config.target_table_name, self.save_mode)
-
-        print(f"    Rows written: {result.rows_written}")
-
-        return result
-
-    def _process_delimited_file(
-        self,
-        sheet_config: SheetConfig,
-        writer: DuckDBWriter,
-    ) -> WriteResult:
-        """Process a delimited file (CSV, TSV, etc.).
-
-        Args:
-            sheet_config: Configuration for the file to process.
-            writer: DuckDBWriter instance for database operations.
-
-        Returns:
-            WriteResult with details of the write operation.
-
-        Note:
-            Not yet implemented. Will be added in future version.
-        """
-        raise NotImplementedError("DELIMITED file type not yet supported")
-
-    def _print_load_summary(self) -> None:
-        """Print a summary of the load results."""
-        print("\n" + "-" * 40)
-        print("Load Summary:")
-        total_rows = 0
-        for result in self.load_results:
-            print(f"  {result.table_name}: {result.row_count} rows")
-            total_rows += result.row_count
-        print(f"Total: {len(self.load_results)} tables, {total_rows} rows")
-
-    def _print_transform_summary(self) -> None:
-        """Print a summary of the transform results."""
-        print("\n" + "-" * 40)
-        print("Transform Summary:")
-        success_count = sum(1 for r in self.transform_results if r.success)
-        fail_count = len(self.transform_results) - success_count
-
-        for result in self.transform_results:
-            status = "OK" if result.success else f"FAILED: {result.error}"
-            print(f"  {result.sql_file}: {status}")
-
-        print(f"Total: {success_count} succeeded, {fail_count} failed")
-
-    def _print_publish_summary(self) -> None:
-        """Print a summary of the publish results."""
-        print("\n" + "-" * 40)
-        print("Publish Summary:")
-        success_count = sum(1 for r in self.publish_results if r.success)
-        fail_count = len(self.publish_results) - success_count
-        total_rows = sum(r.rows_written for r in self.publish_results if r.success)
-
-        for result in self.publish_results:
-            if result.success:
-                print(f"  {result.sheet_name}: {result.rows_written} rows")
-            else:
-                print(f"  {result.sheet_name}: FAILED - {result.error}")
-
-        print(f"Total: {success_count} succeeded, {fail_count} failed, {total_rows} rows written")
