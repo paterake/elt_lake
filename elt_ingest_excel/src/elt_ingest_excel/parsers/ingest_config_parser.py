@@ -1,14 +1,14 @@
-"""JSON configuration parser for Excel ingestion."""
+"""Configuration parser for Excel ingestion."""
 
-import json
 from pathlib import Path
 from typing import Union
 
 from ..models import ExcelIngestConfig, FileType, WorkbookConfig, SheetConfig
+from .base_parser import BaseConfigParser
 
 
-class JsonConfigParser:
-    """Parser for JSON configuration files.
+class IngestConfigParser(BaseConfigParser):
+    """Parser for ingest JSON configuration files.
 
     Supports loading configuration from:
     - File path (str or Path)
@@ -19,6 +19,7 @@ class JsonConfigParser:
     [
         {
             "workbookFileName": "/path/to/workbook.xlsx",
+            "fileType": "EXCEL",
             "sheets": [
                 {
                     "sheetName": "Sheet1",
@@ -31,8 +32,9 @@ class JsonConfigParser:
     ]
     """
 
-    @staticmethod
+    @classmethod
     def from_json(
+        cls,
         json_data: Union[str, Path, dict, list],
         database_path: Union[str, Path],
         create_tables: bool = True,
@@ -54,29 +56,10 @@ class JsonConfigParser:
             json.JSONDecodeError: If JSON parsing fails.
             ValueError: If configuration is invalid.
         """
-        # Parse JSON data based on type
-        if isinstance(json_data, Path):
-            if not json_data.exists():
-                raise FileNotFoundError(f"Config file not found: {json_data}")
-            data = json.loads(json_data.read_text())
-        elif isinstance(json_data, str):
-            # Check if it's a file path or JSON string
-            path = Path(json_data)
-            if path.exists():
-                data = json.loads(path.read_text())
-            else:
-                data = json.loads(json_data)
-        elif isinstance(json_data, (dict, list)):
-            data = json_data
-        else:
-            raise ValueError(f"Unsupported json_data type: {type(json_data)}")
-
-        # Ensure data is a list
-        if isinstance(data, dict):
-            data = [data]
+        data = cls.load_json_data(json_data)
 
         # Parse workbook configurations
-        workbooks = JsonConfigParser._parse_workbooks(data)
+        workbooks = cls._parse_workbooks(data)
 
         # Convert database_path to Path
         db_path = Path(database_path) if isinstance(database_path, str) else database_path
@@ -103,7 +86,7 @@ class JsonConfigParser:
             if "workbookFileName" not in wb_data:
                 raise ValueError("Missing required field: workbookFileName")
 
-            sheets = JsonConfigParser._parse_sheets(wb_data.get("sheets", []))
+            sheets = IngestConfigParser._parse_sheets(wb_data.get("sheets", []))
 
             # Parse fileType (default to EXCEL if not specified)
             file_type_str = wb_data.get("fileType", "EXCEL").upper()
@@ -156,8 +139,9 @@ class JsonConfigParser:
 
         return sheets
 
-    @staticmethod
+    @classmethod
     def to_json(
+        cls,
         config: ExcelIngestConfig,
         filepath: Union[str, Path, None] = None,
     ) -> str:
@@ -187,11 +171,10 @@ class JsonConfigParser:
             }
             data.append(wb_data)
 
-        json_str = json.dumps(data, indent=2)
+        json_str = cls.to_json_string(data)
 
         if filepath:
-            path = Path(filepath) if isinstance(filepath, str) else filepath
-            path.write_text(json_str)
+            cls.write_json_file(data, filepath)
 
         return json_str
 
@@ -239,3 +222,7 @@ class JsonConfigParser:
             sheet for sheet in workbook.sheets
             if sheet.sheet_name == sheet_filter
         ]
+
+
+# Backward compatibility alias
+JsonConfigParser = IngestConfigParser

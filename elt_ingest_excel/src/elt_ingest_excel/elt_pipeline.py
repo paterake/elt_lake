@@ -151,6 +151,7 @@ class FileIngestor:
             data_file_name=self.data_file_name,
             workbook_config=self.workbook,
             save_mode=self.save_mode,
+            reporter=self.reporter,
         )
 
         with DuckDBWriter(self.database_path) as writer:
@@ -174,6 +175,7 @@ class FileIngestor:
         executor = SqlExecutor(
             transform_path=self.transform_config_path,
             database_path=self.database_path,
+            reporter=self.reporter,
         )
 
         sql_count = executor.get_sql_file_count()
@@ -225,7 +227,7 @@ class FileIngestor:
         else:
             publisher_class = ExcelPublisherOpenpyxl
 
-        with publisher_class(self.database_path) as publisher:
+        with publisher_class(self.database_path, reporter=self.reporter) as publisher:
             self.publish_results = publisher.publish(publish_config)
 
         self.reporter.print_publish_summary(self.publish_results)

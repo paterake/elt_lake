@@ -73,6 +73,43 @@ class PipelineReporter:
         """
         print(f"SQL files to execute: {count}")
 
+    def print_sql_file_start(self, sql_file: str) -> None:
+        """Print message when starting to execute a SQL file.
+
+        Args:
+            sql_file: Name of the SQL file being executed.
+        """
+        print(f"\n  Executing: {sql_file}")
+
+    def print_sql_file_not_found(self, sql_file: str, path: str) -> None:
+        """Print error when SQL file is not found.
+
+        Args:
+            sql_file: Name of the SQL file.
+            path: Full path where file was expected.
+        """
+        print(f"    ERROR: SQL file not found: {path}")
+
+    def print_sql_statement_executed(self, statement_num: int) -> None:
+        """Print message when a SQL statement is executed.
+
+        Args:
+            statement_num: The statement number (1-indexed).
+        """
+        print(f"    Statement {statement_num} executed")
+
+    def print_sql_file_success(self) -> None:
+        """Print success message for SQL file execution."""
+        print("    SUCCESS")
+
+    def print_sql_file_error(self, error: str) -> None:
+        """Print error message for SQL file execution.
+
+        Args:
+            error: The error message.
+        """
+        print(f"    ERROR: {error}")
+
     def print_publish_header(self) -> None:
         """Print header for Publish phase."""
         print("\n" + "=" * self.SEPARATOR_WIDTH)
@@ -107,6 +144,41 @@ class PipelineReporter:
         print(f"Publish config: {config_path}")
         print(f"Publisher: {publisher_type}")
         print(f"Workbooks to publish: {workbook_count}")
+
+    def print_sheet_start(
+        self,
+        sheet_name: str,
+        target_table: str,
+        header_row: int,
+        data_row: int,
+    ) -> None:
+        """Print message when starting to process a sheet.
+
+        Args:
+            sheet_name: Name of the sheet being processed.
+            target_table: Target table name.
+            header_row: Header row number.
+            data_row: Data row number.
+        """
+        print(f"\n  Sheet: {sheet_name}")
+        print(f"    Target table: {target_table}")
+        print(f"    Header row: {header_row}, Data row: {data_row}")
+
+    def print_sheet_rows_read(self, count: int) -> None:
+        """Print number of rows read from sheet.
+
+        Args:
+            count: Number of rows read.
+        """
+        print(f"    Rows read: {count}")
+
+    def print_sheet_rows_written(self, count: int) -> None:
+        """Print number of rows written to database.
+
+        Args:
+            count: Number of rows written.
+        """
+        print(f"    Rows written: {count}")
 
     def print_load_summary(self, results: list[WriteResult]) -> None:
         """Print summary of load results.
@@ -158,3 +230,79 @@ class PipelineReporter:
                 print(f"  {result.sheet_name}: FAILED - {result.error}")
 
         print(f"Total: {success_count} succeeded, {fail_count} failed, {total_rows} rows written")
+
+    # Workbook publishing methods
+
+    def print_workbook_source(self, src_path: Path) -> None:
+        """Print source template path.
+
+        Args:
+            src_path: Path to the source template workbook.
+        """
+        print(f"\n  Source template: {src_path}")
+
+    def print_workbook_target(self, tgt_path: Path) -> None:
+        """Print target workbook path.
+
+        Args:
+            tgt_path: Path to the target workbook.
+        """
+        print(f"  Target workbook: {tgt_path}")
+
+    def print_workbook_deleting_existing(self, tgt_path: Path) -> None:
+        """Print message when deleting existing target.
+
+        Args:
+            tgt_path: Path to the target being deleted.
+        """
+        print(f"  Deleting existing target: {tgt_path}")
+
+    def print_workbook_cloning(self) -> None:
+        """Print message when cloning template."""
+        print("  Cloning template to target...")
+
+    def print_workbook_saving(self) -> None:
+        """Print message when saving workbook."""
+        print("  Saving workbook...")
+
+    def print_workbook_saved(self, tgt_path: Path) -> None:
+        """Print message when workbook is saved.
+
+        Args:
+            tgt_path: Path to the saved workbook.
+        """
+        print(f"  Workbook saved: {tgt_path}")
+
+    def print_publish_sheet_start(self, sheet_name: str, table_name: str) -> None:
+        """Print message when starting to publish a sheet.
+
+        Args:
+            sheet_name: Name of the sheet being published.
+            table_name: Source table name.
+        """
+        print(f"\n    Sheet: {sheet_name}")
+        print(f"    Source table: {table_name}")
+
+    def print_publish_rows_from_table(self, count: int) -> None:
+        """Print number of rows fetched from table.
+
+        Args:
+            count: Number of rows fetched.
+        """
+        print(f"    Rows from table: {count}")
+
+    def print_publish_rows_written(self, count: int) -> None:
+        """Print number of rows written to sheet.
+
+        Args:
+            count: Number of rows written.
+        """
+        print(f"    Rows written: {count}")
+
+    def print_publish_sheet_error(self, error: str) -> None:
+        """Print error message for sheet publish.
+
+        Args:
+            error: The error message.
+        """
+        print(f"    ERROR: {error}")

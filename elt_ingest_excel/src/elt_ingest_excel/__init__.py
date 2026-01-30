@@ -36,7 +36,7 @@ from .models import (
     PublishSheetConfig,
 )
 from .parsers import JsonConfigParser, PublishConfigParser
-from .loaders import ExcelLoader, ExcelReader, SheetProcessor
+from .loaders import ExcelReader, SheetProcessor
 from .writers import SaveMode, DuckDBWriter, WriteResult
 from .publish import ExcelPublisher, PublishResult
 from .transform import SqlExecutor, TransformResult
@@ -56,7 +56,6 @@ __all__ = [
     "JsonConfigParser",
     "PublishConfigParser",
     # Loaders
-    "ExcelLoader",
     "ExcelReader",
     "SheetProcessor",
     # Writers

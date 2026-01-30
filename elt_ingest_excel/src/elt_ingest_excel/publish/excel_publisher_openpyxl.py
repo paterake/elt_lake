@@ -4,19 +4,20 @@ Note: openpyxl may not fully preserve drawing shapes in .xlsm files.
 Use ExcelPublisherXlwings if you need to preserve all Excel features.
 """
 
-import shutil
 from pathlib import Path
-from typing import Union
+from typing import TYPE_CHECKING, Any, Union
 
-import duckdb
 from openpyxl import load_workbook
 
-from ..models import PublishConfig, PublishWorkbookConfig, PublishSheetConfig
-from .base import PublishResult
+from ..models import PublishWorkbookConfig
+from .base import BaseExcelPublisher, PublishResult
+
+if TYPE_CHECKING:
+    from ..reporting import PipelineReporter
 
 
-class ExcelPublisherOpenpyxl:
-    """Publisher for writing DuckDB data to Excel workbooks.
+class ExcelPublisherOpenpyxl(BaseExcelPublisher):
+    """Publisher for writing DuckDB data to Excel workbooks using openpyxl.
 
     This class handles:
     1. Cloning a template workbook to target location
@@ -27,161 +28,86 @@ class ExcelPublisherOpenpyxl:
     def __init__(
         self,
         database_path: Union[str, Path],
+        reporter: "PipelineReporter | None" = None,
     ):
         """Initialize the publisher.
 
         Args:
             database_path: Path to the DuckDB database file.
+            reporter: Optional reporter for output messages.
         """
-        self.database_path = Path(database_path).expanduser()
-        self.connection: duckdb.DuckDBPyConnection | None = None
+        super().__init__(database_path, reporter)
 
-    def __enter__(self):
-        """Context manager entry."""
-        self.connection = duckdb.connect(str(self.database_path), read_only=True)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit."""
-        if self.connection:
-            self.connection.close()
-            self.connection = None
-
-    def publish(
-        self,
-        config: PublishConfig,
-    ) -> list[PublishResult]:
-        """Publish data to all configured workbooks.
-
-        Args:
-            config: PublishConfig with workbook configurations.
-
-        Returns:
-            List of PublishResult for each sheet processed.
-        """
-        all_results = []
-
-        for workbook_config in config.workbooks:
-            results = self._publish_workbook(workbook_config)
-            all_results.extend(results)
-
-        return all_results
-
-    def _publish_workbook(
+    def _open_and_process_workbook(
         self,
         workbook_config: PublishWorkbookConfig,
+        tgt_path: Path,
     ) -> list[PublishResult]:
-        """Publish data to a single workbook.
+        """Open workbook with openpyxl and process all sheets.
 
         Args:
             workbook_config: Configuration for the workbook.
+            tgt_path: Path to the target workbook file.
 
         Returns:
             List of PublishResult for each sheet processed.
         """
-        results = []
-
-        # Clone template workbook to target
-        src_path = workbook_config.src_workbook_full_path
-        tgt_path = workbook_config.tgt_workbook_full_path
-
-        print(f"\n  Source template: {src_path}")
-        print(f"  Target workbook: {tgt_path}")
-
-        # Delete existing target if it exists
-        if tgt_path.exists():
-            print(f"  Deleting existing target: {tgt_path}")
-            tgt_path.unlink()
-
-        # Clone the template
-        print(f"  Cloning template to target...")
-        shutil.copy2(src_path, tgt_path)
-
         # Open the target workbook
         wb = load_workbook(tgt_path, keep_vba=True)  # keep_vba for .xlsm files
 
         try:
             # Process each sheet
-            for sheet_config in workbook_config.sheets:
-                result = self._publish_sheet(wb, sheet_config)
-                results.append(result)
+            results = self._process_sheets(wb, workbook_config)
 
             # Save the workbook
-            print(f"  Saving workbook...")
+            self._report_saving(tgt_path)
             wb.save(tgt_path)
-            print(f"  Workbook saved: {tgt_path}")
+            self._report_saved(tgt_path)
 
         finally:
             wb.close()
 
         return results
 
-    def _publish_sheet(
-        self,
-        workbook,
-        sheet_config: PublishSheetConfig,
-    ) -> PublishResult:
-        """Publish data to a single sheet.
+    def _sheet_exists(self, workbook: Any, sheet_name: str) -> bool:
+        """Check if a sheet exists in the workbook.
 
         Args:
             workbook: openpyxl Workbook object.
-            sheet_config: Configuration for the sheet.
+            sheet_name: Name of the sheet to check.
 
         Returns:
-            PublishResult with details of the operation.
+            True if sheet exists, False otherwise.
         """
-        sheet_name = sheet_config.sheet_name
-        table_name = sheet_config.src_table_name
-        data_row = sheet_config.data_row
+        return sheet_name in workbook.sheetnames
 
-        print(f"\n    Sheet: {sheet_name}")
-        print(f"    Source table: {table_name}")
+    def _get_sheet(self, workbook: Any, sheet_name: str) -> Any:
+        """Get a sheet from the workbook.
 
-        try:
-            # Check if sheet exists
-            if sheet_name not in workbook.sheetnames:
-                error = f"Sheet '{sheet_name}' not found in workbook"
-                print(f"    ERROR: {error}")
-                return PublishResult(
-                    sheet_name=sheet_name,
-                    table_name=table_name,
-                    rows_written=0,
-                    success=False,
-                    error=error,
-                )
+        Args:
+            workbook: openpyxl Workbook object.
+            sheet_name: Name of the sheet to get.
 
-            ws = workbook[sheet_name]
+        Returns:
+            openpyxl Worksheet object.
+        """
+        return workbook[sheet_name]
 
-            # Query DuckDB table
-            query = f"SELECT * FROM {table_name}"
-            result = self.connection.execute(query)
-            rows = result.fetchall()
+    def _write_data_to_sheet(
+        self,
+        sheet: Any,
+        rows: list[tuple],
+        start_row: int,
+    ) -> None:
+        """Write data to the sheet cell by cell.
 
-            print(f"    Rows from table: {len(rows)}")
-
-            # Write data to sheet starting at data_row
-            for row_idx, row_data in enumerate(rows):
-                excel_row = data_row + row_idx
-                for col_idx, value in enumerate(row_data):
-                    col = col_idx + 1  # Excel columns are 1-indexed
-                    ws.cell(row=excel_row, column=col, value=value)
-
-            print(f"    Rows written: {len(rows)}")
-
-            return PublishResult(
-                sheet_name=sheet_name,
-                table_name=table_name,
-                rows_written=len(rows),
-                success=True,
-            )
-
-        except Exception as e:
-            error = str(e)
-            print(f"    ERROR: {error}")
-            return PublishResult(
-                sheet_name=sheet_name,
-                table_name=table_name,
-                rows_written=0,
-                success=False,
-                error=error,
-            )
+        Args:
+            sheet: openpyxl Worksheet object.
+            rows: Data rows to write.
+            start_row: Starting row number (1-indexed).
+        """
+        for row_idx, row_data in enumerate(rows):
+            excel_row = start_row + row_idx
+            for col_idx, value in enumerate(row_data):
+                col = col_idx + 1  # Excel columns are 1-indexed
+                sheet.cell(row=excel_row, column=col, value=value)

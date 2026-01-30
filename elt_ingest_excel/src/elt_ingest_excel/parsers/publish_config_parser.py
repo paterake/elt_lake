@@ -1,13 +1,13 @@
-"""JSON configuration parser for publish/output configuration."""
+"""Configuration parser for publish/output configuration."""
 
-import json
 from pathlib import Path
 from typing import Union
 
 from ..models import PublishConfig, PublishWorkbookConfig, PublishSheetConfig
+from .base_parser import BaseConfigParser
 
 
-class PublishConfigParser:
+class PublishConfigParser(BaseConfigParser):
     """Parser for publish JSON configuration files.
 
     JSON format:
@@ -29,8 +29,9 @@ class PublishConfigParser:
     ]
     """
 
-    @staticmethod
+    @classmethod
     def from_json(
+        cls,
         json_data: Union[str, Path, dict, list],
     ) -> PublishConfig:
         """Load publish configuration from JSON.
@@ -46,28 +47,10 @@ class PublishConfigParser:
             json.JSONDecodeError: If JSON parsing fails.
             ValueError: If configuration is invalid.
         """
-        # Parse JSON data based on type
-        if isinstance(json_data, Path):
-            if not json_data.exists():
-                raise FileNotFoundError(f"Config file not found: {json_data}")
-            data = json.loads(json_data.read_text())
-        elif isinstance(json_data, str):
-            path = Path(json_data)
-            if path.exists():
-                data = json.loads(path.read_text())
-            else:
-                data = json.loads(json_data)
-        elif isinstance(json_data, (dict, list)):
-            data = json_data
-        else:
-            raise ValueError(f"Unsupported json_data type: {type(json_data)}")
-
-        # Ensure data is a list
-        if isinstance(data, dict):
-            data = [data]
+        data = cls.load_json_data(json_data)
 
         # Parse workbook configurations
-        workbooks = PublishConfigParser._parse_workbooks(data)
+        workbooks = cls._parse_workbooks(data)
 
         return PublishConfig(workbooks=workbooks)
 

@@ -10,18 +10,19 @@ or AppleScript (Mac). This preserves all Excel features including:
 Requires Excel to be installed on the machine.
 """
 
-import shutil
 from pathlib import Path
-from typing import Union
+from typing import TYPE_CHECKING, Any, Union
 
-import duckdb
 import xlwings as xw
 
-from ..models import PublishConfig, PublishWorkbookConfig, PublishSheetConfig
-from .base import PublishResult
+from ..models import PublishWorkbookConfig
+from .base import BaseExcelPublisher, PublishResult
+
+if TYPE_CHECKING:
+    from ..reporting import PipelineReporter
 
 
-class ExcelPublisherXlwings:
+class ExcelPublisherXlwings(BaseExcelPublisher):
     """Publisher for writing DuckDB data to Excel workbooks using xlwings.
 
     This class handles:
@@ -35,76 +36,30 @@ class ExcelPublisherXlwings:
     def __init__(
         self,
         database_path: Union[str, Path],
+        reporter: "PipelineReporter | None" = None,
     ):
         """Initialize the publisher.
 
         Args:
             database_path: Path to the DuckDB database file.
+            reporter: Optional reporter for output messages.
         """
-        self.database_path = Path(database_path).expanduser()
-        self.connection: duckdb.DuckDBPyConnection | None = None
+        super().__init__(database_path, reporter)
 
-    def __enter__(self):
-        """Context manager entry."""
-        self.connection = duckdb.connect(str(self.database_path), read_only=True)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit."""
-        if self.connection:
-            self.connection.close()
-            self.connection = None
-
-    def publish(
-        self,
-        config: PublishConfig,
-    ) -> list[PublishResult]:
-        """Publish data to all configured workbooks.
-
-        Args:
-            config: PublishConfig with workbook configurations.
-
-        Returns:
-            List of PublishResult for each sheet processed.
-        """
-        all_results = []
-
-        for workbook_config in config.workbooks:
-            results = self._publish_workbook(workbook_config)
-            all_results.extend(results)
-
-        return all_results
-
-    def _publish_workbook(
+    def _open_and_process_workbook(
         self,
         workbook_config: PublishWorkbookConfig,
+        tgt_path: Path,
     ) -> list[PublishResult]:
-        """Publish data to a single workbook.
+        """Open workbook with xlwings and process all sheets.
 
         Args:
             workbook_config: Configuration for the workbook.
+            tgt_path: Path to the target workbook file.
 
         Returns:
             List of PublishResult for each sheet processed.
         """
-        results = []
-
-        # Clone template workbook to target
-        src_path = workbook_config.src_workbook_full_path
-        tgt_path = workbook_config.tgt_workbook_full_path
-
-        print(f"\n  Source template: {src_path}")
-        print(f"  Target workbook: {tgt_path}")
-
-        # Delete existing target if it exists
-        if tgt_path.exists():
-            print(f"  Deleting existing target: {tgt_path}")
-            tgt_path.unlink()
-
-        # Clone the template (preserves everything at filesystem level)
-        print(f"  Cloning template to target...")
-        shutil.copy2(src_path, tgt_path)
-
         # Open Excel in background (not visible, silent mode)
         app = xw.App(visible=False)
         app.display_alerts = False
@@ -119,20 +74,19 @@ class ExcelPublisherXlwings:
             # May not be available on all platforms/versions
             pass
 
+        results = []
         try:
             # Open the target workbook
             wb = app.books.open(str(tgt_path))
 
             try:
                 # Process each sheet
-                for sheet_config in workbook_config.sheets:
-                    result = self._publish_sheet(wb, sheet_config)
-                    results.append(result)
+                results = self._process_sheets(wb, workbook_config)
 
                 # Save the workbook
-                print(f"  Saving workbook...")
+                self._report_saving(tgt_path)
                 wb.save()
-                print(f"  Workbook saved: {tgt_path}")
+                self._report_saved(tgt_path)
 
             finally:
                 wb.close()
@@ -150,71 +104,45 @@ class ExcelPublisherXlwings:
 
         return results
 
-    def _publish_sheet(
-        self,
-        workbook,
-        sheet_config: PublishSheetConfig,
-    ) -> PublishResult:
-        """Publish data to a single sheet.
+    def _sheet_exists(self, workbook: Any, sheet_name: str) -> bool:
+        """Check if a sheet exists in the workbook.
 
         Args:
             workbook: xlwings Book object.
-            sheet_config: Configuration for the sheet.
+            sheet_name: Name of the sheet to check.
 
         Returns:
-            PublishResult with details of the operation.
+            True if sheet exists, False otherwise.
         """
-        sheet_name = sheet_config.sheet_name
-        table_name = sheet_config.src_table_name
-        data_row = sheet_config.data_row
+        sheet_names = [s.name for s in workbook.sheets]
+        return sheet_name in sheet_names
 
-        print(f"\n    Sheet: {sheet_name}")
-        print(f"    Source table: {table_name}")
+    def _get_sheet(self, workbook: Any, sheet_name: str) -> Any:
+        """Get a sheet from the workbook.
 
-        try:
-            # Check if sheet exists
-            sheet_names = [s.name for s in workbook.sheets]
-            if sheet_name not in sheet_names:
-                error = f"Sheet '{sheet_name}' not found in workbook"
-                print(f"    ERROR: {error}")
-                return PublishResult(
-                    sheet_name=sheet_name,
-                    table_name=table_name,
-                    rows_written=0,
-                    success=False,
-                    error=error,
-                )
+        Args:
+            workbook: xlwings Book object.
+            sheet_name: Name of the sheet to get.
 
-            ws = workbook.sheets[sheet_name]
+        Returns:
+            xlwings Sheet object.
+        """
+        return workbook.sheets[sheet_name]
 
-            # Query DuckDB table
-            query = f"SELECT * FROM {table_name}"
-            result = self.connection.execute(query)
-            rows = result.fetchall()
+    def _write_data_to_sheet(
+        self,
+        sheet: Any,
+        rows: list[tuple],
+        start_row: int,
+    ) -> None:
+        """Write data to the sheet using range assignment.
 
-            print(f"    Rows from table: {len(rows)}")
-
-            if rows:
-                # Write all data at once using xlwings range
-                # xlwings uses 1-indexed rows/columns
-                ws.range((data_row, 1)).value = rows
-
-            print(f"    Rows written: {len(rows)}")
-
-            return PublishResult(
-                sheet_name=sheet_name,
-                table_name=table_name,
-                rows_written=len(rows),
-                success=True,
-            )
-
-        except Exception as e:
-            error = str(e)
-            print(f"    ERROR: {error}")
-            return PublishResult(
-                sheet_name=sheet_name,
-                table_name=table_name,
-                rows_written=0,
-                success=False,
-                error=error,
-            )
+        Args:
+            sheet: xlwings Sheet object.
+            rows: Data rows to write.
+            start_row: Starting row number (1-indexed).
+        """
+        if rows:
+            # Write all data at once using xlwings range
+            # xlwings uses 1-indexed rows/columns
+            sheet.range((start_row, 1)).value = rows

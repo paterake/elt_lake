@@ -1,10 +1,14 @@
 """Sheet processor for extracting and loading data from various file types."""
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from ..models import FileType, SheetConfig, WorkbookConfig
 from ..writers import DuckDBWriter, SaveMode, WriteResult
 from .excel_reader import ExcelReader
+
+if TYPE_CHECKING:
+    from ..reporting import PipelineReporter
 
 
 class SheetProcessor:
@@ -20,6 +24,7 @@ class SheetProcessor:
         data_file_name: str,
         workbook_config: WorkbookConfig,
         save_mode: SaveMode = SaveMode.RECREATE,
+        reporter: "PipelineReporter | None" = None,
     ):
         """Initialize the sheet processor.
 
@@ -28,11 +33,13 @@ class SheetProcessor:
             data_file_name: Name of the data file to process.
             workbook_config: Configuration for the workbook.
             save_mode: How to handle existing tables.
+            reporter: Optional reporter for output. If None, no output is produced.
         """
         self.data_path = Path(data_path)
         self.data_file_name = data_file_name
         self.workbook_config = workbook_config
         self.save_mode = save_mode
+        self.reporter = reporter
         self.file_path = self.data_path / self.data_file_name
 
     def process_sheets(
@@ -70,9 +77,13 @@ class SheetProcessor:
         Returns:
             WriteResult if data was written, None otherwise.
         """
-        print(f"\n  Sheet: {sheet_config.sheet_name}")
-        print(f"    Target table: {sheet_config.target_table_name}")
-        print(f"    Header row: {sheet_config.header_row}, Data row: {sheet_config.data_row}")
+        if self.reporter:
+            self.reporter.print_sheet_start(
+                sheet_name=sheet_config.sheet_name,
+                target_table=sheet_config.target_table_name,
+                header_row=sheet_config.header_row,
+                data_row=sheet_config.data_row,
+            )
 
         if self.workbook_config.file_type == FileType.EXCEL:
             return self._process_excel_sheet(sheet_config, writer)
@@ -103,12 +114,14 @@ class SheetProcessor:
         )
         df = reader.load()
 
-        print(f"    Rows read: {len(df)}")
+        if self.reporter:
+            self.reporter.print_sheet_rows_read(len(df))
 
         # Write to DuckDB
         result = writer.write(df, sheet_config.target_table_name, self.save_mode)
 
-        print(f"    Rows written: {result.rows_written}")
+        if self.reporter:
+            self.reporter.print_sheet_rows_written(result.rows_written)
 
         return result
 

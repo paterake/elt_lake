@@ -2,8 +2,12 @@
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import duckdb
+
+if TYPE_CHECKING:
+    from ..reporting import PipelineReporter
 
 
 @dataclass
@@ -25,18 +29,26 @@ class SqlExecutor:
     """Executes SQL transformation files against a DuckDB database.
 
     Reads an order.txt file to determine execution order and runs
-    each SQL file sequentially.
+    each SQL file sequentially. Uses DuckDB's extract_statements()
+    for proper SQL parsing instead of naive semicolon splitting.
     """
 
-    def __init__(self, transform_path: Path, database_path: Path):
+    def __init__(
+        self,
+        transform_path: Path,
+        database_path: Path,
+        reporter: "PipelineReporter | None" = None,
+    ):
         """Initialize the SQL executor.
 
         Args:
             transform_path: Path to directory containing SQL files and order.txt.
             database_path: Path to the DuckDB database file.
+            reporter: Optional reporter for output. If None, no output is produced.
         """
         self.transform_path = Path(transform_path)
         self.database_path = Path(database_path)
+        self.reporter = reporter
 
     def execute(self) -> list[TransformResult]:
         """Execute all SQL files in order.
@@ -85,6 +97,9 @@ class SqlExecutor:
     ) -> TransformResult:
         """Execute a single SQL file.
 
+        Uses DuckDB's extract_statements() for proper SQL parsing,
+        which handles semicolons in strings and comments correctly.
+
         Args:
             conn: DuckDB connection.
             sql_file: Name of the SQL file to execute.
@@ -93,30 +108,35 @@ class SqlExecutor:
             TransformResult with execution status.
         """
         sql_path = self.transform_path / sql_file
-        print(f"\n  Executing: {sql_file}")
+
+        if self.reporter:
+            self.reporter.print_sql_file_start(sql_file)
 
         if not sql_path.exists():
             error = f"SQL file not found: {sql_path}"
-            print(f"    ERROR: {error}")
+            if self.reporter:
+                self.reporter.print_sql_file_not_found(sql_file, str(sql_path))
             return TransformResult(sql_file=sql_file, success=False, error=error)
 
         try:
             sql_content = sql_path.read_text()
 
-            # Split by semicolon and execute each statement
-            statements = [s.strip() for s in sql_content.split(";") if s.strip()]
+            # Use DuckDB's extract_statements for proper SQL parsing
+            statements = conn.extract_statements(sql_content)
 
             for i, statement in enumerate(statements, 1):
-                if statement:
-                    conn.execute(statement)
-                    print(f"    Statement {i} executed")
+                conn.execute(statement)
+                if self.reporter:
+                    self.reporter.print_sql_statement_executed(i)
 
-            print("    SUCCESS")
+            if self.reporter:
+                self.reporter.print_sql_file_success()
             return TransformResult(sql_file=sql_file, success=True)
 
         except Exception as e:
             error = str(e)
-            print(f"    ERROR: {error}")
+            if self.reporter:
+                self.reporter.print_sql_file_error(error)
             return TransformResult(sql_file=sql_file, success=False, error=error)
 
     def get_sql_file_count(self) -> int:

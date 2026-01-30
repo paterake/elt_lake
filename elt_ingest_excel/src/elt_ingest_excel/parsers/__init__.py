@@ -1,9 +1,12 @@
 """Configuration parsers for Excel ingestion and publish."""
 
-from .json_parser import JsonConfigParser
+from .base_parser import BaseConfigParser
+from .ingest_config_parser import IngestConfigParser, JsonConfigParser
 from .publish_config_parser import PublishConfigParser
 
 __all__ = [
-    "JsonConfigParser",
+    "BaseConfigParser",
+    "IngestConfigParser",
+    "JsonConfigParser",  # Backward compatibility alias
     "PublishConfigParser",
 ]

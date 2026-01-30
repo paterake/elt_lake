@@ -1,6 +1,6 @@
 """Publish module for writing data to Excel workbooks."""
 
-from .base import PublishResult
+from .base import BaseExcelPublisher, PublishResult
 from .excel_publisher_openpyxl import ExcelPublisherOpenpyxl
 from .excel_publisher_xlwings import ExcelPublisherXlwings
 
@@ -8,6 +8,7 @@ from .excel_publisher_xlwings import ExcelPublisherXlwings
 ExcelPublisher = ExcelPublisherXlwings
 
 __all__ = [
+    "BaseExcelPublisher",
     "PublishResult",
     "ExcelPublisher",
     "ExcelPublisherOpenpyxl",
