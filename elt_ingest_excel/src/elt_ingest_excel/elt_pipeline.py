@@ -154,7 +154,7 @@ class FileIngestor:
             reporter=self.reporter,
         )
 
-        with DuckDBWriter(self.database_path) as writer:
+        with DuckDBWriter(self.database_path, reporter=self.reporter) as writer:
             self.load_results = processor.process_sheets(self.sheets, writer)
 
         self.reporter.print_load_summary(self.load_results)

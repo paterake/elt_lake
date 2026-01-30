@@ -306,3 +306,13 @@ class PipelineReporter:
             error: The error message.
         """
         print(f"    ERROR: {error}")
+
+    # Database writer methods
+
+    def print_table_dropped(self, table_name: str) -> None:
+        """Print message when a table is dropped.
+
+        Args:
+            table_name: Name of the table that was dropped.
+        """
+        print(f"    Dropped table: {table_name}")

@@ -1,12 +1,15 @@
 """DuckDB database writer for ingested data."""
 
 from pathlib import Path
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 import duckdb
 import pandas as pd
 
 from ..models import SaveMode, WriteResult
+
+if TYPE_CHECKING:
+    from ..reporting import PipelineReporter
 
 
 class DuckDBWriter:
@@ -24,14 +27,20 @@ class DuckDBWriter:
             print(f"Wrote {result.rows_written} rows")
     """
 
-    def __init__(self, database_path: Union[str, Path]):
+    def __init__(
+        self,
+        database_path: Union[str, Path],
+        reporter: "PipelineReporter | None" = None,
+    ):
         """Initialize the DuckDB writer.
 
         Args:
             database_path: Path to the DuckDB database file.
+            reporter: Optional reporter for output. If None, no output is produced.
         """
         self.database_path = Path(database_path).expanduser()
         self._connection: duckdb.DuckDBPyConnection | None = None
+        self.reporter = reporter
 
     def __enter__(self):
         """Context manager entry - connect to DuckDB."""
@@ -108,7 +117,8 @@ class DuckDBWriter:
             table_name: Name of the table to drop.
         """
         self.connection.execute(f'DROP TABLE IF EXISTS "{table_name}"')
-        print(f"  Dropped table: {table_name}")
+        if self.reporter:
+            self.reporter.print_table_dropped(table_name)
 
     def _prepare_df(self, df: pd.DataFrame) -> pd.DataFrame:
         """Prepare DataFrame for DuckDB by converting str dtype to object.
