@@ -9,8 +9,8 @@ SELECT
      , 'Contingent Worker'                              worker_type
      , 'Work'                                           email_type
      , TRIM(t.primary_email)                            email_address
-     , 'Y'                                              public
-     , 'Y'                                              primary
+     , 'Y'                                              is_public
+     , 'Y'                                              is_primary
   FROM src_hcm_contingent_worker t
  WHERE t.primary_email IS NOT NULL
    AND TRIM(t.primary_email) != ''
