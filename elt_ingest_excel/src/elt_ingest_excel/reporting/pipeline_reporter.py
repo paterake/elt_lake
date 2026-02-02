@@ -316,3 +316,55 @@ class PipelineReporter:
             table_name: Name of the table that was dropped.
         """
         print(f"    Dropped table: {table_name}")
+
+    def print_reconciliation_header(self, table_name: str) -> None:
+        """Print header for reconciliation section.
+
+        Args:
+            table_name: Name of the source table being reconciled.
+        """
+        print("\n" + "-" * self.SUMMARY_WIDTH)
+        print(f"Ingestion Reconciliation ({table_name}):")
+        print("-" * self.SUMMARY_WIDTH)
+
+    def print_reconciliation_row(
+        self,
+        business_unit: str,
+        ingested_rows: int,
+        merged_rows: int,
+        deduped_rows: int,
+        status: str,
+    ) -> None:
+        """Print a row of reconciliation results.
+
+        Args:
+            business_unit: The business unit identifier.
+            ingested_rows: Total rows ingested from raw tables.
+            merged_rows: Rows in the merged table.
+            deduped_rows: Rows removed by deduplication.
+            status: Validation status message.
+        """
+        print(f"  {business_unit}:")
+        print(f"    Ingested:    {ingested_rows:>8} rows")
+        print(f"    Merged:      {merged_rows:>8} rows")
+        print(f"    Deduplicated:{deduped_rows:>8} rows")
+        print(f"    Status:      {status}")
+
+    def print_reconciliation_totals(
+        self,
+        total_ingested: int,
+        total_merged: int,
+        total_deduped: int,
+    ) -> None:
+        """Print totals for reconciliation.
+
+        Args:
+            total_ingested: Total rows ingested across all business units.
+            total_merged: Total rows in merged table.
+            total_deduped: Total rows removed by deduplication.
+        """
+        print("-" * self.SUMMARY_WIDTH)
+        print(f"  TOTAL:")
+        print(f"    Ingested:    {total_ingested:>8} rows")
+        print(f"    Merged:      {total_merged:>8} rows")
+        print(f"    Deduplicated:{total_deduped:>8} rows")
