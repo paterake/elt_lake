@@ -202,6 +202,35 @@ class IngestConfigParser(BaseConfigParser):
         return None
 
     @staticmethod
+    def get_workbooks(
+        config: ExcelIngestConfig,
+        file_name_filter: str = "*",
+    ) -> list[WorkbookConfig]:
+        """Get workbooks from config with optional filtering.
+
+        Args:
+            config: ExcelIngestConfig containing workbook definitions.
+            file_name_filter: Workbook file name to filter on, or "*" for all workbooks.
+
+        Returns:
+            List of WorkbookConfig matching the filter.
+
+        Raises:
+            ValueError: If a specific file_name_filter is provided but not found.
+        """
+        if file_name_filter == "*":
+            return config.workbooks
+
+        file_name_expanded = str(Path(file_name_filter).expanduser())
+
+        for workbook in config.workbooks:
+            workbook_path_expanded = str(Path(workbook.workbook_file_name).expanduser())
+            if workbook_path_expanded == file_name_expanded:
+                return [workbook]
+
+        raise ValueError(f"No workbook config found for: {file_name_filter}")
+
+    @staticmethod
     def get_sheets(
         workbook: WorkbookConfig,
         sheet_filter: str = "*",

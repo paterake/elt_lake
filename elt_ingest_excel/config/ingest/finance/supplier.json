@@ -6,19 +6,65 @@
         "sheetName": "Lasst Purchase Date",
         "headerRow": "1",
         "dataRow": "2",
-        "targetTableName": "fin_supplier_creditor_last_purchase_date"
+        "targetTableName": "fin_supplier_creditor_last_purchase_date_fa"
       },
       {
         "sheetName": "Last Payment Date",
         "headerRow": "1",
         "dataRow": "2",
-        "targetTableName": "fin_supplier_creditor_last_payment_date"
+        "targetTableName": "fin_supplier_creditor_last_payment_date_fa"
       },
       {
         "sheetName": "Created Date",
         "headerRow": "1",
         "dataRow": "2",
-        "targetTableName": "fin_supplier_creditor_created_date"
+        "targetTableName": "fin_supplier_creditor_created_date_fa"
+      }
+    ]
+  },
+  {
+    "workbookFileName": "NFC Creditors with Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Lasst Purchase Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_purchase_date_nfc"
+      },
+      {
+        "sheetName": "Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_payment_date_nfc"
+      },
+      {
+        "sheetName": "Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_created_date_nfc"
+      }
+    ]
+  },
+  {
+    "workbookFileName": "WNSL Creditors with Activity Last 3 Years.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Lasst Purchase Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_purchase_date_wnsl"
+      },
+      {
+        "sheetName": "Last Payment Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_last_payment_date_wnsl"
+      },
+      {
+        "sheetName": "Created Date",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_created_date_wnsl"
       }
     ]
   }

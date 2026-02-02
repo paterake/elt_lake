@@ -17,7 +17,6 @@ def run_pipeline(
     *,
     # Data source
     data_path: str,
-    data_file_name: str,
     # Ingest config
     cfg_ingest_path: str,
     cfg_ingest_name: str,
@@ -27,6 +26,7 @@ def run_pipeline(
     cfg_publish_path: str,
     cfg_publish_name: str,
     # Optional overrides (sensible defaults provided)
+    data_file_name: str = "*",
     database_path: str = "~/Documents/__data/duckdb/rpatel.duckdb",
     sheet_filter: str = "*",
     save_mode: SaveMode = SaveMode.RECREATE,
@@ -38,13 +38,13 @@ def run_pipeline(
     Run the ELTP pipeline with the given configuration.
 
     Args:
-        data_path: Directory containing the source Excel file
-        data_file_name: Name of the Excel file to process
+        data_path: Directory containing the source Excel file(s)
         cfg_ingest_path: Path to ingest config directory (relative to config_base_path)
         cfg_ingest_name: Name of the ingest config JSON file
         cfg_transform_path: Path to transform SQL directory (relative to config_base_path)
         cfg_publish_path: Path to publish config directory (relative to config_base_path)
         cfg_publish_name: Name of the publish config JSON file
+        data_file_name: Name of specific Excel file, or "*" to process all workbooks in config
         database_path: Path to DuckDB database file
         sheet_filter: Sheet name filter ("*" for all sheets, or specific name)
         save_mode: How to handle existing tables

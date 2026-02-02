@@ -51,7 +51,7 @@ class FileIngestor:
         cfg_publish_path: str | None = None,
         cfg_publish_name: str | None = None,
         data_path: Union[str, Path] = "",
-        data_file_name: str = "",
+        data_file_name: str = "*",
         database_path: Union[str, Path] = "",
         sheet_filter: str = "*",
         save_mode: SaveMode = SaveMode.RECREATE,
@@ -67,7 +67,7 @@ class FileIngestor:
             cfg_publish_path: Relative path to publish config (e.g., "publish/finance").
             cfg_publish_name: Name of the publish JSON config file.
             data_path: Path to the data files directory.
-            data_file_name: Name of the data file to process.
+            data_file_name: Name of the data file to process, or "*" for all workbooks in config.
             database_path: Path to DuckDB database file.
             sheet_filter: Sheet name to filter on, or "*" for all sheets.
             save_mode: How to handle existing tables (DROP, RECREATE, OVERWRITE, APPEND).
@@ -108,17 +108,11 @@ class FileIngestor:
             database_path=str(self.database_path),
         )
 
-        # Find workbook config by filename
-        self.workbook = JsonConfigParser.find_workbook(
+        # Get workbooks to process (filtered by data_file_name, or all if "*")
+        self.workbooks = JsonConfigParser.get_workbooks(
             self.config,
             self.data_file_name,
         )
-
-        if self.workbook is None:
-            raise ValueError(f"No workbook config found for: {data_file_name}")
-
-        # Get sheets (filtered)
-        self.sheets = JsonConfigParser.get_sheets(self.workbook, self.sheet_filter)
 
         # Initialize reporter
         self.reporter = PipelineReporter()
@@ -131,31 +125,39 @@ class FileIngestor:
     def extract_and_load(self) -> list[WriteResult]:
         """Execute Extract and Load phases.
 
-        Reads data from source file and writes to DuckDB tables.
+        Reads data from source files and writes to DuckDB tables.
+        Processes all workbooks matching the data_file_name filter.
 
         Returns:
             List of WriteResult objects for each sheet processed.
         """
-        self.reporter.print_extract_load_header(
-            config_path=self.ingest_config_path,
-            data_file=self.data_path / self.data_file_name,
-            file_type=self.workbook.file_type.value,
-            database_path=self.database_path,
-            save_mode=self.save_mode,
-            sheet_count=len(self.sheets),
-        )
-
-        # Create sheet processor and delegate extraction/loading
-        processor = SheetProcessor(
-            data_path=self.data_path,
-            data_file_name=self.data_file_name,
-            workbook_config=self.workbook,
-            save_mode=self.save_mode,
-            reporter=self.reporter,
-        )
+        self.load_results = []
 
         with DuckDBWriter(self.database_path, reporter=self.reporter) as writer:
-            self.load_results = processor.process_sheets(self.sheets, writer)
+            for workbook in self.workbooks:
+                # Get sheets for this workbook (filtered)
+                sheets = JsonConfigParser.get_sheets(workbook, self.sheet_filter)
+
+                self.reporter.print_extract_load_header(
+                    config_path=self.ingest_config_path,
+                    data_file=self.data_path / workbook.workbook_file_name,
+                    file_type=workbook.file_type.value,
+                    database_path=self.database_path,
+                    save_mode=self.save_mode,
+                    sheet_count=len(sheets),
+                )
+
+                # Create sheet processor for this workbook
+                processor = SheetProcessor(
+                    data_path=self.data_path,
+                    data_file_name=workbook.workbook_file_name,
+                    workbook_config=workbook,
+                    save_mode=self.save_mode,
+                    reporter=self.reporter,
+                )
+
+                workbook_results = processor.process_sheets(sheets, writer)
+                self.load_results.extend(workbook_results)
 
         self.reporter.print_load_summary(self.load_results)
         return self.load_results
