@@ -10,7 +10,7 @@ SELECT
          WHEN TRIM(vendor_class_id) = 'IR35'       THEN 'Professional Services'
          ELSE 'Suppliers'
        END                                         supplier_category
-     , TRIM(vendor_name)                           business_entity_name
+     , business_unit                               business_entity_name
      , NULL                                        do_not_reimburse_contingent_worker_expense_reports
      , NULL                                        worktag_only
      , 'Microsoft Dynamics GP'                     integration_system
