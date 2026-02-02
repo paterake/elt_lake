@@ -1,25 +1,41 @@
 DROP TABLE IF EXISTS src_fin_supplier
 ;
-CREATE TABLE src_fin_supplier 
+CREATE TABLE src_fin_supplier
     AS
   WITH cte_supplier_src
     AS (
-SELECT * FROM fin_supplier_creditor_created_date
-UNION
-SELECT * FROM fin_supplier_creditor_last_payment_date
-UNION
-SELECT * FROM fin_supplier_creditor_last_purchase_date
+-- FA business unit
+SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_created_date_fa
+UNION ALL
+SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_fa
+UNION ALL
+SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_fa
+UNION ALL
+-- NFC business unit
+SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_created_date_nfc
+UNION ALL
+SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_nfc
+UNION ALL
+SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_nfc
+UNION ALL
+-- WNSL business unit
+SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_created_date_wnsl
+UNION ALL
+SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_wnsl
+UNION ALL
+SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_wnsl
        )
      , cte_supplier_distinct
     AS (
-SELECT DISTINCT *
+SELECT DISTINCT
+       *
   FROM cte_supplier_src
        )
      , cte_supplier_rnk
     AS (
 SELECT t.*
-     , ROW_NUMBER() OVER 
-       (PARTITION BY vendor_id
+     , ROW_NUMBER() OVER
+       (PARTITION BY business_unit, vendor_id
             ORDER BY
               last_payment_date  DESC NULLS LAST
             , last_purchase_date DESC NULLS LAST
@@ -30,11 +46,11 @@ SELECT t.*
      , cte_supplier
     AS (
 SELECT *
-     , ROW_NUMBER() OVER (ORDER BY vendor_name)  rnk
+     , ROW_NUMBER() OVER (ORDER BY business_unit, vendor_name)  rnk
   FROM cte_supplier_rnk
  WHERE data_rnk = 1
        )
-SELECT 
+SELECT
         'S-' || LPAD(rnk::VARCHAR, 6, '0') AS supplier_id
       , t.*
   FROM cte_supplier t
