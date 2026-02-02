@@ -16,8 +16,9 @@ SELECT
      , NULL                                             supervisory_org_name
      , NULL                                             supervisory_id
      , NULL                                             staffing_model
-  FROM src_hcm_contingent_worker t
-  LEFT JOIN src_hcm_contingent_worker m
-    ON LOWER(TRIM(t.manager)) = LOWER(TRIM(m.username))
-    OR LOWER(TRIM(t.manager_email)) = LOWER(TRIM(m.primary_email))
+  FROM src_hcm_contingent_worker          t
+       LEFT OUTER JOIN 
+       hcm_contingent_worker_id_mapping   m
+          ON LOWER(TRIM(m.first_name)) = LOWER(TRIM(t.first_name))
+         AND LOWER(TRIM(m.last_name))  = LOWER(TRIM(t.last_name))
 ;
