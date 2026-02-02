@@ -9,5 +9,16 @@
         "targetTableName": "hcm_contingent_worker"
       }
     ]
+  },
+  {
+    "workbookFileName": "worker_id_mapping.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Sheet1",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "hcm_contingent_worker_id_mapping"
+      }
+    ]
   }
 ]
