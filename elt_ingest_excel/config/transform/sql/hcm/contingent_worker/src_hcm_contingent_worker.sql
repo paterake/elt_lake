@@ -24,7 +24,7 @@ SELECT t.*
      , cte_contingent_worker
     AS (
 SELECT *
-     , ROW_NUMBER() OVER (ORDER BY username, user_id)  rnk
+     , ROW_NUMBER() OVER (ORDER BY username, user_id) + 100000  rnk
   FROM cte_contingent_worker_rnk
  WHERE data_rnk = 1
        )

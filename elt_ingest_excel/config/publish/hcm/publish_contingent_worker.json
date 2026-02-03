@@ -3,7 +3,7 @@
     "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/hcm",
     "srcWorkbookFileName": "HCM Workbook (Blank).xlsm",
     "tgtWorkbookPathName": "/Users/rpatel/Documents",
-    "tgtWorkbookFileName": "workday_hcm_contingent_worker.xlsm",
+    "tgtWorkbookFileName": "workday_hcm_contingent_worker",
     "sheets": [
       {
         "srcTableName": "workday_contingent_worker_name",
