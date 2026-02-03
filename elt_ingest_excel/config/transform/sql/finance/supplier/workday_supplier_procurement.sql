@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS workday_supplier_procurement
 ;
-CREATE TABLE workday_supplier_procurement 
+-- TEMPORARY: Business have said they won't populate this for now
+-- When ready, remove WHERE FALSE and uncomment the real SELECT logic
+CREATE TABLE workday_supplier_procurement
     AS
 SELECT
        TRIM(supplier_id)                                             supplier_id
@@ -28,4 +30,5 @@ SELECT
      , NULL                                                          edit_portal_taxes
      , NULL                                                          change_order_issue_option
   FROM src_fin_supplier
+ WHERE FALSE
 ;
