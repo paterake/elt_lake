@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS workday_supplier_company_restrictions
 CREATE TABLE workday_supplier_company_restrictions 
     AS
 SELECT
-       TRIM(s.supplier_id)                           supplier_id
-     , TRIM(s.vendor_name)                           supplier_name
+       s.supplier_id                                  supplier_id
+     , s.nrm_vendor_name                             supplier_name
      , CASE TRIM(s.company)
          WHEN 'FA' THEN 'The Football Association'
          ELSE TRIM(s.company)

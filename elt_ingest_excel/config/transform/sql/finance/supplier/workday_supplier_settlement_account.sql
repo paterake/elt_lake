@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS workday_supplier_settlement_account
 CREATE TABLE workday_supplier_settlement_account 
     AS
 SELECT
-       TRIM(s.supplier_id)                                                  supplier_id
-     , TRIM(s.vendor_name)                                                  supplier_name
+       s.supplier_id                                                       supplier_id
+     , s.nrm_vendor_name                                                    supplier_name
      , TRIM(s.eft_bank_account)                                             settlement_bank_account_id
      , COALESCE(TRIM(UPPER(s.bank_country_code)), 'GB')                     bank_country
      , COALESCE(TRIM(s.currencyid), TRIM(s.currency_id), 'GBP')               currency

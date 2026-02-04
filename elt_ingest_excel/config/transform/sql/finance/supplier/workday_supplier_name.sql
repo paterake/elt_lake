@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS workday_supplier_name
 CREATE TABLE workday_supplier_name 
     AS
 SELECT
-       TRIM(s.supplier_id)                           supplier_id
-     , TRIM(s.vendor_name)                           supplier_name
+       s.supplier_id                                  supplier_id
+     , s.nrm_vendor_name                             supplier_name
      , TRIM(s.vendor_id)                             reference_id
      , CASE
          WHEN TRIM(s.vendor_class_id) = 'IR35'       THEN 'Professional Services'

@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS workday_supplier_currencies
 CREATE TABLE workday_supplier_currencies 
     AS
 SELECT
-       TRIM(s.supplier_id)                           supplier_id
-     , TRIM(s.vendor_name)                           supplier_name
+       s.supplier_id                                  supplier_id
+     , s.nrm_vendor_name                             supplier_name
      , CASE
          WHEN NULLIF(TRIM(s.currency_id), '') IS NOT NULL
           AND NULLIF(TRIM(s.currencyid ), '') IS NOT NULL

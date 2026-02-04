@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS workday_supplier_payment
 CREATE TABLE workday_supplier_payment 
     AS
 SELECT
-       TRIM(s.supplier_id)                           supplier_id
-     , TRIM(s.vendor_name)                           supplier_name
+       s.supplier_id                                  supplier_id
+     , s.nrm_vendor_name                             supplier_name
      , TRIM(s.payment_terms_id)                      payment_terms
      , CASE
          WHEN s.eft_transfer_method IS NOT NULL AND TRIM(s.eft_transfer_method) != ''

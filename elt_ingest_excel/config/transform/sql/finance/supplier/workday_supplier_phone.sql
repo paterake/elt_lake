@@ -40,9 +40,9 @@ SELECT 'MX',              '+52'
        )
 -- Phone Number 1 (Primary)
 SELECT
-       TRIM(s.supplier_id)                                           supplier_id
-     , TRIM(s.vendor_name)                                           supplier_name
-     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+       s.supplier_id                                                 supplier_id
+     , s.nrm_vendor_name                                             supplier_name
+     , s.supplier_id || '_PH1'                                       phone_id
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
@@ -67,9 +67,9 @@ UNION ALL
 
 -- Phone Number 2
 SELECT
-       TRIM(s.supplier_id)                                           supplier_id
-     , TRIM(s.vendor_name)                                           supplier_name
-     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+       s.supplier_id                                                 supplier_id
+     , s.nrm_vendor_name                                             supplier_name
+     , s.supplier_id || '_PH1'                                       phone_id
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
@@ -94,9 +94,9 @@ UNION ALL
 
 -- Phone 3
 SELECT
-       TRIM(s.supplier_id)                                           supplier_id
-     , TRIM(s.vendor_name)                                           supplier_name
-     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+       s.supplier_id                                                 supplier_id
+     , s.nrm_vendor_name                                             supplier_name
+     , s.supplier_id || '_PH1'                                       phone_id
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
@@ -121,9 +121,9 @@ UNION ALL
 
 -- Fax Number
 SELECT
-       TRIM(s.supplier_id)                                           supplier_id
-     , TRIM(s.vendor_name)                                           supplier_name
-     , TRIM(s.supplier_id) || '_PH1'                                 phone_id
+       s.supplier_id                                                 supplier_id
+     , s.nrm_vendor_name                                             supplier_name
+     , s.supplier_id || '_PH1'                                       phone_id
      , TRIM(s.country)                                               phone_country
      , TRIM(UPPER(s.country_code))                                   country_code
      , COALESCE(p.phone_code, '+44')                                 international_phone_code
