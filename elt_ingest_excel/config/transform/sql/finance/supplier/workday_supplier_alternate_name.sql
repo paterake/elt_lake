@@ -4,27 +4,27 @@ CREATE TABLE workday_supplier_alternate_name
     AS
 -- Short Name
 SELECT
-       TRIM(supplier_id)                           supplier_id
-     , TRIM(vendor_name)                           supplier_name
-     , TRIM(vendor_short_name)                     alternate_name
+       TRIM(s.supplier_id)                           supplier_id
+     , TRIM(s.vendor_name)                           supplier_name
+     , TRIM(s.vendor_short_name)                     alternate_name
      , 'Short Name'                                alternate_name_usage_plus
-  FROM src_fin_supplier
- WHERE vendor_short_name IS NOT NULL
-   AND TRIM(vendor_short_name) != ''
-   AND TRIM(vendor_short_name) != TRIM(vendor_name)
+  FROM src_fin_supplier s
+ WHERE s.vendor_short_name IS NOT NULL
+   AND TRIM(s.vendor_short_name) != ''
+   AND TRIM(s.vendor_short_name) != TRIM(s.vendor_name)
 
 UNION ALL
 
 -- Check Name
 SELECT
-       TRIM(supplier_id)                           supplier_id
-     , TRIM(vendor_name)                           supplier_name
-     , TRIM(vendor_check_name)                     alternate_name
+       TRIM(s.supplier_id)                           supplier_id
+     , TRIM(s.vendor_name)                           supplier_name
+     , TRIM(s.vendor_check_name)                     alternate_name
      , 'Check Name'                              alternate_name_usage_plus
-  FROM src_fin_supplier
- WHERE vendor_check_name IS NOT NULL
-   AND TRIM(vendor_check_name) != ''
-   AND TRIM(vendor_check_name) != TRIM(vendor_name)
-   AND (TRIM(vendor_check_name) != TRIM(vendor_short_name)
-        OR vendor_short_name IS NULL)
+  FROM src_fin_supplier s
+ WHERE s.vendor_check_name IS NOT NULL
+   AND TRIM(s.vendor_check_name) != ''
+   AND TRIM(s.vendor_check_name) != TRIM(s.vendor_name)
+   AND (TRIM(s.vendor_check_name) != TRIM(s.vendor_short_name)
+        OR s.vendor_short_name IS NULL)
 ;

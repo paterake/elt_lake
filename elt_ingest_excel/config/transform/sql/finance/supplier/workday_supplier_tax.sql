@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS workday_supplier_tax
 CREATE TABLE workday_supplier_tax 
     AS
 SELECT
-       TRIM(supplier_id)                                              supplier_id
-     , TRIM(vendor_name)                                              supplier_name
-     , COALESCE(TRIM(UPPER(country_code)), 'GB')                      tax_id_country
-     , TRIM(REPLACE(REPLACE(tax_id_number, ' ', ''), '-', ''))        tax_id
-     , CASE COALESCE(TRIM(UPPER(country_code)), 'GB')
+       TRIM(s.supplier_id)                                              supplier_id
+     , TRIM(s.vendor_name)                                              supplier_name
+     , COALESCE(TRIM(UPPER(s.country_code)), 'GB')                      tax_id_country
+     , TRIM(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''))        tax_id
+     , CASE COALESCE(TRIM(UPPER(s.country_code)), 'GB')
          WHEN 'GB' THEN 'VAT_UK'
          WHEN 'US' THEN 'EIN'
          WHEN 'IE' THEN 'VAT_IE'
@@ -26,23 +26,23 @@ SELECT
        END                                                            tax_id_type
      , NULL                                                           primary_tax_id
      , NULL                                                           transaction_tax_id
-     , COALESCE(TRIM(UPPER(country_code)), 'GB')                      tax_status_country
+     , COALESCE(TRIM(UPPER(s.country_code)), 'GB')                      tax_status_country
      , CASE
-         WHEN tax_id_number IS NOT NULL AND TRIM(tax_id_number) != ''
+         WHEN s.tax_id_number IS NOT NULL AND TRIM(s.tax_id_number) != ''
          THEN 'Registered'
          ELSE 'Not_Registered'
        END                                                            tax_status
      , NULL                                                           transaction_tax_status
      , NULL                                                           withholding_tax_status
      , CASE
-         WHEN COALESCE(TRIM(UPPER(country_code)), 'GB') = 'US'
-              AND tax_id_number IS NOT NULL
+         WHEN COALESCE(TRIM(UPPER(s.country_code)), 'GB') = 'US'
+              AND s.tax_id_number IS NOT NULL
          THEN '1099-MISC'
          ELSE NULL
        END                                                            tax_authority_form_type
      , CASE
-         WHEN COALESCE(TRIM(UPPER(country_code)), 'GB') = 'US'
-              AND tax_id_number IS NOT NULL
+         WHEN COALESCE(TRIM(UPPER(s.country_code)), 'GB') = 'US'
+              AND s.tax_id_number IS NOT NULL
          THEN 'Yes'
          ELSE 'No'
        END                                                            irs_1099_supplier
@@ -50,6 +50,6 @@ SELECT
      , NULL                                                           default_tax_code
      , NULL                                                           default_withholding_tax_code
      , 'FALSE'                                                        fatca
-     , TRIM(tax_registration_number)                                  business_entity_tax_id
-  FROM src_fin_supplier
+     , TRIM(s.tax_registration_number)                                  business_entity_tax_id
+  FROM src_fin_supplier s
 ;

@@ -51,7 +51,8 @@ SELECT *
  WHERE data_rnk = 1
        )
 SELECT
-        'S-' || LPAD(rnk::VARCHAR, 6, '0') AS supplier_id
+        'S-' || LPAD(rnk::VARCHAR, 6, '0')   supplier_id
+      , TRIM(t.vendor_name)                  nrm_vendor_name
       , t.*
   FROM cte_supplier t
 ;
