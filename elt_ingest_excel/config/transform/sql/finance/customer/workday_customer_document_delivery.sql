@@ -22,10 +22,9 @@ SELECT
        END                                            statement_delivery_method
      , TRIM(LOWER(c.email_to_address))                statement_notification_email_recipients
      , CASE
-         WHEN c.email_to_address IS NOT NULL
-          AND TRIM(c.email_to_address) != ''
-         THEN 'Email'
-         ELSE 'Print'
+         WHEN NULLIF(UPPER(TRIM(c.email_to_address)), '') IS NULL
+         THEN 'Print'
+         ELSE 'Email'
        END                                            dunning_delivery_method
      , TRIM(LOWER(c.email_to_address))                dunning_letter_notification_email_recipients
      , NULL                                           electronic_invoicing_start_date
@@ -36,4 +35,5 @@ SELECT
      , NULL                                           direct_debit_payment_type
      , NULL                                           default_mandate
   FROM src_fin_customer                c
+ WHERE NULLIF(UPPER(TRIM(c.email_to_address)), '') IS NOT NULL
 ;
