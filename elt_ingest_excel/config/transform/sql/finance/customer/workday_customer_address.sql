@@ -15,7 +15,7 @@ SELECT
      , TRIM(c.customer_id) || '_' || COALESCE(TRIM(c.address_code), 'MAIN')
                                                       address_id
      , TRIM(c.country)                                country
-     , TRIM(UPPER(c.country_code))                    country_code
+     , c.nrm_country_code                             country_code
      , TRIM(c.county)                                 region
      , NULL                                           subregion
      , TRIM(c.city)                                   city

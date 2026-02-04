@@ -29,4 +29,5 @@ SELECT
   FROM src_fin_customer                c
  WHERE c.checkbook_id IS NOT NULL
    AND TRIM(c.checkbook_id) != ''
+   AND 1 = 2
 ;

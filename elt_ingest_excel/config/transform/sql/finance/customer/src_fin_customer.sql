@@ -52,10 +52,11 @@ SELECT *
 SELECT
        'C-' || LPAD(rnk::VARCHAR, 6, '0')                         customer_id
      , CASE
-         WHEN NULLIF(UPPER(TRIM(t.customer_name)), '') IS NULL
-         THEN c.customer_id
+         WHEN NULLIF(UPPER(TRIM(c.customer_name)), '') IS NULL
+         THEN c.customer_number
          ELSE TRIM(c.customer_name)
        END                                                        customer_id_name
-     , t.*
-  FROM cte_customer t
+     , COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')    nrm_country_code
+     , c.*
+  FROM cte_customer                    c
 ;
