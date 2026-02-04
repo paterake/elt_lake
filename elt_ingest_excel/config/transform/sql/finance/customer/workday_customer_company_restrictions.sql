@@ -3,13 +3,13 @@ DROP TABLE IF EXISTS workday_customer_company_restrictions
 CREATE TABLE workday_customer_company_restrictions
     AS
 SELECT
-       customer_id                                   customer_id
-     , TRIM(customer_name)                           customer_name
-     , CASE TRIM(company)
+       c.customer_id                                 customer_id
+     , TRIM(c.customer_name)                         customer_name
+     , CASE TRIM(c.company)
          WHEN 'FA' THEN 'The Football Association'
-         ELSE TRIM(company)
+         ELSE TRIM(c.company)
        END                                           restricted_to_companies
-  FROM src_fin_customer
- WHERE company IS NOT NULL
-   AND TRIM(company) != ''
+  FROM src_fin_customer                c
+ WHERE c.company IS NOT NULL
+   AND TRIM(c.company) != ''
 ;

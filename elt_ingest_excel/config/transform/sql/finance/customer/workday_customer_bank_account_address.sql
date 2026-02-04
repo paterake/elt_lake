@@ -3,30 +3,30 @@ DROP TABLE IF EXISTS workday_customer_bank_account_address
 CREATE TABLE workday_customer_bank_account_address
     AS
 SELECT
-       TRIM(customer_name)                           customer_name
-     , customer_id                                   customer_id
-     , TRIM(customer_id) || '_BANK'                  settlement_bank_account_id
+       TRIM(c.customer_name)                         customer_name
+     , c.customer_id                                 customer_id
+     , TRIM(c.customer_id) || '_BANK'                settlement_bank_account_id
      , NULL                                          intermediary_bank_account_id
-     , TRIM(customer_id) || '_BANK_ADDR'             address_id
-     , TRIM(country)                                 country
-     , TRIM(county)                                  region
+     , TRIM(c.customer_id) || '_BANK_ADDR'           address_id
+     , TRIM(c.country)                               country
+     , TRIM(c.county)                                region
      , NULL                                          subregion
-     , TRIM(city)                                    city
+     , TRIM(c.city)                                  city
      , NULL                                          submunicipality
-     , TRIM(address_1)                               address_line_1
-     , NULLIF(TRIM(address_2), '')                   address_line_2
-     , NULLIF(TRIM(address_3), '')                   address_line_3
+     , TRIM(c.address_1)                             address_line_1
+     , NULLIF(TRIM(c.address_2), '')                 address_line_2
+     , NULLIF(TRIM(c.address_3), '')                 address_line_3
      , NULL                                          address_line_4
-     , TRIM(UPPER(post_code))                        postal_code
+     , TRIM(UPPER(c.post_code))                      postal_code
      , 'Yes'                                         is_public
      , 'Yes'                                         is_primary
-     , created_date                                  effective_date
-     , TRIM(address_code)                            address_type
-     , TRIM(address_code)                            use_for
+     , c.created_date                                effective_date
+     , TRIM(c.address_code)                          address_type
+     , TRIM(c.address_code)                          use_for
      , NULL                                          use_for_tenanted
-  FROM src_fin_customer
- WHERE checkbook_id IS NOT NULL
-   AND TRIM(checkbook_id) != ''
-   AND address_1 IS NOT NULL
-   AND TRIM(address_1) != ''
+  FROM src_fin_customer                c
+ WHERE c.checkbook_id IS NOT NULL
+   AND TRIM(c.checkbook_id) != ''
+   AND c.address_1 IS NOT NULL
+   AND TRIM(c.address_1) != ''
 ;

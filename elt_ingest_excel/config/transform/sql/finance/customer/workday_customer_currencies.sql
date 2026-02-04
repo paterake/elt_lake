@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS workday_customer_currencies
 CREATE TABLE workday_customer_currencies
     AS
 SELECT
-       customer_id                                   customer_id
-     , TRIM(customer_name)                           customer_name
+       c.customer_id                                 customer_id
+     , TRIM(c.customer_name)                         customer_name
      , 'GBP'                                         accepted_currencies
      , 'GBP'                                         default_currency
-  FROM src_fin_customer
+  FROM src_fin_customer                c
 ;
