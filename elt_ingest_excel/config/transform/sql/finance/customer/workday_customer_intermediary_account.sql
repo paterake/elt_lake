@@ -5,7 +5,7 @@ CREATE TABLE workday_customer_intermediary_account
 SELECT
        TRIM(customer_id) || '_BANK'                  settlement_bank_account_id
      , TRIM(customer_name)                           customer_name
-     , TRIM(customer_id)                             customer_id
+     , customer_id                                   customer_id
      , TRIM(customer_id) || '_INTBANK'               intermediary_bank_account_id
      , 'GB'                                          bank_country
      , 'GBP'                                         currency

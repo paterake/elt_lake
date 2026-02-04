@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_tax
 CREATE TABLE workday_customer_tax
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , TRIM(tax_schedule_id)                         tax_code
      , COALESCE(TRIM(UPPER(country_code)), 'GB')     tax_id_country

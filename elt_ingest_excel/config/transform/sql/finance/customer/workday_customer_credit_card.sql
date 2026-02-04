@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_credit_card
 CREATE TABLE workday_customer_credit_card
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , NULL                                          merchant_customer_profile_id
      , NULL                                          primary_card

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_address
 CREATE TABLE workday_customer_address
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , NULL                                          formatted_address
      , NULL                                          address_format_type

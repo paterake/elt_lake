@@ -1,4 +1,5 @@
 src_fin_customer.sql
+ref_customer_country_language.sql
 workday_customer_name.sql
 workday_customer_groups.sql
 workday_customer_related_worktags.sql

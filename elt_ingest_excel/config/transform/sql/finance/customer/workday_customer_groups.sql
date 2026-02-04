@@ -3,9 +3,15 @@ DROP TABLE IF EXISTS workday_customer_groups
 CREATE TABLE workday_customer_groups
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
-     , TRIM(customer_name)                           customer_name
-     , TRIM(customer_class)                          customer_group
+       TRIM(customer_id)                              customer_id
+     , TRIM(customer_name)                            customer_name
+     , CASE
+           WHEN UPPER(SUBSTR(TRIM(customer_name), 1, 1)) BETWEEN 'A' AND 'L'
+               THEN 'Customers_A_L'
+           WHEN UPPER(SUBSTR(TRIM(customer_name), 1, 1)) BETWEEN 'M' AND 'Z'
+               THEN 'Customers_M_Z'
+           ELSE 'Customers_0_9'
+       END                                            customer_group
   FROM src_fin_customer
  WHERE customer_class IS NOT NULL
    AND TRIM(customer_class) != ''

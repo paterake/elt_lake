@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_settlement_account
 CREATE TABLE workday_customer_settlement_account
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , TRIM(customer_id) || '_BANK'                  settlement_bank_account_id
      , 'GB'                                          country

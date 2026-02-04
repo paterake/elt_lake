@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_payment
 CREATE TABLE workday_customer_payment
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , TRIM(payment_terms_id)                        payment_terms
      , CASE

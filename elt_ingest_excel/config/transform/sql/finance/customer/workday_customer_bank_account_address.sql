@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_bank_account_address
     AS
 SELECT
        TRIM(customer_name)                           customer_name
-     , TRIM(customer_id)                             customer_id
+     , customer_id                                   customer_id
      , TRIM(customer_id) || '_BANK'                  settlement_bank_account_id
      , NULL                                          intermediary_bank_account_id
      , TRIM(customer_id) || '_BANK_ADDR'             address_id

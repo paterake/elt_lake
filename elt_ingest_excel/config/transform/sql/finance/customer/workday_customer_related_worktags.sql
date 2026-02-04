@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_related_worktags
 CREATE TABLE workday_customer_related_worktags
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , 'Sales_Territory'                             worktag_type
      , NULL                                          required_on_transaction

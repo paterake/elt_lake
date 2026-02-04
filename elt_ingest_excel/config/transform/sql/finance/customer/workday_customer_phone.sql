@@ -40,7 +40,7 @@ SELECT 'MX',              '+52'
        )
 -- Phone Number 1 (Primary)
 SELECT
-       TRIM(c.customer_id)                                             customer_id
+       c.customer_id.                                                  customer_id
      , TRIM(c.customer_name)                                           customer_name
      , TRIM(c.customer_id) || '_PH1'                                   phone_id
      , TRIM(c.country)                                                 phone_country

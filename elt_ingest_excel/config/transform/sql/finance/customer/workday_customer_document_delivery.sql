@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_document_delivery
 CREATE TABLE workday_customer_document_delivery
     AS
 SELECT
-       TRIM(customer_id)                             customer_id
+       customer_id                                   customer_id
      , TRIM(customer_name)                           customer_name
      , NULL                                          always_separate_payments
      , NULL                                          remit_from_customer
