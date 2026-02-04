@@ -56,7 +56,16 @@ SELECT
          THEN c.customer_number
          ELSE TRIM(c.customer_name)
        END                                                        customer_id_name
-     , COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')    nrm_country_code
+     , r.country_code                                             nrm_country_code
+     , r.language_code                                            nrm_language_code
+     , r.currency_code                                            nrm_currency_code
+     , r.phone_code                                               nrm_phone_code
+     , r.tax_id_type                                              nrm_tax_id_type
+     , r.country_name                                             nrm_country_name
      , c.*
   FROM cte_customer                    c
+       LEFT OUTER JOIN
+       ref_customer_country_language   r
+          ON r.country_code            = COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')
+  
 ;

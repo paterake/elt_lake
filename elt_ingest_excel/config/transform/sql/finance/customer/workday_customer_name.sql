@@ -9,8 +9,8 @@ SELECT
      , COALESCE(NULLIF(UPPER(TRIM(c.customer_class)), ''), 'DEFAULT')   customer_category
      , UPPER(TRIM(c.company))                                           business_entity_name
      , TRIM(c.customer_number)                                          external_entity_id
-     , COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')          preferred_locale
-     , COALESCE(rc.language_code, 'EN')                                 preferred_language
+     , c.nrm_country_code                                               preferred_locale
+     , c.nrm_language_code                                              preferred_language
      , NULL                                                             lockbox
      , UPPER(TRIM(c.company))                                           customer_security_segment
      , NULL                                                             worktag_only
@@ -24,7 +24,4 @@ SELECT
      , NULL                                                             create_customer_from_tax_authority
      , NULL                                                             create_customer_from_investor
   FROM src_fin_customer                c
-       LEFT OUTER JOIN
-       ref_customer_country_language   rc
-          ON rc.country_code           = COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')
 ;

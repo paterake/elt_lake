@@ -8,7 +8,7 @@ SELECT
      , TRIM(c.customer_id) || '_BANK'                 settlement_bank_account_id
      , NULL                                           intermediary_bank_account_id
      , TRIM(c.customer_id) || '_BANK_ADDR'            address_id
-     , TRIM(c.country)                                country
+     , c.nrm_country_name                             country
      , TRIM(c.county)                                 region
      , NULL                                           subregion
      , TRIM(c.city)                                   city
