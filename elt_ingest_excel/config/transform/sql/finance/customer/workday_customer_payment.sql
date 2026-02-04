@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_payment
     AS
 SELECT
        c.customer_id                                 customer_id
-     , TRIM(c.customer_name)                         customer_name
+     , c.customer_id_name                            customer_name
      , TRIM(c.payment_terms_id)                      payment_terms
      , CASE
          WHEN c.checkbook_id IS NOT NULL

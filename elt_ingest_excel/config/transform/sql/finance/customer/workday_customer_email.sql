@@ -5,7 +5,7 @@ CREATE TABLE workday_customer_email
 -- Email To Address (Primary)
 SELECT
        c.customer_id                                                    customer_id
-     , TRIM(c.customer_name)                                            customer_name
+     , c.customer_id_name                                               customer_name
      , TRIM(c.customer_id) || '_EM1'                                    email_id
      , TRIM(LOWER(c.email_to_address))                                  email_address
      , NULL                                                             email_comment
@@ -28,7 +28,7 @@ UNION ALL
 -- Email Cc Address
 SELECT
        c.customer_id                                                    customer_id
-     , TRIM(c.customer_name)                                            customer_name
+     , c.customer_id_name                                               customer_name
      , TRIM(c.customer_id) || '_EM2'                                    email_id
      , TRIM(LOWER(c.email_cc_address))                                  email_address
      , NULL                                                             email_comment
@@ -51,7 +51,7 @@ UNION ALL
 -- Email Bcc Address
 SELECT
        c.customer_id                                                    customer_id
-     , TRIM(c.customer_name)                                            customer_name
+     , c.customer_id_name                                               customer_name
      , TRIM(c.customer_id) || '_EM3'                                    email_id
      , TRIM(LOWER(c.email_bcc_address))                                 email_address
      , NULL                                                             email_comment

@@ -50,7 +50,12 @@ SELECT *
  WHERE data_rnk = 1
        )
 SELECT
-        'C-' || LPAD(rnk::VARCHAR, 6, '0') AS customer_id
-      , t.*
+       'C-' || LPAD(rnk::VARCHAR, 6, '0')                         customer_id
+     , CASE
+         WHEN NULLIF(UPPER(TRIM(t.customer_name)), '') IS NULL
+         THEN c.customer_id
+         ELSE TRIM(c.customer_name)
+       END                                                        customer_id_name
+     , t.*
   FROM cte_customer t
 ;

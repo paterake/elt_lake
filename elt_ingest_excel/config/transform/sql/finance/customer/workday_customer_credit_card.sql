@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_credit_card
     AS
 SELECT
        c.customer_id                                 customer_id
-     , TRIM(c.customer_name)                         customer_name
+     , c.customer_id_name                            customer_name
      , NULL                                          merchant_customer_profile_id
      , NULL                                          primary_card
      , NULL                                          merchant_account

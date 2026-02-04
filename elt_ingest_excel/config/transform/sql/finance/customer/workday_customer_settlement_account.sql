@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_settlement_account
     AS
 SELECT
        c.customer_id                                 customer_id
-     , TRIM(c.customer_name)                         customer_name
+     , c.customer_id_name                            customer_name
      , TRIM(c.customer_id) || '_BANK'                settlement_bank_account_id
      , 'GB'                                          country
      , 'GBP'                                         currency

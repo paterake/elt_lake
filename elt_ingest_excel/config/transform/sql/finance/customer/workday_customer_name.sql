@@ -4,12 +4,7 @@ CREATE TABLE workday_customer_name
     AS
 SELECT
        c.customer_id                                              customer_id
-     , CASE
-         WHEN NULLIF(UPPER(TRIM(t.customer_name)), '') IS NULL
-         THEN c.customer_id
-         ELSE TRIM(c.customer_name)
-       END                                                        
-     , TRIM(c.customer_name)                                      customer_name
+     , c.customer_id_name                                         customer_name
      , TRIM(c.customer_number)                                    reference_id
      , UPPER(TRIM(c.customer_class))                              customer_category
      , UPPER(TRIM(c.company))                                     business_entity_name

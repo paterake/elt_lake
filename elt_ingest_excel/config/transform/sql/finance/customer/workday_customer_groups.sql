@@ -4,11 +4,11 @@ CREATE TABLE workday_customer_groups
     AS
 SELECT
        TRIM(c.customer_id)                            customer_id
-     , TRIM(c.customer_name)                          customer_name
+     , c.customer_id_name                             customer_name
      , CASE
-           WHEN UPPER(SUBSTR(TRIM(c.customer_name), 1, 1)) BETWEEN 'A' AND 'L'
+           WHEN UPPER(SUBSTR(TRIM(c.customer_id_name), 1, 1)) BETWEEN 'A' AND 'L'
                THEN 'Customers_A_L'
-           WHEN UPPER(SUBSTR(TRIM(c.customer_name), 1, 1)) BETWEEN 'M' AND 'Z'
+           WHEN UPPER(SUBSTR(TRIM(c.customer_id_name), 1, 1)) BETWEEN 'M' AND 'Z'
                THEN 'Customers_M_Z'
            ELSE 'Customers_0_9'
        END                                            customer_group

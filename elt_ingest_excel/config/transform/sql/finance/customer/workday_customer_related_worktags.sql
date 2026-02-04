@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_related_worktags
     AS
 SELECT
        c.customer_id                                 customer_id
-     , TRIM(c.customer_name)                         customer_name
+     , c.customer_id_name                            customer_name
      , 'Sales_Territory'                             worktag_type
      , NULL                                          required_on_transaction
      , NULL                                          required_on_transaction_for_validation
