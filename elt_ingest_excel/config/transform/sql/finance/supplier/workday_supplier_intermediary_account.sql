@@ -8,7 +8,7 @@ SELECT
      , s.supplier_id                                                supplier_id
      , s.supplier_id || '_INTBANK'                                  intermediary_bank_account_id
      , NULL                                                       bank_country
-     , COALESCE(TRIM(s.currencyid), TRIM(s.currency_id), 'GBP')       currency
+     , s.nrm_currency_code                                            currency
      , 'CHECKING'                                                 bank_account_type
      , NULL                                                       bank_name
      , NULL                                                       name_on_account

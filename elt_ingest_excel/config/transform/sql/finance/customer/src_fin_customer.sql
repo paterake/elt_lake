@@ -63,9 +63,17 @@ SELECT
      , r.tax_id_type                                              nrm_tax_id_type
      , r.country_name                                             nrm_country_name
      , c.*
-  FROM cte_customer                    c
+  FROM cte_customer                          c
+       -- First try: match on country name (higher population)
        LEFT OUTER JOIN
-       ref_customer_country_language   r
-          ON r.country_code            = COALESCE(NULLIF(UPPER(TRIM(c.country_code)), ''), 'GB')
-  
+       ref_supplier_country_name_mapping     m_name
+          ON  m_name.source_country_name     = UPPER(TRIM(c.country))
+       -- Second try: match on country code (fallback)
+       LEFT OUTER JOIN
+       ref_supplier_country_code_mapping     m_code
+          ON  m_code.source_country_code     = NULLIF(UPPER(TRIM(c.country_code)), '')
+       -- Join to reference table using: name match > code match > default GB
+       LEFT OUTER JOIN
+       ref_supplier_country                  r
+          ON r.country_code                  = COALESCE(m_name.country_code, m_code.country_code, 'GB')
 ;

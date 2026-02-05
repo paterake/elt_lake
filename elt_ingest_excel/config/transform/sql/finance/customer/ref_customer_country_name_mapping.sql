@@ -1,65 +1,80 @@
-DROP TABLE IF EXISTS ref_supplier_country_name_mapping
+DROP TABLE IF EXISTS ref_customer_country_name_mapping
 ;
 -- Maps dirty source country names (uppercase) to canonical country_code
 -- Join using UPPER(TRIM(source_country_name))
-CREATE TABLE ref_supplier_country_name_mapping
+CREATE TABLE ref_customer_country_name_mapping
     AS
 SELECT * FROM (VALUES
-    ('ARGENTINA',               'AR'),
+    ('ABU DHABI',               'AE'),  -- UAE city
+    ('ALBANIA',                 'AL'),
+    ('ALGERIA',                 'DZ'),
+    ('AMSTERDAM',               'NL'),  -- city in Netherlands
     ('AUSTRALIA',               'AU'),
     ('AUSTRIA',                 'AT'),
+    ('AUSTRIA,',                'AT'),  -- trailing comma
     ('BELGIUM',                 'BE'),
     ('BERMUDA',                 'BM'),
     ('BOSNIA AND HERZEGOVINA',  'BA'),
     ('BRAZIL',                  'BR'),
+    ('BULGARIA',                'BG'),
+    ('CAMEROON',                'CM'),
     ('CANADA',                  'CA'),
-    ('CANANDA',                 'CA'),  -- typo
     ('CAYMAN ISLANDS',          'KY'),
     ('CHANNEL ISLANDS',         'JE'),
+    ('CHILE',                   'CL'),
     ('CHINA',                   'CN'),
+    ('COSTA RICA',              'CR'),
+    ('COTE D''IVOIRE',          'CI'),  -- escaped apostrophe
     ('CROATIA',                 'HR'),
     ('CYPRUS',                  'CY'),
+    ('CZECH REP',               'CZ'),  -- abbreviation
     ('CZECH REPUBLIC',          'CZ'),
     ('DENMARK',                 'DK'),
-    ('DOMINICAN REPUBLIC',      'DO'),
+    ('ECUADOR',                 'EC'),
     ('ENGLAND',                 'GB'),
     ('ESTONIA',                 'EE'),
     ('FINLAND',                 'FI'),
     ('FRANCE',                  'FR'),
-    ('GEORGIA',                 'GE'),
+    ('FRANCE,',                 'FR'),  -- trailing comma
     ('GERMANY',                 'DE'),
-    ('GREAT BRITAIN',           'GB'),
+    ('GERMANY,',                'DE'),  -- trailing comma
+    ('GIBRALTAR',               'GI'),
     ('GREECE',                  'GR'),
-    ('HELSINKI',                'FI'),  -- city in Finland
+    ('GUERNSEY',                'GG'),
+    ('HONG KONG',               'HK'),
+    ('HONG KONG (SAR)',         'HK'),
+    ('HONG KONG,',              'HK'),  -- trailing comma
     ('HUNGARY',                 'HU'),
     ('ICELAND',                 'IS'),
-    ('ILFOV',                   'RO'),  -- county in Romania
     ('INDIA',                   'IN'),
     ('INDONESIA',               'ID'),
     ('IRELAND',                 'IE'),
     ('ISLE OF MAN',             'IM'),
     ('ISRAEL',                  'IL'),
     ('ITALY',                   'IT'),
-    ('JAMAICA',                 'JM'),
+    ('IVORY COAST',             'CI'),
     ('JAPAN',                   'JP'),
-    ('KAZAKHSTAN',              'KZ'),
+    ('JERSEY',                  'JE'),
+    ('KOREA',                   'KR'),
     ('LATVIA',                  'LV'),
-    ('LESOTHO',                 'LS'),
-    ('LITHUANIA',               'LT'),
-    ('LONDON',                  'GB'),  -- city
+    ('LUXEMBOURG',              'LU'),
+    ('MACEDONIA, FYRO',         'MK'),
     ('MALAYSIA',                'MY'),
     ('MALTA',                   'MT'),
-    ('MIDDX',                   'GB'),  -- Middlesex abbreviation
+    ('MEXICO',                  'MX'),
+    ('MONACO',                  'MC'),
+    ('MOROCCO',                 'MA'),
     ('NETHERLAND',              'NL'),  -- typo
     ('NETHERLANDS',             'NL'),
     ('NEW ZEALAND',             'NZ'),
+    ('NIGERIA',                 'NG'),
     ('NORTHERN IRELAND',        'GB'),
     ('NORWAY',                  'NO'),
-    ('OTHER 1',                 NULL),  -- unknown
-    ('PHILIPPINES',             'PH'),
-    ('POL;AND',                 'PL'),  -- typo
+    ('NORWAY,',                 'NO'),  -- trailing comma
+    ('PARAGUAY',                'PY'),
     ('POLAND',                  'PL'),
     ('PORTUGAL',                'PT'),
+    ('PUERTO RICO',             'PR'),
     ('QATAR',                   'QA'),
     ('ROMANIA',                 'RO'),
     ('SAUDI ARABIA',            'SA'),
@@ -68,21 +83,19 @@ SELECT * FROM (VALUES
     ('SERBIA',                  'RS'),
     ('SINGAPORE',               'SG'),
     ('SLOVAKIA',                'SK'),
-    ('SLOVENIA',                'SI'),
     ('SOUTH AFRICA',            'ZA'),
     ('SPAIN',                   'ES'),
     ('SWEDEN',                  'SE'),
     ('SWITZERLAND',             'CH'),
+    ('SWITZERLAND,',            'CH'),  -- trailing comma
     ('THAILAND',                'TH'),
-    ('TURKEY',                  'TR'),
+    ('THE NETHERLANDS',         'NL'),
+    ('TRINIDAD AND TOBAGO',     'TT'),
+    ('UAE',                     'AE'),
     ('UK',                      'GB'),
-    ('UKRAINE',                 'UA'),
     ('UNITED ARAB EMIRATES',    'AE'),
     ('UNITED KINGDOM',          'GB'),
-    ('UNITED KINGDON',          'GB'),  -- typo
     ('UNITED STATES',           'US'),
-    ('UNITEDKINGDOM',           'GB'),  -- no space
-    ('URUGUAY',                 'UY'),
     ('USA',                     'US'),
     ('WALES',                   'GB')
 

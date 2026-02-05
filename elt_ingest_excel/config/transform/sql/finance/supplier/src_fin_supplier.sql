@@ -64,7 +64,7 @@ SELECT
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_supplier_country_name_mapping     m_name
-          ON  m_name.source_country_name     = TRIM(t.country)
+          ON  m_name.source_country_name     = UPPER(TRIM(t.country))
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
        ref_supplier_country_code_mapping     m_code

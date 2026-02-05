@@ -7,7 +7,7 @@ SELECT
      , s.nrm_vendor_name                                                    supplier_name
      , TRIM(s.eft_bank_account)                                             settlement_bank_account_id
      , s.nrm_country_name                                                   bank_country
-     , COALESCE(TRIM(s.currencyid), TRIM(s.currency_id), 'GBP')               currency
+     , s.nrm_currency_code                                                    currency
      , TRIM(s.eft_account_type)                                             bank_account_type
      , TRIM(s.bank_name)                                                    bank_name
      , TRIM(s.vendor_check_name)                                            name_on_account

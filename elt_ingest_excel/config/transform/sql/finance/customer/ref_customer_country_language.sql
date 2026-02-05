@@ -62,6 +62,19 @@ SELECT * FROM (VALUES
     ('SN', 'FR', 'XOF', '+221', 'Other', 'Senegal'),
     ('TT', 'EN', 'TTD', '+1',   'Other', 'Trinidad and Tobago'),
     ('US', 'EN', 'USD', '+1',   'EIN',   'United States'),
-    ('ZA', 'EN', 'ZAR', '+27',  'Other', 'South Africa')
+    ('ZA', 'EN', 'ZAR', '+27',  'Other', 'South Africa'),
+    -- Additional countries from source data
+    ('CY', 'EL', 'EUR', '+357', 'Other', 'Cyprus'),
+    ('GG', 'EN', 'GBP', '+44',  'Other', 'Guernsey'),
+    ('GI', 'EN', 'GIP', '+350', 'Other', 'Gibraltar'),
+    ('ID', 'ID', 'IDR', '+62',  'Other', 'Indonesia'),
+    ('KY', 'EN', 'KYD', '+1',   'Other', 'Cayman Islands'),
+    ('LU', 'FR', 'EUR', '+352', 'VAT',   'Luxembourg'),
+    ('MT', 'MT', 'EUR', '+356', 'VAT',   'Malta'),
+    ('MY', 'MS', 'MYR', '+60',  'Other', 'Malaysia'),
+    ('PR', 'ES', 'USD', '+1',   'EIN',   'Puerto Rico'),
+    ('QA', 'AR', 'QAR', '+974', 'Other', 'Qatar'),
+    ('SA', 'AR', 'SAR', '+966', 'Other', 'Saudi Arabia'),
+    ('TH', 'TH', 'THB', '+66',  'Other', 'Thailand')
 ) AS t(country_code, language_code, currency_code, phone_code, tax_id_type, country_name)
 ;
