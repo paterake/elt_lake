@@ -53,6 +53,15 @@ SELECT *
 SELECT
         'S-' || LPAD(rnk::VARCHAR, 6, '0')   supplier_id
       , TRIM(t.vendor_name)                  nrm_vendor_name
+      , r.country_code                       nrm_country_code
+      , r.language_code                      nrm_language_code
+      , r.currency_code                      nrm_currency_code
+      , r.phone_code                         nrm_phone_code
+      , r.tax_id_type                        nrm_tax_id_type
+      , r.country_name                       nrm_country_name
       , t.*
-  FROM cte_supplier t
+  FROM cte_supplier                          t
+       LEFT OUTER JOIN
+       ref_supplier_country                  r
+          ON r.country_code                  = COALESCE(NULLIF(UPPER(TRIM(t.country_code)), ''), 'GB')
 ;

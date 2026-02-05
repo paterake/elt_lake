@@ -14,8 +14,8 @@ SELECT
      , NULL                                                                descriptor
      , s.supplier_id || '_' || COALESCE(TRIM(s.vendor_address_code_primary), 'MAIN')
                                                                            address_id
-     , TRIM(s.country)                                                       country
-     , TRIM(UPPER(s.country_code))                                           country_code
+     , s.nrm_country_name                                                     country
+     , s.nrm_country_code                                                    country_code
      , TRIM(s.county)                                                        region
      , NULL                                                                subregion
      , TRIM(s.city)                                                          city

@@ -6,7 +6,7 @@ SELECT
        s.supplier_id                                                       supplier_id
      , s.nrm_vendor_name                                                    supplier_name
      , TRIM(s.eft_bank_account)                                             settlement_bank_account_id
-     , COALESCE(TRIM(UPPER(s.bank_country_code)), 'GB')                     bank_country
+     , s.nrm_country_name                                                   bank_country
      , COALESCE(TRIM(s.currencyid), TRIM(s.currency_id), 'GBP')               currency
      , TRIM(s.eft_account_type)                                             bank_account_type
      , TRIM(s.bank_name)                                                    bank_name
@@ -14,9 +14,9 @@ SELECT
      , TRIM(REPLACE(s.eft_bank_account, ' ', ''))                           bank_account_number
      , TRIM(s.vendor_short_name) || ' Bank'                                 bank_account_nickname
      , CASE
-         WHEN COALESCE(TRIM(UPPER(s.bank_country_code)), 'GB') IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
+         WHEN s.nrm_country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
          THEN TRIM(REPLACE(REPLACE(s.eft_bank_code, ' ', ''), '-', ''))
-         WHEN COALESCE(TRIM(UPPER(s.bank_country_code)), 'GB') = 'US'
+         WHEN s.nrm_country_code = 'US'
          THEN TRIM(REPLACE(REPLACE(s.eft_transit_routing_no, ' ', ''), '-', ''))
          ELSE TRIM(REPLACE(REPLACE(s.eft_bank_code, ' ', ''), '-', ''))
        END                                                                routing_number_bank_code

@@ -1,3 +1,4 @@
+ref_supplier_country.sql
 src_fin_supplier.sql
 workday_supplier_name.sql
 workday_supplier_groups.sql
