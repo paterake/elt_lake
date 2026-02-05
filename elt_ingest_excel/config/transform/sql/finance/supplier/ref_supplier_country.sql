@@ -62,6 +62,26 @@ SELECT * FROM (VALUES
     ('SN', 'FR', 'XOF', '+221', 'Other', 'Senegal'),
     ('TT', 'EN', 'TTD', '+1',   'Other', 'Trinidad and Tobago'),
     ('US', 'EN', 'USD', '+1',   'EIN',   'United States'),
-    ('ZA', 'EN', 'ZAR', '+27',  'Other', 'South Africa')
+    ('ZA', 'EN', 'ZAR', '+27',  'Other', 'South Africa'),
+    -- Additional countries from source data
+    ('CY', 'EL', 'EUR', '+357', 'Other', 'Cyprus'),
+    ('DO', 'ES', 'DOP', '+1',   'Other', 'Dominican Republic'),
+    ('GE', 'KA', 'GEL', '+995', 'Other', 'Georgia'),
+    ('ID', 'ID', 'IDR', '+62',  'Other', 'Indonesia'),
+    ('JM', 'EN', 'JMD', '+1',   'Other', 'Jamaica'),
+    ('KY', 'EN', 'KYD', '+1',   'Other', 'Cayman Islands'),
+    ('KZ', 'KK', 'KZT', '+7',   'Other', 'Kazakhstan'),
+    ('LS', 'EN', 'LSL', '+266', 'Other', 'Lesotho'),
+    ('LT', 'LT', 'EUR', '+370', 'Other', 'Lithuania'),
+    ('MT', 'MT', 'EUR', '+356', 'VAT',   'Malta'),
+    ('MY', 'MS', 'MYR', '+60',  'Other', 'Malaysia'),
+    ('PH', 'TL', 'PHP', '+63',  'Other', 'Philippines'),
+    ('QA', 'AR', 'QAR', '+974', 'Other', 'Qatar'),
+    ('SA', 'AR', 'SAR', '+966', 'Other', 'Saudi Arabia'),
+    ('SI', 'SL', 'EUR', '+386', 'Other', 'Slovenia'),
+    ('TH', 'TH', 'THB', '+66',  'Other', 'Thailand'),
+    ('TR', 'TR', 'TRY', '+90',  'Other', 'Turkey'),
+    ('UA', 'UK', 'UAH', '+380', 'Other', 'Ukraine'),
+    ('UY', 'ES', 'UYU', '+598', 'Other', 'Uruguay')
 ) AS t(country_code, language_code, currency_code, phone_code, tax_id_type, country_name)
 ;
