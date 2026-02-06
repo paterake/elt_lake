@@ -1,6 +1,6 @@
-ref_supplier_country.sql
-ref_supplier_country_name_mapping.sql
-ref_supplier_country_code_mapping.sql
+../ref/ref_country.sql
+../ref/ref_country_name_mapping.sql
+../ref/ref_country_code_mapping.sql
 src_fin_supplier.sql
 workday_supplier_name.sql
 workday_supplier_groups.sql

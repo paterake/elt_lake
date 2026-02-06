@@ -1,5 +1,7 @@
+../ref/ref_country.sql
+../ref/ref_country_name_mapping.sql
+../ref/ref_country_code_mapping.sql
 src_fin_customer.sql
-ref_customer_country_language.sql
 workday_customer_name.sql
 workday_customer_groups.sql
 workday_customer_related_worktags.sql

@@ -1,11 +1,12 @@
-DROP TABLE IF EXISTS ref_customer_country_code_mapping
+DROP TABLE IF EXISTS ref_country_code_mapping
 ;
 -- Maps dirty source country codes to canonical country_code
-CREATE TABLE ref_customer_country_code_mapping
+CREATE TABLE ref_country_code_mapping
     AS
 SELECT * FROM (VALUES
     ('AE',   'AE'),
     ('AL',   'AL'),
+    ('AR',   'AR'),
     ('AT',   'AT'),
     ('AU',   'AU'),
     ('BA',   'BA'),
@@ -47,6 +48,8 @@ SELECT * FROM (VALUES
     ('NG',   'NG'),
     ('NL',   'NL'),
     ('NO',   'NO'),
+    ('NZ',   'NZ'),
+    ('PL',   'PL'),
     ('PT',   'PT'),
     ('PY',   'PY'),
     ('RO',   'RO'),
@@ -54,6 +57,7 @@ SELECT * FROM (VALUES
     ('SE',   'SE'),
     ('SK',   'SK'),
     ('SN',   'SN'),
+    ('SZ',   'CH'),  -- incorrect code for Switzerland corrected
     ('TT',   'TT'),
     ('US',   'US'),
     ('ZA',   'ZA')

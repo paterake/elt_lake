@@ -63,14 +63,14 @@ SELECT
   FROM cte_supplier                          t
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
-       ref_supplier_country_name_mapping     m_name
+       ref_country_name_mapping              m_name
           ON  m_name.source_country_name     = UPPER(TRIM(t.country))
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
-       ref_supplier_country_code_mapping     m_code
+       ref_country_code_mapping              m_code
           ON  m_code.source_country_code     = NULLIF(UPPER(TRIM(t.country_code)), '')
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
-       ref_supplier_country                  r
+       ref_country                           r
           ON r.country_code                  = COALESCE(m_name.country_code, m_code.country_code, 'GB')
 ;
