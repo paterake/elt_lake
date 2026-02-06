@@ -27,22 +27,36 @@ SELECT s.supplier_id                          supplier_id
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.email_bcc_address)), '') IS NOT NULL
        )
-
-SELECT e.supplier_id                                                     supplier_id
-     , e.supplier_name                                                   supplier_name
-     , TRIM(LOWER(e.email_raw))                                          email_address
+     , cte_email_split
+    AS (
+SELECT DISTINCT
+       e.supplier_id                          supplier_id
+     , e.supplier_name                        supplier_name
+     , TRIM(u.email)                          email_address
+     , e.email_type                           email_type
+     , e.suffix                               suffix
+  FROM cte_supplier_email e
+     , UNNEST(STRING_SPLIT(e.email_raw, ';')) u(email)
+       )
+SELECT s.supplier_id                                                     supplier_id
+     , s.supplier_name                                                   supplier_name
+     , TRIM(LOWER(s.email_address))                                      email_address
      , NULL                                                              email_comment
-     , e.supplier_id || e.suffix                                         email_id
+     , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
+           PARTITION BY s.supplier_id 
+               ORDER BY s.email_type, s.email_address
+       )                                                                 email_id
      , 'Yes'                                                             public_flag
-     , CASE WHEN e.email_type = 'primary' THEN 'Yes' ELSE 'No' END       primary_flag
-     , CASE WHEN e.email_type = 'primary' THEN 'Yes' ELSE 'No' END       default_po
-     , e.email_type                                                      email_type
+     , CASE WHEN s.email_type = 'primary' THEN 'Yes' ELSE 'No' END       primary_flag
+     , CASE WHEN s.email_type = 'primary' THEN 'Yes' ELSE 'No' END       default_po
+     , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted
      , NULL                                                              delete_flag
      , NULL                                                              do_not_replace_all
      , NULL                                                              additional_comments
-     , TRIM(LOWER(e.email_raw))                                          email
-  FROM cte_supplier_email e
- WHERE e.email_raw ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+     , TRIM(LOWER(s.email_address))                                      email
+  FROM cte_email_split s
+ WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
+   AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 ;

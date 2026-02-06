@@ -1,71 +1,59 @@
 DROP TABLE IF EXISTS workday_customer_email
 ;
-CREATE TABLE workday_customer_email
-    AS
--- Email To Address (Primary)
-SELECT
-       c.customer_id                                                    customer_id
-     , c.customer_id_name                                               customer_name
-     , TRIM(c.customer_id) || '_EM1'                                    email_id
-     , TRIM(LOWER(c.email_to_address))                                  email_address
-     , NULL                                                             email_comment
-     , 'Yes'                                                            is_public
-     , 'Yes'                                                            is_primary
-     , 'Business'                                                       email_type
-     , 'Business'                                                       use_for
-     , NULL                                                             use_for_tenanted
-     , NULL                                                             delete_flag
-     , NULL                                                             do_not_replace_all
-     , NULL                                                             additional_comment
-     , TRIM(LOWER(c.email_to_address))                                  email
-  FROM src_fin_customer                c
- WHERE c.email_to_address IS NOT NULL
-   AND TRIM(c.email_to_address) != ''
-   AND c.email_to_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
-
+CREATE TABLE workday_customer_email AS
+  WITH cte_customer_email
+    AS (
+SELECT c.customer_id                          customer_id
+     , c.customer_id_name                     customer_name
+     , c.email_to_address                     email_raw
+     , 'primary'                              email_type
+     , '_EM1'                                 suffix
+  FROM src_fin_customer c
+ WHERE NULLIF(UPPER(TRIM(c.email_to_address)), '') IS NOT NULL
 UNION ALL
-
--- Email Cc Address
-SELECT
-       c.customer_id                                                    customer_id
-     , c.customer_id_name                                               customer_name
-     , TRIM(c.customer_id) || '_EM2'                                    email_id
-     , TRIM(LOWER(c.email_cc_address))                                  email_address
-     , NULL                                                             email_comment
-     , 'Yes'                                                            is_public
-     , 'No'                                                             is_primary
-     , 'Business'                                                       email_type
-     , 'Business'                                                       use_for
-     , NULL                                                             use_for_tenanted
-     , NULL                                                             delete_flag
-     , NULL                                                             do_not_replace_all
-     , NULL                                                             additional_comment
-     , TRIM(LOWER(c.email_cc_address))                                  email
-  FROM src_fin_customer                c
- WHERE c.email_cc_address IS NOT NULL
-   AND TRIM(c.email_cc_address) != ''
-   AND c.email_cc_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
-
+SELECT c.customer_id                          customer_id
+     , c.customer_id_name                     customer_name
+     , c.email_cc_address                     email_raw
+     , 'cc'                                   email_type
+     , '_EM2'                                 suffix
+  FROM src_fin_customer c
+ WHERE NULLIF(UPPER(TRIM(c.email_cc_address)), '') IS NOT NULL
 UNION ALL
-
--- Email Bcc Address
-SELECT
-       c.customer_id                                                    customer_id
-     , c.customer_id_name                                               customer_name
-     , TRIM(c.customer_id) || '_EM3'                                    email_id
-     , TRIM(LOWER(c.email_bcc_address))                                 email_address
-     , NULL                                                             email_comment
-     , 'Yes'                                                            is_public
-     , 'No'                                                             is_primary
-     , 'Business'                                                       email_type
-     , 'Business'                                                       use_for
-     , NULL                                                             use_for_tenanted
-     , NULL                                                             delete_flag
-     , NULL                                                             do_not_replace_all
-     , NULL                                                             additional_comment
-     , TRIM(LOWER(c.email_bcc_address))                                 email
-  FROM src_fin_customer                c
- WHERE c.email_bcc_address IS NOT NULL
-   AND TRIM(c.email_bcc_address) != ''
-   AND c.email_bcc_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+SELECT c.customer_id                          customer_id
+     , c.customer_id_name                     customer_name
+     , c.email_bcc_address                    email_raw
+     , 'bcc'                                  email_type
+     , '_EM3'                                 suffix
+  FROM src_fin_customer c
+ WHERE NULLIF(UPPER(TRIM(c.email_bcc_address)), '') IS NOT NULL
+       )
+     , cte_email_split
+    AS (
+SELECT e.customer_id                          customer_id
+     , e.customer_name                        customer_name
+     , TRIM(u.email)                          email_address
+     , e.email_type                           email_type
+     , e.suffix                               suffix
+  FROM cte_customer_email e
+     , UNNEST(STRING_SPLIT(e.email_raw, ';')) u(email)
+       )
+SELECT s.customer_id                                                     customer_id
+     , s.customer_name                                                   customer_name
+     , TRIM(s.customer_id) || s.suffix || '_' || ROW_NUMBER() OVER (
+           PARTITION BY s.customer_id ORDER BY s.email_type, s.email_address
+       )                                                                 email_id
+     , TRIM(LOWER(s.email_address))                                      email_address
+     , NULL                                                              email_comment
+     , 'Yes'                                                             is_public
+     , CASE WHEN s.email_type = 'primary' THEN 'Yes' ELSE 'No' END       is_primary
+     , s.email_type                                                      email_type
+     , 'Business'                                                        use_for
+     , NULL                                                              use_for_tenanted
+     , NULL                                                              delete_flag
+     , NULL                                                              do_not_replace_all
+     , NULL                                                              additional_comment
+     , TRIM(LOWER(s.email_address))                                      email
+  FROM cte_email_split s
+ WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
+   AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 ;
