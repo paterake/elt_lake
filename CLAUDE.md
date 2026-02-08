@@ -11,9 +11,9 @@
 - Example:
 
 ```sql
-SELECT column_one                              alias_one
-     , column_two                              alias_two
-     , TRIM(LOWER(column_three))               alias_three
-  FROM table_name
- WHERE condition = 'value'
+SELECT t.column_one                    alias_one
+     , t.column_two                    alias_two
+     , TRIM(LOWER(t.column_three))     alias_three
+  FROM table_name                      t
+ WHERE t.condition                     = 'value'
 ```
