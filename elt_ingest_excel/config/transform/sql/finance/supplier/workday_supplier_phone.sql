@@ -69,8 +69,8 @@ SELECT DISTINCT
 SELECT s.supplier_id                                                     supplier_id
      , s.supplier_name                                                   supplier_name
      , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
-           PARTITION BY s.supplier_id
-               ORDER BY s.phone_type, s.phone_number_raw
+           PARTITION BY s.supplier_id, s.suffix
+               ORDER BY s.phone_number_raw
        )                                                                 phone_id
      , s.phone_country                                                   phone_country
      , s.country_code                                                    country_code
@@ -81,7 +81,7 @@ SELECT s.supplier_id                                                     supplie
      , s.phone_device_type                                               phone_device_type
      , 'Yes'                                                             public_flag
      , CASE WHEN s.phone_type = 'primary' THEN 'Yes' ELSE 'No' END       primary_flag
-     , 'Business'                                                        phone_type
+     , s.phone_type                                                      phone_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted
      , NULL                                                              phone_comments

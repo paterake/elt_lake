@@ -69,8 +69,8 @@ SELECT DISTINCT
 SELECT s.customer_id                                                     customer_id
      , s.customer_name                                                   customer_name
      , TRIM(s.customer_id) || s.suffix || '_' || ROW_NUMBER() OVER (
-           PARTITION BY s.customer_id
-               ORDER BY s.phone_type, s.phone_number_raw
+           PARTITION BY s.customer_id, s.suffix
+               ORDER BY s.phone_number_raw
        )                                                                 phone_id
      , s.phone_country                                                   phone_country
      , s.country_code                                                    country_code
@@ -82,7 +82,7 @@ SELECT s.customer_id                                                     custome
      , s.phone_device_type                                               phone_device_type
      , 'Yes'                                                             is_public
      , CASE WHEN s.phone_type = 'primary' THEN 'Yes' ELSE 'No' END       is_primary
-     , 'Business'                                                        phone_type
+     , s.phone_type                                                      phone_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted
      , NULL                                                              tenant_formatted_phone
