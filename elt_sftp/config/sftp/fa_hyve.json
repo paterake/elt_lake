@@ -5,7 +5,7 @@
     "internalIp": "172.16.0.66",
     "port": 22,
     "authentication": "ssh_key",
-    "username": "",
-    "sshKeyPath": "",
-    "remotePath": "/"
+    "username": "rpatel",
+    "sshKeyPath": "/Users/rpatel/Documents/__cfg/ssh/rpatel",
+    "remotePath": "/rpatel"
 }

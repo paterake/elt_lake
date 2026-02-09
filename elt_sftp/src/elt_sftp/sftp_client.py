@@ -22,7 +22,7 @@ class SftpClient:
 
         if self._config.authentication == AuthMethod.SSH_KEY:
             key_path = os.path.expanduser(self._config.ssh_key_path)
-            private_key = paramiko.RSAKey.from_private_key_file(key_path)
+            private_key = paramiko.PKey.from_path(key_path)
             self._transport.connect(username=self._config.username, pkey=private_key)
         else:
             self._transport.connect(
@@ -131,7 +131,7 @@ class SftpClient:
                 file_name=file_name,
                 size_bytes=0,
                 success=False,
-                error=str(e),
+                error=f"{type(e).__name__}: {e}",
             )
 
     def _push_file(self, local_path: str, remote_path: str, file_name: str) -> TransferResult:
@@ -155,7 +155,7 @@ class SftpClient:
                 file_name=file_name,
                 size_bytes=0,
                 success=False,
-                error=str(e),
+                error=f"{type(e).__name__}: {e}",
             )
 
 
