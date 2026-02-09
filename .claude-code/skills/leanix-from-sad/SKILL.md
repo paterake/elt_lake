@@ -34,9 +34,26 @@ cd elt_doc_sad_leanix && uv run python <script.py>
 ```
 
 - The generator script is at: `elt_doc_sad_leanix/src/elt_doc_sad_leanix/generate_integration_xml.py`
-- Example output is at: `elt_doc_sad_leanix/examples/COR_V00_01_INT006_Barclaycard.xml`
+- Reference XML examples are at: `elt_doc_sad_leanix/examples/`
+  - `COR_V00.01_INT001_Workday_Okta.xml` (bi-directional API)
+  - `COR_V00.01_INT002_Workday_Crisis24.xml` (outbound via Hyve SFTP)
+  - `COR_V00.01_INT004_AMEX_GBT.xml` (outbound to vendor SFTP)
+  - `COR_V00_01_INT006_Barclaycard.xml` (inbound via Hyve SFTP)
+  - `COR_V00.01_INT018_Barclays_Banking.xml` (multi-connector complex)
+
+**Always read the closest matching reference XML before generating a new diagram.**
 
 Do NOT use the system Python directly as `python-docx` is not installed globally.
+
+## Output Location
+
+Save the generated XML file in the **same directory as the input SAD `.docx` file**, with the same filename but a `.xml` extension.
+
+For example:
+- Input: `~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.docx`
+- Output: `~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.xml`
+
+Do NOT write output files into the project directory.
 
 ## XML Structure Pattern
 
@@ -99,26 +116,55 @@ Based on analysis of existing LeanIX diagrams, the XML uses mxGraph format:
 </mxCell>
 ```
 
+## Known Fact Sheet IDs
+
+Always reuse these UUIDs for systems that already exist in LeanIX:
+
+| System | factSheetId | factSheetType |
+|--------|-------------|---------------|
+| Workday Human Capital Management | `d60d172c-862d-4b73-ae8f-4205fd233d58` | Application |
+| Hyve Managed SFTP Server (INT000) | `bb2e0906-47e7-4785-8a05-81e6b6c5330b` | ITComponent |
+
+For new vendors/systems, generate a fresh UUID.
+
 ## Color Coding Standards
 
 | System Type | fillColor | strokeColor | Usage |
 |-------------|-----------|-------------|-------|
 | Workday (all modules) | #497db0 | #497db0 | Blue boxes |
 | Vendors/Partners | #ffa31f | #ffa31f | Orange boxes |
-| Infrastructure (Hyve) | #c17d5e | #c17d5e | Brown boxes |
+| Infrastructure (Hyve SFTP) | #d29270 | #d29270 | Brown boxes |
 
 ## Standard Layout Positions
 
-### Three-Box Linear Pattern (Outbound)
+### Two-Box Bi-Directional Pattern (e.g. INT001 Okta)
 ```
-Workday HCM        →        SFTP/Vendor        →        Vendor Platform
-x=240, y=280              x=560, y=280                x=880, y=280
+Workday HCM        ↔        Vendor System
+x=240, y=280              x=800, y=280
 ```
 
-### Three-Box Bi-Directional Pattern
+### Three-Box Linear Pattern - Outbound via SFTP (e.g. INT002 Crisis24)
 ```
-Workday HCM        ↔        Vendor System        →        Downstream
-x=240, y=280              x=800, y=280
+Workday HCM        →        SFTP (INT000)        →        Vendor Platform
+x=10, y=110               x=520, y=110                x=1036, y=110
+```
+
+### Three-Box Linear Pattern - Outbound to Vendor SFTP (e.g. INT004 Amex GBT)
+```
+Workday HCM        →        Vendor SFTP        →        Vendor Platform
+x=160, y=160              x=700, y=160              x=1190, y=160
+```
+
+### Three-Box Linear Pattern - Inbound via SFTP (e.g. INT006 Barclaycard)
+```
+Vendor              →        Hyve SFTP        →        Workday
+x=240, y=280              x=560, y=280              x=880, y=280
+```
+
+### Multi-Connector Complex (e.g. INT018 Barclays Banking)
+```
+Workday HCM        ↔        Vendor SFTP Gateway        ↔        Vendor Platform
+x=400, y=280              x=950, y=280                      x=1580, y=280
 ```
 
 ## Python Code Generation Template
@@ -183,13 +229,17 @@ def create_integration_diagram_xml(integration_data):
     })
     id_counter += 1
     
+    # Known fact sheet IDs (reuse for existing LeanIX systems)
+    WORKDAY_HCM_FACT_SHEET_ID = 'd60d172c-862d-4b73-ae8f-4205fd233d58'
+    HYVE_SFTP_FACT_SHEET_ID = 'bb2e0906-47e7-4785-8a05-81e6b6c5330b'
+
     # Add source system box (Workday)
     source_id = str(id_counter)
     source_box = ET.SubElement(root_elem, 'object', {
         'type': 'factSheet',
         'label': integration_data['source_system'],
         'factSheetType': 'Application',
-        'factSheetId': str(uuid.uuid4()),
+        'factSheetId': WORKDAY_HCM_FACT_SHEET_ID,
         'id': source_id
     })
     source_cell = ET.SubElement(source_box, 'mxCell', {
@@ -447,33 +497,40 @@ Would you like me to adjust any positions, colors, or add more details?
 
 ## Integration Type Templates
 
-### Template 1: Outbound EIB to SFTP
+### Template 1: Outbound EIB to Vendor SFTP
 - Pattern: Workday → Vendor SFTP → Vendor Platform
-- Examples: INT004 (Amex GBT), INT003 (Headspace)
-- Boxes: 3 (linear)
+- Reference XML: `COR_V00.01_INT004_AMEX_GBT.xml`
+- Boxes: 3 (linear), all #497db0 blue when vendor SFTP is treated as Application
 - Arrow: Single outbound
-- Sections: 4-column process breakdown
+- Sections: 3-4 column process breakdown (Data Extraction | File Generation | SFTP Delivery), Security, System of Record, Key Attributes
 
-### Template 2: Bi-Directional API
+### Template 2: Outbound EIB via Hyve SFTP
+- Pattern: Workday → Hyve SFTP (INT000) → Vendor Platform
+- Reference XML: `COR_V00.01_INT002_Workday_Crisis24.xml`
+- Boxes: 3 (Workday=#497db0, Hyve SFTP=#d29270 as ITComponent, Vendor=#497db0)
+- Arrow: Single outbound through intermediary
+- Sections: 4-column process breakdown (Data Extraction | Document Transformation | SFTP Delivery | Vendor Retrieval), Security, System of Record, Key Attributes
+
+### Template 3: Bi-Directional API
 - Pattern: Workday ↔ Vendor System
-- Examples: INT001 (Okta)
-- Boxes: 2 (Workday + Vendor)
-- Arrows: Bi-directional
-- Sections: Lifecycle scenarios (JML)
+- Reference XML: `COR_V00.01_INT001_Workday_Okta.xml`
+- Boxes: 2 (Workday=#497db0 as Application, Vendor=#ffa31f as Provider)
+- Arrows: Bi-directional with waypoints routed above and below boxes
+- Sections: JML lifecycle table (Joiner | Mover | Leaver | Rehire), Security, System of Record, Key Attributes
 
-### Template 3: Multi-Connector Complex
-- Pattern: Workday → Multiple connectors → Vendor
-- Examples: INT018 (Barclays - 3 connectors)
-- Boxes: Multiple for each connector
-- Arrows: Various directions
-- Sections: Connector-specific details
+### Template 4: Inbound via Hyve SFTP
+- Pattern: Vendor → Hyve SFTP → Workday
+- Reference XML: `COR_V00_01_INT006_Barclaycard.xml`
+- Boxes: 3 (Vendor=#ffa31f as Provider, Hyve=#d29270 as ITComponent, Workday=#497db0)
+- Arrow: Single inbound
+- Sections: Security, System of Record, Key Attributes, Key Dependencies
 
-### Template 4: Via Hyve SFTP
-- Pattern: Workday → Hyve SFTP → Vendor Platform
-- Examples: INT002 (Crisis24)
-- Boxes: 3 (with Hyve in middle)
-- Arrow: Through intermediary
-- Sections: Reference to INT000
+### Template 5: Multi-Connector Complex
+- Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
+- Reference XML: `COR_V00.01_INT018_Barclays_Banking.xml`
+- Boxes: 3 (wider spacing), bi-directional arrows
+- Sub-integrations: Separate process tables per connector (e.g. INT018a, INT018b, INT018c)
+- Sections: Per-connector process tables, Security, System of Record, Key Attributes, Environment Strategy, Critical Constraints
 
 ## Skill Execution Steps
 
