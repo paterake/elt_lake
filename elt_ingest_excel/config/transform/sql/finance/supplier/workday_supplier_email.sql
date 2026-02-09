@@ -6,7 +6,7 @@ CREATE TABLE workday_supplier_email AS
 SELECT s.supplier_id                          supplier_id
      , s.nrm_vendor_name                      supplier_name
      , s.email_to_address                     email_raw
-     , 'primary'                              email_type
+     , 'to'                                   email_type
      , '_EM1'                                 suffix
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.email_to_address)), '') IS NOT NULL
@@ -38,17 +38,32 @@ SELECT DISTINCT
   FROM cte_supplier_email e
      , UNNEST(STRING_SPLIT(e.email_raw, ';')) u(email)
        )
+     , cte_email_rnk
+    AS (
+SELECT s.supplier_id                          supplier_id
+     , s.supplier_name                        supplier_name
+     , s.email_address                        email_address
+     , s.email_type                           email_type
+     , s.suffix                               suffix
+     , ROW_NUMBER() OVER (
+           PARTITION BY s.supplier_id, s.email_type
+               ORDER BY s.email_address
+       )                                      email_rank
+  FROM cte_email_split s
+       )
 SELECT s.supplier_id                                                     supplier_id
      , s.supplier_name                                                   supplier_name
      , TRIM(LOWER(s.email_address))                                      email_address
      , NULL                                                              email_comment
      , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
-           PARTITION BY s.supplier_id 
-               ORDER BY s.email_type, s.email_address
+           PARTITION BY s.supplier_id, s.suffix
+               ORDER BY s.email_address
        )                                                                 email_id
      , 'Yes'                                                             public_flag
-     , CASE WHEN s.email_type = 'primary' THEN 'Yes' ELSE 'No' END       primary_flag
-     , CASE WHEN s.email_type = 'primary' THEN 'Yes' ELSE 'No' END       default_po
+     , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
+            THEN 'Yes' ELSE 'No' END                                      primary_flag
+     , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
+            THEN 'Yes' ELSE 'No' END                                      default_po
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted
@@ -56,7 +71,7 @@ SELECT s.supplier_id                                                     supplie
      , NULL                                                              do_not_replace_all
      , NULL                                                              additional_comments
      , TRIM(LOWER(s.email_address))                                      email
-  FROM cte_email_split s
+  FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 ;
