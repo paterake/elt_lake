@@ -25,6 +25,19 @@ Import directly into LeanIX ✅
 - User mentions "for LeanIX" or "draw.io"
 - User references creating integration architecture diagrams
 
+## Python Environment
+
+The Python code and dependencies for this skill live in the `elt_doc_sad_leanix` module at the project root. When running any Python code that requires `python-docx` or other dependencies, always use:
+
+```bash
+cd elt_doc_sad_leanix && uv run python <script.py>
+```
+
+- The generator script is at: `elt_doc_sad_leanix/src/elt_doc_sad_leanix/generate_integration_xml.py`
+- Example output is at: `elt_doc_sad_leanix/examples/COR_V00_01_INT006_Barclaycard.xml`
+
+Do NOT use the system Python directly as `python-docx` is not installed globally.
+
 ## XML Structure Pattern
 
 Based on analysis of existing LeanIX diagrams, the XML uses mxGraph format:

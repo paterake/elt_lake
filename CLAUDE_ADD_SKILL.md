@@ -13,18 +13,31 @@ Each skill lives in its own subdirectory and **must** contain a file named exact
 
 ## Prerequisites
 
-Some skills include Python scripts that depend on third-party packages. Install any required packages before first use.
+Skills with Python dependencies should be managed as uv workspace modules so that dependencies are declared in `pyproject.toml` and resolved automatically. This avoids issues with macOS/Homebrew blocking system-wide `pip install`.
 
-For the **leanix-from-sad** skill:
+### One-time setup
 
 ```bash
-pip3 install python-docx
+cd <module-directory>
+uv sync
 ```
 
-`python-docx` is needed to parse `.docx` SAD documents.
+This creates a `.venv` inside the module and installs all declared dependencies.
 
-> **Tip:** Check the skill's `SKILL.md` and any `.py` files for `import` statements to identify dependencies.
+### Running scripts
 
+```bash
+cd <module-directory>
+uv run python <script.py>
+```
+
+Or activate the venv manually:
+
+```bash
+source <module-directory>/.venv/bin/activate
+```
+
+> **Tip:** Check the module's `pyproject.toml` for the full dependency list. Add new packages with `uv add <package>` from within the module directory.
 
 ## Installation Options
 
