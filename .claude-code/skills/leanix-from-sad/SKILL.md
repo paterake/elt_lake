@@ -96,6 +96,23 @@ Based on analysis of existing LeanIX diagrams, the XML uses mxGraph format:
 </mxCell>
 ```
 
+**3a. Interface Edges (arrows as Interface fact sheets):**
+
+When an Interface fact sheet exists in the LeanIX inventory for this integration, wrap the edge `mxCell` in a fact sheet `object`. This links the arrow to the LeanIX Interface, making the connection visible in the LeanIX model. When no Interface exists in the inventory, use a plain `mxCell` edge (pattern 3 above).
+
+```xml
+<object type="factSheet" label="WorkDay HCM - Barclaycard"
+        factSheetType="Interface"
+        factSheetId="17c551bd-04b5-4397-9662-d4b78467ffae" id="[ID]">
+  <mxCell edge="1" parent="1" source="[SOURCE_ID]" target="[TARGET_ID]"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+    <mxGeometry relative="1" as="geometry"/>
+  </mxCell>
+</object>
+```
+
+**Note:** For multi-hop integrations (e.g. Vendor → SFTP → Workday), the Interface fact sheet goes on the primary integration edge (typically the edge connecting to Workday), not on every intermediate hop.
+
 **4. Text Labels:**
 ```xml
 <UserObject label="Label Text" placeholders="1" name="Variable" id="[ID]">
@@ -159,17 +176,79 @@ Process tables show the step-by-step data movement workflow beneath the diagram 
 - Standard heights: header row 52px, content row 188-228px
 - Table y-position: typically placed below the diagram boxes and flow labels
 
-## Known Fact Sheet IDs
+## LeanIX Inventory Lookup
 
-Always reuse these UUIDs for systems that already exist in LeanIX:
+The LeanIX inventory export is at: `elt_doc_sad_leanix/config/LeanIX_Inventory.xlsx`
 
-| System | factSheetId | factSheetType |
-|--------|-------------|---------------|
-| Workday Human Capital Management | `d60d172c-862d-4b73-ae8f-4205fd233d58` | Application |
-| Workday Financial Management | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Application |
-| Hyve Managed SFTP Server (INT000) | `bb2e0906-47e7-4785-8a05-81e6b6c5330b` | ITComponent |
+**Always read this inventory to resolve correct asset names and UUIDs before generating a diagram.** Do not rely on hardcoded IDs — the inventory is the source of truth.
 
-For new vendors/systems, generate a fresh UUID.
+### Inventory File Structure
+
+- **Single sheet** named `Export ...` containing all entity types
+- **Two header rows**: row 0 = machine keys (`id`, `type`, `name`, `displayName`, `description`, `level`, `status`, `lxState`), row 1 = human labels. Data starts at row 2.
+- **Filter by `type` column** to find specific entity types
+
+### Fact Sheet Types Used in Integration Diagrams
+
+| Diagram Element | LeanIX `type` | Color | Usage |
+|-----------------|---------------|-------|-------|
+| Workday modules | `Application` | #497db0 (blue) | Workday HCM or Financial Management — always a box |
+| Vendor systems | `Application` (preferred) or `Provider` (fallback) | #ffa31f (orange) | The vendor's software platform. Search Application first; fall back to Provider if no Application match. Color is set via `fillColor`/`strokeColor` in style, independent of factSheetType |
+| Infrastructure | `ITComponent` | #d29270 (brown) | Middleware boxes (Hyve SFTP, Cloud Connect) |
+| Integration connection | `Interface` | N/A (edge, not box) | The integration itself — applied to the arrow/edge between systems. Carries the INT ID, direction, and protocol metadata |
+
+### Asset Resolution Process
+
+When building a diagram from a SAD document:
+
+1. **Read the inventory** using openpyxl (the elt_doc_sad_leanix module has it as a dependency)
+2. **Identify the Workday module**: Search `type=Application` for name containing "Workday". Use the Workday Module Selection table below to pick the correct one.
+3. **Identify the vendor system**: Search `type=Application` by vendor name from the SAD first. If no Application match, fall back to `type=Provider`. Use case-insensitive substring matching — SAD names may not match inventory exactly (e.g. SAD says "Barclays" but inventory has "Smartpay Fuse by Barclays").
+4. **Identify infrastructure**: Search `type=ITComponent` for middleware (e.g. "SFTP").
+5. **Find the Interface**: Search `type=Interface` for the integration name pattern (e.g. "WorkDay HCM - Barclaycard"). The Interface fact sheet is used on the **arrow/edge** element in the XML — wrap the edge `mxCell` in an `object` with `factSheetType="Interface"` (see Interface Edges pattern below).
+6. **Use the `id` column** as the `factSheetId` in the XML. Never generate random UUIDs for systems that exist in the inventory.
+7. **Use the `name` column** as the fact sheet label (with display formatting like adding `<div><b>INT006</b></div>`).
+
+### Common Assets Reference
+
+These are frequently used assets from the inventory. Always verify against the actual inventory file:
+
+**Applications (boxes):**
+
+| System | factSheetId | type | LeanIX name |
+|--------|-------------|------|-------------|
+| Workday HCM | `d60d172c-862d-4b73-ae8f-4205fd233d58` | Application | Workday Human Capital Management |
+| Workday FM | `6f852359-0d95-43c3-b642-238be59213e7` | Application | Workday Financial Management |
+| Okta | `32a7c2db-632c-46fb-88e2-f26c79a5a904` | Application | Okta |
+| Amex GBT | `1ca69288-26f1-4544-8fdb-a0c798941f54` | Application | Amex GBT |
+| Crisis24 | `a999052e-db90-4dfa-9d66-2e33e3ea50d8` | Application | Crisis24 |
+| Headspace | `79622f37-ee3d-437f-9fc2-d1c43f7ede02` | Application | Headspace |
+| Smartpay Fuse by Barclays | `6846bf4c-1405-4e76-adf5-e042b8b85f6a` | Application | Smartpay Fuse by Barclays |
+
+**Providers (fallback for vendors without Application entries):**
+
+| System | factSheetId | type | LeanIX name |
+|--------|-------------|------|-------------|
+| Barclaycard | `c400f9c3-0453-481f-b981-244f1543862b` | Provider | Barclaycard |
+| American Express GBT | `ac51d761-9ab0-45de-8f34-990bce94bbe0` | Provider | American Express GBT |
+
+**ITComponents (infrastructure boxes):**
+
+| System | factSheetId | type | LeanIX name |
+|--------|-------------|------|-------------|
+| SFTP (Hyve) | `bb2e0906-47e7-4785-8a05-81e6b6c5330b` | ITComponent | SFTP |
+
+**Interfaces (edges/arrows):**
+
+| Integration | factSheetId | type | LeanIX name |
+|-------------|-------------|------|-------------|
+| INT001 | `33e6b2ae-ddc3-4f0d-8ff3-94339c101a82` | Interface | WorkDay HCM - OKTA |
+| INT002 | `5c69bf97-5751-419d-83c6-1868d7f74535` | Interface | WorkDay HCM - Crisis24 |
+| INT004 | `407149db-f671-4c4a-bbc8-73ef9680d93c` | Interface | WorkDay HCM - Amex GBT |
+| INT006 | `17c551bd-04b5-4397-9662-d4b78467ffae` | Interface | WorkDay HCM - Barclaycard |
+| INT003 | `12045def-269f-4ab8-8d10-ccf61c198ac9` | Interface | WorkDay HCM - Headspace |
+
+For systems not found in the inventory, generate a fresh UUID and note it in the output so the user can create the LeanIX fact sheet.
 
 ### Workday Module Selection
 
@@ -191,6 +270,8 @@ The LeanIX Business Applications for Workday are **"Workday Human Capital Manage
 | Workday (all modules) | #497db0 | #497db0 | Blue boxes |
 | Vendors/Partners | #ffa31f | #ffa31f | Orange boxes |
 | Infrastructure (Hyve SFTP) | #d29270 | #d29270 | Brown boxes |
+
+**Note:** Color is set via `fillColor`/`strokeColor` in the mxCell style attribute, independent of `factSheetType`. A vendor box can be `factSheetType="Application"` with orange `#ffa31f` styling — the LeanIX fact sheet type determines the data model relationship, while the color communicates the visual role in the diagram.
 
 ## Standard Layout Positions
 
@@ -286,17 +367,21 @@ def create_integration_diagram_xml(integration_data):
     })
     id_counter += 1
     
-    # Known fact sheet IDs (reuse for existing LeanIX systems)
-    WORKDAY_HCM_FACT_SHEET_ID = 'd60d172c-862d-4b73-ae8f-4205fd233d58'
-    HYVE_SFTP_FACT_SHEET_ID = 'bb2e0906-47e7-4785-8a05-81e6b6c5330b'
+    # Look up fact sheet IDs from LeanIX inventory
+    # inventory_lookup is a dict returned by load_leanix_inventory() — see below
+    inventory = integration_data.get('inventory_lookup', {})
+
+    source_fs = inventory.get(integration_data['source_system'], {})
+    source_fact_sheet_id = source_fs.get('id', str(uuid.uuid4()))
+    source_fact_sheet_type = source_fs.get('type', 'Application')
 
     # Add source system box (Workday)
     source_id = str(id_counter)
     source_box = ET.SubElement(root_elem, 'object', {
         'type': 'factSheet',
         'label': integration_data['source_system'],
-        'factSheetType': 'Application',
-        'factSheetId': WORKDAY_HCM_FACT_SHEET_ID,
+        'factSheetType': source_fact_sheet_type,
+        'factSheetId': source_fact_sheet_id,
         'id': source_id
     })
     source_cell = ET.SubElement(source_box, 'mxCell', {
@@ -312,11 +397,14 @@ def create_integration_diagram_xml(integration_data):
     # Add target system box (Vendor)
     target_id = str(id_counter)
     target_label = f"{integration_data['target_system']}<div><b>{integration_data['integration_id']}</b></div>"
+    target_fs = inventory.get(integration_data['target_system'], {})
+    target_fact_sheet_id = target_fs.get('id', str(uuid.uuid4()))
+    target_fact_sheet_type = target_fs.get('type', 'Provider')
     target_box = ET.SubElement(root_elem, 'object', {
         'type': 'factSheet',
         'label': target_label,
-        'factSheetType': 'Provider',
-        'factSheetId': str(uuid.uuid4()),
+        'factSheetType': target_fact_sheet_type,
+        'factSheetId': target_fact_sheet_id,
         'lxCustomLabel': '1',
         'id': target_id
     })
@@ -333,34 +421,44 @@ def create_integration_diagram_xml(integration_data):
     })
     id_counter += 1
     
+    # Look up Interface fact sheet for the integration edge
+    interface_fs = integration_data.get('interface_fact_sheet')  # from inventory lookup
+
+    # Helper to create an edge — wraps in Interface fact sheet if available
+    def add_edge(parent_elem, edge_id, src, tgt, use_interface=True):
+        edge_style = 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
+        if use_interface and interface_fs:
+            edge_obj = ET.SubElement(parent_elem, 'object', {
+                'type': 'factSheet',
+                'label': interface_fs['name'],
+                'factSheetType': 'Interface',
+                'factSheetId': interface_fs['id'],
+                'id': edge_id
+            })
+            edge_cell = ET.SubElement(edge_obj, 'mxCell', {
+                'edge': '1', 'parent': '1',
+                'source': src, 'target': tgt,
+                'style': edge_style
+            })
+        else:
+            edge_cell = ET.SubElement(parent_elem, 'mxCell', {
+                'id': edge_id, 'edge': '1', 'parent': '1',
+                'source': src, 'target': tgt,
+                'style': edge_style
+            })
+        geo = ET.SubElement(edge_cell, 'mxGeometry', {'relative': '1', 'as': 'geometry'})
+        return edge_cell
+
     # Add arrows based on direction
     if integration_data['direction'] in ['outbound', 'bidirectional']:
-        # Outbound arrow
-        outbound_arrow = ET.SubElement(root_elem, 'mxCell', {
-            'id': str(id_counter),
-            'edge': '1',
-            'parent': '1',
-            'source': source_id,
-            'target': target_id,
-            'style': 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
-        })
-        geo = ET.SubElement(outbound_arrow, 'mxGeometry', {'relative': '1', 'as': 'geometry'})
-        points = ET.SubElement(geo, 'Array', {'as': 'points'})
-        # Add waypoints if needed
+        add_edge(root_elem, str(id_counter), source_id, target_id)
         id_counter += 1
-    
+
     if integration_data['direction'] in ['inbound', 'bidirectional']:
-        # Inbound arrow
-        inbound_arrow = ET.SubElement(root_elem, 'mxCell', {
-            'id': str(id_counter),
-            'edge': '1',
-            'parent': '1',
-            'source': target_id,
-            'target': source_id,
-            'style': 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
-        })
-        geo = ET.SubElement(inbound_arrow, 'mxGeometry', {'relative': '1', 'as': 'geometry'})
-        points = ET.SubElement(geo, 'Array', {'as': 'points'})
+        # For bidirectional, only first arrow gets the Interface fact sheet
+        use_iface = integration_data['direction'] != 'bidirectional'
+        add_edge(root_elem, str(id_counter), target_id, source_id, use_interface=use_iface)
+        id_counter += 1
         id_counter += 1
     
     # Add flow labels
@@ -493,6 +591,67 @@ def extract_integration_data_from_sad(sad_path):
         'security_details': security_details,
         'key_attributes': []
     }
+
+def load_leanix_inventory(inventory_path):
+    """
+    Load the LeanIX inventory and return a lookup dict keyed by name.
+
+    Returns dict: { 'asset name (lowercase)': {'id': uuid, 'type': factSheetType, 'name': display_name} }
+    """
+    import openpyxl
+
+    wb = openpyxl.load_workbook(inventory_path, read_only=True, data_only=True)
+    ws = wb[wb.sheetnames[0]]
+    rows = list(ws.iter_rows(values_only=True))
+    data = rows[2:]  # skip both header rows
+
+    lookup = {}
+    for row in data:
+        asset_id, asset_type, name, display_name = row[0], row[1], row[2], row[3]
+        if name and asset_type in ('Application', 'Provider', 'ITComponent', 'Interface'):
+            entry = {'id': asset_id, 'type': asset_type, 'name': display_name or name}
+            lookup[name.lower()] = entry
+            if display_name and display_name.lower() != name.lower():
+                lookup[display_name.lower()] = entry
+
+    wb.close()
+    return lookup
+
+def resolve_asset(inventory, search_name, preferred_types=None):
+    """
+    Find a LeanIX asset by name with fuzzy matching.
+
+    Args:
+        inventory: dict from load_leanix_inventory()
+        search_name: name to search for (from SAD)
+        preferred_types: list of preferred types in priority order
+            - For vendor systems: ['Application', 'Provider'] (Application preferred)
+            - For infrastructure: ['ITComponent']
+            - For integration edges: ['Interface']
+
+    Returns: {'id': uuid, 'type': type, 'name': name} or None
+    """
+    search = search_name.lower().strip()
+
+    # Exact match
+    if search in inventory:
+        match = inventory[search]
+        if not preferred_types or match['type'] in preferred_types:
+            return match
+
+    # Substring match — prefer matches in preferred_types order
+    candidates = []
+    for key, entry in inventory.items():
+        if search in key or key in search:
+            candidates.append(entry)
+
+    if preferred_types:
+        for ptype in preferred_types:
+            for c in candidates:
+                if c['type'] == ptype:
+                    return c
+
+    return candidates[0] if candidates else None
 ```
 
 ## Usage Example
@@ -557,35 +716,36 @@ Would you like me to adjust any positions, colors, or add more details?
 ### Template 1: Outbound EIB to Vendor SFTP
 - Pattern: Workday → Vendor SFTP → Vendor Platform
 - Reference XML: `COR_V00.01_INT004_AMEX_GBT.xml`
-- Boxes: 3 (linear), all #497db0 blue when vendor SFTP is treated as Application
-- Arrow: Single outbound
+- Boxes: 3 (Workday=Application blue, Vendor SFTP=Application orange, Vendor Platform=Application orange)
+- Arrows: Single outbound; primary arrow uses Interface fact sheet
 - Sections: 3-4 column process breakdown (Data Extraction | File Generation | SFTP Delivery), Security, System of Record, Key Attributes
 
 ### Template 2: Outbound EIB via Hyve SFTP
 - Pattern: Workday → Hyve SFTP (INT000) → Vendor Platform
 - Reference XML: `COR_V00.01_INT002_Workday_Crisis24.xml`
-- Boxes: 3 (Workday=#497db0, Hyve SFTP=#d29270 as ITComponent, Vendor=#497db0)
-- Arrow: Single outbound through intermediary
+- Boxes: 3 (Workday=Application blue, Hyve SFTP=ITComponent brown, Vendor=Application orange)
+- Arrows: Single outbound through intermediary; Interface fact sheet on primary edge
 - Sections: 4-column process breakdown (Data Extraction | Document Transformation | SFTP Delivery | Vendor Retrieval), Security, System of Record, Key Attributes
 
 ### Template 3: Bi-Directional API
 - Pattern: Workday ↔ Vendor System
 - Reference XML: `COR_V00.01_INT001_Workday_Okta.xml`
-- Boxes: 2 (Workday=#497db0 as Application, Vendor=#ffa31f as Provider)
-- Arrows: Bi-directional with waypoints routed above and below boxes
+- Boxes: 2 (Workday=Application blue, Vendor=Application orange or Provider orange if no Application)
+- Arrows: Bi-directional with waypoints; one arrow uses Interface fact sheet
 - Sections: JML lifecycle table (Joiner | Mover | Leaver | Rehire), Security, System of Record, Key Attributes
 
 ### Template 4: Inbound via Hyve SFTP
 - Pattern: Vendor → Hyve SFTP → Workday
 - Reference XML: `COR_V00_01_INT006_Barclaycard.xml`
-- Boxes: 3 (Vendor=#ffa31f as Provider, Hyve=#d29270 as ITComponent, Workday=#497db0)
-- Arrow: Single inbound
+- Boxes: 3 (Vendor=Provider orange or Application orange, Hyve=ITComponent brown, Workday=Application blue)
+- Arrows: Single inbound; Interface fact sheet on edge connecting to Workday
 - Sections: 4-column process table (Vendor Data Generation | File Format & Encryption | SFTP Delivery | Workday Import Processing), Security, System of Record, Key Attributes, Key Dependencies
 
 ### Template 5: Multi-Connector Complex
 - Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
 - Reference XML: `COR_V00.01_INT018_Barclays_Banking.xml`
-- Boxes: 3 (wider spacing), bi-directional arrows
+- Boxes: 3 (Workday=Application blue, Gateway=Application orange, Platform=Application orange)
+- Arrows: Bi-directional; Interface fact sheets per sub-integration where available
 - Sub-integrations: Separate process tables per connector (e.g. INT018a, INT018b, INT018c)
 - Sections: Per-connector process tables, Security, System of Record, Key Attributes, Environment Strategy, Critical Constraints
 
@@ -643,9 +803,10 @@ Extract from the SAD's Data Mapping and Data Management sections. Break into sub
 ## Skill Execution Steps
 
 1. **Detect SAD upload** and diagram request
-2. **Read example XML files** — always read the closest matching reference XML
-3. **Parse SAD document** using python-docx
-4. **Extract key data**:
+2. **Read the LeanIX inventory** (`elt_doc_sad_leanix/config/LeanIX_Inventory.xlsx`) using openpyxl to build an asset lookup
+3. **Read example XML files** — always read the closest matching reference XML
+4. **Parse SAD document** using python-docx
+5. **Extract key data**:
    - Integration ID (INT###)
    - Vendor name
    - Direction (in/out/bi)
@@ -654,10 +815,16 @@ Extract from the SAD's Data Mapping and Data Management sections. Break into sub
    - Key attributes (with sub-categories)
    - Process workflow details (extraction, generation, delivery, monitoring)
    - Dependencies and constraints
-5. **Select template** based on integration type
-6. **Generate XML** using template:
+6. **Resolve LeanIX assets** — look up each system in the inventory:
+   - Match the Workday module (HCM or Financial Management) by integration domain
+   - Match the vendor by name (check Provider, then Application)
+   - Match infrastructure components (ITComponent)
+   - Use inventory `id` values as `factSheetId` in the XML
+   - Flag any systems not found in the inventory
+7. **Select template** based on integration type
+8. **Generate XML** using template:
    - Title
-   - System boxes (fact sheets) with correct colors and UUIDs
+   - System boxes (fact sheets) with correct colors, types, and inventory UUIDs
    - Arrows with correct direction
    - Flow labels describing data movement
    - Process table with appropriate column count and content
@@ -665,18 +832,18 @@ Extract from the SAD's Data Mapping and Data Management sections. Break into sub
    - System of Record box
    - Key Attributes box
    - Additional boxes (Key Dependencies, Environment Notes) when SAD provides detail
-7. **Save XML file** to same directory as input SAD with `.xml` extension
-8. **Present to user** with import instructions
+9. **Save XML file** to same directory as input SAD with `.xml` extension
+10. **Present to user** with import instructions and list any systems that were not found in the inventory
 
 ## Critical Success Factors
 
-✅ **Use actual UUIDs** for fact sheets
-✅ **Match color codes exactly** (#497db0, #ffa31f)
+✅ **Look up UUIDs from LeanIX inventory** — never use placeholder or random UUIDs for known systems
+✅ **Match color codes exactly** (#497db0, #ffa31f, #d29270)
 ✅ **Position elements consistently** (use standard coordinates)
 ✅ **Include proper XML escaping** for HTML content
 ✅ **Generate unique IDs** for all elements
 ✅ **Follow mxGraph structure** precisely
-✅ **Test import** before delivering to user
+✅ **Flag missing assets** — tell user if a system from the SAD was not found in the inventory
 
 ## Next Enhancement: Full Automation
 
