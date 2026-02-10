@@ -27,11 +27,15 @@ Import directly into LeanIX ✅
 
 ## Python Environment
 
-The Python code and dependencies for this skill live in the `elt_doc_sad_leanix` module at the project root. When running any Python code that requires `python-docx` or other dependencies, always use:
+This project uses a **uv workspace**. The `elt_doc_sad_leanix` package and its dependencies (`python-docx`, `openpyxl`) are one workspace member. To ensure the correct dependencies are available regardless of which member was synced first, always use the `--package` flag:
 
 ```bash
-cd elt_doc_sad_leanix && uv run python <script.py>
+uv run --package elt-doc-sad-leanix python <script.py>
 ```
+
+**Why `--package`?** In a uv workspace, `uv sync` from one member (e.g. `elt_ingest_rest`) only installs that member's dependencies. A subsequent `uv sync` from another member audits but does NOT install the missing packages. The `--package` flag on `uv run` ensures the correct member's dependencies are installed before execution.
+
+Do NOT use `cd elt_doc_sad_leanix && uv run python` — this fails when the venv was created by a different workspace member. Do NOT use the system Python directly as `python-docx` and `openpyxl` are not installed globally.
 
 - The generator script is at: `elt_doc_sad_leanix/src/elt_doc_sad_leanix/generate_integration_xml.py`
 - Reference XML examples are at: `elt_doc_sad_leanix/examples/`
@@ -42,8 +46,6 @@ cd elt_doc_sad_leanix && uv run python <script.py>
   - `COR_V00.01_INT018_Barclays_Banking.xml` (multi-connector complex)
 
 **Always read the closest matching reference XML before generating a new diagram.**
-
-Do NOT use the system Python directly as `python-docx` is not installed globally.
 
 ## Output Location
 
@@ -729,7 +731,7 @@ Would you like me to adjust any positions, colors, or add more details?
 - Boxes: 3 (Workday=Application blue, Vendor SFTP=Application orange, Vendor Platform=Application orange)
 - Arrows: Single outbound; primary arrow uses Interface fact sheet
 - Core sections: Process table (3-4 columns), Security & Technical Details, System of Record, Key Attributes
-- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings, Costings, Environment Notes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Key Dependencies, Costings, Environment Notes
 
 ### Template 2: Outbound EIB via Hyve SFTP
 - Pattern: Workday → Hyve SFTP (INT000) → Vendor Platform
@@ -737,7 +739,7 @@ Would you like me to adjust any positions, colors, or add more details?
 - Boxes: 3 (Workday=Application blue, Hyve SFTP=ITComponent brown, Vendor=Application orange)
 - Arrows: Single outbound through intermediary; Interface fact sheet on primary edge
 - Core sections: Process table (4 columns), Security & Technical Details, System of Record, Key Attributes
-- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Key Dependencies, Costings
 
 ### Template 3: Bi-Directional API
 - Pattern: Workday ↔ Vendor System
@@ -753,7 +755,7 @@ Would you like me to adjust any positions, colors, or add more details?
 - Boxes: 3 (Vendor=Provider orange or Application orange, Hyve=ITComponent brown, Workday=Application blue)
 - Arrows: Single inbound; Interface fact sheet on edge connecting to Workday
 - Core sections: Process table (4 columns), Security & Technical Details, System of Record, Key Attributes
-- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Key Dependencies, Costings
 
 ### Template 5: Multi-Connector Complex
 - Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
