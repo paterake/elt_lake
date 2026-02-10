@@ -107,14 +107,57 @@ Based on analysis of existing LeanIX diagrams, the XML uses mxGraph format:
 </UserObject>
 ```
 
-**5. Tables (for Lifecycle/Process sections):**
+**5. Process Tables (for detailed process breakdowns):**
+
+Process tables show the step-by-step data movement workflow beneath the diagram boxes. Column count is flexible (2-4) depending on the integration type. Use the INT002/INT004 examples as reference for standard 3-4 column tables, and INT018 for 2-column per-connector tables.
+
 ```xml
-<mxCell id="[ID]" parent="1" 
-        style="childLayout=tableLayout;recursiveResize=0;shadow=0;fillColor=none;verticalAlign=top;" 
+<!-- Table container -->
+<mxCell id="[ID]" parent="1"
+        style="childLayout=tableLayout;recursiveResize=0;shadow=0;fillColor=none;verticalAlign=top;"
         value="" vertex="1">
-  <mxGeometry height="[H]" width="[W]" x="[X]" y="[Y]" as="geometry"/>
+  <mxGeometry height="240" width="[TOTAL_WIDTH]" x="[X]" y="[Y]" as="geometry"/>
+</mxCell>
+
+<!-- Header row (child of table container) -->
+<mxCell id="[ID]" parent="[TABLE_ID]"
+        style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;"
+        value="" vertex="1">
+  <mxGeometry height="52" width="[TOTAL_WIDTH]" as="geometry"/>
+</mxCell>
+
+<!-- Header cells (children of header row) -->
+<mxCell id="[ID]" parent="[HEADER_ROW_ID]"
+        style="connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=center;whiteSpace=wrap;html=1;"
+        value="COLUMN HEADER" vertex="1">
+  <mxGeometry height="52" width="[COL_WIDTH]" as="geometry">
+    <mxRectangle height="52" width="[COL_WIDTH]" as="alternateBounds"/>
+  </mxGeometry>
+</mxCell>
+
+<!-- Content row (child of table container) -->
+<mxCell id="[ID]" parent="[TABLE_ID]"
+        style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;"
+        vertex="1">
+  <mxGeometry height="188" width="[TOTAL_WIDTH]" y="52" as="geometry"/>
+</mxCell>
+
+<!-- Content cells (children of content row) -->
+<mxCell id="[ID]" parent="[CONTENT_ROW_ID]"
+        style="connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=left;whiteSpace=wrap;html=1;verticalAlign=top;"
+        value="<ul><li>Bullet point 1</li><li>Bullet point 2</li></ul>" vertex="1">
+  <mxGeometry height="188" width="[COL_WIDTH]" as="geometry">
+    <mxRectangle height="188" width="[COL_WIDTH]" as="alternateBounds"/>
+  </mxGeometry>
 </mxCell>
 ```
+
+**Sizing notes:**
+- 3-column table: total width ~890, column width ~296 each (with middle column ~298)
+- 4-column table: total width ~1186, column width ~296 each
+- 2-column table (INT018 style): total width ~592, column width ~296 each
+- Standard heights: header row 52px, content row 188-228px
+- Table y-position: typically placed below the diagram boxes and flow labels
 
 ## Known Fact Sheet IDs
 
@@ -123,9 +166,23 @@ Always reuse these UUIDs for systems that already exist in LeanIX:
 | System | factSheetId | factSheetType |
 |--------|-------------|---------------|
 | Workday Human Capital Management | `d60d172c-862d-4b73-ae8f-4205fd233d58` | Application |
+| Workday Financial Management | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Application |
 | Hyve Managed SFTP Server (INT000) | `bb2e0906-47e7-4785-8a05-81e6b6c5330b` | ITComponent |
 
 For new vendors/systems, generate a fresh UUID.
+
+### Workday Module Selection
+
+The LeanIX Business Applications for Workday are **"Workday Human Capital Management"** and **"Workday Financial Management"**. Never invent module-specific names like "Workday Expenses" or "Workday Payroll" — always use one of these two:
+
+| Integration Domain | Workday LeanIX Application |
+|--------------------|---------------------------|
+| Employee data, identity, provisioning, HR | Workday Human Capital Management |
+| Travel management, employee demographics for vendors | Workday Human Capital Management |
+| Credit card transactions, expenses | Workday Financial Management |
+| Banking, payments, acknowledgements, statements | Workday Financial Management |
+| Payroll settlement, payment files | Workday Financial Management |
+| Pension, benefits (financial) | Workday Financial Management |
 
 ## Color Coding Standards
 
@@ -523,7 +580,7 @@ Would you like me to adjust any positions, colors, or add more details?
 - Reference XML: `COR_V00_01_INT006_Barclaycard.xml`
 - Boxes: 3 (Vendor=#ffa31f as Provider, Hyve=#d29270 as ITComponent, Workday=#497db0)
 - Arrow: Single inbound
-- Sections: Security, System of Record, Key Attributes, Key Dependencies
+- Sections: 4-column process table (Vendor Data Generation | File Format & Encryption | SFTP Delivery | Workday Import Processing), Security, System of Record, Key Attributes, Key Dependencies
 
 ### Template 5: Multi-Connector Complex
 - Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
@@ -532,28 +589,84 @@ Would you like me to adjust any positions, colors, or add more details?
 - Sub-integrations: Separate process tables per connector (e.g. INT018a, INT018b, INT018c)
 - Sections: Per-connector process tables, Security, System of Record, Key Attributes, Environment Strategy, Critical Constraints
 
+## Process Table Content Guidance
+
+Every integration diagram should include a process table below the boxes and flow labels. The number of columns (2-4) depends on the integration type. Extract content from the SAD document to populate each column.
+
+### Standard Columns
+
+| Column | Outbound (Workday sends) | Inbound (Vendor sends) |
+|--------|--------------------------|------------------------|
+| **Data Extraction / Source** | EIB/report name, custom report details, data scope/filters, expected volume, full file vs delta, worker types included/excluded | Vendor source system, file types (starter/daily), delivery schedule, data scope, expected volume |
+| **File Generation / Format** | Output format (CSV, XML, pipe-delimited), delimiter, character encoding (UTF-8), file naming convention, header rows, document transformation | File format specification (e.g. VCF4.4), delimiter (tab/pipe/comma), character encoding, file naming convention, file size |
+| **Data Delivery / Transport** | PGP encryption (whose key), SFTP endpoints (QA + Prod), destination directory, SSH key authentication, IP whitelisting, file retention/purge policy | PGP encryption at rest (mandatory/optional), SFTP server details, SSH authentication, file retrieval method (push vs pull), file retention |
+| **Processing / Monitoring** | Integration event logging in Process Monitor, output file attachment, status tracking (Completed/Warnings/Errors/Failed), notification rules, error thresholds | Import template name, file validation, data integrity checks, orphaned record handling, status tracking, notification rules, error handling |
+
+### Column Count Guidelines
+
+- **2 columns**: Use for sub-integrations within a multi-connector (e.g. INT018a, INT018b) where each sub-integration is simpler
+- **3 columns**: Use when extraction and generation are combined, or when monitoring is minimal
+- **4 columns**: Use for standard single-connector integrations — most common pattern
+
+## Information Box Content Guidance
+
+### Security & Technical Details
+Extract from the SAD's Security, Technology Stack, and Integration Configuration sections:
+- Integration Type (EIB, Cloud Connect, API)
+- Template name (delivered or custom)
+- File format and delimiter
+- Expected volume
+- Encryption: at rest (PGP) and in transit (SSH/TLS)
+- Authentication method (SSH key, username/password, OAuth)
+- SFTP server details
+- File naming convention
+- Data retention period
+- Frequency and schedule
+- ISU account name
+- ISSG name (Integration System Security Group)
+- ISSS name (Integration System Security Segment)
+- Compliance certifications (SOC 2, ISO 27001, GDPR)
+- Data residency
+
+### Key Attributes Synchronized
+Extract from the SAD's Data Mapping and Data Management sections. Break into sub-categories where the SAD provides detail:
+- Employee/cardholder/worker identification fields
+- Core data fields (names, dates, amounts, status)
+- Enhanced or supplementary data categories (e.g. airline, hotel, car rental)
+- Field-level detail: field name, source, format where available
+
+### Additional Sections (include when SAD provides detail)
+- **Key Dependencies**: SFTP provisioning, key exchange prerequisites, third-party dependencies, out-of-scope items
+- **Environment Notes**: Sandbox/QA/Prod endpoints, environment-specific key requirements, configuration replication approach
+- **Critical Constraints**: Manual launch requirements, format compliance, key regeneration on migration
+
 ## Skill Execution Steps
 
 1. **Detect SAD upload** and diagram request
-2. **Read example XML files** to understand patterns
+2. **Read example XML files** — always read the closest matching reference XML
 3. **Parse SAD document** using python-docx
 4. **Extract key data**:
    - Integration ID (INT###)
    - Vendor name
    - Direction (in/out/bi)
-   - Security details
-   - Key attributes
+   - Integration type and template
+   - Security details (ISU, ISSG, encryption, authentication)
+   - Key attributes (with sub-categories)
+   - Process workflow details (extraction, generation, delivery, monitoring)
+   - Dependencies and constraints
 5. **Select template** based on integration type
-6. **Generate XML** using template
-7. **Add specific details**:
+6. **Generate XML** using template:
    - Title
-   - Flow labels
-   - Security box
-   - System of Record
-   - Key Attributes
-   - Process tables (if applicable)
-8. **Save XML file** with standard naming
-9. **Present to user** with import instructions
+   - System boxes (fact sheets) with correct colors and UUIDs
+   - Arrows with correct direction
+   - Flow labels describing data movement
+   - Process table with appropriate column count and content
+   - Security & Technical Details box
+   - System of Record box
+   - Key Attributes box
+   - Additional boxes (Key Dependencies, Environment Notes) when SAD provides detail
+7. **Save XML file** to same directory as input SAD with `.xml` extension
+8. **Present to user** with import instructions
 
 ## Critical Success Factors
 

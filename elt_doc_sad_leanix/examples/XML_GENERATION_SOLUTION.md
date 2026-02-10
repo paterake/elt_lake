@@ -90,7 +90,7 @@ Instead of manually creating, you provide a simple dict:
 spec = {
     'title': 'Workday Barclaycard Credit Card Transactions Integration SFTP',
     'integration_id': 'INT006',
-    'source_system': 'Workday Expenses',
+    'source_system': 'Workday Financial Management',
     'intermediary': 'Hyve SFTP',  # Optional
     'target_system': 'Barclaycard',
     'direction': 'inbound',  # or 'outbound' or 'bidirectional'
