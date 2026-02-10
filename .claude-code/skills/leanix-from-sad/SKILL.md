@@ -326,9 +326,14 @@ def create_integration_diagram_xml(integration_data):
             - target_system: "Okta", "Amex GBT SFTP", etc.
             - intermediary: Optional middle system
             - flow_labels: dict of arrow labels
-            - security_details: list of security items
+            - security_details: list of security items (incl. IP whitelisting, PGP details)
             - key_attributes: list of attributes
             - lifecycle_scenarios: Optional dict for JML scenarios
+            - scheduling_volumes_sla: Optional list of scheduling/volume/SLA items
+            - logging_monitoring: Optional list of logging/monitoring items
+            - out_of_scope: Optional list of out-of-scope items
+            - key_dependencies: Optional list of dependency items
+            - costings: Optional list of costing/pricing items
     
     Returns:
         str: Formatted XML string
@@ -516,7 +521,7 @@ def create_integration_diagram_xml(integration_data):
 def extract_integration_data_from_sad(sad_path):
     """
     Extract key information from SAD document
-    
+
     Returns dict with:
         - integration_id
         - integration_name
@@ -525,8 +530,13 @@ def extract_integration_data_from_sad(sad_path):
         - source_system
         - target_system
         - flow_labels
-        - security_details
+        - security_details (incl. IP whitelisting, PGP encryption details)
         - key_attributes
+        - scheduling_volumes_sla (conditional - scheduling, volumes, SLA)
+        - logging_monitoring (conditional - error handling, notifications, statuses)
+        - out_of_scope (conditional - items explicitly out of scope)
+        - key_dependencies (conditional - prerequisites, third-party deps)
+        - costings (conditional - licence fees, charges, setup costs)
     """
     from docx import Document
     
@@ -718,28 +728,32 @@ Would you like me to adjust any positions, colors, or add more details?
 - Reference XML: `COR_V00.01_INT004_AMEX_GBT.xml`
 - Boxes: 3 (Workday=Application blue, Vendor SFTP=Application orange, Vendor Platform=Application orange)
 - Arrows: Single outbound; primary arrow uses Interface fact sheet
-- Sections: 3-4 column process breakdown (Data Extraction | File Generation | SFTP Delivery), Security, System of Record, Key Attributes
+- Core sections: Process table (3-4 columns), Security & Technical Details, System of Record, Key Attributes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings, Costings, Environment Notes
 
 ### Template 2: Outbound EIB via Hyve SFTP
 - Pattern: Workday → Hyve SFTP (INT000) → Vendor Platform
 - Reference XML: `COR_V00.01_INT002_Workday_Crisis24.xml`
 - Boxes: 3 (Workday=Application blue, Hyve SFTP=ITComponent brown, Vendor=Application orange)
 - Arrows: Single outbound through intermediary; Interface fact sheet on primary edge
-- Sections: 4-column process breakdown (Data Extraction | Document Transformation | SFTP Delivery | Vendor Retrieval), Security, System of Record, Key Attributes
+- Core sections: Process table (4 columns), Security & Technical Details, System of Record, Key Attributes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings
 
 ### Template 3: Bi-Directional API
 - Pattern: Workday ↔ Vendor System
 - Reference XML: `COR_V00.01_INT001_Workday_Okta.xml`
 - Boxes: 2 (Workday=Application blue, Vendor=Application orange or Provider orange if no Application)
 - Arrows: Bi-directional with waypoints; one arrow uses Interface fact sheet
-- Sections: JML lifecycle table (Joiner | Mover | Leaver | Rehire), Security, System of Record, Key Attributes
+- Core sections: JML lifecycle table (Joiner | Mover | Leaver | Rehire), Security & Technical Details, System of Record, Key Attributes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings
 
 ### Template 4: Inbound via Hyve SFTP
 - Pattern: Vendor → Hyve SFTP → Workday
 - Reference XML: `COR_V00_01_INT006_Barclaycard.xml`
 - Boxes: 3 (Vendor=Provider orange or Application orange, Hyve=ITComponent brown, Workday=Application blue)
 - Arrows: Single inbound; Interface fact sheet on edge connecting to Workday
-- Sections: 4-column process table (Vendor Data Generation | File Format & Encryption | SFTP Delivery | Workday Import Processing), Security, System of Record, Key Attributes, Key Dependencies
+- Core sections: Process table (4 columns), Security & Technical Details, System of Record, Key Attributes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Key Dependencies, Costings
 
 ### Template 5: Multi-Connector Complex
 - Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
@@ -747,7 +761,8 @@ Would you like me to adjust any positions, colors, or add more details?
 - Boxes: 3 (Workday=Application blue, Gateway=Application orange, Platform=Application orange)
 - Arrows: Bi-directional; Interface fact sheets per sub-integration where available
 - Sub-integrations: Separate process tables per connector (e.g. INT018a, INT018b, INT018c)
-- Sections: Per-connector process tables, Security, System of Record, Key Attributes, Environment Strategy, Critical Constraints
+- Core sections: Per-connector process tables, Security & Technical Details, System of Record, Key Attributes
+- Conditional sections: Scheduling/Volumes/SLA, Logging & Monitoring, Out of Scope, Costings, Environment Notes, Critical Constraints
 
 ## Process Table Content Guidance
 
@@ -770,35 +785,85 @@ Every integration diagram should include a process table below the boxes and flo
 
 ## Information Box Content Guidance
 
-### Security & Technical Details
-Extract from the SAD's Security, Technology Stack, and Integration Configuration sections:
+Every diagram includes three core note sections (always present) plus conditional sections included when the SAD provides relevant detail.
+
+### Core Sections (always present)
+
+#### 1. Security & Technical Details
+Extract from the SAD's Security, Technology Stack, and Integration Configuration sections. Focus on security and technical configuration — scheduling and volume details belong in the Scheduling, Volumes & SLA section.
 - Integration Type (EIB, Cloud Connect, API)
 - Template name (delivered or custom)
 - File format and delimiter
-- Expected volume
-- Encryption: at rest (PGP) and in transit (SSH/TLS)
+- Encryption at rest: PGP encryption details — mandatory/optional, whose key, environment-specific keys (Sandbox, Implementation, Production)
+- Encryption in transit: SSH/TLS for SFTP connections
 - Authentication method (SSH key, username/password, OAuth)
-- SFTP server details
+- IP whitelisting: vendor delivery IPs, Workday retrieval IPs, environment-specific requirements
+- SFTP server details (host, directories, environment-specific endpoints)
 - File naming convention
 - Data retention period
-- Frequency and schedule
 - ISU account name
 - ISSG name (Integration System Security Group)
 - ISSS name (Integration System Security Segment)
 - Compliance certifications (SOC 2, ISO 27001, GDPR)
 - Data residency
 
-### Key Attributes Synchronized
+#### 2. System of Record
+- Which system is the authoritative source for the data
+- Which system is the target/consumer
+- Scope (e.g. "FA employees only", "contractors excluded")
+
+#### 3. Key Attributes Synchronized
 Extract from the SAD's Data Mapping and Data Management sections. Break into sub-categories where the SAD provides detail:
 - Employee/cardholder/worker identification fields
 - Core data fields (names, dates, amounts, status)
 - Enhanced or supplementary data categories (e.g. airline, hotel, car rental)
 - Field-level detail: field name, source, format where available
 
-### Additional Sections (include when SAD provides detail)
-- **Key Dependencies**: SFTP provisioning, key exchange prerequisites, third-party dependencies, out-of-scope items
-- **Environment Notes**: Sandbox/QA/Prod endpoints, environment-specific key requirements, configuration replication approach
-- **Critical Constraints**: Manual launch requirements, format compliance, key regeneration on migration
+### Conditional Sections (include when SAD provides detail)
+
+#### 4. Scheduling, Volumes & SLA
+Include this section when the SAD provides detail on scheduling, data volumes, or performance targets. Combines three related operational concerns into one section. Extract from the SAD's Integration Configuration, Functionality, and any SLA/Performance sections.
+- **Scheduling**: Frequency (daily, hourly, on-demand), automation approach (Cloud Connect scheduled, EIB, API polling), schedule owner (e.g. "FA finance team"), manual launch capability and who can trigger it
+- **Volumetrics**: Expected data volumes (record counts, file sizes), full file vs delta, number of file types (starter file, daily transaction file), growth expectations
+- **SLA / Performance Targets**: Only if the SAD specifies them — processing time requirements, delivery windows, uptime commitments
+
+#### 5. Logging & Monitoring
+Include this section when the SAD provides detail on error handling, monitoring, or notification processes. Extract from Error Handling, Maintenance, and Support sections.
+- Error handling approach: validation steps, error thresholds (e.g. "up to 500 errors before processing stops")
+- Integration event statuses: list the possible statuses (Completed, Completed with Warnings, Completed with Errors, Failed)
+- Notification rules: who receives notifications, on what events (warnings, errors, failures only vs always)
+- Process Monitor: how operational teams monitor integration health
+- Orphaned record handling or other data quality processes
+- First-line troubleshooting: which team handles what category of issue
+
+#### 6. Out of Scope
+Include this section when the SAD explicitly identifies items as out of scope or not covered by this integration. Extract from Constraints, Dependencies, and Functionality sections.
+- Downstream processes not covered (e.g. "journal posting to Great Plains")
+- Excluded populations (e.g. "contractors", "terminated employees")
+- Related but separate integrations
+- Features deferred to future phases
+- Items requiring separate solutions
+
+#### 7. Key Dependencies
+Prerequisites and third-party dependencies required for the integration to function. Extract from Dependencies and Constraints sections. **Note:** Out-of-scope items should go in the Out of Scope section, not here.
+- SFTP provisioning requirements
+- Key exchange prerequisites (PGP, SSH)
+- Third-party dependencies (vendor configuration, test environment access)
+- Internal dependencies (Workday configuration, worker data setup)
+
+#### 8. Costings
+Include this section when the SAD includes licensing, pricing, or cost information. Extract from any Costings, Pricing, Licensing, or Commercial sections.
+- Licence or subscription fees (vendor platform, SFTP hosting, middleware)
+- Per-transaction or volume-based charges
+- One-off implementation or setup costs
+- Ongoing support or maintenance costs
+- Cost allocation (which team/budget bears the cost)
+
+#### 9. Environment Notes
+Sandbox/QA/Prod endpoints, environment-specific key requirements, configuration replication approach.
+
+#### 10. Critical Constraints
+Manual launch requirements, format compliance, key regeneration on migration, hypercare limitations.
 
 ## Skill Execution Steps
 
@@ -811,10 +876,16 @@ Extract from the SAD's Data Mapping and Data Management sections. Break into sub
    - Vendor name
    - Direction (in/out/bi)
    - Integration type and template
-   - Security details (ISU, ISSG, encryption, authentication)
+   - Security details (ISU, ISSG, encryption, authentication, IP whitelisting, PGP key details)
    - Key attributes (with sub-categories)
    - Process workflow details (extraction, generation, delivery, monitoring)
+   - Scheduling details (frequency, automation approach, schedule owner, manual launch)
+   - Volumetrics (expected volumes, file sizes, record counts, full vs delta)
+   - Logging & monitoring (error handling, thresholds, notifications, statuses)
+   - Out-of-scope items (explicitly stated exclusions, deferred items)
    - Dependencies and constraints
+   - SLA / performance targets (if specified)
+   - Costings (licence fees, per-transaction charges, setup costs — if specified)
 6. **Resolve LeanIX assets** — look up each system in the inventory:
    - Match the Workday module (HCM or Financial Management) by integration domain
    - Match the vendor by name (check Provider, then Application)
@@ -828,10 +899,18 @@ Extract from the SAD's Data Mapping and Data Management sections. Break into sub
    - Arrows with correct direction
    - Flow labels describing data movement
    - Process table with appropriate column count and content
-   - Security & Technical Details box
-   - System of Record box
-   - Key Attributes box
-   - Additional boxes (Key Dependencies, Environment Notes) when SAD provides detail
+   - **Core note sections (always):**
+     - Security & Technical Details box (with IP whitelisting, PGP encryption details)
+     - System of Record box
+     - Key Attributes box
+   - **Conditional note sections (when SAD provides detail):**
+     - Scheduling, Volumes & SLA box
+     - Logging & Monitoring box
+     - Out of Scope box
+     - Key Dependencies box
+     - Costings box
+     - Environment Notes box
+     - Critical Constraints box
 9. **Save XML file** to same directory as input SAD with `.xml` extension
 10. **Present to user** with import instructions and list any systems that were not found in the inventory
 
