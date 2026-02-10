@@ -57,6 +57,8 @@ For example:
 
 Do NOT write output files into the project directory.
 
+**Do NOT create intermediate Python scripts** (e.g. `generate_int006.py`) in the project. Generate the XML directly using inline Python via `uv run --package elt-doc-sad-leanix python -c "..."`. The XML output file is the only deliverable — no throwaway scripts should be left in the codebase.
+
 ## XML Structure Pattern
 
 Based on analysis of existing LeanIX diagrams, the XML uses mxGraph format:
