@@ -2,6 +2,7 @@
 members = [
     "elt_ingest_rest",
     "elt_doc_sad_leanix",
+    "elt_doc_vendor_assess",
 ]
 
 # Optional: shared dev dependencies for all sub-projects

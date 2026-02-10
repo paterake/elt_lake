@@ -5,6 +5,7 @@ requires-python = ">=3.14"
 [manifest]
 members = [
     "elt-doc-sad-leanix",
+    "elt-doc-vendor-assess",
     "elt-ingest-rest",
 ]
 
@@ -110,6 +111,25 @@ requires-dist = [
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "python-docx", specifier = ">=1.1.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.0.2" }]
+
+[[package]]
+name = "elt-doc-vendor-assess"
+version = "0.1.0"
+source = { editable = "elt_doc_vendor_assess" }
+dependencies = [
+    { name = "python-docx" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "python-docx", specifier = ">=1.1.0" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.0.2" }]
