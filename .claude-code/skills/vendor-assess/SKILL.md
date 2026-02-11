@@ -5,14 +5,14 @@ Generate vendor assessment documents (.docx) for FA's supplier evaluation and Ar
 ## Workflow
 
 ```
-User prompt (category + optional vendor list)
+User prompt (category + optional input file of initial vendor picks)
         │
         ▼
-  ┌─────────────┐    WebSearch     ┌──────────────────┐    python-docx    ┌────────────┐
-  │ Identify     │ ──────────────► │ Research vendors  │ ───────────────► │ .docx      │
-  │ product need │                 │ (compliance,      │                  │ document   │
-  └─────────────┘                 │  security, cost)  │                  └────────────┘
-                                  └──────────────────┘
+  ┌─────────────┐    Read file     ┌──────────────────┐    python-docx    ┌────────────┐
+  │ Identify     │ ──(if given)──► │ Merge user picks  │ ───────────────► │ .docx      │
+  │ product need │                 │ + WebSearch for   │                  │ document   │
+  └─────────────┘  WebSearch ────► │ additional vendors│                  └────────────┘
+                                   └──────────────────┘
 ```
 
 **One document per prompt.** The three document types are generated in sequence across separate prompts:
@@ -448,8 +448,13 @@ uv run --package elt-doc-vendor-assess python \
 
 Use Claude's built-in `WebSearch` tool for all vendor research. Do NOT write custom Python web scraping code.
 
-### Phase 1: Vendor Discovery (when user doesn't supply a list)
-Search for 5-10 candidates:
+### Phase 1: Vendor Discovery
+
+The user may supply an **input file** (e.g. `~/Downloads/vendors.txt`) containing their initial selection of vendors/products to review. If provided, read the file first — each line is a vendor or product name.
+
+**Always** also perform independent web research to identify additional candidates. The final vendor list is the **union** of the user's picks and Claude's research — the user's picks are guaranteed to be included, not replaced.
+
+Search for additional candidates (aim for 5-10 total including user picks):
 - `"best [category] vendors 2026"`
 - `"[category] comparison enterprise"`
 - `"[category] for enterprise UK"`
@@ -488,8 +493,8 @@ If supplementary searches are needed:
 
 ### For Vendor Compliance Matrix
 
-1. **Parse user request** — identify the product category and use case
-2. **Determine vendor list** — use the user's supplied list, or WebSearch for 5-10 candidates
+1. **Parse user request** — identify the product category, use case, and whether an input file of initial vendors was provided
+2. **Build vendor list** — if the user supplied an input file, read it first (one vendor/product per line). Then **always** WebSearch for additional candidates. Merge both lists (deduplicate). The user's picks are always included.
 3. **Research each vendor** — use WebSearch to gather compliance, security, hosting, and cost data
 4. **Build vendor data objects** — for each vendor, populate all fields needed for the 8 tables
 5. **Classify tiers** — apply the 4 FA mandatory requirements:

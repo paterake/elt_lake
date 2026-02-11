@@ -12,7 +12,7 @@ claude
 Then prompt through three phases:
 
 ```
-Phase 1:  Evaluate vendors for SaaS SFTP solutions for Workday integration file transfers
+Phase 1:  Evaluate vendors for SaaS SFTP solutions for Workday integration file transfers. I have provided an initial selection in ~/Downloads/sftp_vendors.txt
 Phase 2:  Generate supplier selection questionnaire for Hyve Managed Hosting
 Phase 3:  Generate preferred technologies change for Hyve Managed SFTP Hosting
 ```
@@ -34,7 +34,8 @@ Phase 1                    Phase 2                      Phase 3
 
 ### Phase 1: Vendor Compliance Matrix
 
-- Claude searches the web for vendors matching the product category (or uses a supplied list)
+- User can optionally supply an **input file** of initial vendor picks (one per line, e.g. `~/Downloads/vendors.txt`)
+- Claude **always** also performs independent web research for additional candidates — the final list is the union of both
 - Each vendor is researched for certifications, hosting, security, pricing
 - Vendors are classified into 3 tiers against FA's 4 mandatory security requirements
 - A single recommendation is made (primary + alternative + budget option)

@@ -70,22 +70,23 @@ A single diagram showing all Workday integrations at a glance. Used for ACB pres
 
 - User asks to **create** a new integration overview diagram
 - User asks to **update** an existing integration overview diagram with additional integrations
-- User provides a list of individual integration XML files as input
 
 ### Input
 
 The user will state:
 1. Whether this is a **new** overview or an **update** to an existing one
-2. The **list of individual integration XML files** to include (generally in `~/Downloads/`)
+2. The **directory** containing the individual integration XML files to include
 3. If updating: the **path to the existing overview XML**
 
+The skill reads **all `.xml` files** in the supplied directory, skipping the overview file itself (if it lives in the same directory). Individual integration XMLs are identified by their fact sheet objects containing integration IDs (INT###).
+
 Example prompts:
-- "Create a new integration overview from these diagrams: ~/Downloads/INT001_Okta.xml, ~/Downloads/INT002_Crisis24.xml, ..."
-- "Update the overview at ~/Downloads/Workday_Overview.xml with these new integrations: ~/Downloads/INT006_Barclaycard.xml"
+- "Create a new integration overview from the diagrams in ~/Downloads/leanix/"
+- "Update the overview at ~/Downloads/Workday_Overview.xml from the integrations in ~/Downloads/leanix/"
 
 ### Output Location
 
-- If creating new: save to `~/Downloads/` with a descriptive filename (e.g. `Workday_Integration_Overview.xml`)
+- If creating new: save to the supplied directory or `~/Downloads/` with a descriptive filename (e.g. `Workday_Integration_Overview.xml`)
 - If updating: overwrite the existing overview XML at its current path
 
 ### Overview Layout Structure
@@ -225,18 +226,19 @@ Use this extracted data to **synthesise** the overview notes — group by theme,
 ### Creating vs Updating
 
 **Creating a new overview:**
-1. Read all individual integration XMLs provided by the user
-2. Extract data from each
-3. Read `integration_overview.xml` template for structural reference
-4. Generate the overview XML with all integrations
+1. Read all `.xml` files from the supplied directory
+2. Skip any file that is the overview itself (detected by wide Workday box or user-specified output path)
+3. Extract data from each individual integration XML
+4. Read `integration_overview.xml` template for structural reference
+5. Generate the overview XML with all integrations
 
 **Updating an existing overview:**
 1. Read the existing overview XML
-2. Read the new individual integration XML(s)
+2. Read all `.xml` files from the supplied directory (skip the overview file)
 3. Identify which integrations already exist in the overview (by INT ID in labels)
 4. Add new integrations: new boxes, new edges, extend Workday box width, add flow labels and domain labels
 5. Update notes sections to include the new integration data
-6. **Preserve existing content** — do NOT remove integrations that aren't in the new input list
+6. **Preserve existing content** — do NOT remove integrations that aren't in the directory
 
 **Do NOT create intermediate Python scripts** (e.g. `generate_int006.py`) in the project. Generate the XML directly using inline Python via `uv run --package elt-doc-sad-leanix python -c "..."`. The XML output file is the only deliverable — no throwaway scripts should be left in the codebase.
 
@@ -1104,7 +1106,7 @@ Manual launch requirements, format compliance, key regeneration on migration, hy
 
 1. **Detect overview request** — user asks to create/update integration overview
 2. **Read the overview template** (`elt_doc_sad_leanix/templates/integration_overview.xml`) for structural reference
-3. **Read each individual integration XML** provided by the user
+3. **Read all `.xml` files** from the supplied directory (skip the overview file itself)
 4. **If updating**: read the existing overview XML to preserve current content
 5. **Extract per-integration data** from each individual XML:
    - Integration ID, vendor name, direction, fact sheet details
