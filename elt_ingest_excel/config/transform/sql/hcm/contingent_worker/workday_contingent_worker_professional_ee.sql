@@ -4,8 +4,8 @@ CREATE TABLE workday_contingent_worker_professional_ee
     AS
 SELECT
        t.contingent_worker_id                                              worker_id
-     , TRIM(t.first_name)                                                  first_name
-     , TRIM(t.last_name)                                                   last_name
+     , t.nrm_first_name                                                    first_name
+     , t.nrm_last_name                                                     last_name
      , 'Contingent Worker'                                                 worker_type
      , NULLIF(UPPER(TRIM(t.department_1)), '')                             applicant_source_category
      , COALESCE(NULLIF(UPPER(TRIM(t.department)), ''), t.department_1)     applicant_source_name

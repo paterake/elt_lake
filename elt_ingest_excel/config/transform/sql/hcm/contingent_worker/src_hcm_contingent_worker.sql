@@ -29,7 +29,14 @@ SELECT *
  WHERE data_rnk = 1
        )
 SELECT
-        'CW-' || LPAD(rnk::VARCHAR, 6, '0') AS contingent_worker_id
+        'CW-' || LPAD(rnk::VARCHAR, 6, '0')     contingent_worker_id
       , t.*
+      , NULLIF(LOWER(TRIM(m.first_name             )), '')     nrm_first_name
+      , NULLIF(LOWER(TRIM(m.last_name              )), '')     nrm_last_name
+      , NULLIF(LOWER(TRIM(m.primary_email          )), '')     nrm_primary_email
+      , NULLIF(LOWER(TRIM(m.secondary_email        )), '')     nrm_secondary_email
+      , NULLIF(LOWER(TRIM(m.manager_name           )), '')     nrm_manager_name
+      , NULLIF(LOWER(TRIM(m.manager_email_address  )), '')     nrm_manager_email_address
+      , NULLIF(LOWER(TRIM(m.manager_email          )), '')     nrm_manager_email
   FROM cte_contingent_worker t
 ;
