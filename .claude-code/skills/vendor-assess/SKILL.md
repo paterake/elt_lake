@@ -59,17 +59,13 @@ The `--package` flag ensures `python-docx` is installed in the shared workspace 
 
 ### Reference templates
 
-Six example documents in `elt_doc_vendor_assess/templates/` provide structural reference:
+Three blank templates in `elt_doc_vendor_assess/templates/` provide structural reference:
 
-| Template | Type | Status |
+| Template | Type | Contents |
 |---|---|---|
-| `CRM_Migration_Tool_Compliance_Assessment.docx` | Compliance Matrix | Completed example |
-| `SaaS_SFTP_Compliance_Matrix.docx` | Compliance Matrix | Completed example |
-| `Currency_FX_Rate_Provider_Compliance_Assessment.docx` | Compliance Matrix | Completed example (domain context + incumbent assessment patterns) |
-| `Supplier_Selection_Template.docx` | Supplier Selection | Blank template |
-| `Supplier_Selection_Questionnaire_Hyve_completed.docx` | Supplier Selection | Completed example |
-| `Preferred_Technologies_Change_Template.docx` | Preferred Tech Change | Blank template |
-| `Preferred_Technologies_Change_Hyve_SFTP.docx` | Preferred Tech Change | Completed example |
+| `Compliance Matrix Template.docx` | Compliance Matrix | Full superset structure with all mandatory and optional sections, placeholder guidance text |
+| `Supplier Selection Template.docx` | Supplier Selection | 13-section questionnaire with placeholder questions |
+| `Preferred Technologies Change Template.docx` | Preferred Tech Change | 11-section ACB approval document with placeholder questions |
 
 ---
 

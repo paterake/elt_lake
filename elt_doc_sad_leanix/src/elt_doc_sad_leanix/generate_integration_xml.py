@@ -14,7 +14,7 @@ class WorkdayIntegrationDiagramGenerator:
     # Color constants matching LeanIX standard
     WORKDAY_BLUE = "#497db0"
     VENDOR_ORANGE = "#ffa31f"
-    INFRA_BROWN = "#c17d5e"
+    INFRA_BROWN = "#d29270"
     
     def __init__(self):
         self.id_counter = 2  # Start at 2 (0 and 1 are reserved)
@@ -263,12 +263,12 @@ def generate_barclaycard_diagram():
         'title': 'Workday Barclaycard Credit Card Transactions Integration SFTP',
         'integration_id': 'INT006',
         'source_system': 'Workday Financial Management',
-        'intermediary': 'Hyve SFTP',
+        'intermediary': 'FA SFTP',
         'target_system': 'Barclaycard',
         'direction': 'inbound',  # Barclaycard → SFTP → Workday
         'flow_labels': [
             {
-                'text': 'Barclaycard delivers Visa VCF4.4 scrubbed file to Hyve SFTP<div>(PGP encrypted, SSH authentication)</div><div>Daily scheduled delivery</div>',
+                'text': 'Barclaycard delivers Visa VCF4.4 scrubbed file to FA SFTP<div>(PGP encrypted, SSH authentication)</div><div>Daily scheduled delivery</div>',
                 'x': 100, 'y': 180, 'width': 350, 'height': 80
             },
             {
@@ -283,7 +283,7 @@ def generate_barclaycard_diagram():
             'Expected Volume: TBC monthly statement transactions',
             'Encryption: PGP for data at rest (MANDATORY); TLS/SSL for SFTP',
             'Authentication: SSH key authentication',
-            'SFTP Server: FA-hosted Hyve Managed SFTP',
+            'SFTP Server: FA Managed SFTP',
             'File Naming: TBC (to be confirmed with Barclaycard)',
             'Data Retention: Integration outputs stored in Workday for 180 days',
             'Frequency: Daily (scheduled time TBC)',
@@ -307,7 +307,7 @@ def generate_barclaycard_diagram():
     xml = generator.generate_xml(spec)
     
     # Save to file
-    filename = f'COR_V00_01_{spec["integration_id"]}_{spec["target_system"]}.xml'
+    filename = f'{spec["integration_id"]}_{spec["target_system"]}.xml'
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(xml)
     

@@ -21,7 +21,7 @@ Claude will automatically:
 1. Read the SKILL.md and recognise the request
 2. Parse the SAD `.docx` using `python-docx` (via `uv run --package elt-doc-sad-leanix python ...`)
 3. Extract integration ID, vendor name, direction, security details
-4. Select the appropriate template (outbound EIB, bi-directional API, multi-connector, or via Hyve SFTP)
+4. Select the appropriate template (outbound EIB, bi-directional API, multi-connector, or via FA SFTP)
 5. Generate a diagrams.net XML file saved alongside the input SAD document
 
 The output XML can be imported directly into LeanIX.
@@ -52,12 +52,13 @@ elt_doc_sad_leanix/
 │   └── parsers/
 ├── config/
 │   └── LeanIX_Inventory.xlsx                   # LeanIX asset inventory
-├── examples/
-│   ├── COR_V00.01_INT001_Workday_Okta.xml      # bi-directional API
-│   ├── COR_V00.01_INT002_Workday_Crisis24.xml   # outbound via Hyve SFTP
-│   ├── COR_V00.01_INT004_AMEX_GBT.xml          # outbound to vendor SFTP
-│   ├── COR_V00_01_INT006_Barclaycard.xml        # inbound via Hyve SFTP
-│   └── COR_V00.01_INT018_Barclays_Banking.xml   # multi-connector complex
+├── templates/
+│   ├── integration_bidirectional_api.xml         # Workday ↔ Vendor
+│   ├── integration_outbound_fa_sftp.xml         # Workday → FA SFTP → Vendor
+│   ├── integration_outbound_vendor_sftp.xml     # Workday → Vendor SFTP → Vendor
+│   ├── integration_inbound_fa_sftp.xml          # Vendor → FA SFTP → Workday
+│   ├── integration_multi_connector.xml          # Workday ↔ Gateway ↔ Vendor
+│   └── integration_overview.xml                 # All integrations — summary overview
 └── test/
 ```
 
