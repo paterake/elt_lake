@@ -3,6 +3,8 @@
 
 from base_runner import run_pipeline
 
+from elt_ingest_excel import PipelinePhase
+
 if __name__ == "__main__":
     run_pipeline(
         # Data source (processes all workbooks defined in config)
@@ -13,5 +15,5 @@ if __name__ == "__main__":
         cfg_transform_path="transform/sql/hcm/contingent_worker",
         cfg_publish_path="publish/hcm",
         cfg_publish_name="publish_contingent_worker.json",
-        run_to_phase="PipelinePhase.INGEST"
+        run_to_phase=PipelinePhase.INGEST,
     )

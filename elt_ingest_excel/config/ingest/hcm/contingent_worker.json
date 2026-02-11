@@ -14,7 +14,7 @@
     "workbookFileName": "worker_id_mapping_V2.xlsx",
     "sheets": [
       {
-        "sheetName": "Sheet1",
+        "sheetName": "QA - All Worker Info",
         "headerRow": "1",
         "dataRow": "2",
         "targetTableName": "hcm_contingent_worker_id_mapping"
