@@ -6,9 +6,9 @@ CREATE TABLE src_hcm_contingent_worker_id_mapping
     AS (
 SELECT DISTINCT
        w.employee_id                                                                   employee_id
-     , NULLIF(LOWER(TRIM(w.legal_name_first_name)))                                    first_name
-     , NULLIF(LOWER(TRIM(w.legal_name_middle_name)))                                   middle_name
-     , NULLIF(LOWER(TRIM(w.legal_name_last_name)))                                     last_name
+     , NULLIF(LOWER(TRIM(w.legal_name_first_name )), '')                               first_name
+     , NULLIF(LOWER(TRIM(w.legal_name_middle_name)), '')                               middle_name
+     , NULLIF(LOWER(TRIM(w.legal_name_last_name  )), '')                               last_name
      , NULLIF(LOWER(TRIM(TRIM(u.email_address_raw, E'\r\n\t '))), '')                  email_address_raw
   FROM hcm_contingent_worker_id_mapping w
      , UNNEST(

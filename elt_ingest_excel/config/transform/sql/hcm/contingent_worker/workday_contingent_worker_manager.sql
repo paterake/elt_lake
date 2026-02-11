@@ -8,8 +8,8 @@ SELECT
        t.contingent_worker_id                worker_id
      , NULL                                  position_id
      , m.employee_id                         worker_id_of_direct_manager
-     , m.nrm_first_name                      manager_first_name
-     , m.nrm_last_name                       manager_last_name
+     , m.first_name                          manager_first_name
+     , m.last_name                           manager_last_name
      , t.nrm_first_name                      first_name
      , t.nrm_last_name                       last_name
      , 'Contingent Worker'                   worker_type
@@ -44,6 +44,7 @@ SELECT
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER (PARTITION BY t.worker_id ORDER BY match_priority) rnk 
+  FROM cte_match                                t
        )
 SELECT 
        t.worker_id
