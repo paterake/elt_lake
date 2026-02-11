@@ -16,9 +16,8 @@ SELECT
      , NULL                                              supervisory_org_name
      , NULL                                              supervisory_id
      , NULL                                              staffing_model
-  FROM src_hcm_contingent_worker          t
+  FROM src_hcm_contingent_worker             t
        LEFT OUTER JOIN 
-       hcm_contingent_worker_id_mapping   m
-          ON LOWER(TRIM(m.first_name)) || ' ' || LOWER(TRIM(m.last_name))
-             = LOWER(TRIM(t.manager_name))
+       src_hcm_contingent_worker_id_mapping  m
+          ON LOWER(TRIM(m.first_name)) || ' ' || LOWER(TRIM(m.last_name)) = LOWER(TRIM(t.manager_name))
 ;

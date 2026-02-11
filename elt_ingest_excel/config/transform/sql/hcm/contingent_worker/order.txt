@@ -1,3 +1,4 @@
+src_hcm_contingent_worker_id_mapping.sql
 src_hcm_contingent_worker.sql
 workday_contingent_worker_name.sql
 workday_contingent_worker_professional_ee.sql
