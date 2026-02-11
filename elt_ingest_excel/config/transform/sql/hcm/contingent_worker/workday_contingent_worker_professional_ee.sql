@@ -22,10 +22,10 @@ SELECT
      , NULL                                                                job_code
      , NULL                                                                position_id
      , TRIM(t.location)                                                    primary_position
-     , TRIM(t.title)                                                       position_name
+     , COALESCE(NULLIF(TRIM(t.title), ''), 'Contingent Worker')            position_name
      , t.activated_date                                                    position_start_date
      , TRIM(t.title)                                                       business_title
-     , TRIM(t.location)                                                    location_name
+     , t.nrm_location                                                      location_name
      , NULL                                                                work_space
      , NULL                                                                scheduled_weekly_hours
      , NULL                                                                default_weekly_hours

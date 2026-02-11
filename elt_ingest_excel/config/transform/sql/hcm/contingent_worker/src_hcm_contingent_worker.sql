@@ -38,5 +38,18 @@ SELECT
       , NULLIF(LOWER(TRIM(t.manager_name           )), '')     nrm_manager_name
       , NULLIF(LOWER(TRIM(t.manager_email_address  )), '')     nrm_manager_email_address
       , NULLIF(LOWER(TRIM(t.manager_email          )), '')     nrm_manager_email
+      , CASE 
+         WHEN NULLIF(TRIM(t.location), '')
+           IN ('Homebased - SGP')
+         THEN 'Homebased - SGP'
+         WHEN NULLIF(TRIM(t.location), '')
+           IN ('Homebased', 'Homebased - Wembley')
+         THEN 'Homebased - Wembley'
+         WHEN NULLIF(TRIM(t.location), '')
+           IN ('SGP', 'St George''s Park')
+         THEN 'St George''s Park'
+         ELSE NULLIF(TRIM(t.location), '')
+        END                                                    nrm_location
   FROM cte_contingent_worker t
+ WHERE TRIM(t.location) NOT IN ('County')
 ;
