@@ -1,3 +1,8 @@
+---
+name: vendor-assess
+description: Generate vendor assessment documents (.docx) for FA's supplier evaluation and Architecture Change Board (ACB) approval process. Use when assessing new vendors or creating supplier evaluation reports.
+---
+
 # Vendor Assessment Skill
 
 Generate vendor assessment documents (.docx) for FA's supplier evaluation and Architecture Change Board (ACB) approval process.

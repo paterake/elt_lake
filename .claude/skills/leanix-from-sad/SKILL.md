@@ -1,3 +1,8 @@
+---
+name: leanix-from-sad
+description: Generate diagrams.net XML files for Workday vendor integrations from Solution Architecture Documents (SAD). Use when creating LeanIX integration diagrams, drawing architecture from SAD documents, or generating vendor integration overview diagrams.
+---
+
 # Workday Integration Diagram Generator - XML Output
 
 ## Purpose
