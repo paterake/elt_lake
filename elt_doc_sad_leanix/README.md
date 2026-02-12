@@ -13,9 +13,19 @@ claude
 
 Then prompt:
 
+Create the LeanIX model from the SAD document
 ```
 Generate LeanIX diagram.net xml file for the workday integration from the SAD document: ~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.docx
 ```
+
+Create the consolidated LeanIX model from the other LeanIX models
+```
+Now generate the consolidated overview LeanIX diagrams.net XML file.  Use the contents of ~/Downloads/leanix_workday_int, this folder holds all the required XML    
+  files.  It includes the existing overview file called: COR_V00.01_INT000_Workday_Overview.xml, that was previously created (and this might need some correcting).   
+  And then includes all the integrations between workday and vendors.  So review the existing overview, and either rebuild it from all the integrations or update     
+  it - as required    
+```  
+
 
 Claude will automatically:
 1. Read the SKILL.md and recognise the request
