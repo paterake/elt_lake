@@ -72,19 +72,25 @@ class WorkdayIntegrationDiagramGenerator:
     
     def add_system_box(self, root: ET.Element, label: str, x: int, y: int, 
                        width: int = 160, height: int = 160, 
-                       is_workday: bool = True) -> str:
+                       is_workday: bool = True, fact_sheet_id: str = None, 
+                       fact_sheet_type: str = None) -> str:
         """Add a system box (fact sheet)"""
         root_elem = root.find('root')
         box_id = self._next_id()
         
         color = self.WORKDAY_BLUE if is_workday else self.VENDOR_ORANGE
-        fact_sheet_type = "Application" if is_workday else "Provider"
+        
+        if not fact_sheet_type:
+            fact_sheet_type = "Application" if is_workday else "Provider"
+        
+        if not fact_sheet_id:
+            fact_sheet_id = str(uuid.uuid4())
         
         box = ET.SubElement(root_elem, 'object', {
             'type': 'factSheet',
             'label': label,
             'factSheetType': fact_sheet_type,
-            'factSheetId': str(uuid.uuid4()),
+            'factSheetId': fact_sheet_id,
             'id': box_id
         })
         
@@ -104,13 +110,29 @@ class WorkdayIntegrationDiagramGenerator:
         return box_id
     
     def add_arrow(self, root: ET.Element, source_id: str, target_id: str, 
-                  waypoints: List[tuple] = None):
+                  waypoints: List[tuple] = None, fact_sheet_id: str = None, 
+                  fact_sheet_label: str = None):
         """Add an arrow between systems"""
         root_elem = root.find('root')
         arrow_id = self._next_id()
         
-        arrow = ET.SubElement(root_elem, 'mxCell', {
-            'id': arrow_id,
+        # Determine parent element (root or object wrapper)
+        if fact_sheet_id:
+            parent = ET.SubElement(root_elem, 'object', {
+                'type': 'factSheet',
+                'label': fact_sheet_label or "Interface",
+                'factSheetType': 'Interface',
+                'factSheetId': fact_sheet_id,
+                'id': arrow_id
+            })
+            # Use a new ID for the inner mxCell
+            inner_id = self._next_id()
+        else:
+            parent = root_elem
+            inner_id = arrow_id
+            
+        arrow = ET.SubElement(parent, 'mxCell', {
+            'id': inner_id,
             'edge': '1',
             'parent': '1',
             'source': source_id,
@@ -192,6 +214,9 @@ class WorkdayIntegrationDiagramGenerator:
                 - security_details: List of security items
                 - system_of_record: List of SOR items
                 - key_attributes: List of key attributes
+                - notes: List of notes/assumptions
+                - interface_id: Optional Interface FactSheet ID
+                - interface_label: Optional Interface Label
         """
         
         root = self.create_root()
@@ -203,33 +228,58 @@ class WorkdayIntegrationDiagramGenerator:
         if integration_spec.get('intermediary'):
             # Three-box pattern
             source_id = self.add_system_box(root, integration_spec['source_system'], 
-                                           240, 280, is_workday=True)
+                                           240, 280, is_workday=True,
+                                           fact_sheet_id=integration_spec.get('source_id'),
+                                           fact_sheet_type=integration_spec.get('source_type'))
             middle_id = self.add_system_box(root, 
                                            f"{integration_spec['intermediary']}<div><b>{integration_spec['integration_id']}</b></div>",
-                                           560, 280, width=170, is_workday=False)
+                                           560, 280, width=170, is_workday=False,
+                                           fact_sheet_id=integration_spec.get('intermediary_id'),
+                                           fact_sheet_type=integration_spec.get('intermediary_type'))
             target_id = self.add_system_box(root, integration_spec['target_system'],
-                                           880, 280, is_workday=False)
+                                           880, 280, is_workday=False,
+                                           fact_sheet_id=integration_spec.get('target_id'),
+                                           fact_sheet_type=integration_spec.get('target_type'))
             
             # Add arrows
-            self.add_arrow(root, source_id, middle_id)
+            # Note: For multi-hop, we typically put the Interface on the primary edge (Source->Middle)
+            # or split it if we have two interfaces. Here we'll put it on the first hop.
+            self.add_arrow(root, source_id, middle_id, 
+                           fact_sheet_id=integration_spec.get('interface_id'),
+                           fact_sheet_label=integration_spec.get('interface_label'))
             self.add_arrow(root, middle_id, target_id)
             
         else:
             # Two-box pattern
             source_id = self.add_system_box(root, integration_spec['source_system'],
-                                           240, 280, is_workday=True)
+                                           240, 280, is_workday=True,
+                                           fact_sheet_id=integration_spec.get('source_id'),
+                                           fact_sheet_type=integration_spec.get('source_type'))
             target_id = self.add_system_box(root,
                                            f"{integration_spec['target_system']}<div><b>{integration_spec['integration_id']}</b></div>",
-                                           800, 280, width=170, is_workday=False)
+                                           800, 280, width=170, is_workday=False,
+                                           fact_sheet_id=integration_spec.get('target_id'),
+                                           fact_sheet_type=integration_spec.get('target_type'))
             
             # Add arrows based on direction
             if integration_spec['direction'] in ['outbound', 'bidirectional']:
                 self.add_arrow(root, source_id, target_id,
-                              waypoints=[(320, 240), (885, 240)])
+                              waypoints=[(320, 240), (885, 240)],
+                              fact_sheet_id=integration_spec.get('interface_id'),
+                              fact_sheet_label=integration_spec.get('interface_label'))
             
             if integration_spec['direction'] in ['inbound', 'bidirectional']:
+                # For bidirectional, we might want the interface on both or just one.
+                # If we already added it on outbound, maybe skip here or add same ID?
+                # Usually bidirectional has one Interface entity.
+                # If outbound existed, we already added it.
+                # Let's add it here ONLY if direction is JUST inbound.
+                fs_id = integration_spec.get('interface_id') if integration_spec['direction'] == 'inbound' else None
+                
                 self.add_arrow(root, target_id, source_id,
-                              waypoints=[(885, 480), (320, 480)])
+                              waypoints=[(885, 480), (320, 480)],
+                              fact_sheet_id=fs_id,
+                              fact_sheet_label=integration_spec.get('interface_label'))
         
         # Add flow labels
         for label in integration_spec.get('flow_labels', []):
@@ -250,6 +300,12 @@ class WorkdayIntegrationDiagramGenerator:
         self.add_info_box(root, "KEY ATTRIBUTES SYNCHRONIZED",
                          integration_spec.get('key_attributes', []),
                          560, 930, height=110)
+        
+        # Add Notes box
+        if integration_spec.get('notes'):
+            self.add_info_box(root, "NOTES & ASSUMPTIONS",
+                             integration_spec.get('notes', []),
+                             560, 1060, height=150)
         
         # Convert to string
         return ET.tostring(root, encoding='unicode')
