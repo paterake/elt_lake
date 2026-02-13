@@ -15,7 +15,8 @@ SELECT
      , NULL                                                                continuous_service_date
      , NULL                                                                seniority_date
      , COALESCE(NULLIF(UPPER(TRIM(t.user_type)), ''), t.department_1)      employee_contingent_worker_type
-     , t.deactivation_date                                                 employment_contract_end_date_fixed_term
+     , strftime(COALESCE(NULLIF(t.deactivation_date, ''), CURRENT_DATE + INTERVAL 6 MONTH),'%Y-%m-%d 00:00:00')
+                                                                           employment_contract_end_date_fixed_term
      , NULL                                                                time_type
      , NULL                                                                pay_rate_type
      , NULL                                                                job_profile
