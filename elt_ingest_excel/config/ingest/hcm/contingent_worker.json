@@ -20,5 +20,16 @@
         "targetTableName": "hcm_contingent_worker_id_mapping"
       }
     ]
+  },
+  {
+    "workbookFileName": "IR35 Check Feb 2026 - HR.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Sheet1",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "hcm_ir36_check"
+      }
+    ]
   }
 ]

@@ -135,11 +135,42 @@ def parse_sad(docx_path):
                 'x': 800, 'y': 180, 'width': 300, 'height': 60
             }
         ]
+    elif spec['direction'] == 'inbound':
+        spec['flow_labels'] = [
+            {
+                'text': f"{spec['target_system']} sends data (encrypted)",
+                'x': 100, 'y': 180, 'width': 300, 'height': 60
+            },
+            {
+                'text': f"File placed on {spec['intermediary'] or 'SFTP'}",
+                'x': 450, 'y': 180, 'width': 300, 'height': 60
+            },
+             {
+                'text': f"Workday retrieves and processes file",
+                'x': 800, 'y': 180, 'width': 300, 'height': 60
+            }
+        ]
     
-    # Security Details
-    # Extract from "Control | Implementation" table
+    # Security Details and Component Checks
     for table in doc.tables:
+        if len(table.rows) < 1:
+            continue
+            
         headers = [c.text.strip().lower() for c in table.rows[0].cells]
+
+        # Check for Component/Technology tables
+        if "component" in headers and "technology" in headers:
+            for row in table.rows[1:]:
+                cells = [c.text.strip() for c in row.cells]
+                if len(cells) >= 2:
+                    comp = cells[0].lower()
+                    tech = cells[1]
+                    if "data source" in comp:
+                        spec["process_extraction"] = tech
+                    elif "integration development" in comp:
+                        spec["process_processing"] = tech
+
+        # Extract from "Control | Implementation" table
         if 'control' in headers and 'implementation' in headers:
             for row in table.rows[1:]:
                 cells = [c.text.strip() for c in row.cells]
@@ -181,6 +212,33 @@ def parse_sad(docx_path):
         f"{spec['source_system']}: Employee Master Data",
         f"{spec['target_system']}: Health & Safety Training"
     ]
+    
+    # Process Steps Defaults
+    if 'process_extraction' not in spec:
+        spec['process_extraction'] = "Workday Custom Report"
+        
+    if 'process_processing' not in spec:
+        spec['process_processing'] = "Workday Studio / EIB"
+        
+    # Process Transmission
+    if spec.get('intermediary'):
+        spec['process_transmission'] = f"Via {spec['intermediary']} (SFTP)"
+    else:
+        spec['process_transmission'] = "Direct API / HTTP"
+        
+    # Process Security
+    if spec['security_details']:
+        # Summarize security
+        sec_summary = []
+        for item in spec['security_details']:
+            item_lower = item.lower()
+            if "pgp" in item_lower or "encryption" in item_lower or "tls" in item_lower or "ssl" in item_lower:
+                # Extract value after colon if present
+                val = item.split(':', 1)[1].strip() if ':' in item else item
+                sec_summary.append(val)
+        spec['process_security'] = "; ".join(sec_summary) if sec_summary else "Standard Encryption"
+    else:
+        spec['process_security'] = "Standard Encryption"
 
     return spec
 

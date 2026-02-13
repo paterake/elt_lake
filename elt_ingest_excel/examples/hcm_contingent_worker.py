@@ -15,5 +15,5 @@ if __name__ == "__main__":
         cfg_transform_path="transform/sql/hcm/contingent_worker",
         cfg_publish_path="publish/hcm",
         cfg_publish_name="publish_contingent_worker.json",
-        run_to_phase=PipelinePhase.PUBLISH,
+        run_to_phase=PipelinePhase.INGEST,
     )

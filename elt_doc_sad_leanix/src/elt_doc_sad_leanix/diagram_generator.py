@@ -198,59 +198,159 @@ class WorkdayIntegrationDiagramGenerator:
             'x': str(x), 'y': str(y), 'as': 'geometry'
         })
     
+    def add_process_table(self, root: ET.Element, items: Dict[str, str], x: int, y: int, width: int = 1186):
+        """Add a process table with 4 columns"""
+        root_elem = root.find('root')
+        table_id = self._next_id()
+        
+        # Table container
+        table = ET.SubElement(root_elem, 'mxCell', {
+            'id': table_id,
+            'parent': '1',
+            'style': 'childLayout=tableLayout;recursiveResize=0;shadow=0;fillColor=none;verticalAlign=top;',
+            'value': '',
+            'vertex': '1'
+        })
+        ET.SubElement(table, 'mxGeometry', {
+            'height': '240', 'width': str(width), 'x': str(x), 'y': str(y), 'as': 'geometry'
+        })
+        
+        # Header row
+        header_row_id = self._next_id()
+        header_row = ET.SubElement(table, 'mxCell', {
+            'id': header_row_id,
+            'parent': table_id,
+            'style': 'shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;',
+            'value': '',
+            'vertex': '1'
+        })
+        ET.SubElement(header_row, 'mxGeometry', {'height': '52', 'width': str(width), 'as': 'geometry'})
+        
+        headers = ["Extraction Method", "Security Controls", "Transmission", "Processing"]
+        col_width = width // 4
+        
+        for header in headers:
+            cell_id = self._next_id()
+            cell = ET.SubElement(header_row, 'mxCell', {
+                'id': cell_id,
+                'parent': header_row_id,
+                'style': 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=center;whiteSpace=wrap;html=1;fontStyle=1;',
+                'value': header,
+                'vertex': '1'
+            })
+            ET.SubElement(cell, 'mxGeometry', {'height': '52', 'width': str(col_width), 'as': 'geometry'})
+            
+        # Content row
+        content_row_id = self._next_id()
+        content_row = ET.SubElement(table, 'mxCell', {
+            'id': content_row_id,
+            'parent': table_id,
+            'style': 'shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;',
+            'vertex': '1'
+        })
+        ET.SubElement(content_row, 'mxGeometry', {'height': '188', 'width': str(width), 'y': '52', 'as': 'geometry'})
+        
+        values = [
+            items.get('process_extraction', 'N/A'),
+            items.get('process_security', 'N/A'),
+            items.get('process_transmission', 'N/A'),
+            items.get('process_processing', 'N/A')
+        ]
+        
+        for val in values:
+            cell_id = self._next_id()
+            cell = ET.SubElement(content_row, 'mxCell', {
+                'id': cell_id,
+                'parent': content_row_id,
+                'style': 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=left;whiteSpace=wrap;html=1;verticalAlign=top;overflow=hidden;',
+                'value': val,
+                'vertex': '1'
+            })
+            ET.SubElement(cell, 'mxGeometry', {'height': '188', 'width': str(col_width), 'as': 'geometry'})
+
     def generate_xml(self, integration_spec: Dict) -> str:
         """
         Generate complete XML from integration specification
-        
-        Args:
-            integration_spec: Dict containing:
-                - title: Diagram title
-                - integration_id: INT001, INT006, etc.
-                - source_system: Source system name
-                - target_system: Target system name
-                - intermediary: Optional middle system
-                - direction: 'outbound', 'inbound', or 'bidirectional'
-                - flow_labels: List of dicts with text, x, y, width, height
-                - security_details: List of security items
-                - system_of_record: List of SOR items
-                - key_attributes: List of key attributes
-                - notes: List of notes/assumptions
-                - interface_id: Optional Interface FactSheet ID
-                - interface_label: Optional Interface Label
         """
-        
         root = self.create_root()
         
         # Add title
         self.add_title(root, integration_spec['title'])
         
+        direction = integration_spec.get('direction', 'outbound')
+        intermediary = integration_spec.get('intermediary')
+        
         # Add systems based on pattern
-        if integration_spec.get('intermediary'):
+        if intermediary:
             # Three-box pattern
-            source_id = self.add_system_box(root, integration_spec['source_system'], 
-                                           240, 280, is_workday=True,
+            if direction == 'outbound':
+                # Outbound: Workday -> SFTP -> Vendor (Linear: y=110)
+                # Workday (Source)
+                source_id = self.add_system_box(root, integration_spec['source_system'], 
+                                               10, 110, is_workday=True,
+                                               fact_sheet_id=integration_spec.get('source_id'),
+                                               fact_sheet_type=integration_spec.get('source_type'))
+                # SFTP (Middle)
+                middle_id = self.add_system_box(root, 
+                                               f"{intermediary}<div><b>{integration_spec['integration_id']}</b></div>",
+                                               520, 110, width=170, is_workday=False,
+                                               fact_sheet_id=integration_spec.get('intermediary_id'),
+                                               fact_sheet_type=integration_spec.get('intermediary_type'))
+                # Vendor (Target)
+                target_id = self.add_system_box(root, integration_spec['target_system'],
+                                               1036, 110, is_workday=False,
+                                               fact_sheet_id=integration_spec.get('target_id'),
+                                               fact_sheet_type=integration_spec.get('target_type'))
+                
+                # Arrows: Source -> Middle -> Target
+                self.add_arrow(root, source_id, middle_id, 
+                               fact_sheet_id=integration_spec.get('interface_id'),
+                               fact_sheet_label=integration_spec.get('interface_label'))
+                self.add_arrow(root, middle_id, target_id)
+                
+            else: # inbound or bidirectional (defaulting to inbound layout)
+                # Inbound: Vendor -> SFTP -> Workday (y=280)
+                # Note: 'source_system' is Workday, 'target_system' is Vendor in our spec
+                # But visually: Target(Vendor) -> Middle(SFTP) -> Source(Workday)
+                
+                # Vendor (Left) - mapped to 'target_system' in spec
+                vendor_id = self.add_system_box(root, integration_spec['target_system'],
+                                               240, 280, is_workday=False,
+                                               fact_sheet_id=integration_spec.get('target_id'),
+                                               fact_sheet_type=integration_spec.get('target_type'))
+                
+                # SFTP (Middle)
+                middle_id = self.add_system_box(root, 
+                                               f"{intermediary}<div><b>{integration_spec['integration_id']}</b></div>",
+                                               560, 280, width=170, is_workday=False,
+                                               fact_sheet_id=integration_spec.get('intermediary_id'),
+                                               fact_sheet_type=integration_spec.get('intermediary_type'))
+                
+                # Workday (Right) - mapped to 'source_system' in spec
+                wd_id = self.add_system_box(root, integration_spec['source_system'], 
+                                           880, 280, is_workday=True,
                                            fact_sheet_id=integration_spec.get('source_id'),
                                            fact_sheet_type=integration_spec.get('source_type'))
-            middle_id = self.add_system_box(root, 
-                                           f"{integration_spec['intermediary']}<div><b>{integration_spec['integration_id']}</b></div>",
-                                           560, 280, width=170, is_workday=False,
-                                           fact_sheet_id=integration_spec.get('intermediary_id'),
-                                           fact_sheet_type=integration_spec.get('intermediary_type'))
-            target_id = self.add_system_box(root, integration_spec['target_system'],
-                                           880, 280, is_workday=False,
-                                           fact_sheet_id=integration_spec.get('target_id'),
-                                           fact_sheet_type=integration_spec.get('target_type'))
-            
-            # Add arrows
-            # Note: For multi-hop, we typically put the Interface on the primary edge (Source->Middle)
-            # or split it if we have two interfaces. Here we'll put it on the first hop.
-            self.add_arrow(root, source_id, middle_id, 
-                           fact_sheet_id=integration_spec.get('interface_id'),
-                           fact_sheet_label=integration_spec.get('interface_label'))
-            self.add_arrow(root, middle_id, target_id)
+                
+                # Arrows
+                if direction == 'inbound':
+                    # Vendor -> SFTP -> Workday
+                    self.add_arrow(root, vendor_id, middle_id)
+                    self.add_arrow(root, middle_id, wd_id,
+                                   fact_sheet_id=integration_spec.get('interface_id'),
+                                   fact_sheet_label=integration_spec.get('interface_label'))
+                else: # bidirectional
+                    # Arrows both ways (simplified)
+                    self.add_arrow(root, vendor_id, middle_id)
+                    self.add_arrow(root, middle_id, vendor_id)
+                    self.add_arrow(root, middle_id, wd_id,
+                                   fact_sheet_id=integration_spec.get('interface_id'),
+                                   fact_sheet_label=integration_spec.get('interface_label'))
+                    self.add_arrow(root, wd_id, middle_id)
             
         else:
             # Two-box pattern
+
             source_id = self.add_system_box(root, integration_spec['source_system'],
                                            240, 280, is_workday=True,
                                            fact_sheet_id=integration_spec.get('source_id'),
@@ -285,6 +385,9 @@ class WorkdayIntegrationDiagramGenerator:
         for label in integration_spec.get('flow_labels', []):
             self.add_text_label(root, label['text'], label['x'], label['y'],
                                label.get('width', 300), label.get('height', 50))
+                               
+        # Add Process Table
+        self.add_process_table(root, integration_spec, x=27, y=500, width=1100)
         
         # Add security details box
         self.add_info_box(root, "SECURITY & TECHNICAL DETAILS",
