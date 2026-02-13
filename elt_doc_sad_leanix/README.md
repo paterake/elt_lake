@@ -9,6 +9,7 @@ Generate LeanIX diagrams.net XML files from Workday SAD (.docx) documents.
 ```bash
 cd /Users/rpatel/Documents/__code/git/emailrak/elt_lake
 claude
+claude --model qwen2.5-coder:7b
 ```
 
 Then prompt:

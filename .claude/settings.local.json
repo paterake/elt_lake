@@ -7,7 +7,11 @@
       "Bash(git reset:*)",
       "Bash(uv run python:*)",
       "Bash(git rm:*)",
-      "Bash(pip3 list:*)"
+      "Bash(pip3 list:*)",
+      "Bash(for f in ~/Downloads/leanix_workday_int/COR_V00.01_INT*.xml)",
+      "Bash(do basename:*)",
+      "Bash(done)",
+      "Bash(/tmp/debug_overview.py:*)"
     ],
     "additionalDirectories": [
       "/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/src/elt_ingest_excel/*",
