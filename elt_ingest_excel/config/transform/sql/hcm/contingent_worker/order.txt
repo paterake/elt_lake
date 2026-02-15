@@ -1,3 +1,5 @@
+../../ref/ref_location_mapping.sql
+../../ref/ref_worker_type_mapping.sql
 src_hcm_contingent_worker_id_mapping.sql
 src_hcm_contingent_worker.sql
 workday_contingent_worker_name.sql

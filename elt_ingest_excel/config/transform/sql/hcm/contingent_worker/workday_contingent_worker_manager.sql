@@ -44,7 +44,7 @@ SELECT
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER (PARTITION BY t.worker_id ORDER BY match_priority) rnk 
-  FROM cte_match                                t
+  FROM cte_match                             t
        )
 SELECT 
        t.worker_id
@@ -62,4 +62,5 @@ SELECT
      , t.staffing_model
   FROM cte_match_rnk                         t
  WHERE t.rnk                                 = 1
+   AND t.worker_id_of_direct_manager         IS NOT NULL
 ;
