@@ -40,6 +40,9 @@ uv run --package elt-doc-leanix-overview python <script.py>
 
 - The overview generator script is at: `elt_doc_leanix_overview/src/elt_doc_leanix_overview/update_overview.py`
 - The verification script is at: `elt_doc_leanix_overview/src/elt_doc_leanix_overview/verify_overview.py`
+- The LLM prompt compiler: `elt_doc_leanix_overview/src/elt_doc_leanix_overview/cmd/compile_context.py`
+- The JSON→XML builder: `elt_doc_leanix_overview/src/elt_doc_leanix_overview/cmd/build_xml.py`
+- The LLM prompt template: `elt_doc_leanix_overview/src/elt_doc_leanix_overview/prompts/consolidate_overview.md`
 - Reference XML template: `elt_doc_leanix_overview/templates/integration_overview.xml`
 
 ## Input
