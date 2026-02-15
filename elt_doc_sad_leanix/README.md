@@ -56,10 +56,8 @@ elt_doc_sad_leanix/
 │   │   └── compile_context.py                  # Assembles LLM prompt from inventory + SAD
 │   ├── prompts/
 │   │   └── sad_to_leanix.md                    # LLM prompt template for JSON generation
-│   ├── legacy/
-│   │   └── generate_from_sad.py                # Legacy: direct SAD parsing → XML
-│   ├── models/
-│   └── parsers/
+│   └── legacy/
+│       └── generate_from_sad.py                # Legacy: direct SAD parsing → XML
 ├── config/
 │   └── LeanIX_Inventory.xlsx                   # LeanIX asset inventory
 ├── templates/
@@ -71,8 +69,16 @@ elt_doc_sad_leanix/
 └── test/
 ```
 
-## Running the Generator Directly
+## Trae LLM Pipeline
+
+For use with Trae (or any LLM that accepts a compiled prompt):
 
 ```bash
-uv run --package elt-doc-sad-leanix python elt_doc_sad_leanix/src/elt_doc_sad_leanix/diagram_generator.py
+# 1. Compile the prompt (inventory + SAD → single markdown file)
+uv run --package elt-doc-sad-leanix python elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/compile_context.py ~/Downloads/SAD_INT006.docx
+
+# 2. Feed output to LLM → get JSON spec back
+
+# 3. Convert JSON spec → XML
+uv run --package elt-doc-sad-leanix python elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/build_xml.py spec.json -o output.xml
 ```

@@ -223,72 +223,13 @@ Use this extracted data to **synthesise** the overview notes — group by theme,
 
 **Do NOT create intermediate Python scripts** (e.g. `generate_overview.py`) in the project. Generate the XML directly using inline Python via `uv run --package elt-doc-leanix-overview python -c "..."`. The XML output file is the only deliverable — no throwaway scripts should be left in the codebase.
 
-## XML Structure Pattern
+## XML Structure
 
-The XML uses mxGraph format compatible with diagrams.net and LeanIX:
+The overview uses the same mxGraph XML format as individual integration diagrams. Read the reference template (`elt_doc_leanix_overview/templates/integration_overview.xml`) and the XML Structure Pattern section in the `leanix-from-sad` skill for the full element specifications (root structure, fact sheet boxes, edges, Interface edges, text labels).
 
-### Core Elements
-
-**1. Root Structure:**
-```xml
-<mxGraphModel dx="240" dy="-80" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="0" pageScale="1" pageWidth="826" pageHeight="1169" math="0" shadow="0" lxXmlVersion="1">
-  <root>
-    <lx-settings id="0"><mxCell style=""/></lx-settings>
-    <mxCell id="1" parent="0" style=""/>
-    <!-- Diagram elements here -->
-  </root>
-</mxGraphModel>
-```
-
-**2. System Boxes (Fact Sheets):**
-```xml
-<object type="factSheet" label="System Name" factSheetType="Application|Provider" factSheetId="[UUID]" id="[ID]">
-  <mxCell parent="1"
-          style="shape=label;perimeter=rectanglePerimeter;fontSize=11;fontFamily=72, Helvetica Neue, Helvetica, Arial, sans-serif;align=center;verticalAlign=middle;fillColor=[COLOR];strokeColor=[COLOR];fontColor=#ffffff;startSize=45;whiteSpace=wrap;rounded=1;arcSize=10;html=1"
-          vertex="1">
-    <mxGeometry height="160" width="160" x="[X]" y="[Y]" as="geometry"/>
-  </mxCell>
-</object>
-```
-
-**3. Arrows (Edges):**
-```xml
-<mxCell id="[ID]" edge="1" parent="1" source="[SOURCE_ID]" target="[TARGET_ID]"
-        style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
-  <mxGeometry relative="1" as="geometry">
-    <Array as="points">
-      <mxPoint x="[X1]" y="[Y1]"/>
-      <mxPoint x="[X2]" y="[Y2]"/>
-    </Array>
-  </mxGeometry>
-</mxCell>
-```
-
-**3a. Interface Edges (arrows as Interface fact sheets):**
-
-When an Interface fact sheet exists in the individual integration XML, preserve it in the overview:
-
-```xml
-<object type="factSheet" label="WorkDay HCM - Barclaycard"
-        factSheetType="Interface"
-        factSheetId="17c551bd-04b5-4397-9662-d4b78467ffae" id="[ID]">
-  <mxCell edge="1" parent="1" source="[SOURCE_ID]" target="[TARGET_ID]"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
-    <mxGeometry relative="1" as="geometry"/>
-  </mxCell>
-</object>
-```
-
-**4. Text Labels:**
-```xml
-<UserObject label="Label Text" placeholders="1" name="Variable" id="[ID]">
-  <mxCell parent="1"
-          style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;overflow=hidden;fontSize=14;"
-          vertex="1">
-    <mxGeometry height="[H]" width="[W]" x="[X]" y="[Y]" as="geometry"/>
-  </mxCell>
-</UserObject>
-```
+Key overview-specific points:
+- **Preserve Interface fact sheets** from individual XMLs — wrap edges in `object` elements with `factSheetType="Interface"` when the source XML has them
+- **Preserve fact sheet IDs** from individual XMLs — never generate new UUIDs for systems that already have IDs
 
 ## Skill Execution Steps
 
