@@ -9,7 +9,7 @@ import argparse
 import pandas as pd
 from pathlib import Path
 from docx import Document
-from elt_doc_sad_leanix.generate_integration_xml import WorkdayIntegrationDiagramGenerator
+from elt_doc_sad_leanix.diagram_generator import WorkdayIntegrationDiagramGenerator
 
 def load_inventory(inventory_path):
     """Load LeanIX inventory from Excel"""
