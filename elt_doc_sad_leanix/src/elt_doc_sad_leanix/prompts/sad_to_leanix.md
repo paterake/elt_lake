@@ -35,7 +35,7 @@ Read the provided SAD text and identify:
 *   Compare extracted system names against the provided **Inventory List**.
 *   **Rule**: You MUST use the exact `id` and `type` from the inventory if a match exists.
 *   **Heuristic**:
-    *   **"Workday"** -> Choose based on integration domain:
+    *   **"Workday"** -> **IMPORTANT: First check if the SAD explicitly mentions "Workday HCM" or "Workday FM" / "Workday Financial Management" / "Workday Financials" in the System of Record, Source Systems, or Overview sections. If it does, use that module.** Only if the SAD does not explicitly mention a module, choose based on integration domain:
         *   **"Workday Human Capital Management"** for: Employee identity/provisioning, HR data, travel management, demographics
         *   **"Workday Financial Management"** for: Banking/payments, credit cards, expenses, payroll settlement, pension/benefits (financial)
     *   **"SFTP"** -> Check for specific instances like "Cardinus Managed SFTP" or fallback to generic "SFTP" ITComponent.

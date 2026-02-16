@@ -323,8 +323,10 @@ x=240, y=280              x=560, y=280              x=880, y=280
 ### Multi-Connector Complex (e.g. INT018 Barclays Banking)
 ```
 Workday HCM        ↔        Vendor SFTP Gateway        ↔        Vendor Platform
-x=400, y=280              x=950, y=280                      x=1580, y=280
+x=100, y=280              x=650, y=280                      x=1280, y=280
 ```
+
+**Note:** All sections (diagram boxes, process tables, information boxes) are left-aligned starting at x=100 for consistent visual layout.
 
 ## Code Reference
 

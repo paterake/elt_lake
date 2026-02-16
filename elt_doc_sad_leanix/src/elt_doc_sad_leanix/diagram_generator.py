@@ -371,23 +371,23 @@ class WorkdayIntegrationDiagramGenerator:
 
         # Multi-connector pattern (e.g., INT018 Barclays Banking)
         if template_id == 'multi_connector':
-            # Layout: Workday <-> Gateway <-> Vendor Platform
-            # Workday at x=400, y=280
+            # Layout: Workday <-> Gateway <-> Vendor Platform (left-aligned at x=100)
+            # Workday at x=100, y=280
             source_id = self.add_system_box(root, source_system,
-                                           400, 280, is_workday=True,
+                                           100, 280, is_workday=True,
                                            fact_sheet_id=integration_spec.get('source_id'),
                                            fact_sheet_type=integration_spec.get('source_type'))
 
-            # Gateway/Intermediary at x=950, y=280
+            # Gateway/Intermediary at x=650, y=280
             gateway_label = integration_spec.get('gateway_label') or intermediary or 'Gateway'
             middle_id = self.add_system_box(root, gateway_label,
-                                           950, 280, is_workday=False,
+                                           650, 280, is_workday=False,
                                            fact_sheet_id=integration_spec.get('intermediary_id'),
                                            fact_sheet_type=integration_spec.get('intermediary_type'))
 
-            # Vendor Platform at x=1580, y=280
+            # Vendor Platform at x=1280, y=280
             target_id = self.add_system_box(root, target_system,
-                                           1580, 280, is_workday=False,
+                                           1280, 280, is_workday=False,
                                            fact_sheet_id=integration_spec.get('target_id'),
                                            fact_sheet_type=integration_spec.get('target_type'))
 
@@ -505,7 +505,7 @@ class WorkdayIntegrationDiagramGenerator:
             sub_integrations = integration_spec.get('sub_integrations', [])
 
             if len(sub_integrations) >= 1:
-                # INT018a - Outbound at y=640, x=400
+                # INT018a - Outbound at y=640, x=100 (left-aligned)
                 self.add_standalone_table(
                     root,
                     title=sub_integrations[0].get('title', ' INT018a OUTBOUND'),
@@ -513,11 +513,11 @@ class WorkdayIntegrationDiagramGenerator:
                     col2_header=sub_integrations[0].get('col2_header', 'Column 2'),
                     col1_content=sub_integrations[0].get('col1_content', ''),
                     col2_content=sub_integrations[0].get('col2_content', ''),
-                    x=400, y=640
+                    x=100, y=640
                 )
 
             if len(sub_integrations) >= 2:
-                # INT018b - Inbound at y=640, x=1040
+                # INT018b - Inbound at y=640, x=740 (spaced from INT018a)
                 self.add_standalone_table(
                     root,
                     title=sub_integrations[1].get('title', ' INT018b INBOUND'),
@@ -525,11 +525,11 @@ class WorkdayIntegrationDiagramGenerator:
                     col2_header=sub_integrations[1].get('col2_header', 'Column 2'),
                     col1_content=sub_integrations[1].get('col1_content', ''),
                     col2_content=sub_integrations[1].get('col2_content', ''),
-                    x=1040, y=640
+                    x=740, y=640
                 )
 
             if len(sub_integrations) >= 3:
-                # INT018c - Inbound at y=980, x=1040
+                # INT018c - Inbound at y=640, x=1380 (spaced from INT018b)
                 self.add_standalone_table(
                     root,
                     title=sub_integrations[2].get('title', ' INT018c INBOUND'),
@@ -537,53 +537,58 @@ class WorkdayIntegrationDiagramGenerator:
                     col2_header=sub_integrations[2].get('col2_header', 'Column 2'),
                     col1_content=sub_integrations[2].get('col1_content', ''),
                     col2_content=sub_integrations[2].get('col2_content', ''),
-                    x=1040, y=980
+                    x=1380, y=640
                 )
         else:
             # Standard single process table for other integration types
             self.add_process_table(root, integration_spec, x=27, y=500, width=1100)
         
-        # Add security details box (only if there are items)
+        # Add information boxes in a 2x3 grid layout with consistent left alignment
+        # Left margin: x=100, spacing between columns: 573px (530 width + 43 gap)
+        # Row 1 (y=1320): Security, System of Record, Key Attributes
+        # Row 2 (y=1650): Notes, Environment Strategy, Critical Constraints
+
+        # Row 1, Column 1: Security & Technical Details
         security_items = integration_spec.get('security_details') or []
         if security_items:
             self.add_info_box(root, "SECURITY & TECHNICAL DETAILS",
                              security_items,
-                             27, 840)
-        
-        # Add System of Record box (only if there are items)
+                             100, 1320, width=530, height=280)
+
+        # Row 1, Column 2: System of Record
         sor_items = integration_spec.get('system_of_record') or []
         if sor_items:
             self.add_info_box(root, "SYSTEM OF RECORD",
                              sor_items,
-                             560, 840, height=90)
-        
-        # Add Key Attributes box (only if there are items)
+                             673, 1320, width=530, height=280)
+
+        # Row 1, Column 3: Key Attributes
         key_items = integration_spec.get('key_attributes') or []
         if key_items:
             self.add_info_box(root, "KEY ATTRIBUTES SYNCHRONIZED",
                              key_items,
-                             560, 930, height=110)
-        
-        # Add Notes box (only if there are notes)
+                             1246, 1320, width=530, height=280)
+
+        # Row 2, Column 1: Notes & Assumptions
         notes_items = integration_spec.get('notes') or []
         if notes_items:
             self.add_info_box(root, "NOTES & ASSUMPTIONS",
                              notes_items,
-                             560, 1060, height=150)
+                             100, 1650, width=530, height=280)
 
-        # Add Environment Notes box (for multi-connector integrations)
+        # Row 2, Column 2: Environment Strategy
         env_items = integration_spec.get('environment_notes') or []
         if env_items:
             self.add_info_box(root, "ENVIRONMENT STRATEGY",
                              env_items,
-                             400, 1560, width=550, height=220)
+                             673, 1650, width=530, height=280)
 
-        # Add Critical Constraints box (for multi-connector integrations)
+        # Row 2, Column 3: Critical Constraints
         constraint_items = integration_spec.get('critical_constraints') or []
         if constraint_items:
             self.add_info_box(root, "CRITICAL CONSTRAINTS",
                              constraint_items,
-                             400, 1810, width=560, height=240)
+                             1246, 1650, width=530, height=280)
 
         # Convert to string
         return ET.tostring(root, encoding='unicode')
