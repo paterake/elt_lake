@@ -44,23 +44,24 @@ The `--package` flag ensures this member's dependencies (`python-docx`, `openpyx
 
 ```
 elt_doc_sad_leanix/
-├── pyproject.toml                              # python-docx, openpyxl dependencies
+├── pyproject.toml                              # python-docx, openpyxl deps (shared)
 ├── README.md
 ├── inspect_excel.py                            # Utility: inspect LeanIX inventory Excel
 ├── src/elt_doc_sad_leanix/
 │   ├── __init__.py
 │   ├── py.typed
-│   ├── diagram_generator.py                    # WorkdayIntegrationDiagramGenerator class
+│   ├── diagram_generator.py                    # WorkdayIntegrationDiagramGenerator [Step3][Skill]
 │   ├── cmd/
-│   │   ├── build_xml.py                        # JSON spec → XML builder (CLI)
-│   │   └── compile_context.py                  # Assembles LLM prompt from inventory + SAD
+│   │   ├── sad_pipeline.py                     # Trae helper [Step1][Step3]
+│   │   ├── build_xml.py                        # JSON spec → XML (CLI) [Step3][Skill]
+│   │   └── compile_context.py                  # Build LLM prompt [Step1][Skill]
 │   ├── prompts/
-│   │   └── sad_to_leanix.md                    # LLM prompt template for JSON generation
+│   │   └── sad_to_leanix.md                    # LLM prompt template [Step1/2][Skill]
 │   └── legacy/
-│       └── generate_from_sad.py                # Legacy: direct SAD parsing → XML
+│       └── generate_from_sad.py                # Legacy SAD → XML (not in 3-step)
 ├── config/
-│   └── LeanIX_Inventory.xlsx                   # LeanIX asset inventory
-├── templates/
+│   └── LeanIX_Inventory.xlsx                   # LeanIX asset inventory [Step1][Step3][Skill]
+├── templates/                                  # XML baselines [Step1][Step3][Skill]
 │   ├── integration_bidirectional_api.xml        # Workday ↔ Vendor
 │   ├── integration_outbound_fa_sftp.xml         # Workday → FA SFTP → Vendor
 │   ├── integration_outbound_vendor_sftp.xml     # Workday → Vendor SFTP → Vendor
@@ -87,13 +88,13 @@ For Trae (or any CLI that cannot call the LLM directly), use the `sad_pipeline.p
    This writes a prompt file like:
 
    ```text
-   .tmp/SAD_INT003_Headspace_V1_0_prompt.md
+   .tmp/prompts/SAD_INT003_Headspace_V1_0_prompt.md
    ```
 
    The script also prints a single line you can copy/paste into Trae, for example:
 
    ```text
-   Process the prompt in `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/SAD_INT003_Headspace_V1_0_prompt.md`, generate the JSON spec exactly as described in the schema in that prompt, and save it to `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/SAD_INT003_Headspace_V1_0_spec.json`.
+   Process the prompt in `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/prompts/SAD_INT003_Headspace_V1_0_prompt.md`, generate the JSON spec exactly as described in the schema in that prompt, and save it to `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/specs/SAD_INT003_Headspace_V1_0_spec.json`.
    ```
 
 2. **Paste that line into Trae**
@@ -108,9 +109,23 @@ For Trae (or any CLI that cannot call the LLM directly), use the `sad_pipeline.p
      --json-spec SAD_INT003_Headspace_V1_0_spec.json
    ```
 
-   This produces a LeanIX‑importable XML file in `.tmp/`.
+   This produces a LeanIX‑importable XML file in `.tmp/xml/`.
 
 The helper:
 
 - Uses the same prompt template and inventory as `compile_context.py`.
 - Uses `diagram_generator.py` under the hood to produce LeanIX‑compatible diagrams.net XML.
+
+### Summary
+
+- Step 1 (Python): Build a prompt for the LLM that includes the SAD text extract, LeanIX inventory table, and available XML templates. Output → `.tmp/prompts/<SAD>_prompt.md`, plus a one‑line instruction telling the LLM to save JSON to `.tmp/specs/<SAD>_spec.json`.
+- Step 2 (LLM): Read that prompt and generate the JSON spec (`template_id`, process sections, IDs where possible). Output → `.tmp/specs/<SAD>_spec.json`.
+- Step 3 (Python): Read the JSON and build the diagrams.net XML. If `template_id` exists, use the file under `templates/` and substitute IDs, labels, and table content. Output → `.tmp/xml/<SPEC>.xml`.
+
+### File Dependencies (concise)
+
+- Prompt template: `elt_doc_sad_leanix/src/elt_doc_sad_leanix/prompts/sad_to_leanix.md`
+- Templates (XML baselines): `elt_doc_sad_leanix/templates/*.xml`
+- LeanIX inventory (asset IDs): `elt_doc_sad_leanix/config/LeanIX_Inventory.xlsx`
+- SAD source: your `.docx` (read via `python-docx`)
+- Python libs: `python-docx`, `openpyxl`
