@@ -14,7 +14,7 @@ claude
 Then prompt:
 
 ```
-Generate LeanIX diagram.net xml file for the workday integration from the SAD document: ~/Downloads/SAD_INT018_Barclays_Banking_v1_0.docx
+Generate LeanIX diagram.net xml file for the workday integration from the SAD document: ~/Downloads/phase0_workday_sad/SAD_INT004_AMEX_GBT_V1_0.docx
 ```
 
 Claude will automatically:

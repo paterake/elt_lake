@@ -556,54 +556,58 @@ class WorkdayIntegrationDiagramGenerator:
                 )
         else:
             # Standard single process table for other integration types
-            self.add_process_table(root, integration_spec, x=27, y=500, width=1100)
-        
+            # Left-align table at x=100 to match info boxes
+            table_y = 500
+            table_height = 240
+            self.add_process_table(root, integration_spec, x=100, y=table_y, width=1100)
+
         # Add information boxes in a 2x3 grid layout with consistent left alignment
+        # Position relative to table end with 60px gap
         # Left margin: x=100, spacing between columns: 573px (530 width + 43 gap)
-        # Row 1 (y=1320): Security, System of Record, Key Attributes
-        # Row 2 (y=1650): Notes, Environment Strategy, Critical Constraints
+        info_box_row1_y = table_y + table_height + 60  # 500 + 240 + 60 = 800
+        info_box_row2_y = info_box_row1_y + 280 + 50   # 800 + 280 + 50 = 1130
 
         # Row 1, Column 1: Security & Technical Details
         security_items = integration_spec.get('security_details') or []
         if security_items:
             self.add_info_box(root, "SECURITY & TECHNICAL DETAILS",
                              security_items,
-                             100, 1320, width=530, height=280)
+                             100, info_box_row1_y, width=530, height=280)
 
         # Row 1, Column 2: System of Record
         sor_items = integration_spec.get('system_of_record') or []
         if sor_items:
             self.add_info_box(root, "SYSTEM OF RECORD",
                              sor_items,
-                             673, 1320, width=530, height=280)
+                             673, info_box_row1_y, width=530, height=280)
 
         # Row 1, Column 3: Key Attributes
         key_items = integration_spec.get('key_attributes') or []
         if key_items:
             self.add_info_box(root, "KEY ATTRIBUTES SYNCHRONIZED",
                              key_items,
-                             1246, 1320, width=530, height=280)
+                             1246, info_box_row1_y, width=530, height=280)
 
         # Row 2, Column 1: Notes & Assumptions
         notes_items = integration_spec.get('notes') or []
         if notes_items:
             self.add_info_box(root, "NOTES & ASSUMPTIONS",
                              notes_items,
-                             100, 1650, width=530, height=280)
+                             100, info_box_row2_y, width=530, height=280)
 
         # Row 2, Column 2: Environment Strategy
         env_items = integration_spec.get('environment_notes') or []
         if env_items:
             self.add_info_box(root, "ENVIRONMENT STRATEGY",
                              env_items,
-                             673, 1650, width=530, height=280)
+                             673, info_box_row2_y, width=530, height=280)
 
         # Row 2, Column 3: Critical Constraints
         constraint_items = integration_spec.get('critical_constraints') or []
         if constraint_items:
             self.add_info_box(root, "CRITICAL CONSTRAINTS",
                              constraint_items,
-                             1246, 1650, width=530, height=280)
+                             1246, info_box_row2_y, width=530, height=280)
 
         # Convert to string
         return ET.tostring(root, encoding='unicode')
