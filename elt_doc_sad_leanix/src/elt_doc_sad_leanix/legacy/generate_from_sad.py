@@ -108,23 +108,8 @@ def parse_sad(docx_path):
     if not spec['target_system']:
         if 'Cardinus' in full_text:
             spec['target_system'] = 'Cardinus'
-
-    if not spec['target_system']:
-        stem = Path(docx_path).stem
-        parts = stem.split('_')
-        if len(parts) >= 3:
-            core = parts[2:]
-            if len(core) >= 2 and core[-2].startswith('V'):
-                core = core[:-2]
-            candidate = " ".join(core).strip()
-            if candidate:
-                spec['target_system'] = candidate
-        if not spec['target_system']:
-            spec['target_system'] = 'Target System'
-
-    if spec['integration_id'] == 'INT018':
-        spec['direction'] = 'bidirectional'
-
+    
+    # Title
     spec['title'] = f"Workday {spec['target_system']} Integration"
     
     # Direction
@@ -136,7 +121,6 @@ def parse_sad(docx_path):
     # Flow Labels (Heuristic extraction from Functionality section)
     # We'll construct generic ones based on found components
     if spec['direction'] == 'outbound':
-        target_label = spec['target_system'] or 'Target System'
         spec['flow_labels'] = [
             {
                 'text': f"Workday EIB extracts data via CR {spec['integration_id']}",
@@ -147,7 +131,7 @@ def parse_sad(docx_path):
                 'x': 450, 'y': 180, 'width': 300, 'height': 60
             },
              {
-                'text': f"{target_label} imports data",
+                'text': f"{spec['target_system']} imports data",
                 'x': 800, 'y': 180, 'width': 300, 'height': 60
             }
         ]
