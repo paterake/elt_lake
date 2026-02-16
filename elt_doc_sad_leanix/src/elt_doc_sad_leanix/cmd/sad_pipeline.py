@@ -255,14 +255,20 @@ def main():
     else:
         out_dir = project_root / ".tmp"
     out_dir.mkdir(parents=True, exist_ok=True)
+    prompts_dir = out_dir / "prompts"
+    specs_dir = out_dir / "specs"
+    xml_dir = out_dir / "xml"
+    prompts_dir.mkdir(parents=True, exist_ok=True)
+    specs_dir.mkdir(parents=True, exist_ok=True)
+    xml_dir.mkdir(parents=True, exist_ok=True)
 
     prompt_text = build_prompt(sad_path, default_prompt, default_inventory)
-    prompt_path = out_dir / f"{sad_path.stem}_prompt.md"
+    prompt_path = prompts_dir / f"{sad_path.stem}_prompt.md"
     prompt_path.write_text(prompt_text, encoding="utf-8")
 
     if not args.json_spec:
         abs_prompt = prompt_path.resolve()
-        spec_path = (out_dir / f"{sad_path.stem}_spec.json").resolve()
+        spec_path = (specs_dir / f"{sad_path.stem}_spec.json").resolve()
         print()
         print("Copy the following instruction into your LLM:")
         print("-" * 80)
@@ -275,7 +281,10 @@ def main():
 
     json_path = Path(args.json_spec)
     if not json_path.is_absolute():
-        json_path = out_dir / json_path
+        if json_path.parent == Path("."):
+            json_path = specs_dir / json_path.name
+        else:
+            json_path = out_dir / json_path
     if not json_path.exists():
         print(f"Error: JSON spec {json_path} not found")
         sys.exit(1)
@@ -340,7 +349,7 @@ def main():
         generator = WorkdayIntegrationDiagramGenerator()
         xml = generator.generate_xml(spec)
 
-    output_path = out_dir / f"{json_path.stem}.xml"
+    output_path = xml_dir / f"{json_path.stem}.xml"
     output_path.write_text(xml, encoding="utf-8")
     print(f"Generated XML at {output_path}")
 
