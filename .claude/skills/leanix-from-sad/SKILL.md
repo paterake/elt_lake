@@ -59,13 +59,17 @@ Do NOT use `cd elt_doc_sad_leanix && uv run python` — this fails when the venv
 
 ## Output Location
 
-Save the generated XML file in the **same directory as the input SAD `.docx` file**, with the same filename but a `.xml` extension.
+**IMPORTANT**: Save the generated XML file to `~/Downloads/tmp/` to avoid polluting the source directory where SAD documents are stored.
+
+The output filename should match the input SAD filename but with a `.xml` extension.
 
 For example:
-- Input: `~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.docx`
-- Output: `~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.xml`
+- Input: `~/Downloads/phase0_workday_sad/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.docx`
+- Output: `~/Downloads/tmp/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.xml`
 
-Do NOT write output files into the project directory.
+Do NOT write output files into:
+- The project directory
+- The same directory as the input SAD document
 
 **Note:** For overview/consolidation diagrams (combining multiple integration XMLs into one), use the `leanix-overview` skill instead.
 
@@ -554,7 +558,7 @@ Manual launch requirements, format compliance, key regeneration on migration, hy
      - Costings box
      - Environment Notes box
      - Critical Constraints box
-9. **Save XML file** to same directory as input SAD with `.xml` extension
+9. **Save XML file** to `~/Downloads/tmp/` with same filename as input SAD but `.xml` extension
 10. **Present to user** with import instructions and list any systems that were not found in the inventory
 
 ## Critical Success Factors

@@ -88,26 +88,35 @@ class WorkdayIntegrationDiagramGenerator:
         if use_fact_sheet is None:
             use_fact_sheet = bool(fact_sheet_id)
 
-        color = self.WORKDAY_BLUE if is_workday else self.VENDOR_ORANGE
+        # Determine color based on fact sheet type
+        if fact_sheet_type == "ITComponent":
+            color = self.INFRA_BROWN
+        elif is_workday:
+            color = self.WORKDAY_BLUE
+        else:
+            color = self.VENDOR_ORANGE
 
         if use_fact_sheet:
             # Fact sheet object wrapper (for Workday)
             if not fact_sheet_type:
                 fact_sheet_type = "Application"
 
-            box = ET.SubElement(root_elem, 'object', {
+            # Build object attributes - only add lxCustomLabel for non-Workday systems
+            obj_attrs = {
                 'type': 'factSheet',
                 'label': label,
                 'factSheetType': fact_sheet_type,
                 'factSheetId': fact_sheet_id,
-                'id': box_id,
-                'lxCustomLabel': '1'
-            })
+                'id': box_id
+            }
+            # Only non-Workday systems get lxCustomLabel (based on reference template pattern)
+            if not is_workday:
+                obj_attrs['lxCustomLabel'] = '1'
 
-            # Inner mxCell must have its own id for stable import
-            inner_id = self._next_id()
+            box = ET.SubElement(root_elem, 'object', obj_attrs)
+
+            # Inner mxCell should NOT have an id attribute - the fact sheet object has the id
             cell = ET.SubElement(box, 'mxCell', {
-                'id': inner_id,
                 'parent': '1',
                 'style': f'shape=label;perimeter=rectanglePerimeter;fontSize=11;fontFamily=72, Helvetica Neue, Helvetica, Arial, sans-serif;align=center;verticalAlign=middle;fillColor={color};strokeColor={color};fontColor=#ffffff;startSize=45;whiteSpace=wrap;rounded=1;arcSize=10;html=1',
                 'vertex': '1'
@@ -146,20 +155,24 @@ class WorkdayIntegrationDiagramGenerator:
                 'factSheetId': fact_sheet_id,
                 'id': arrow_id
             })
-            # Use a new ID for the inner mxCell
-            inner_id = self._next_id()
+            # Inner mxCell should NOT have an id attribute when wrapped in fact sheet object
+            arrow = ET.SubElement(parent, 'mxCell', {
+                'edge': '1',
+                'parent': '1',
+                'source': source_id,
+                'target': target_id,
+                'style': 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
+            })
         else:
             parent = root_elem
-            inner_id = arrow_id
-            
-        arrow = ET.SubElement(parent, 'mxCell', {
-            'id': inner_id,
-            'edge': '1',
-            'parent': '1',
-            'source': source_id,
-            'target': target_id,
-            'style': 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
-        })
+            arrow = ET.SubElement(parent, 'mxCell', {
+                'id': arrow_id,
+                'edge': '1',
+                'parent': '1',
+                'source': source_id,
+                'target': target_id,
+                'style': 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;'
+            })
         
         geo = ET.SubElement(arrow, 'mxGeometry', {'relative': '1', 'as': 'geometry'})
         
@@ -236,9 +249,9 @@ class WorkdayIntegrationDiagramGenerator:
             'height': '240', 'width': str(width), 'x': str(x), 'y': str(y), 'as': 'geometry'
         })
         
-        # Header row
+        # Header row - must be sibling of table, not child
         header_row_id = self._next_id()
-        header_row = ET.SubElement(table, 'mxCell', {
+        header_row = ET.SubElement(root_elem, 'mxCell', {
             'id': header_row_id,
             'parent': table_id,
             'style': 'shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;',
@@ -246,13 +259,14 @@ class WorkdayIntegrationDiagramGenerator:
             'vertex': '1'
         })
         ET.SubElement(header_row, 'mxGeometry', {'height': '52', 'width': str(width), 'as': 'geometry'})
-        
+
         headers = ["Extraction Method", "Security Controls", "Transmission", "Processing"]
         col_width = width // 4
-        
+
         for header in headers:
             cell_id = self._next_id()
-            cell = ET.SubElement(header_row, 'mxCell', {
+            # Column cells must be siblings of row, not children
+            cell = ET.SubElement(root_elem, 'mxCell', {
                 'id': cell_id,
                 'parent': header_row_id,
                 'style': 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=center;whiteSpace=wrap;html=1;fontStyle=1;',
@@ -261,10 +275,10 @@ class WorkdayIntegrationDiagramGenerator:
             })
             geom = ET.SubElement(cell, 'mxGeometry', {'height': '52', 'width': str(col_width), 'as': 'geometry'})
             ET.SubElement(geom, 'mxRectangle', {'height': '52', 'width': str(col_width), 'as': 'alternateBounds'})
-            
-        # Content row
+
+        # Content row - must be sibling of table, not child
         content_row_id = self._next_id()
-        content_row = ET.SubElement(table, 'mxCell', {
+        content_row = ET.SubElement(root_elem, 'mxCell', {
             'id': content_row_id,
             'parent': table_id,
             'style': 'shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;dropTarget=0;collapsible=0;recursiveResize=0;expand=0;fontStyle=0;fillColor=none;strokeColor=inherit;',
@@ -281,7 +295,8 @@ class WorkdayIntegrationDiagramGenerator:
         
         for val in values:
             cell_id = self._next_id()
-            cell = ET.SubElement(content_row, 'mxCell', {
+            # Column cells must be siblings of row, not children
+            cell = ET.SubElement(root_elem, 'mxCell', {
                 'id': cell_id,
                 'parent': content_row_id,
                 'style': 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=left;whiteSpace=wrap;html=1;verticalAlign=top;overflow=hidden;',
