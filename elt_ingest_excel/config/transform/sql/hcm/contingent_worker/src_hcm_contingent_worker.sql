@@ -65,9 +65,6 @@ SELECT
           ON w2.source_column             = 'department_1'
          AND w2.source_value              = NULLIF(TRIM(t.department_1), '')
  WHERE 
-       l.target_value                     IS NOT NULL
-   AND (
-       w1.target_value                   != 'EXCLUDE'
-    OR w2.target_value                   != 'EXCLUDE'
-       )
+       l.target_value                             IS NOT NULL
+   AND COALESCE(w1.target_value, w2.target_value) != 'EXCLUDE'
 ;

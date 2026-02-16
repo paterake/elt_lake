@@ -280,13 +280,14 @@ class WorkdayIntegrationDiagramGenerator:
         direction = integration_spec.get('direction', 'outbound')
         intermediary = integration_spec.get('intermediary')
         
-        # Add systems based on pattern
+        target_system = integration_spec.get('target_system') or 'Target System'
+        source_system = integration_spec.get('source_system') or 'Workday'
+
         if intermediary:
             # Three-box pattern
             if direction == 'outbound':
                 # Outbound: Workday -> SFTP -> Vendor (Linear: y=110)
-                # Workday (Source)
-                source_id = self.add_system_box(root, integration_spec['source_system'], 
+                source_id = self.add_system_box(root, source_system, 
                                                10, 110, is_workday=True,
                                                fact_sheet_id=integration_spec.get('source_id'),
                                                fact_sheet_type=integration_spec.get('source_type'))
@@ -296,8 +297,7 @@ class WorkdayIntegrationDiagramGenerator:
                                                520, 110, width=170, is_workday=False,
                                                fact_sheet_id=integration_spec.get('intermediary_id'),
                                                fact_sheet_type=integration_spec.get('intermediary_type'))
-                # Vendor (Target)
-                target_id = self.add_system_box(root, integration_spec['target_system'],
+                target_id = self.add_system_box(root, target_system,
                                                1036, 110, is_workday=False,
                                                fact_sheet_id=integration_spec.get('target_id'),
                                                fact_sheet_type=integration_spec.get('target_type'))
@@ -313,8 +313,7 @@ class WorkdayIntegrationDiagramGenerator:
                 # Note: 'source_system' is Workday, 'target_system' is Vendor in our spec
                 # But visually: Target(Vendor) -> Middle(SFTP) -> Source(Workday)
                 
-                # Vendor (Left) - mapped to 'target_system' in spec
-                vendor_id = self.add_system_box(root, integration_spec['target_system'],
+                vendor_id = self.add_system_box(root, target_system,
                                                240, 280, is_workday=False,
                                                fact_sheet_id=integration_spec.get('target_id'),
                                                fact_sheet_type=integration_spec.get('target_type'))
@@ -326,8 +325,7 @@ class WorkdayIntegrationDiagramGenerator:
                                                fact_sheet_id=integration_spec.get('intermediary_id'),
                                                fact_sheet_type=integration_spec.get('intermediary_type'))
                 
-                # Workday (Right) - mapped to 'source_system' in spec
-                wd_id = self.add_system_box(root, integration_spec['source_system'], 
+                wd_id = self.add_system_box(root, source_system, 
                                            880, 280, is_workday=True,
                                            fact_sheet_id=integration_spec.get('source_id'),
                                            fact_sheet_type=integration_spec.get('source_type'))
@@ -351,12 +349,12 @@ class WorkdayIntegrationDiagramGenerator:
         else:
             # Two-box pattern
 
-            source_id = self.add_system_box(root, integration_spec['source_system'],
+            source_id = self.add_system_box(root, source_system,
                                            240, 280, is_workday=True,
                                            fact_sheet_id=integration_spec.get('source_id'),
                                            fact_sheet_type=integration_spec.get('source_type'))
             target_id = self.add_system_box(root,
-                                           f"{integration_spec['target_system']}<div><b>{integration_spec['integration_id']}</b></div>",
+                                           f"{target_system}<div><b>{integration_spec['integration_id']}</b></div>",
                                            800, 280, width=170, is_workday=False,
                                            fact_sheet_id=integration_spec.get('target_id'),
                                            fact_sheet_type=integration_spec.get('target_type'))
