@@ -383,15 +383,13 @@ class WorkdayIntegrationDiagramGenerator:
             middle_id = self.add_system_box(root, gateway_label,
                                            950, 280, is_workday=False,
                                            fact_sheet_id=integration_spec.get('intermediary_id'),
-                                           fact_sheet_type=integration_spec.get('intermediary_type'),
-                                           use_fact_sheet=False)
+                                           fact_sheet_type=integration_spec.get('intermediary_type'))
 
             # Vendor Platform at x=1580, y=280
             target_id = self.add_system_box(root, target_system,
                                            1580, 280, is_workday=False,
                                            fact_sheet_id=integration_spec.get('target_id'),
-                                           fact_sheet_type=integration_spec.get('target_type'),
-                                           use_fact_sheet=False)
+                                           fact_sheet_type=integration_spec.get('target_type'))
 
             # Bidirectional arrows
             self.add_arrow(root, source_id, middle_id)

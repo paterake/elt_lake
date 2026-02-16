@@ -224,6 +224,11 @@ When building a diagram from a SAD document:
 5. **Find the Interface**: Search `type=Interface` for the integration name pattern (e.g. "WorkDay HCM - Barclaycard"). The Interface fact sheet is used on the **arrow/edge** element in the XML — wrap the edge `mxCell` in an `object` with `factSheetType="Interface"` (see Interface Edges pattern below).
 6. **Use the `id` column** as the `factSheetId` in the XML. Never generate random UUIDs for systems that exist in the inventory.
 7. **Use the `name` column** as the fact sheet label (with display formatting like adding `<div><b>INT006</b></div>`).
+8. **For multi-connector integrations**: ALL 3 boxes must be wrapped as fact sheet objects with inventory UUIDs:
+   - Workday box: Use the appropriate Workday Application UUID (HCM or FM based on integration domain)
+   - Gateway box: Use the vendor's Application UUID from inventory (search by vendor name)
+   - Platform box: Use the same vendor Application UUID (both vendor boxes typically reference the same inventory asset)
+   - The diagram generator will automatically create fact sheet objects when `source_id`, `intermediary_id`, and `target_id` are provided in the spec
 
 ### Common Assets Reference
 
@@ -391,6 +396,10 @@ Would you like me to adjust any positions, colors, or add more details?
 - Pattern: Workday ↔ Vendor SFTP Gateway ↔ Vendor Platform
 - Reference XML: `integration_multi_connector.xml`
 - Boxes: 3 (Workday=Application blue, Gateway=Application orange, Platform=Application orange)
+- **CRITICAL**: All 3 boxes MUST be wrapped as fact sheet objects with inventory UUIDs:
+  - Workday box: Use Workday FM/HCM Application UUID
+  - Gateway box: Use vendor Application UUID (e.g., Smartpay Fuse by Barclays)
+  - Platform box: Use same vendor Application UUID (both Barclays boxes share the same UUID)
 - Arrows: Bi-directional; Interface fact sheets per sub-integration where available
 - Sub-integrations: Separate process tables per connector (e.g. INT018a, INT018b, INT018c)
 - Core sections: Per-connector process tables, Security & Technical Details, System of Record, Key Attributes
