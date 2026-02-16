@@ -70,43 +70,64 @@ class WorkdayIntegrationDiagramGenerator:
             'height': '40', 'width': '800', 'x': '200', 'y': '80', 'as': 'geometry'
         })
     
-    def add_system_box(self, root: ET.Element, label: str, x: int, y: int, 
-                       width: int = 160, height: int = 160, 
-                       is_workday: bool = True, fact_sheet_id: str = None, 
-                       fact_sheet_type: str = None) -> str:
-        """Add a system box (fact sheet)"""
+    def add_system_box(self, root: ET.Element, label: str, x: int, y: int,
+                       width: int = 160, height: int = 160,
+                       is_workday: bool = True, fact_sheet_id: str = None,
+                       fact_sheet_type: str = None,
+                       use_fact_sheet: bool = None) -> str:
+        """
+        Add a system box - either as a fact sheet object (Workday) or plain mxCell (vendors).
+
+        Args:
+            use_fact_sheet: If True, wrap in fact sheet object. If None, auto-detect (True for Workday only)
+        """
         root_elem = root.find('root')
         box_id = self._next_id()
-        
+
+        # By default, only use fact sheet wrapper when a valid fact_sheet_id is provided
+        if use_fact_sheet is None:
+            use_fact_sheet = bool(fact_sheet_id)
+
         color = self.WORKDAY_BLUE if is_workday else self.VENDOR_ORANGE
-        
-        if not fact_sheet_type:
-            fact_sheet_type = "Application" if is_workday else "Provider"
-        
-        if not fact_sheet_id:
-            fact_sheet_id = str(uuid.uuid4())
-        
-        box = ET.SubElement(root_elem, 'object', {
-            'type': 'factSheet',
-            'label': label,
-            'factSheetType': fact_sheet_type,
-            'factSheetId': fact_sheet_id,
-            'id': box_id
-        })
-        
-        if not is_workday:
-            box.set('lxCustomLabel', '1')
-        
-        cell = ET.SubElement(box, 'mxCell', {
-            'parent': '1',
-            'style': f'shape=label;perimeter=rectanglePerimeter;fontSize=11;fontFamily=72, Helvetica Neue, Helvetica, Arial, sans-serif;align=center;verticalAlign=middle;fillColor={color};strokeColor={color};fontColor=#ffffff;startSize=45;whiteSpace=wrap;rounded=1;arcSize=10;html=1',
-            'vertex': '1'
-        })
+
+        if use_fact_sheet:
+            # Fact sheet object wrapper (for Workday)
+            if not fact_sheet_type:
+                fact_sheet_type = "Application"
+
+            box = ET.SubElement(root_elem, 'object', {
+                'type': 'factSheet',
+                'label': label,
+                'factSheetType': fact_sheet_type,
+                'factSheetId': fact_sheet_id,
+                'id': box_id,
+                'lxCustomLabel': '1'
+            })
+
+            # Inner mxCell must have its own id for stable import
+            inner_id = self._next_id()
+            cell = ET.SubElement(box, 'mxCell', {
+                'id': inner_id,
+                'parent': '1',
+                'style': f'shape=label;perimeter=rectanglePerimeter;fontSize=11;fontFamily=72, Helvetica Neue, Helvetica, Arial, sans-serif;align=center;verticalAlign=middle;fillColor={color};strokeColor={color};fontColor=#ffffff;startSize=45;whiteSpace=wrap;rounded=1;arcSize=10;html=1',
+                'vertex': '1'
+            })
+        else:
+            # Plain mxCell box (for vendors) - matches working reference style
+            cell = ET.SubElement(root_elem, 'mxCell', {
+                'id': box_id,
+                'parent': '1',
+                # Avoid light-dark() function for maximum LeanIX compatibility
+                'style': 'rounded=1;whiteSpace=wrap;html=1;fillColor=#497db0;fontColor=#ffffff;fontSize=14;strokeWidth=0;labelBorderColor=default;align=center;',
+                'value': label,
+                'vertex': '1'
+            })
+
         ET.SubElement(cell, 'mxGeometry', {
-            'height': str(height), 'width': str(width), 
+            'height': str(height), 'width': str(width),
             'x': str(x), 'y': str(y), 'as': 'geometry'
         })
-        
+
         return box_id
     
     def add_arrow(self, root: ET.Element, source_id: str, target_id: str, 
@@ -238,7 +259,8 @@ class WorkdayIntegrationDiagramGenerator:
                 'value': header,
                 'vertex': '1'
             })
-            ET.SubElement(cell, 'mxGeometry', {'height': '52', 'width': str(col_width), 'as': 'geometry'})
+            geom = ET.SubElement(cell, 'mxGeometry', {'height': '52', 'width': str(col_width), 'as': 'geometry'})
+            ET.SubElement(geom, 'mxRectangle', {'height': '52', 'width': str(col_width), 'as': 'alternateBounds'})
             
         # Content row
         content_row_id = self._next_id()
@@ -266,7 +288,70 @@ class WorkdayIntegrationDiagramGenerator:
                 'value': val,
                 'vertex': '1'
             })
-            ET.SubElement(cell, 'mxGeometry', {'height': '188', 'width': str(col_width), 'as': 'geometry'})
+            geom = ET.SubElement(cell, 'mxGeometry', {'height': '188', 'width': str(col_width), 'as': 'geometry'})
+            ET.SubElement(geom, 'mxRectangle', {'height': '188', 'width': str(col_width), 'as': 'alternateBounds'})
+
+    def add_standalone_table(self, root: ET.Element, title: str,
+                            col1_header: str, col2_header: str,
+                            col1_content: str, col2_content: str,
+                            x: int, y: int, col_width: int = 296):
+        """
+        Add a 2-column table using standalone cells (for multi-connector integrations).
+        This creates separate mxCell elements with parent="1" instead of nested table structure.
+        """
+        root_elem = root.find('root')
+
+        # Title cell
+        title_id = self._next_id()
+        title_cell = ET.SubElement(root_elem, 'mxCell', {
+            'id': title_id,
+            'parent': '1',
+            'style': 'text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;fontStyle=1',
+            'value': title,
+            'vertex': '1'
+        })
+        ET.SubElement(title_cell, 'mxGeometry', {
+            'height': '30',
+            'width': str(col_width * 2),
+            'x': str(x),
+            'y': str(y),
+            'as': 'geometry'
+        })
+
+        # Helper function to add table cell
+        def add_cell(value, cell_x, cell_y, height, is_header=False):
+            cell_id = self._next_id()
+            style = 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=center;whiteSpace=wrap;html=1;' if is_header else 'connectable=0;recursiveResize=0;strokeColor=inherit;fillColor=none;align=left;whiteSpace=wrap;html=1;verticalAlign=top;'
+
+            cell = ET.SubElement(root_elem, 'mxCell', {
+                'id': cell_id,
+                'parent': '1',
+                'style': style,
+                'value': value,
+                'vertex': '1'
+            })
+            geom = ET.SubElement(cell, 'mxGeometry', {
+                'height': str(height),
+                'width': str(col_width),
+                'x': str(cell_x),
+                'y': str(cell_y),
+                'as': 'geometry'
+            })
+            ET.SubElement(geom, 'mxRectangle', {
+                'height': str(height),
+                'width': str(col_width),
+                'as': 'alternateBounds'
+            })
+
+        # Add header cells
+        header_y = y + 40  # Below title
+        add_cell(col1_header, x, header_y, 52, is_header=True)
+        add_cell(col2_header, x + col_width, header_y, 52, is_header=True)
+
+        # Add content cells
+        content_y = header_y + 52
+        add_cell(col1_content, x, content_y, 228, is_header=False)
+        add_cell(col2_content, x + col_width, content_y, 228, is_header=False)
 
     def generate_xml(self, integration_spec: Dict) -> str:
         """
@@ -279,11 +364,42 @@ class WorkdayIntegrationDiagramGenerator:
         
         direction = integration_spec.get('direction', 'outbound')
         intermediary = integration_spec.get('intermediary')
-        
+        template_id = integration_spec.get('template_id')
+
         target_system = integration_spec.get('target_system') or 'Target System'
         source_system = integration_spec.get('source_system') or 'Workday'
 
-        if intermediary:
+        # Multi-connector pattern (e.g., INT018 Barclays Banking)
+        if template_id == 'multi_connector':
+            # Layout: Workday <-> Gateway <-> Vendor Platform
+            # Workday at x=400, y=280
+            source_id = self.add_system_box(root, source_system,
+                                           400, 280, is_workday=True,
+                                           fact_sheet_id=integration_spec.get('source_id'),
+                                           fact_sheet_type=integration_spec.get('source_type'))
+
+            # Gateway/Intermediary at x=950, y=280
+            gateway_label = integration_spec.get('gateway_label') or intermediary or 'Gateway'
+            middle_id = self.add_system_box(root, gateway_label,
+                                           950, 280, is_workday=False,
+                                           fact_sheet_id=integration_spec.get('intermediary_id'),
+                                           fact_sheet_type=integration_spec.get('intermediary_type'),
+                                           use_fact_sheet=False)
+
+            # Vendor Platform at x=1580, y=280
+            target_id = self.add_system_box(root, target_system,
+                                           1580, 280, is_workday=False,
+                                           fact_sheet_id=integration_spec.get('target_id'),
+                                           fact_sheet_type=integration_spec.get('target_type'),
+                                           use_fact_sheet=False)
+
+            # Bidirectional arrows
+            self.add_arrow(root, source_id, middle_id)
+            self.add_arrow(root, middle_id, source_id)
+            self.add_arrow(root, middle_id, target_id)
+            self.add_arrow(root, target_id, middle_id)
+
+        elif intermediary:
             # Three-box pattern
             if direction == 'outbound':
                 # Outbound: Workday -> SFTP -> Vendor (Linear: y=110)
@@ -383,30 +499,93 @@ class WorkdayIntegrationDiagramGenerator:
         for label in integration_spec.get('flow_labels', []):
             self.add_text_label(root, label['text'], label['x'], label['y'],
                                label.get('width', 300), label.get('height', 50))
-                               
-        # Add Process Table
-        self.add_process_table(root, integration_spec, x=27, y=500, width=1100)
+
+        # Add Process Table(s)
+        # Multi-connector integrations use 3 separate 2-column tables
+        if integration_spec.get('template_id') == 'multi_connector':
+            # Get sub-integration tables from spec
+            sub_integrations = integration_spec.get('sub_integrations', [])
+
+            if len(sub_integrations) >= 1:
+                # INT018a - Outbound at y=640, x=400
+                self.add_standalone_table(
+                    root,
+                    title=sub_integrations[0].get('title', ' INT018a OUTBOUND'),
+                    col1_header=sub_integrations[0].get('col1_header', 'Column 1'),
+                    col2_header=sub_integrations[0].get('col2_header', 'Column 2'),
+                    col1_content=sub_integrations[0].get('col1_content', ''),
+                    col2_content=sub_integrations[0].get('col2_content', ''),
+                    x=400, y=640
+                )
+
+            if len(sub_integrations) >= 2:
+                # INT018b - Inbound at y=640, x=1040
+                self.add_standalone_table(
+                    root,
+                    title=sub_integrations[1].get('title', ' INT018b INBOUND'),
+                    col1_header=sub_integrations[1].get('col1_header', 'Column 1'),
+                    col2_header=sub_integrations[1].get('col2_header', 'Column 2'),
+                    col1_content=sub_integrations[1].get('col1_content', ''),
+                    col2_content=sub_integrations[1].get('col2_content', ''),
+                    x=1040, y=640
+                )
+
+            if len(sub_integrations) >= 3:
+                # INT018c - Inbound at y=980, x=1040
+                self.add_standalone_table(
+                    root,
+                    title=sub_integrations[2].get('title', ' INT018c INBOUND'),
+                    col1_header=sub_integrations[2].get('col1_header', 'Column 1'),
+                    col2_header=sub_integrations[2].get('col2_header', 'Column 2'),
+                    col1_content=sub_integrations[2].get('col1_content', ''),
+                    col2_content=sub_integrations[2].get('col2_content', ''),
+                    x=1040, y=980
+                )
+        else:
+            # Standard single process table for other integration types
+            self.add_process_table(root, integration_spec, x=27, y=500, width=1100)
         
-        # Add security details box
-        self.add_info_box(root, "SECURITY & TECHNICAL DETAILS",
-                         integration_spec.get('security_details', []),
-                         27, 840)
+        # Add security details box (only if there are items)
+        security_items = integration_spec.get('security_details') or []
+        if security_items:
+            self.add_info_box(root, "SECURITY & TECHNICAL DETAILS",
+                             security_items,
+                             27, 840)
         
-        # Add System of Record box
-        self.add_info_box(root, "SYSTEM OF RECORD",
-                         integration_spec.get('system_of_record', []),
-                         560, 840, height=90)
+        # Add System of Record box (only if there are items)
+        sor_items = integration_spec.get('system_of_record') or []
+        if sor_items:
+            self.add_info_box(root, "SYSTEM OF RECORD",
+                             sor_items,
+                             560, 840, height=90)
         
-        # Add Key Attributes box
-        self.add_info_box(root, "KEY ATTRIBUTES SYNCHRONIZED",
-                         integration_spec.get('key_attributes', []),
-                         560, 930, height=110)
+        # Add Key Attributes box (only if there are items)
+        key_items = integration_spec.get('key_attributes') or []
+        if key_items:
+            self.add_info_box(root, "KEY ATTRIBUTES SYNCHRONIZED",
+                             key_items,
+                             560, 930, height=110)
         
-        # Add Notes box
-        if integration_spec.get('notes'):
+        # Add Notes box (only if there are notes)
+        notes_items = integration_spec.get('notes') or []
+        if notes_items:
             self.add_info_box(root, "NOTES & ASSUMPTIONS",
-                             integration_spec.get('notes', []),
+                             notes_items,
                              560, 1060, height=150)
-        
+
+        # Add Environment Notes box (for multi-connector integrations)
+        env_items = integration_spec.get('environment_notes') or []
+        if env_items:
+            self.add_info_box(root, "ENVIRONMENT STRATEGY",
+                             env_items,
+                             400, 1560, width=550, height=220)
+
+        # Add Critical Constraints box (for multi-connector integrations)
+        constraint_items = integration_spec.get('critical_constraints') or []
+        if constraint_items:
+            self.add_info_box(root, "CRITICAL CONSTRAINTS",
+                             constraint_items,
+                             400, 1810, width=560, height=240)
+
         # Convert to string
         return ET.tostring(root, encoding='unicode')

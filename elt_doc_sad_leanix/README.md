@@ -14,7 +14,7 @@ claude
 Then prompt:
 
 ```
-Generate LeanIX diagram.net xml file for the workday integration from the SAD document: ~/Downloads/SAD_INT006_Barclaycard_Visa_Credit_Card_v1_0.docx
+Generate LeanIX diagram.net xml file for the workday integration from the SAD document: ~/Downloads/SAD_INT018_Barclays_Banking_v1_0.docx
 ```
 
 Claude will automatically:
@@ -69,16 +69,48 @@ elt_doc_sad_leanix/
 └── test/
 ```
 
-## Trae LLM Pipeline
+## Trae / CLI Workflow
 
-For use with Trae (or any LLM that accepts a compiled prompt):
+For Trae (or any CLI that cannot call the LLM directly), use the `sad_pipeline.py` helper. It wraps the prompt compilation and XML build; Trae handles only the JSON step.
 
-```bash
-# 1. Compile the prompt (inventory + SAD → single markdown file)
-uv run --package elt-doc-sad-leanix python elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/compile_context.py ~/Downloads/SAD_INT006.docx
+1. **Generate the prompt from a SAD document**
 
-# 2. Feed output to LLM → get JSON spec back
+   ```bash
+   cd /Users/rpatel/Documents/__code/git/emailrak/elt_lake
 
-# 3. Convert JSON spec → XML
-uv run --package elt-doc-sad-leanix python elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/build_xml.py spec.json -o output.xml
-```
+   uv run --package elt-doc-sad-leanix python \
+     elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/sad_pipeline.py \
+     ~/Downloads/phase0_workday_sad/SAD_INT003_Headspace_V1_0.docx \
+     --output-dir .tmp
+   ```
+
+   This writes a prompt file like:
+
+   ```text
+   .tmp/SAD_INT003_Headspace_V1_0_prompt.md
+   ```
+
+   The script also prints a single line you can copy/paste into Trae, for example:
+
+   ```text
+   Process the prompt in `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/SAD_INT003_Headspace_V1_0_prompt.md`, generate the JSON spec exactly as described in the schema in that prompt, and save it to `/Users/rpatel/Documents/__code/git/emailrak/elt_lake/.tmp/SAD_INT003_Headspace_V1_0_spec.json`.
+   ```
+
+2. **Paste that line into Trae**
+
+3. **Build the diagrams.net XML from the JSON spec**
+
+   ```bash
+   uv run --package elt-doc-sad-leanix python \
+     elt_doc_sad_leanix/src/elt_doc_sad_leanix/cmd/sad_pipeline.py \
+     ~/Downloads/phase0_workday_sad/SAD_INT003_Headspace_V1_0.docx \
+     --output-dir .tmp \
+     --json-spec SAD_INT003_Headspace_V1_0_spec.json
+   ```
+
+   This produces a LeanIX‑importable XML file in `.tmp/`.
+
+The helper:
+
+- Uses the same prompt template and inventory as `compile_context.py`.
+- Uses `diagram_generator.py` under the hood to produce LeanIX‑compatible diagrams.net XML.
