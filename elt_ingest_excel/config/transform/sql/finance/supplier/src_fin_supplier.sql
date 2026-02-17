@@ -86,14 +86,7 @@ SELECT
       , r.tax_id_type                           nrm_tax_id_type
       , r.country_name                          nrm_country_name
       , t.business_unit                         primary_business_unit
-      , t.business_units                        business_units
-      , t.vendor_id
-      , t.vendor_name
-      , t.country
-      , t.country_code
-      , t.created_date
-      , t.last_purchase_date
-      , t.last_payment_date
+      , t.*
   FROM cte_supplier                             t
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
