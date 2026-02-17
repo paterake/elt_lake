@@ -60,10 +60,16 @@ SELECT s.supplier_id                                                     supplie
                ORDER BY s.email_address
        )                                                                 email_id
      , 'Yes'                                                             public_flag
-     , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
-            THEN 'Yes' ELSE 'No' END                                      primary_flag
-     , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
-            THEN 'Yes' ELSE 'No' END                                      default_po
+     , CASE
+         WHEN s.email_type = 'to' AND s.email_rank = 1
+         THEN 'Yes'
+         ELSE 'No'
+       END                                                                primary_flag
+     , CASE
+         WHEN s.email_type = 'to' AND s.email_rank = 1
+         THEN 'Yes'
+         ELSE 'No'
+       END                                                                default_po
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted

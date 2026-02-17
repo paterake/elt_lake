@@ -32,7 +32,8 @@ SELECT
      , NULL                                                               requires_prenote
      , NULL                                                               payment_type_prenote
      , CASE
-         WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE' THEN 'No'
+         WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE'
+         THEN 'No'
          ELSE 'Yes'
        END                                                                inactive
      , TRIM(s.additional_information)                                       bank_instructions

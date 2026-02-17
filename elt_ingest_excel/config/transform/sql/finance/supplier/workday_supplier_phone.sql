@@ -80,7 +80,11 @@ SELECT s.supplier_id                                                     supplie
      , NULL                                                              phone_number_extension
      , s.phone_device_type                                               phone_device_type
      , 'Yes'                                                             public_flag
-     , CASE WHEN s.phone_type = 'primary' THEN 'Yes' ELSE 'No' END       primary_flag
+     , CASE
+         WHEN s.phone_type = 'primary'
+         THEN 'Yes'
+         ELSE 'No'
+       END                                                                primary_flag
      , s.phone_type                                                      phone_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted

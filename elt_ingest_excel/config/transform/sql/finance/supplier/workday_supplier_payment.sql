@@ -8,28 +8,34 @@ SELECT
      , TRIM(s.payment_terms_id)                       payment_terms
      , CASE
          WHEN s.eft_transfer_method IS NOT NULL AND TRIM(s.eft_transfer_method) != ''
-         THEN CASE UPPER(TRIM(s.eft_transfer_method))
-                WHEN 'ACH'        THEN 'ACH'
-                WHEN 'WIRE'       THEN 'Wire'
-                WHEN 'ELECTRONIC' THEN 'ACH'
+         THEN CASE
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'ACH'
+                THEN 'ACH'
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'WIRE'
+                THEN 'Wire'
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'ELECTRONIC'
+                THEN 'ACH'
                 ELSE 'ACH'
               END
          WHEN s.checkbook_id IS NOT NULL
          THEN 'Check'
          ELSE 'Check'
-       END                                            payment_types_accepted
+       END                                              payment_types_accepted
      , CASE
          WHEN s.eft_transfer_method IS NOT NULL AND TRIM(s.eft_transfer_method) != ''
-         THEN CASE UPPER(TRIM(s.eft_transfer_method))
-                WHEN 'ACH'        THEN 'ACH'
-                WHEN 'WIRE'       THEN 'Wire'
-                WHEN 'ELECTRONIC' THEN 'ACH'
+         THEN CASE
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'ACH'
+                THEN 'ACH'
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'WIRE'
+                THEN 'Wire'
+                WHEN UPPER(TRIM(s.eft_transfer_method)) = 'ELECTRONIC'
+                THEN 'ACH'
                 ELSE 'ACH'
               END
          WHEN s.checkbook_id IS NOT NULL
          THEN 'Check'
          ELSE 'Check'
-       END                                            default_payment_type
+       END                                              default_payment_type
      , TRIM(s.shipping_method)                        shipping_terms
      , NULL                                           always_separate_payments
      , NULL                                           do_not_pay_during_bank_account_updates

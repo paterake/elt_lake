@@ -22,9 +22,10 @@ SELECT
      , NULL                                                       branch_id
      , NULL                                                       branch_name
      , CASE
-         WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE' THEN 'No'
+         WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE'
+         THEN 'No'
          ELSE 'Yes'
-       END                                                        inactive
+       END                                                         inactive
      , NULL                                                       bank_instructions
   FROM src_fin_supplier s
  WHERE s.central_bank_code IS NOT NULL
