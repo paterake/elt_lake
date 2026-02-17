@@ -332,6 +332,10 @@ class FileIngestor:
         # Run transform
         transform_results = self.transform()
 
+        # Abort on any transform failure
+        if any(not r.success for r in transform_results):
+            raise RuntimeError("Transform failed; aborting pipeline before publish")
+
         if run_to_phase == PipelinePhase.TRANSFORM:
             return load_results, transform_results, []
 

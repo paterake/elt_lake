@@ -84,7 +84,7 @@ SELECT
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_country_name_mapping                 m_name
-          ON  m_name.source_country_name        = UPPER(TRIM(t.country))
+          ON  m_name.source_country_name        = NULLIF(UPPER(TRIM(t.country)), '')
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
        ref_country_code_mapping                 m_code
@@ -92,9 +92,9 @@ SELECT
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
        ref_country                              r
-          ON  r.country_code                    = COALESCE(m_name.country_code, m_code.country_code, 'GB')
+          ON  r.country_code                    = COALESCE(NULLIF(m_name.country_code, ''), NULLIF(m_code.country_code, ''), 'GB')
        -- Supplier category normalization
        LEFT OUTER JOIN
        ref_supplier_category_mapping            scm
-          ON  scm.source_supplier_category      = UPPER(TRIM(t.vendor_class_id))
+          ON  scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
 ;

@@ -56,6 +56,10 @@ class SqlExecutor:
             for sql_file in sql_files:
                 result = self._execute_sql_file(conn, sql_file)
                 results.append(result)
+                if not result.success:
+                    if self.reporter:
+                        self.reporter.print_transform_abort_on_failure()
+                    break
 
         return results
 

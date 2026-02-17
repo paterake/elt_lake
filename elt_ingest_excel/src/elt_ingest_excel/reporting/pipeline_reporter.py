@@ -211,6 +211,10 @@ class PipelineReporter:
 
         print(f"Total: {success_count} succeeded, {fail_count} failed")
 
+    def print_transform_abort_on_failure(self) -> None:
+        """Print notice when aborting remaining SQL files after a failure."""
+        print("  Aborting remaining SQL files due to failure")
+
     def print_publish_summary(self, results: list[PublishResult]) -> None:
         """Print summary of publish results.
 
