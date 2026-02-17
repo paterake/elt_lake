@@ -122,6 +122,10 @@ The helper:
 - Step 2 (LLM): Read that prompt and generate the JSON spec (`template_id`, process sections, IDs where possible). Output → `.tmp/specs/<SAD>_spec.json`.
 - Step 3 (Python): Read the JSON and build the diagrams.net XML. If `template_id` exists, use the file under `templates/` and substitute IDs, labels, and table content. Output → `.tmp/xml/<SPEC>.xml`.
 
+You can use any model for Step 2 (Trae, Qwen, local Ollama) as long as it:
+- Can read the `.tmp/prompts/<SAD>_prompt.md` file content
+- Writes strict JSON to the path printed in the Step 1 instruction
+
 ### File Dependencies (concise)
 
 - Prompt template: `elt_doc_sad_leanix/src/elt_doc_sad_leanix/prompts/sad_to_leanix.md`
@@ -129,3 +133,16 @@ The helper:
 - LeanIX inventory (asset IDs): `elt_doc_sad_leanix/config/LeanIX_Inventory.xlsx`
 - SAD source: your `.docx` (read via `python-docx`)
 - Python libs: `python-docx`, `openpyxl`
+
+### Orchestrated Skill Option
+
+As an alternative to running the three steps manually, you can let Trae orchestrate the whole workflow via the `leanix-from-sad-orchestrated` skill in `.trae/skills/`.
+
+Example chat invocation (with Qwen or a local Ollama model active in Trae):
+
+> Using a local model only, generate the LeanIX diagrams.net XML for `~/Downloads/phase0_workday_sad/SAD_INT003_Headspace_V1_0.docx` using the orchestrated SAD workflow.
+
+The skill will:
+- Run Step 1 (Python) to build the prompt and JSON instruction
+- Call the active model to perform Step 2 and write the JSON spec
+- Run Step 3 (Python) to produce `.tmp/xml/<SPEC>.xml` for LeanIX import
