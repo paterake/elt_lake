@@ -77,6 +77,7 @@ SELECT
       , r.phone_code                            nrm_phone_code
       , r.tax_id_type                           nrm_tax_id_type
       , r.country_name                          nrm_country_name
+      , COALESCE(scm.supplier_category, 'Services')    nrm_supplier_category
       , t.business_unit                         primary_business_unit
       , t.*
   FROM cte_supplier                             t
@@ -92,4 +93,8 @@ SELECT
        LEFT OUTER JOIN
        ref_country                              r
           ON  r.country_code                    = COALESCE(m_name.country_code, m_code.country_code, 'GB')
+       -- Supplier category normalization
+       LEFT OUTER JOIN
+       ref_supplier_category_mapping            scm
+          ON  scm.source_supplier_category      = UPPER(TRIM(t.vendor_class_id))
 ;

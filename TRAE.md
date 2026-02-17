@@ -188,6 +188,19 @@ ORDER BY
   - Align SELECT aliases to a consistent column.
 - Exception: If a left-hand expression is significantly longer than the rest, do not over‑pad; keep a single space before the alias or operator instead of breaking the layout.
 
+Example (3‑space stops for FROM/JOIN alias and ON `=`):
+
+```sql
+SELECT
+       s.supplier_id                                   supplier_id
+     , s.nrm_vendor_name                               supplier_name
+  FROM src_fin_supplier                                  s
+       LEFT JOIN
+       ref_supplier_category_mapping                      m
+         ON  UPPER(TRIM(s.vendor_class_id))             = m.source_supplier_category
+;
+```
+
 ## Human‑Scan Principles
 
 - Vertical anchors: Keep SELECT/FROM/JOIN/WHERE/ORDER BY keywords in consistent columns to reduce left‑right jitter when scanning up/down.
