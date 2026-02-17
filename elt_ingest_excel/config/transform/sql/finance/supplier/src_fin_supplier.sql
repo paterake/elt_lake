@@ -5,25 +5,25 @@ CREATE TABLE src_fin_supplier
   WITH cte_supplier_src
     AS (
 -- FA business unit
-SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_created_date_fa
+SELECT 'FA'   business_unit, t.* FROM fin_supplier_creditor_created_date_fa            t
 UNION ALL
-SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_fa
+SELECT 'FA'   business_unit, t.* FROM fin_supplier_creditor_last_payment_date_fa       t
 UNION ALL
-SELECT 'FA'   AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_fa
+SELECT 'FA'   business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_fa      t
 UNION ALL
 -- NFC business unit
-SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_created_date_nfc
+SELECT 'NFC'  business_unit, t.* FROM fin_supplier_creditor_created_date_nfc           t
 UNION ALL
-SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_nfc
+SELECT 'NFC'  business_unit, t.* FROM fin_supplier_creditor_last_payment_date_nfc      t
 UNION ALL
-SELECT 'NFC'  AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_nfc
+SELECT 'NFC'  business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_nfc     t
 UNION ALL
 -- WNSL business unit
-SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_created_date_wnsl
+SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_created_date_wnsl          t
 UNION ALL
-SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_last_payment_date_wnsl
+SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_payment_date_wnsl     t
 UNION ALL
-SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_last_purchase_date_wnsl
+SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_wnsl    t
        )
      , cte_supplier_distinct
     AS (
@@ -36,22 +36,27 @@ SELECT DISTINCT
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER
-      (PARTITION BY business_unit, nrm_vendor_name
-            ORDER BY
+       (
+         PARTITION BY business_unit, nrm_vendor_name
+           ORDER BY
               CASE
-                WHEN ( last_payment_date  > TIMESTAMP '1900-01-01'
-                   OR  last_purchase_date > TIMESTAMP '1900-01-01')
-                THEN 0
-                ELSE 1
-              END ASC,                             -- prefer rows with real activity
-              created_date ASC  NULLS LAST,       -- among those, oldest created first
-              CASE                                 -- prefer most recent real payment
-                WHEN last_payment_date > TIMESTAMP '1900-01-01' THEN last_payment_date
-                ELSE NULL
-              END DESC NULLS LAST,
-              CASE                                 -- then most recent real purchase
-                WHEN last_purchase_date > TIMESTAMP '1900-01-01' THEN last_purchase_date
-                ELSE NULL
+                 WHEN (
+                       last_payment_date   > TIMESTAMP '1900-01-01'
+                    OR last_purchase_date  > TIMESTAMP '1900-01-01'
+                      )
+                 THEN 0
+                 ELSE 1
+              END ASC
+            , created_date ASC  NULLS LAST
+            , CASE
+                 WHEN last_payment_date > TIMESTAMP '1900-01-01'
+                 THEN last_payment_date
+                 ELSE NULL
+              END DESC NULLS LAST
+            , CASE
+                 WHEN last_purchase_date > TIMESTAMP '1900-01-01'
+                 THEN last_purchase_date
+                 ELSE NULL
               END DESC NULLS LAST
        )                                        data_rnk
   FROM cte_supplier_distinct                    t
@@ -69,7 +74,7 @@ SELECT t.*
       (PARTITION BY nrm_vendor_name
             ORDER BY created_date DESC NULLS LAST
        ) primary_rnk
-  FROM cte_supplier_per_bu                         t
+  FROM cte_supplier_per_bu                      t
        )
      , cte_supplier_business_units
     AS (
@@ -83,10 +88,10 @@ SELECT nrm_vendor_name
 SELECT t.*
      , bu.business_units
      , ROW_NUMBER() OVER (ORDER BY t.nrm_vendor_name)  rnk
-  FROM cte_supplier_primary                      t
+  FROM cte_supplier_primary                     t
        INNER JOIN
-       cte_supplier_business_units               bu
-         ON bu.nrm_vendor_name                  = t.nrm_vendor_name
+       cte_supplier_business_units              bu
+         ON  bu.nrm_vendor_name                 = t.nrm_vendor_name
  WHERE t.primary_rnk = 1
        )
 SELECT
@@ -111,5 +116,5 @@ SELECT
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
        ref_country                              r
-          ON r.country_code                     = COALESCE(m_name.country_code, m_code.country_code, 'GB')
+          ON  r.country_code                    = COALESCE(m_name.country_code, m_code.country_code, 'GB')
 ;
