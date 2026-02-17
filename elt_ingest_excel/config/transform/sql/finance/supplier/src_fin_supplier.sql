@@ -29,19 +29,32 @@ SELECT 'WNSL' AS business_unit, *   FROM fin_supplier_creditor_last_purchase_dat
     AS (
 SELECT DISTINCT
        *
-  FROM cte_supplier_src
+      , TRIM(t.vendor_name)                     nrm_vendor_name
+  FROM cte_supplier_src                         t
        )
      , cte_supplier_rnk
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER
-       (PARTITION BY business_unit, vendor_id
+      (PARTITION BY business_unit, nrm_vendor_name
             ORDER BY
-              last_payment_date  DESC NULLS LAST
-            , last_purchase_date DESC NULLS LAST
-            , created_date       DESC NULLS LAST
-       ) data_rnk
-  FROM cte_supplier_distinct                     t
+              CASE
+                WHEN ( last_payment_date  > TIMESTAMP '1900-01-01'
+                   OR  last_purchase_date > TIMESTAMP '1900-01-01')
+                THEN 0
+                ELSE 1
+              END ASC,                             -- prefer rows with real activity
+              created_date ASC  NULLS LAST,       -- among those, oldest created first
+              CASE                                 -- prefer most recent real payment
+                WHEN last_payment_date > TIMESTAMP '1900-01-01' THEN last_payment_date
+                ELSE NULL
+              END DESC NULLS LAST,
+              CASE                                 -- then most recent real purchase
+                WHEN last_purchase_date > TIMESTAMP '1900-01-01' THEN last_purchase_date
+                ELSE NULL
+              END DESC NULLS LAST
+       )                                        data_rnk
+  FROM cte_supplier_distinct                    t
        )
      , cte_supplier_per_bu
     AS (
@@ -53,32 +66,31 @@ SELECT *
     AS (
 SELECT t.*
      , ROW_NUMBER() OVER
-       (PARTITION BY vendor_id
+      (PARTITION BY nrm_vendor_name
             ORDER BY created_date DESC NULLS LAST
        ) primary_rnk
   FROM cte_supplier_per_bu                         t
        )
      , cte_supplier_business_units
     AS (
-SELECT vendor_id
+SELECT nrm_vendor_name
      , ARRAY_AGG(DISTINCT business_unit ORDER BY business_unit)  business_units
   FROM cte_supplier_per_bu
- GROUP BY vendor_id
+ GROUP BY nrm_vendor_name
        )
      , cte_supplier
     AS (
 SELECT t.*
      , bu.business_units
-     , ROW_NUMBER() OVER (ORDER BY t.vendor_id)  rnk
+     , ROW_NUMBER() OVER (ORDER BY t.nrm_vendor_name)  rnk
   FROM cte_supplier_primary                      t
        INNER JOIN
        cte_supplier_business_units               bu
-          ON bu.vendor_id                        = t.vendor_id
+         ON bu.nrm_vendor_name                  = t.nrm_vendor_name
  WHERE t.primary_rnk = 1
        )
 SELECT
         'S-' || LPAD(rnk::VARCHAR, 6, '0')      supplier_id
-      , TRIM(t.vendor_name)                     nrm_vendor_name
       , r.country_code                          nrm_country_code
       , r.language_code                         nrm_language_code
       , r.currency_code                         nrm_currency_code
