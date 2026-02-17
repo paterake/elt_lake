@@ -5,13 +5,13 @@ CREATE TABLE workday_supplier_name
 SELECT
        s.supplier_id                                  supplier_id
      , s.nrm_vendor_name                              supplier_name
-     , TRIM(s.vendor_id)                              reference_id
+     , s.nrm_vendor_id                                 reference_id
      , UPPER(TRIM(s.vendor_class_id))                 supplier_category
      , s.business_unit                                business_entity_name
      , NULL                                           do_not_reimburse_contingent_worker_expense_reports
      , NULL                                           worktag_only
      , 'Microsoft Dynamics GP'                        integration_system
-     , TRIM(s.vendor_id)                              external_entity_id
+     , s.nrm_vendor_id                                 external_entity_id
      , 'Legacy Migration'                             supplier_source
      , 'Migration'                                    supplier_change_source
      , CASE
