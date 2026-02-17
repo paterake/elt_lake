@@ -2,32 +2,10 @@ DROP TABLE IF EXISTS src_fin_supplier
 ;
 CREATE TABLE src_fin_supplier
     AS
-  WITH cte_supplier_src
+  WITH cte_supplier_distinct
     AS (
-SELECT * 
-  FROM src_fin_supplier_raw      
-       )
-     , cte_supplier_distinct
-    AS (
-SELECT DISTINCT
-       *
-     , TRIM(t.vendor_name)                     nrm_vendor_name
-     , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%d-%m-%Y')
-       )                                       created_ts
-     , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%d-%m-%Y')
-       )                                       last_payment_ts
-     , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%d-%m-%Y')
-       )                                       last_purchase_ts
-  FROM cte_supplier_src                         t
+SELECT *
+  FROM src_fin_supplier_raw                     t
        )
      , cte_supplier_rnk
     AS (
