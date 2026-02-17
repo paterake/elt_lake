@@ -7,10 +7,24 @@ Individual instance runners should import and call run_pipeline() with their
 specific configuration values.
 """
 
+import argparse
 from pathlib import Path
 from typing import Optional
 
 from elt_ingest_excel import FileIngestor, SaveMode, PipelinePhase
+
+
+def create_parser(description: str) -> argparse.ArgumentParser:
+    """Create an argument parser with common pipeline options."""
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument(
+        "--run-to-phase",
+        type=str,
+        default="PUBLISH",
+        choices=["INGEST", "TRANSFORM", "PUBLISH"],
+        help="Pipeline phase to run up to (default: PUBLISH)",
+    )
+    return parser
 
 
 def run_pipeline(
