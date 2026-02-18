@@ -43,10 +43,7 @@ SELECT DISTINCT
   FROM cte_supplier_email e
        -- Normalise space-delimited multi-emails to semicolons before splitting,
        -- then split on semicolons
-     , UNNEST(STRING_SPLIT(
-         REGEXP_REPLACE(e.email_raw, '\s+(?=[A-Za-z0-9._%+\-]+@)', ';'),
-         ';'
-       )) u(email)
+     , UNNEST(STRING_SPLIT(REGEXP_REPLACE(e.email_raw, '\s+', ';'),';')) u(email)
        )
      , cte_email_rnk
     AS (
