@@ -35,5 +35,5 @@ SELECT
   FROM src_fin_supplier                                  s
        LEFT OUTER JOIN
        ref_source_supplier_payment_terms                 m
-         ON  UPPER(TRIM(s.payment_terms_id))             = m.source_payment_terms
+         ON  m.source_payment_terms                      = UPPER(TRIM(s.payment_terms_id))
 ;

@@ -3,7 +3,7 @@
     "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/Supplier and Customer Master Record workbooks & Instructions Guide",
     "srcWorkbookFileName": "FIN Supplier Workbook (Blank).xlsm",
     "tgtWorkbookPathName": "/Users/rpatel/Documents",
-    "tgtWorkbookFileName": "workday_fin_creditor_supplier_v2",
+    "tgtWorkbookFileName": "workday_fin_creditor_supplier_v3",
     "sheets": [
       {
         "srcTableName": "workday_supplier_name",
