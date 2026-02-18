@@ -54,11 +54,11 @@ SELECT
     AS (
 SELECT DISTINCT 
        t.*
-     , mbu.target_business_unit
+     , mbu.source_value                      target_business_unit
   FROM cte_supplier_nrm                      t
        INNER JOIN
        ref_source_business_unit_mapping      mbu
-          ON mbu.source_business_unit        = t.business_unit
+          ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        )
      , cte_supplier_business_unit
     AS (
