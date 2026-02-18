@@ -93,7 +93,12 @@ SELECT s.customer_id                                                       custo
          THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
          ELSE s.phone_number_raw
        END                                                                 phone_number
-     , NULL                                                                formatted_phone_number
+
+     , CASE
+         WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
+         THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
+         ELSE s.phone_number_raw
+       END                                                                 formatted_phone_number
      , NULL                                                                phone_number_extension
      , s.phone_device_type                                                 phone_device_type
      , 'Yes'                                                               is_public
