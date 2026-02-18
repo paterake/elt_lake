@@ -83,7 +83,7 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                delete_flag
      , NULL                                                                do_not_replace_all
      , NULL                                                                additional_comments
-     , TRIM(LOWER(s.email_address))                                        email
+     , NULL                                                                email
   FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'

@@ -7,25 +7,21 @@ SELECT
      , s.nrm_vendor_name                               supplier_name
      , s.nrm_vendor_id                                 reference_id
      , s.nrm_supplier_category                         supplier_category
-     , s.business_unit                                 business_entity_name
+     , NULL                                            business_entity_name
      , NULL                                            do_not_reimburse_contingent_worker_expense_reports
      , NULL                                            worktag_only
      , NULL                                            integration_system
-     , s.nrm_vendor_id                                 external_entity_id
+     , NULL                                            external_entity_id
      , NULL                                            supplier_source
      , NULL                                            supplier_change_source
-     , CASE
-         WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE'
-         THEN 'Yes'
-         ELSE 'No'
-       END                                             submit
+     , NULL                                            submit
      , NULL                                            spend_category_or_hierarchy_plus
      , NULL                                            supplier_security_segment
      , NULL                                            create_supplier_from_customer
      , NULL                                            create_supplier_from_financial_institution
      , NULL                                            create_supplier_from_tax_authority
      , NULL                                            create_supplier_from_investor
-     , NULLIF(TRIM(s.customer_vendor_id), '')          customer_account_number
+     , NULL                                            customer_account_number
      , NULL                                            certificate_of_insurance_date
      , NULL                                            duns_number
      , NULL                                            unique_entity_identifier

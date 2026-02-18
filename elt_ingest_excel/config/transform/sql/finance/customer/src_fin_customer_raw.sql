@@ -86,7 +86,7 @@ SELECT
          WHEN t.customer_id_count > 1 
          THEN t.customer_number || '_' || t.customer_id_rnk::VARCHAR
          ELSE t.customer_number
-       END                                                           nrm_customer_id
+       END                                                           nrm_customer_number
      , t.*
   FROM cte_customer                    t
 ;

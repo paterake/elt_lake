@@ -49,15 +49,8 @@ SELECT
          ELSE 'No'
        END                                                              transaction_tax_id
      , s.nrm_country_name                                               tax_status_country
-     , CASE
-         WHEN COALESCE(
-                NULLIF(TRIM(s.tax_id_number), ''),
-                NULLIF(TRIM(s.tax_registration_number), '')
-              ) IS NOT NULL
-         THEN 'Registered'
-         ELSE 'Not_Registered'
-       END                                                              tax_status
-     , NULL                                                             transaction_tax_status
+     , NULL                                                             tax_status
+     , s.tax_schedule_id                                                transaction_tax_status
      , NULL                                                             withholding_tax_status
      , CASE
          WHEN s.nrm_country_code = 'US'
@@ -65,22 +58,12 @@ SELECT
          THEN '1099 MISC'
          ELSE NULL
        END                                                              tax_authority_form_type
-     , CASE
-         WHEN s.nrm_country_code = 'US'
-              AND s.tax_id_number IS NOT NULL
-         THEN 'Yes'
-         ELSE 'No'
-       END                                                              irs_1099_supplier
+     , NULL                                                             irs_1099_supplier
      , NULL                                                             tax_document_date
      , NULL                                                             default_tax_code
      , NULL                                                             default_withholding_tax_code
-     , 'No'                                                             fatca
-     , CASE
-         WHEN s.nrm_country_code = 'GB'
-              AND NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
-         THEN NULLIF(TRIM(s.tax_registration_number), '')
-         ELSE NULL
-       END                                                              business_entity_tax_id
+     , NULL                                                             fatca
+     , NULL                                                             business_entity_tax_id
   FROM src_fin_supplier                s
        LEFT OUTER JOIN
        ref_country_tax_id_type_mapping dm
