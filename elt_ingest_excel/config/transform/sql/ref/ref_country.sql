@@ -15,13 +15,13 @@ SELECT * FROM (VALUES
     ('BR', 'PT', 'BRL', '+55',  'Other', 'Brazil'),
     ('CA', 'EN', 'CAD', '+1',   'Other', 'Canada'),
     ('CH', 'DE', 'CHF', '+41',  'Other', 'Switzerland'),
-    ('CI', 'FR', 'XOF', '+225', 'Other', 'Ivory Coast'),
+    ('CI', 'FR', 'XOF', '+225', 'Other', 'Côte d''Ivoire'),
     ('CL', 'ES', 'CLP', '+56',  'Other', 'Chile'),
     ('CM', 'FR', 'XAF', '+237', 'Other', 'Cameroon'),
     ('CN', 'ZH', 'CNY', '+86',  'Other', 'China'),
     ('CR', 'ES', 'CRC', '+506', 'Other', 'Costa Rica'),
     ('CY', 'EL', 'EUR', '+357', 'Other', 'Cyprus'),
-    ('CZ', 'CS', 'CZK', '+420', 'Other', 'Czech Republic'),
+    ('CZ', 'CS', 'CZK', '+420', 'Other', 'Czechia'),
     ('DE', 'DE', 'EUR', '+49',  'VAT',   'Germany'),
     ('DK', 'DA', 'DKK', '+45',  'VAT',   'Denmark'),
     ('DO', 'ES', 'DOP', '+1',   'Other', 'Dominican Republic'),
@@ -49,7 +49,7 @@ SELECT * FROM (VALUES
     ('JE', 'EN', 'GBP', '+44',  'Other', 'Jersey'),
     ('JM', 'EN', 'JMD', '+1',   'Other', 'Jamaica'),
     ('JP', 'JA', 'JPY', '+81',  'Other', 'Japan'),
-    ('KR', 'KO', 'KRW', '+82',  'Other', 'South Korea'),
+    ('KR', 'KO', 'KRW', '+82',  'Other', 'Korea, Republic of'),
     ('KY', 'EN', 'KYD', '+1',   'Other', 'Cayman Islands'),
     ('KZ', 'KK', 'KZT', '+7',   'Other', 'Kazakhstan'),
     ('LS', 'EN', 'LSL', '+266', 'Other', 'Lesotho'),
@@ -84,8 +84,31 @@ SELECT * FROM (VALUES
     ('TR', 'TR', 'TRY', '+90',  'Other', 'Turkey'),
     ('TT', 'EN', 'TTD', '+1',   'Other', 'Trinidad and Tobago'),
     ('UA', 'UK', 'UAH', '+380', 'Other', 'Ukraine'),
-    ('US', 'EN', 'USD', '+1',   'EIN',   'United States'),
+    ('US', 'EN', 'USD', '+1',   'EIN',   'United States of America'),
     ('UY', 'ES', 'UYU', '+598', 'Other', 'Uruguay'),
     ('ZA', 'EN', 'ZAR', '+27',  'Other', 'South Africa')
+    -- Additional countries from Excel list with placeholder metadata (to be enriched)
+  , ('RU', NULL, NULL, NULL, 'Other', 'Russian Federation')
+  , ('TW', NULL, NULL, NULL, 'Other', 'Taiwan')
+  , ('VA', NULL, NULL, NULL, 'Other', 'Holy See (Vatican City State)')
+  , ('PS', NULL, NULL, NULL, 'Other', 'Palestine')
+  , ('MO', NULL, NULL, NULL, 'Other', 'Macao')
+  , ('FM', NULL, NULL, NULL, 'Other', 'Micronesia, Federated States of')
+  , ('CD', NULL, NULL, NULL, 'Other', 'Congo, Democratic Republic of the')
+  , ('CG', NULL, NULL, NULL, 'Other', 'Congo')
+  , ('CV', NULL, NULL, NULL, 'Other', 'Cabo Verde')
+  , ('LA', NULL, NULL, NULL, 'Other', 'Laos')
+  , ('TL', NULL, NULL, NULL, 'Other', 'Timor-Leste')
+  , ('AX', NULL, NULL, NULL, 'Other', 'Åland Islands')
+  , ('CW', NULL, NULL, NULL, 'Other', 'Curaçao')
+  , ('RE', NULL, NULL, NULL, 'Other', 'Reunion')
+  , ('BL', NULL, NULL, NULL, 'Other', 'Saint Barthelemy')
+  , ('MF', NULL, NULL, NULL, 'Other', 'Saint Martin')
+  , ('PM', NULL, NULL, NULL, 'Other', 'Saint Pierre and Miquelon')
+  , ('ST', NULL, NULL, NULL, 'Other', 'Sao Tome and Principe')
+  , ('SX', NULL, NULL, NULL, 'Other', 'Sint Maarten')
+  , ('VI', NULL, NULL, NULL, 'Other', 'U. S. Virgin Islands')
+  , ('UM', NULL, NULL, NULL, 'Other', 'United States Minor Outlying Islands')
+  , ('XK', NULL, NULL, NULL, 'Other', 'Kosovo')
 ) AS t(country_code, language_code, currency_code, phone_code, tax_id_type, country_name)
 ;

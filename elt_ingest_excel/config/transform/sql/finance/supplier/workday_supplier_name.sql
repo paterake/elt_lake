@@ -10,10 +10,10 @@ SELECT
      , s.business_unit                                 business_entity_name
      , NULL                                            do_not_reimburse_contingent_worker_expense_reports
      , NULL                                            worktag_only
-     , 'Microsoft Dynamics GP'                         integration_system
+     , NULL                                            integration_system
      , s.nrm_vendor_id                                 external_entity_id
-     , 'Legacy Migration'                              supplier_source
-     , 'Migration'                                     supplier_change_source
+     , NULL                                            supplier_source
+     , NULL                                            supplier_change_source
      , CASE
          WHEN UPPER(TRIM(s.vendor_status)) = 'ACTIVE'
          THEN 'Yes'

@@ -7,10 +7,10 @@ ELT module for ingesting Excel workbooks into DuckDB with transformation and pub
 ### Quick Run
 
 ```bash
-cd elt_ingest_excel
+cd elt_ingest_excel 
 uv sync --reinstall
 uv sync
-uv run --active python examples/fin_supplier_creditor.py --run-to-phase TRANSFORM
+uv run --active python examples/fin_supplier_creditor.py --run-to-phase PUBLISH
 uv run python examples/fin_customer_debtor.py
 uv run python examples/hcm_contingent_worker.py
 ```
