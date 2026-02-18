@@ -149,7 +149,7 @@ SELECT 'data_quality', 'missing_required_customer_name', COUNT(*)
 INSERT INTO validation_customer_result
 SELECT 'data_quality', 'missing_required_currencies', COUNT(*)
   FROM workday_customer_currencies
- WHERE customer_id IS NULL OR accepted_currencies IS NULL
+ WHERE customer_id IS NULL OR accepted_currencies_plus IS NULL
 ;
 INSERT INTO validation_customer_result
 SELECT 'data_quality', 'invalid_email_addresses', COUNT(*)

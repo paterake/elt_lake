@@ -12,11 +12,11 @@ SELECT c.customer_id                         customer_id
      , 'primary'                             phone_type
      , '_PH1'                                suffix
      , CASE
-         WHEN REGEXP_REPLACE(s.phone_1, '[^0-9]', '') LIKE '07%'
+         WHEN REGEXP_REPLACE(c.phone_1, '[^0-9]', '') LIKE '07%'
          THEN 'Mobile'
          ELSE 'Landline'
        END                                   phone_device_type
-  FROM src_fin_customer c
+  FROM src_fin_customer                      c
  WHERE NULLIF(UPPER(TRIM(c.phone_1)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id
@@ -28,11 +28,11 @@ SELECT c.customer_id                         customer_id
      , 'secondary'                           phone_type
      , '_PH2'                                suffix
      , CASE
-         WHEN REGEXP_REPLACE(s.phone_2, '[^0-9]', '') LIKE '07%'
+         WHEN REGEXP_REPLACE(c.phone_2, '[^0-9]', '') LIKE '07%'
          THEN 'Mobile'
          ELSE 'Landline'
        END                                   phone_device_type
-  FROM src_fin_customer c
+  FROM src_fin_customer                      c
  WHERE NULLIF(UPPER(TRIM(c.phone_2)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id
@@ -44,11 +44,11 @@ SELECT c.customer_id                         customer_id
      , 'tertiary'                            phone_type
      , '_PH3'                                suffix
      , CASE
-         WHEN REGEXP_REPLACE(s.phone_3, '[^0-9]', '') LIKE '07%'
+         WHEN REGEXP_REPLACE(c.phone_3, '[^0-9]', '') LIKE '07%'
          THEN 'Mobile'
          ELSE 'Landline'
        END                                   phone_device_type
-  FROM src_fin_customer c
+  FROM src_fin_customer                      c
  WHERE NULLIF(UPPER(TRIM(c.phone_3)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id

@@ -26,8 +26,8 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl
     AS (
 SELECT 
        TRIM(t.customer_number)                                                                        nrm_customer_number
-     , COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), NULLIF(TRIM(c.customer_number), ''))        nrm_customer_name
-     , UPPER(COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), NULLIF(TRIM(c.customer_number), ''))) key_customer_name
+     , COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))        nrm_customer_name
+     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))) key_customer_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d')
