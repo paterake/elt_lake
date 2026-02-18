@@ -39,6 +39,7 @@ SELECT
        LEFT OUTER JOIN
        ref_country                              r
           ON  r.country_code                    = COALESCE(NULLIF(m_name.country_code, ''), NULLIF(m_code.country_code, ''), 'GB')
+       -- County mappings.   
        LEFT OUTER JOIN
        ref_country_county_state_mapping         m_county
           ON  m_county.country_code             = r.country_code
