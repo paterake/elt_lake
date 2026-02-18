@@ -30,5 +30,5 @@ SELECT
      , NULL                                                          edit_portal_taxes
      , NULL                                                          change_order_issue_option
   FROM src_fin_supplier s
- WHERE FALSE
+ WHERE 1 = 2
 ;
