@@ -63,8 +63,10 @@ SELECT DISTINCT
      , cte_supplier_business_unit
     AS (
 SELECT t.key_vendor_name
-     , ARRAY_AGG(DISTINCT t.business_unit        ORDER BY t.business_unit       ) array_business_unit
-     , ARRAY_AGG(DISTINCT t.target_business_unit ORDER BY t.target_business_unit) array_target_business_unit
+     , ARRAY_AGG (DISTINCT t.business_unit              ORDER BY t.business_unit       ) array_business_unit
+     , ARRAY_AGG (DISTINCT t.target_business_unit       ORDER BY t.target_business_unit) array_target_business_unit
+     , STRING_AGG(DISTINCT t.business_unit        , '|' ORDER BY t.business_unit       ) pipe_business_unit
+     , STRING_AGG(DISTINCT t.target_business_unit , '|' ORDER BY t.target_business_unit) pipe_target_business_unit
   FROM cte_supplier_distinct           t
  GROUP BY 
        t.key_vendor_name
@@ -94,6 +96,8 @@ SELECT
      , COUNT() OVER(PARTITION BY t.key_vendor_name)                        key_count
      , t.* 
      , bu.array_business_unit
+     , bu.pipe_business_unit
+     , bu.pipe_target_business_unit
   FROM cte_supplier_distinct      t
        INNER JOIN
        cte_supplier_business_unit bu

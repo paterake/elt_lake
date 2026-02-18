@@ -24,7 +24,8 @@ SELECT
       , r.country_name                                   nrm_country_name
       , m_county.county_state_name                       nrm_county
       , COALESCE(scm.supplier_category, 'Services')      nrm_supplier_category
-      , rbcs.
+      , NULLIF(TRIM(t.eft_bank_code), '')                nrm_bank_sort_code
+      , rbsc.bank_name_primary                           nrm_bank_name
       , t.*
   FROM cte_supplier_rnk                         t
        -- First try: match on country name (higher population)
@@ -50,6 +51,6 @@ SELECT
           ON scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
        -- Sort Code normalisation
        LEFT OUTER JOIN
-       ref_bank_sort_code_mapping               rbsc
-          ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(eft_bank_code), ''), 1, 2)
+       ref_bank_sort_code_prefix_mapping        rbsc
+          ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
 ;
