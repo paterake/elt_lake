@@ -34,3 +34,8 @@ SELECT *
   FROM cte_supplier_alternate_name
  WHERE 1 = 2
 ;
+
+
+
+Vendor Name                            Vendor Short Name   Vendor Check Name
+CHARNOCK RIDGEWAY WOMEN AND GIRLS FC  CHARNOCK RIDGEW   CHARNOCK RIDGEWAY WOMEN AND GIRLS FC  
