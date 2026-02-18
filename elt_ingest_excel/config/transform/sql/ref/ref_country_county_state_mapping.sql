@@ -2,14 +2,11 @@ DROP TABLE IF EXISTS ref_country_county_state_mapping
 ;
 CREATE TABLE ref_country_county_state_mapping
     AS
-SELECT
-       *
+SELECT *
   FROM (VALUES
-
         -- =====================================================================
         -- United Kingdom (GB) - ONS 2021 Boundaries
         -- =====================================================================
-
         -- ---------------------------------------------------------------------
         -- England: Non-Metropolitan Counties (current)
         -- ---------------------------------------------------------------------
@@ -38,7 +35,6 @@ SELECT
         , ('GB', 'Warwickshire',                         'current')
         , ('GB', 'West Sussex',                          'current')
         , ('GB', 'Worcestershire',                       'current')
-
         -- ---------------------------------------------------------------------
         -- England: Metropolitan Counties (current - retained for statistics)
         -- ---------------------------------------------------------------------
@@ -48,7 +44,6 @@ SELECT
         , ('GB', 'Tyne and Wear',                        'current')
         , ('GB', 'West Midlands',                        'current')
         , ('GB', 'West Yorkshire',                       'current')
-
         -- ---------------------------------------------------------------------
         -- England: Unitary Authorities (outside London, current)
         -- ---------------------------------------------------------------------
@@ -110,7 +105,6 @@ SELECT
         , ('GB', 'Windsor and Maidenhead',               'current')
         , ('GB', 'Wokingham',                            'current')
         , ('GB', 'York',                                 'current')
-
         -- ---------------------------------------------------------------------
         -- England: London Boroughs (32) + City of London (current)
         -- ---------------------------------------------------------------------
@@ -147,7 +141,6 @@ SELECT
         , ('GB', 'Waltham Forest',                       'current')
         , ('GB', 'Wandsworth',                           'current')
         , ('GB', 'Westminster',                          'current')
-
         -- ---------------------------------------------------------------------
         -- Wales: 22 Principal Areas (current)
         -- ---------------------------------------------------------------------
@@ -173,7 +166,6 @@ SELECT
         , ('GB', 'Torfaen',                              'current')
         , ('GB', 'Vale of Glamorgan',                    'current')
         , ('GB', 'Wrexham',                              'current')
-
         -- ---------------------------------------------------------------------
         -- Scotland: 32 Council Areas (current)
         -- ---------------------------------------------------------------------
@@ -209,7 +201,6 @@ SELECT
         , ('GB', 'Stirling',                             'current')
         , ('GB', 'West Dunbartonshire',                  'current')
         , ('GB', 'West Lothian',                         'current')
-
         -- ---------------------------------------------------------------------
         -- Northern Ireland: 11 Local Government Districts (current, ONS 2021)
         -- ---------------------------------------------------------------------
@@ -224,12 +215,10 @@ SELECT
         , ('GB', 'Mid and East Antrim',                  'current')
         , ('GB', 'Mid Ulster',                           'current')
         , ('GB', 'Newry, Mourne and Down',               'current')
-
         -- =====================================================================
         -- United Kingdom (GB) - Historic / Abolished Counties
         -- Useful for matching against legacy records
         -- =====================================================================
-
         -- ---------------------------------------------------------------------
         -- England: Abolished / reorganised counties (historic)
         -- ---------------------------------------------------------------------
@@ -241,13 +230,11 @@ SELECT
         , ('GB', 'Greater London',                       'historic')   -- → 32 boroughs + City of London; still used colloquially
         , ('GB', 'Herefordshire',                        'historic')   -- short-form alias for County of Herefordshire
         , ('GB', 'Northamptonshire',                     'historic')   -- → North + West Northamptonshire (2021)
-
         -- ---------------------------------------------------------------------
         -- England: Other common aliases / short forms (alias)
         -- ---------------------------------------------------------------------
         , ('GB', 'Bristol',                              'alias')      -- common short form of City of Bristol
         , ('GB', 'Hull',                                 'alias')      -- common short form of City of Kingston upon Hull
-
         -- ---------------------------------------------------------------------
         -- Wales: Pre-1974 historic counties (historic)
         -- ---------------------------------------------------------------------
@@ -259,7 +246,6 @@ SELECT
         , ('GB', 'Merionethshire',                       'historic')   -- → Gwynedd
         , ('GB', 'Montgomeryshire',                      'historic')   -- → Powys
         , ('GB', 'Radnorshire',                          'historic')   -- → Powys
-
         -- ---------------------------------------------------------------------
         -- Northern Ireland: 6 Traditional Counties (historic)
         -- ---------------------------------------------------------------------
@@ -271,7 +257,6 @@ SELECT
         , ('GB', 'Derry',                                'alias')      -- common alternative to Londonderry
         , ('GB', 'Derry and Londonderry',                'alias')      -- combined alias used in some legacy systems
         , ('GB', 'Tyrone',                               'historic')
-
         -- =====================================================================
         -- United States (US): 50 States + District of Columbia (current)
         -- =====================================================================
@@ -326,8 +311,5 @@ SELECT
         , ('US', 'West Virginia',                        'current')
         , ('US', 'Wisconsin',                            'current')
         , ('US', 'Wyoming',                              'current')
-
 ) AS t(country_code, county_state_name, name_type)
 ;
-
-get uk city to county mappings
