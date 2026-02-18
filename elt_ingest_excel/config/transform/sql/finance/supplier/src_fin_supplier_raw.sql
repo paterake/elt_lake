@@ -44,5 +44,24 @@ SELECT DISTINCT
         , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%d-%m-%Y')
        )                                        last_purchase_ts
      , t.* 
+     , ROW_NUMBER() OVER
+       (
+         PARTITION BY business_unit, nrm_vendor_name
+           ORDER BY
+              CASE
+                 WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
+                  AND NULLIF(UPPER(TRIM(t.bank_name)), '') <> 'BANK NAME'
+                 THEN 0
+                 ELSE 1
+              END
+            , CASE
+                 WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
+                 THEN 0
+                 ELSE 1
+              END ASC
+            , created_ts DESC  NULLS LAST
+              END DESC NULLS LAST
+       )                                        data_rnk
+
   FROM cte_supplier_src t
 ;
