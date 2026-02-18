@@ -3,11 +3,18 @@ name: "sql-format-3space"
 description: "Formats SQL per TRAE.md rules (3‑space tabs, leading commas, alias/JOIN/ON alignment, CASE layout). Invoke when asked to format SQL to house style."
 ---
 
-# SQL Formatter (TRAE.md Rules)
+# SQL Formatter (TRAE.md Rules - Canonicalized)
 
-What this skill does
+Canonical source of truth
 
-- Applies the full Trae SQL formatting rules defined in TRAE.md.
+- All SQL formatting rules are defined once in the repository root at:
+  - TRAE.md → “SQL Formatting Rules (Trae)”
+- This skill does not duplicate the rule text; it enforces the rules exactly as documented in TRAE.md.
+- Update TRAE.md to change the house style; this skill will follow that specification.
+
+What this skill does (enforcement summary)
+
+- Applies the Trae SQL formatting rules from TRAE.md.
 - Aligns:
   - SELECT aliases to a shared column
   - FROM/JOIN table aliases to a shared column
@@ -15,23 +22,17 @@ What this skill does
   - THEN/ELSE on their own lines within CASE blocks
 - Uses leading commas for SELECT/JOIN/ORDER BY lists; inline commas inside function arg lists.
 - Uppercases SQL keywords and prefers implied aliases (no AS) for columns/tables.
-- Follows CTE and window function alignment as specified in TRAE.md.
+- Follows CTE/window function alignment as specified in TRAE.md.
 
 When to invoke
 
 - The user asks to “format SQL”, “align aliases”, “fix JOIN alignment”, “apply 3‑space tabs”, or similar.
 - Before committing SQL-heavy changes to ensure consistency with house style.
 
-Guidelines (Essentials, from TRAE.md)
+Reference
 
-- Keywords in consistent columns; one expression per line.
-- SELECT aliases: pick a target column and align visually using 3‑space stops.
-- FROM/JOIN aliases: start in the same column; indent JOIN keyword under FROM’s starting column.
-- ON predicates: pad so `=` lines up vertically across JOINs.
-- CASE blocks: place THEN/ELSE on separate lines aligned under WHEN.
-- CTEs: leading comma formatting for subsequent CTEs with consistent indentation.
-- Window functions: align opening parenthesis and content per rules.
-- Simple UNION ALL exception: compact layout permitted as per TRAE.md.
+- See repository rules: TRAE.md → “SQL Formatting Rules (Trae)”
+- That document includes full examples for SELECT, JOIN, CTEs, window functions, and exceptions (e.g., compact UNION ALL).
 
 Examples
 
@@ -49,6 +50,6 @@ SELECT
 
 Operational Notes
 
-- TRAE.md is the source of truth. This skill summarizes and enforces those rules.
+- TRAE.md is the source of truth. This skill enforces those rules and defers to TRAE.md for details.
 - Apply by editing SQL to match; use this skill before merging SQL‑heavy changes.
 - For bulk changes across files, invoke the skill and then request formatting for the target list.

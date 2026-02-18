@@ -66,11 +66,11 @@ SELECT
   FROM cte_customer                          c
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
-       ref_country_name_mapping              m_name
+       ref_source_country_name_mapping       m_name
           ON  m_name.source_country_name     = UPPER(TRIM(c.country))
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
-       ref_country_code_mapping              m_code
+       ref_source_country_code_mapping       m_code
           ON  m_code.source_country_code     = NULLIF(UPPER(TRIM(c.country_code)), '')
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN

@@ -1,6 +1,6 @@
 ../../ref/ref_country.sql
-../../ref/ref_country_name_mapping.sql
-../../ref/ref_country_code_mapping.sql
+../../ref/ref_source_country_name_mapping.sql
+../../ref/ref_source_country_code_mapping.sql
 ../../ref/ref_supplier_category_mapping.sql
 src_fin_supplier_raw.sql
 src_fin_supplier.sql
