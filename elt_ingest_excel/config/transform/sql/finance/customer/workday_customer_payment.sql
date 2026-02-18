@@ -5,13 +5,21 @@ CREATE TABLE workday_customer_payment
 SELECT
        c.customer_id                                                    customer_id
      , c.nrm_customer_name                                              customer_name
-     , COALESCE(NULLIF(UPPER(TRIM(c.payment_terms_id)), ''), '30 Days') payment_terms
+     , m.workday_payment_terms                                          payment_terms
      , CASE
-         WHEN NULLIF(UPPER(TRIM(c.checkbook_id)), '') IS NULL
-         THEN 'EFT'
-         ELSE 'Manual'
+         WHEN c.nrm_currency_code = 'GBP'
+         THEN 'BACS'
+         WHEN c.nrm_currency_code = 'EUR'
+         THEN 'SEPA'
+         WHEN c.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
+         THEN 'Wire'
+         ELSE 'BACS'
        END                                                              default_payment_type
      , NULL                                                             interest_rule
      , NULL                                                             late_fee_rule
-  FROM src_fin_customer                c
+  FROM src_fin_customer                                  c
+       LEFT OUTER JOIN
+       ref_source_supplier_payment_terms                 m
+         ON  m.source_payment_terms                      = UPPER(TRIM(c.payment_terms_id))
+
 ;

@@ -9,7 +9,7 @@ SELECT
      , c.nrm_country_code                             tax_id_country
      , TRIM(REPLACE(REPLACE(c.tax_registration_number, ' ', ''), '-', ''))
                                                       tax_id
-     , nrm_tax_id_type                                tax_id_type
+     , c.nrm_tax_id_type                              tax_id_type
      , NULL                                           primary_tax_id
      , NULL                                           transaction_tax_id
      , c.nrm_country_code                             tax_status_country

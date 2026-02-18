@@ -13,6 +13,4 @@ SELECT
            ELSE 'Suppliers_0_9'
        END                                            supplier_group
   FROM src_fin_supplier s
- WHERE s.vendor_class_id IS NOT NULL
-   AND TRIM(s.vendor_class_id) != ''
 ;

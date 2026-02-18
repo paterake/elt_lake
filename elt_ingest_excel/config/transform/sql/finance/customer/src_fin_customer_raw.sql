@@ -25,24 +25,24 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl
      , cte_customer_nrm
     AS (
 SELECT 
-       TRIM(t.customer_number)                                                               nrm_customer_number
-     , COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), TRIM(c.customer_number))           nrm_customer_name
-     , UPPER(COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), TRIM(c.customer_number)))    key_customer_name
+       TRIM(t.customer_number)                                                                        nrm_customer_number
+     , COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), NULLIF(TRIM(c.customer_number), ''))        nrm_customer_name
+     , UPPER(COALESCE(NULLIF(UPPER(TRIM(c.customer_name)), ''), NULLIF(TRIM(c.customer_number), ''))) key_customer_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%d-%m-%Y')
-       )                                                                                     created_ts
+       )                                                                                              created_ts
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%d-%m-%Y')
-       )                                                                                     last_payment_ts
+       )                                                                                              last_payment_ts
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.last_transaction_date ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_transaction_date ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_transaction_date ), ''), '%d-%m-%Y')
-       )                                                                                     last_transaction_ts
+       )                                                                                              last_transaction_ts
      , t.*
   FROM cte_customer_src                t
        ) 

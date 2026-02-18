@@ -5,7 +5,7 @@ CREATE TABLE workday_customer_currencies
 SELECT
        c.customer_id                                  customer_id
      , c.nrm_customer_name                            customer_name
-     , c.nrm_country_code                             accepted_currencies
-     , c.nrm_country_code                             default_currency
+     , c.nrm_currency_code                            accepted_currencies_plus
+     , c.nrm_currency_code                            default_currency
   FROM src_fin_customer                c
 ;

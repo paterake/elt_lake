@@ -59,14 +59,14 @@ SELECT s.customer_id                                                     custome
      , NULL                                                              email_comment
      , 'Yes'                                                             is_public
      , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
-            THEN 'Yes' ELSE 'No' END                                      is_primary
+            THEN 'Yes' ELSE 'No' END                                     is_primary
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , NULL                                                              use_for_tenanted
      , NULL                                                              delete_flag
      , NULL                                                              do_not_replace_all
      , NULL                                                              additional_comment
-     , TRIM(LOWER(s.email_address))                                      email
+     , NULL                                                              email
   FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'

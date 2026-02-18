@@ -25,8 +25,5 @@ SELECT
      , TRIM(c.address_code)                           use_for
      , NULL                                           use_for_tenanted
   FROM src_fin_customer                c
- WHERE c.checkbook_id IS NOT NULL
-   AND TRIM(c.checkbook_id) != ''
-   AND c.address_1 IS NOT NULL
-   AND TRIM(c.address_1) != ''
+ WHERE 1 = 2
 ;

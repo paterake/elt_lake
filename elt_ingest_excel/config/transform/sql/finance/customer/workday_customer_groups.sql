@@ -13,6 +13,4 @@ SELECT
            ELSE 'Customers_0_9'
        END                                            customer_group
   FROM src_fin_customer                c
- WHERE c.customer_class IS NOT NULL
-   AND TRIM(c.customer_class) != ''
 ;

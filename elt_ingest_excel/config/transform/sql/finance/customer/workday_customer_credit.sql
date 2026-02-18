@@ -6,14 +6,12 @@ SELECT
        c.customer_id                                  customer_id
      , c.nrm_customer_name                            customer_name
      , NULL                                           duns_number
-     , CASE
-         WHEN UPPER(TRIM(c.hold)) = 'YES'            THEN 'Yes'
-         ELSE 'No'
-       END                                            exempt_from_dunning
+     , NULL                                           exempt_from_dunning
      , TRIM(c.tax_schedule_id)                        tax_code
-     , 'GBP'                                          credit_limit_currency
+     , c.nrm_currency_code                            credit_limit_currency
      , CASE
-         WHEN UPPER(TRIM(c.credit_limit_type)) = 'UNLIMITED' THEN NULL
+         WHEN UPPER(TRIM(c.credit_limit_type)) = 'UNLIMITED' 
+         THEN NULL
          ELSE c.credit_limit_amount
        END                                            credit_limit
      , NULL                                           hierarchy_credit_limit

@@ -7,8 +7,8 @@ SELECT
      , c.nrm_customer_name                            customer_name
      , c.customer_id                                  customer_id
      , TRIM(c.customer_id) || '_INTBANK'              intermediary_bank_account_id
-     , 'GB'                                           bank_country
-     , 'GBP'                                          currency
+     , c.nrm_country_name                             bank_country
+     , c.nrm_currency_code                            currency
      , 'CHECKING'                                     bank_account_type
      , NULL                                           bank_name
      , NULL                                           name_on_account
