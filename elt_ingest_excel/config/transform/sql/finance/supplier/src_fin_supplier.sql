@@ -48,7 +48,3 @@ SELECT
        ref_supplier_category_mapping            scm
           ON  scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
 ;
-
-
-exclude: SELECT count(*) FROM src_fin_supplier WHERE nullif(payment_terms_id, '') IS null
-

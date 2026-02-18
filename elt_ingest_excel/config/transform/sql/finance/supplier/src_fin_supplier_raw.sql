@@ -48,6 +48,7 @@ SELECT
        )                                                          last_purchase_ts
      , t.*
   FROM cte_supplier_src                t
+ WHERE nullif(payment_terms_id, '') IS NULL
        ) 
      , cte_supplier_distinct
     AS (

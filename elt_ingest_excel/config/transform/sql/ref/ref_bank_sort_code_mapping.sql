@@ -58,6 +58,21 @@ SELECT
         -- Santander
         , ('GB', '090128', 'Santander UK',                           'operational')  -- corrected: registered as Santander UK plc, not "Santander Bank"
 
+        -- Additional key institutions (examples; not an exhaustive BACS list)
+        , ('GB', '100000', 'Bank of England',                        'operational')
+        , ('GB', '089249', 'The Co-operative Bank',                  'retail')
+        , ('GB', '300083', 'Al Rayan Bank',                          'retail')
+        , ('GB', '165810', 'Triodos Bank UK Ltd',                    'retail')
+        , ('GB', '185008', 'Citibank NA',                            'operational')
+        , ('GB', '070030', 'Nationwide Building Society',            'retail')
+        , ('GB', '040610', 'CB Payments Ltd',                        'operational')
+        , ('GB', '040676', 'ClearBank Limited',                      'operational')
+        , ('GB', '041307', 'Clear Junction Limited',                 'operational')
+        , ('GB', '608384', 'Contis Financial Services Limited',      'operational')
+        , ('GB', '231486', 'Payoneer Europe Limited',                'operational')
+        , ('GB', '050005', 'Virgin Money',                           'retail')
+        , ('GB', '950121', 'Northern Bank Limited T/A Danske Bank',  'retail')
+
         -- Defunct / Withdrawn from UK Market
         , ('GB', '040026', 'N26 Bank (DEFUNCT - left UK Feb 2020)',   'defunct')     -- N26 withdrew from UK; sort code may be reassigned - do not use for payments
 
