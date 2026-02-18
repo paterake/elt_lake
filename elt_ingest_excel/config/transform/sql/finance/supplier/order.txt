@@ -1,3 +1,4 @@
+../../ref/stg_fin_phone_number_format.sql
 ../../ref/ref_bank_sort_code_prefix_mapping.sql
 ../../ref/ref_country_county_state_mapping.sql
 ../../ref/ref_country_county_state_town_mapping.sql
