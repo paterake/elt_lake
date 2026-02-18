@@ -27,9 +27,11 @@ Execution Guidelines
 
 - Default behavior returns the exact drop-down list when possible (Data Validation or form control). Only if not retrievable does it return distinct cell values, clearly labeled as a fallback.
 - Prefer xlwings for Data Validation (filter mode) to capture modern Excel validations that libraries may drop.
-- Fallback to openpyxl for:
-  - DataValidation ranges on the sheet
-  - Resolving named ranges referenced by validations
+- When a specific CELL is provided, the tool targets that cell first and:
+  - Tries Excel automation (xlwings) for the cell’s validation Formula1.
+  - If unavailable, parses the workbook XML to locate the cell’s Data Validation (including x14 extensions) and resolves sheet ranges or named ranges to values.
+  - If the validation uses dynamic formulas (e.g., INDIRECT with country-based named ranges), it resolves the named range via workbook Defined Names where possible. For the Supplier Tax sheet, it derives the country from the same row and resolves the corresponding “<Country>_Tax_Type” list.
+- If cell-level retrieval fails, fallback to column-level validations; as a last resort in auto mode, return distinct column values with mode=distinct.
 - On some macOS setups, Excel’s Validation API and Form Controls may not be exposed to automation; in such cases, auto mode falls back to distinct values with an explicit note.
 - Always output JSON for machine readability: {sheet, column, mode, count, values}
 
@@ -252,6 +254,9 @@ Usage Examples
 
 - Filter values (Data Validation) for D in “Supplier Name”:
   WB=~/Downloads/FIN_Supplier_Workbook_Demo.xlsm SHEET=\"Supplier Name\" COL=D <run the Filter snippet>
+
+- Filter values for a specific cell (e.g., E4 in “Supplier Tax”):
+  WB=~/Downloads/FIN_Supplier_Workbook_Demo.xlsm SHEET=\"Supplier Tax\" COL=E CELL=E4 <run the Filter snippet>
 
 - Distinct values for D in “Supplier Name”:
   WB=~/Downloads/FIN_Supplier_Workbook_Demo.xlsm SHEET=\"Supplier Name\" COL=D <run the Distinct snippet>
