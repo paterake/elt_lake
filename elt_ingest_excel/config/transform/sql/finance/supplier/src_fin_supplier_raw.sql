@@ -72,12 +72,12 @@ SELECT DISTINCT
                   AND NULLIF(UPPER(TRIM(t.bank_name)), '') <> 'BANK NAME'
                  THEN 0
                  ELSE 1
-              END
+              END ASC NULLS LAST
             , CASE
                  WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
                  THEN 0
                  ELSE 1
-              END ASC
+              END ASC NULL LAST
             , t.created_ts DESC  NULLS LAST
        )                                                          data_rnk
      , bu.array_business_unit
