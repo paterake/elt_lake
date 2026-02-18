@@ -2,39 +2,126 @@ DROP TABLE IF EXISTS ref_country_phone_format
 ;
 CREATE TABLE ref_country_phone_format
     AS
+WITH src_phone_format
+     AS (
 SELECT
-       *
-  FROM (VALUES
-
-        -- Country, International Phone Code, and validation messages
-
-          ('Afghanistan'              , '93' , '2 digits, no special characters'                                                       , '7 digits only, no special characters'                                                          , '2-3 digits, no special characters'                                                       , '6-7 digits only, no special characters')
-        , ('Åland Islands'            , '358', '1-3 digits, no special characters, may be preceded by ''0'''                           , '4-8 digits only, no special characters'                                                        , '2-4 digits, no special characters, may be preceded by ''0'''                           , '4-8 digits only, no special characters')
-        , ('Albania'                  , '355', '1-3 digits, no special characters, may be preceded by ''0'''                           , '4-7 digits only, no special characters'                                                        , '1-3 digits, no special characters, may be preceded by ''0'''                           , '4-7 digits only, no special characters')
-        , ('Algeria'                  , '213', '2 digits, no special characters'                                                       , '6 digits only, no special characters'                                                          , '1-3 digits, no special characters'                                                       , '6-8 digits only, no special characters')
-        , ('American Samoa'           , '1'  , '3 digits, no special characters'                                                       , '3 digits + optional dash (or dot) + 4 digits'                                                  , '3 digits, no special characters'                                                         , '3 digits + optional dash (or dot) + 4 digits')
-        , ('Andorra'                  , '376', 'area code not used'                                                                    , '6 digits only, no special characters'                                                          , 'area code not used'                                                                      , '6 digits only, no special characters')
-        , ('Angola'                   , '244', '2-3 digits, no special characters'                                                     , '6-7 digits only, no special characters'                                                        , '2-3 digits, no special characters'                                                       , '6-7 digits only, no special characters')
-        , ('Anguilla'                 , '1'  , '3 digits, no special characters'                                                       , '3 digits + optional dash (or dot) + 4 digits'                                                  , '3 digits, no special characters'                                                         , '3 digits + optional dash (or dot) + 4 digits')
-        , ('Antigua and Barbuda'      , '1'  , '3 digits, no special characters'                                                       , '3 digits + optional dash (or dot) + 4 digits'                                                  , '3 digits, no special characters'                                                         , '3 digits + optional dash (or dot) + 4 digits')
-        , ('Argentina'                , '54' , '2-4 digits, no special characters, may be preceded by ''0'''                           , '6-8 digits only, no special characters'                                                        , '2-4 digits, no special characters, may be preceded by ''0'''                           , '6-8 digits only, no special characters')
-        , ('Armenia'                  , '374', '2-3 digits, no special characters'                                                     , '5-6 digits only, no special characters'                                                        , '2 digits, no special characters'                                                         , '6 digits only, no special characters')
-        , ('Aruba'                    , '297', 'area code not used'                                                                    , '3 digits + optional dash (or dot) + 4 digits'                                                  , '3 digits, no special characters'                                                         , '3 digits + optional dash (or dot) + 4 digits')
-
-        -- Key reference markets
-        , ('France'                   , '33' , '1 digit, may be preceded by ''0'''                                                     , '8-10 digits only, no special characters'                                                       , '1 digit, may be preceded by ''0'''                                                     , '8-10 digits only, no special characters')
-        , ('Germany'                  , '49' , '2-5 digits, no special characters, may be preceded by ''0'''                           , '3-11 digits only, no special characters'                                                       , '2-4 digits, no special characters, may be preceded by ''0'''                           , '6-11 digits only, no special characters')
-        , ('Ireland'                  , '353', '1-3 digits, no special characters, may be preceded by ''0'''                           , '5-7 digits only, no special characters'                                                        , '2 digits, no special characters, may be preceded by ''0'''                             , '5-7 digits only, no special characters')
-        , ('United Kingdom'           , '44' , '2-5 digits, no special characters, may be preceded by ''0'''                           , '4-8 digits only, no special characters'                                                        , '2-5 digits, no special characters, may be preceded by ''0'''                           , '5-8 or 10 digits, no special characters, may be preceded by ''0'' if followed by 10 digits')
-        , ('United States of America' , '1'  , '3 digits, no special characters'                                                       , '3 digits + optional dash (or dot) + 4 digits'                                                  , '3 digits, no special characters'                                                         , '3 digits + optional dash (or dot) + 4 digits')
-
-) AS t(
-    country_name
-  , international_phone_code_digits
-  , area_code_validation_message
-  , phone_number_validation_message
-  , mobile_area_code_message
-  , mobile_phone_number_message
-)
+       TRIM(country)                                AS country_name
+     , TRIM("International Phone Code")             AS international_phone_code_raw
+     , TRIM("Area Code Validation Message")         AS area_code_msg
+     , TRIM("Phone Number Validation Message")      AS phone_number_msg
+     , TRIM("Mobile Area Code Message")             AS mobile_area_code_msg
+     , TRIM("Mobile Phone Number Message")          AS mobile_phone_number_msg
+  FROM stg_fin_phone_number_format
+       )
+   , parsed
+     AS (
+SELECT
+       s.country_name                                                     AS country_name
+     , REGEXP_EXTRACT(
+           s.international_phone_code_raw
+         , '([0-9]+)'
+         , 1
+       )                                                                  AS international_phone_code_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digits', 1)
+             , REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS landline_area_min_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digits', 2)
+             , REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS landline_area_max_digits
+     , CASE
+         WHEN s.area_code_msg ILIKE '%may be preceded by ''0''%'
+         THEN TRUE
+         ELSE FALSE
+       END                                                                AS landline_area_trunk_zero
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digits', 1)
+             , REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS landline_phone_min_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digits', 2)
+             , REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS landline_phone_max_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digits', 1)
+             , REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS mobile_area_min_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digits', 2)
+             , REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS mobile_area_max_digits
+     , CASE
+         WHEN s.mobile_area_code_msg ILIKE '%may be preceded by ''0''%'
+         THEN TRUE
+         ELSE FALSE
+       END                                                                AS mobile_area_trunk_zero
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digits', 1)
+             , REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS mobile_phone_min_digits
+     , CAST(
+           COALESCE(
+               REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digits', 2)
+             , REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digits', 1)
+           )
+           AS INTEGER
+       )                                                                  AS mobile_phone_max_digits
+  FROM src_phone_format s
+       )
+SELECT
+       c.country_code                                                     AS country_code
+     , p.country_name                                                     AS country_name
+     , d.device_type                                                      AS device_type
+     , p.international_phone_code_digits                                  AS international_phone_code_digits
+     , CASE d.device_type
+         WHEN 'Landline' THEN p.landline_area_min_digits
+         WHEN 'Mobile'   THEN p.mobile_area_min_digits
+         WHEN 'Fax'      THEN p.landline_area_min_digits
+       END                                                                AS area_min_digits
+     , CASE d.device_type
+         WHEN 'Landline' THEN p.landline_area_max_digits
+         WHEN 'Mobile'   THEN p.mobile_area_max_digits
+         WHEN 'Fax'      THEN p.landline_area_max_digits
+       END                                                                AS area_max_digits
+     , CASE d.device_type
+         WHEN 'Landline' THEN p.landline_area_trunk_zero
+         WHEN 'Mobile'   THEN p.mobile_area_trunk_zero
+         WHEN 'Fax'      THEN p.landline_area_trunk_zero
+       END                                                                AS area_trunk_zero
+     , CASE d.device_type
+         WHEN 'Landline' THEN p.landline_phone_min_digits
+         WHEN 'Mobile'   THEN p.mobile_phone_min_digits
+         WHEN 'Fax'      THEN p.landline_phone_min_digits
+       END                                                                AS phone_min_digits
+     , CASE d.device_type
+         WHEN 'Landline' THEN p.landline_phone_max_digits
+         WHEN 'Mobile'   THEN p.mobile_phone_max_digits
+         WHEN 'Fax'      THEN p.landline_phone_max_digits
+       END                                                                AS phone_max_digits
+  FROM parsed p
+ CROSS JOIN (VALUES ('Landline'), ('Mobile'), ('Fax')) d(device_type)
+       LEFT OUTER JOIN ref_country c
+                    ON UPPER(c.country_name) = UPPER(p.country_name)
 ;
-
