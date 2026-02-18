@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_phone AS
   WITH cte_customer_phone
     AS (
 SELECT c.customer_id                          customer_id
-     , c.customer_id_name                     customer_name
+     , c.nrm_customer_name                    customer_name
      , TRIM(c.country)                        phone_country
      , c.nrm_country_code                     country_code
      , c.nrm_phone_code                       international_phone_code
@@ -16,7 +16,7 @@ SELECT c.customer_id                          customer_id
  WHERE NULLIF(UPPER(TRIM(c.phone_1)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                          customer_id
-     , c.customer_id_name                     customer_name
+     , c.nrm_customer_name                    customer_name
      , TRIM(c.country)                        phone_country
      , c.nrm_country_code                     country_code
      , c.nrm_phone_code                       international_phone_code
@@ -28,7 +28,7 @@ SELECT c.customer_id                          customer_id
  WHERE NULLIF(UPPER(TRIM(c.phone_2)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                          customer_id
-     , c.customer_id_name                     customer_name
+     , c.nrm_customer_name                    customer_name
      , TRIM(c.country)                        phone_country
      , c.nrm_country_code                     country_code
      , c.nrm_phone_code                       international_phone_code
@@ -40,7 +40,7 @@ SELECT c.customer_id                          customer_id
  WHERE NULLIF(UPPER(TRIM(c.phone_3)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                          customer_id
-     , c.customer_id_name                     customer_name
+     , c.nrm_customer_name                    customer_name
      , TRIM(c.country)                        phone_country
      , c.nrm_country_code                     country_code
      , c.nrm_phone_code                       international_phone_code

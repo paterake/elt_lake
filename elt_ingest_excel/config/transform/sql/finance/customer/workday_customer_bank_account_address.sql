@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS workday_customer_bank_account_address
 CREATE TABLE workday_customer_bank_account_address
     AS
 SELECT
-       c.customer_id_name                             customer_name
+       c.nrm_customer_name                            customer_name
      , c.customer_id                                  customer_id
      , TRIM(c.customer_id) || '_BANK'                 settlement_bank_account_id
      , NULL                                           intermediary_bank_account_id

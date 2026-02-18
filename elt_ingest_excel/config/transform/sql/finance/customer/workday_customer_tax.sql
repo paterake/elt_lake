@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_tax
     AS
 SELECT
        c.customer_id                                  customer_id
-     , c.customer_id_name                             customer_name
+     , c.nrm_customer_name                            customer_name
      , TRIM(c.tax_schedule_id)                        tax_code
      , c.nrm_country_code                             tax_id_country
      , TRIM(REPLACE(REPLACE(c.tax_registration_number, ' ', ''), '-', ''))

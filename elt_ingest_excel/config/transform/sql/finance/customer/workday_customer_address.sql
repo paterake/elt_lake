@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_address
     AS
 SELECT
        c.customer_id                                  customer_id
-     , c.customer_id_name                             customer_name
+     , c.nrm_customer_name                            customer_name
      , NULL                                           formatted_address
      , NULL                                           address_format_type
      , NULL                                           defaulted_business_site_address

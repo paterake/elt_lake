@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_document_delivery
     AS
 SELECT
        c.customer_id                                  customer_id
-     , c.customer_id_name                             customer_name
+     , c.nrm_customer_name                            customer_name
      , NULL                                           always_separate_payments
      , NULL                                           remit_from_customer
      , CASE

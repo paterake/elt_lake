@@ -4,7 +4,7 @@ CREATE TABLE workday_customer_company_restrictions
     AS
 SELECT
        c.customer_id                                  customer_id
-     , c.customer_id_name                             customer_name
+     , c.nrm_customer_name                            customer_name
      , CASE TRIM(c.company)
          WHEN 'FA' THEN 'The Football Association'
          ELSE TRIM(c.company)
