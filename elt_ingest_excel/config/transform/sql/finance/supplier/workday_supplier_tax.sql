@@ -5,9 +5,21 @@ CREATE TABLE workday_supplier_tax
 SELECT
        s.supplier_id                                                    supplier_id
      , s.nrm_vendor_name                                                supplier_name
-     , s.nrm_country_code                                               tax_id_country
+     , s.nrm_country_name                                               tax_id_country
      , TRIM(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''))        tax_id
-     , COALESCE(s.nrm_tax_id_type, 'Other')                             tax_id_type
+     , CASE
+         WHEN s.nrm_country_code = 'GB'
+         THEN CASE
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
+                THEN 'VAT Reg No'
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{8}$'
+                THEN 'Company Number'
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{10}$'
+                THEN 'UTR - Unique Taxpayer Reference'
+                ELSE 'Other'
+              END
+         ELSE COALESCE(dm.tax_id_type_label, 'TIN')
+       END                                                              tax_id_type
      , NULL                                                             primary_tax_id
      , NULL                                                             transaction_tax_id
      , s.nrm_country_code                                               tax_status_country
@@ -36,4 +48,8 @@ SELECT
      , 'FALSE'                                                          fatca
      , TRIM(s.tax_registration_number)                                  business_entity_tax_id
   FROM src_fin_supplier                s
+       LEFT OUTER JOIN
+       ref_country_tax_id_type_mapping dm
+         ON  dm.country_code          = s.nrm_country_code
+         AND dm.is_default            = TRUE
 ;

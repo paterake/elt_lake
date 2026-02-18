@@ -70,15 +70,15 @@ SELECT t.*
  WHERE t.primary_rnk = 1
        )
 SELECT
-        'S-' || LPAD(rnk::VARCHAR, 6, '0')      supplier_id
-      , r.country_code                          nrm_country_code
-      , r.language_code                         nrm_language_code
-      , r.currency_code                         nrm_currency_code
-      , r.phone_code                            nrm_phone_code
-      , r.tax_id_type                           nrm_tax_id_type
-      , r.country_name                          nrm_country_name
-      , COALESCE(scm.supplier_category, 'Services')    nrm_supplier_category
-      , t.business_unit                         primary_business_unit
+        'S-' || LPAD(rnk::VARCHAR, 6, '0')               supplier_id
+      , r.country_code                                   nrm_country_code
+      , r.language_code                                  nrm_language_code
+      , r.currency_code                                  nrm_currency_code
+      , r.phone_code                                     nrm_phone_code
+      , r.tax_id_type                                    nrm_tax_id_type
+      , r.country_name                                   nrm_country_name
+      , COALESCE(scm.supplier_category, 'Services')      nrm_supplier_category
+      , t.business_unit                                  primary_business_unit
       , t.*
   FROM cte_supplier                             t
        -- First try: match on country name (higher population)
