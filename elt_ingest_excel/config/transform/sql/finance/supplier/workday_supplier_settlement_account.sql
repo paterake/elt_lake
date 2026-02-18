@@ -5,13 +5,13 @@ CREATE TABLE workday_supplier_settlement_account
 SELECT
        s.supplier_id                                                             supplier_id
      , s.nrm_vendor_name                                                         supplier_name
-     , COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), ''))  settlement_bank_account_id
+     , NULL                                                                      settlement_bank_account_id
      , s.nrm_country_name                                                        bank_country
      , s.nrm_currency_code                                                       currency
-     , TRIM(s.eft_account_type)                                                  bank_account_type
+     , 'Checking'                                                                bank_account_type
      , TRIM(s.bank_name)                                                         bank_name
-     , TRIM(s.vendor_check_name)                                                 name_on_account
-     , NULLIF(TRIM(REPLACE(s.eft_bank_account, ' ', '')), '')                    bank_account_number
+     , COALESCE(NULLIF(TRIM(s.vendor_check_name), ''), s.nrm_vendor_name)        name_on_account
+     , NULLIF(TRIM(REPLACE(s.eft_bank_account, ' ', '')), '')                    bank_account_number -- format Bank Account number - use the tab called Bank Account Formatting for guidance. Make sure there are NO spaces after the number
      , s.nrm_vendor_name                                                         bank_account_nickname
      , CASE
          WHEN s.nrm_country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
@@ -40,3 +40,6 @@ SELECT
   FROM src_fin_supplier s
  WHERE COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
 ;
+
+
+todo: map sort code to bank name

@@ -101,11 +101,14 @@ SELECT s.supplier_id                                                       suppl
          THEN 'Yes'
          ELSE 'No'
        END                                                                 primary_flag
-     , s.phone_type                                                        phone_type
-     , 'SHIPPING|BILLING|REMIT'                                            use_for
+     , NULL                                                                phone_type
+     , NULL                                                                use_for
      , NULL                                                                use_for_tenanted
      , NULL                                                                phone_comments
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
    AND LENGTH(s.phone_number_raw) >= 7
 ;
+
+
+Derive area code from the phone number

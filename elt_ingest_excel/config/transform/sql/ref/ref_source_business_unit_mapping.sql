@@ -10,3 +10,5 @@ SELECT
        , ('WNSL', 'Wembley National Stadium Ltd')
 ) AS t(source_value, target_value)
 ;
+
+todo: collapse to a single row per supplier.

@@ -74,3 +74,7 @@ SELECT
           NULLIF(TRIM(s.tax_registration_number), '')
        ) IS NOT NULL
 ;
+
+
+redo - using 
+SELECT * FROM src_fin_supplier_raw WHERE tax_schedule_id = 'PS20'

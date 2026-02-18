@@ -14,3 +14,4 @@ SELECT
        ref_source_business_unit_mapping                  m
          ON  m.source_value                              = UPPER(TRIM(bu.business_unit))
 ;
+
