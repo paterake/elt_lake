@@ -15,3 +15,4 @@ SELECT
          ON  m.source_value                              = UPPER(TRIM(bu.business_unit))
 ;
 
+todo: collapse to a single row per supplier.
