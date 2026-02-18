@@ -5,8 +5,14 @@ CREATE TABLE src_fin_supplier
   WITH cte_supplier
     AS (
 SELECT t.*
-  FROM src_fin_supplier_raw                     t
+  FROM src_fin_supplier_raw                              t
  WHERE t.data_rnk = 1
+       )
+     , cte_supplier_rnk
+    AS (
+SELECT t.*
+     , ROW_NUMBER() OVER(ORDER BY t.nrm_vendor_name)   rnk
+  FROM cte_supplier                                      t
        )
 SELECT
         'S-' || LPAD(rnk::VARCHAR, 6, '0')               supplier_id
@@ -19,7 +25,7 @@ SELECT
       , COALESCE(scm.supplier_category, 'Services')      nrm_supplier_category
       , t.business_unit                                  primary_business_unit
       , t.*
-  FROM cte_supplier                             t
+  FROM cte_supplier_rnk                         t
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_source_country_name_mapping          m_name

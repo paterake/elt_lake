@@ -30,6 +30,7 @@ SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_w
 SELECT 
        TRIM(t.vendor_id)                                          nrm_vendor_id
      , TRIM(t.vendor_name)                                        nrm_vendor_name
+     , UPPER(TRIM(t.vendor_name))                                 key_vendor_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d')
@@ -48,24 +49,24 @@ SELECT
      , t.*
   FROM cte_supplier_src                t
        ) 
+     , cte_supplier_distinct
+    AS (
+SELECT DISTINCT 
+       t.*
+  FROM cte_supplier_nrm                t
+       )
      , cte_supplier_business_unit
     AS (
-    SELECT t.nrm_vendor_name
-         , ARRAY_AGG(DISTINCT t.business_unit ORDER BY t.business_unit) array_business_unit
-      FROM cte_supplier_nrm            t
-     GROUP BY 
-           t.nrm_vendor_name
+SELECT t.key_vendor_name
+     , ARRAY_AGG(DISTINCT t.business_unit ORDER BY t.business_unit) array_business_unit
+  FROM cte_supplier_distinct           t
+ GROUP BY 
+       t.key_vendor_name
        )
-SELECT DISTINCT
-       t.nrm_vendor_id
-     , t.nrm_vendor_name
-     , t.created_ts
-     , t.last_payment_ts
-     , t.last_purchase_ts
-     , t.* 
-     , ROW_NUMBER() OVER
+SELECT 
+       ROW_NUMBER() OVER
        (
-         PARTITION BY t.nrm_vendor_name
+         PARTITION BY t.key_vendor_name
            ORDER BY
               CASE
                  WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
@@ -77,12 +78,14 @@ SELECT DISTINCT
                  WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
                  THEN 0
                  ELSE 1
-              END ASC NULL LAST
+              END ASC NULLS LAST
             , t.created_ts DESC  NULLS LAST
        )                                                          data_rnk
+     , COUNT() OVER(PARTITION BY t.key_vendor_name)               key_count
+     , t.* 
      , bu.array_business_unit
-  FROM cte_supplier_nrm           t
+  FROM cte_supplier_distinct      t
        INNER JOIN
        cte_supplier_business_unit bu
-         ON bu.nrm_vendor_name    = t.nrm_vendor_name
+         ON bu.key_vendor_name    = t.key_vendor_name
 ;

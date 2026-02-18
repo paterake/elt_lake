@@ -9,7 +9,7 @@ SELECT
   FROM 
        src_fin_supplier                                  s
        CROSS JOIN LATERAL
-       UNNEST(s.business_units)                          bu(business_unit)
+       UNNEST(s.array_business_unit)                     bu(business_unit)
        LEFT OUTER JOIN
        ref_source_business_unit_mapping                  m
          ON  m.source_value                              = UPPER(TRIM(bu.business_unit))
