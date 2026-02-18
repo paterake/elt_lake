@@ -6,25 +6,54 @@ SELECT
        s.supplier_id                                                    supplier_id
      , s.nrm_vendor_name                                                supplier_name
      , s.nrm_country_name                                               tax_id_country
-     , TRIM(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''))        tax_id
+     , CASE
+         WHEN s.nrm_country_code = 'GB'
+         THEN CASE
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
+                THEN TRIM(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''))
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
+                THEN TRIM(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''))
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
+                THEN TRIM(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''))
+                ELSE COALESCE(
+                       NULLIF(TRIM(s.tax_id_number), ''),
+                       NULLIF(TRIM(s.tax_registration_number), '')
+                     )
+              END
+         ELSE COALESCE(
+                NULLIF(TRIM(s.tax_id_number), ''),
+                NULLIF(TRIM(s.tax_registration_number), '')
+              )
+       END                                                              tax_id
      , CASE
          WHEN s.nrm_country_code = 'GB'
          THEN CASE
                 WHEN NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
                 THEN 'VAT Reg No'
-                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{8}$'
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
                 THEN 'Company Number'
-                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{10}$'
+                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
                 THEN 'UTR - Unique Taxpayer Reference'
                 ELSE 'Other'
               END
          ELSE COALESCE(dm.tax_id_type_label, 'TIN')
        END                                                              tax_id_type
-     , NULL                                                             primary_tax_id
-     , NULL                                                             transaction_tax_id
-     , s.nrm_country_code                                               tax_status_country
+     , 'Yes'                                                            primary_tax_id
      , CASE
-         WHEN s.tax_id_number IS NOT NULL AND TRIM(s.tax_id_number) != ''
+         WHEN s.nrm_country_code = 'GB'
+              AND NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
+         THEN 'Yes'
+         WHEN s.nrm_country_code != 'GB'
+              AND dm.tax_id_type_label ILIKE '%VAT%'
+         THEN 'Yes'
+         ELSE 'No'
+       END                                                              transaction_tax_id
+     , s.nrm_country_name                                               tax_status_country
+     , CASE
+         WHEN COALESCE(
+                NULLIF(TRIM(s.tax_id_number), ''),
+                NULLIF(TRIM(s.tax_registration_number), '')
+              ) IS NOT NULL
          THEN 'Registered'
          ELSE 'Not_Registered'
        END                                                              tax_status
@@ -33,7 +62,7 @@ SELECT
      , CASE
          WHEN s.nrm_country_code = 'US'
               AND s.tax_id_number IS NOT NULL
-         THEN '1099-MISC'
+         THEN '1099 MISC'
          ELSE NULL
        END                                                              tax_authority_form_type
      , CASE
@@ -45,7 +74,7 @@ SELECT
      , NULL                                                             tax_document_date
      , NULL                                                             default_tax_code
      , NULL                                                             default_withholding_tax_code
-     , 'FALSE'                                                          fatca
+     , 'No'                                                             fatca
      , TRIM(s.tax_registration_number)                                  business_entity_tax_id
   FROM src_fin_supplier                s
        LEFT OUTER JOIN
