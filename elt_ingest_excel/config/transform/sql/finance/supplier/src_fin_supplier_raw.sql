@@ -25,28 +25,47 @@ SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_payment_date_wn
 UNION ALL
 SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_wnsl    t
        )
-SELECT DISTINCT
-       TRIM(t.vendor_id)                        nrm_vendor_id
-     , TRIM(t.vendor_name)                      nrm_vendor_name
+     , cte_supplier_nrm
+    AS (
+SELECT 
+       TRIM(t.vendor_id)                                          nrm_vendor_id
+     , TRIM(t.vendor_name)                                        nrm_vendor_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%d-%m-%Y')
-       )                                        created_ts
+       )                                                          created_ts
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%d-%m-%Y')
-       )                                        last_payment_ts
+       )                                                          last_payment_ts
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d')
         , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%d-%m-%Y')
-       )                                        last_purchase_ts
+       )                                                          last_purchase_ts
+     , t.*
+  FROM cte_supplier_src                t
+       ) 
+     , cte_supplier_business_unit
+    AS (
+    SELECT t.nrm_vendor_name
+         , ARRAY_AGG(DISTINCT t.business_unit ORDER BY t.business_unit) array_business_unit
+      FROM cte_supplier_nrm            t
+     GROUP BY 
+           t.nrm_vendor_name
+       )
+SELECT DISTINCT
+       t.nrm_vendor_id
+     , t.nrm_vendor_name
+     , t.created_ts
+     , t.last_payment_ts
+     , t.last_purchase_ts
      , t.* 
      , ROW_NUMBER() OVER
        (
-         PARTITION BY business_unit, nrm_vendor_name
+         PARTITION BY t.nrm_vendor_name
            ORDER BY
               CASE
                  WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
@@ -59,9 +78,11 @@ SELECT DISTINCT
                  THEN 0
                  ELSE 1
               END ASC
-            , created_ts DESC  NULLS LAST
-              END DESC NULLS LAST
-       )                                        data_rnk
-
-  FROM cte_supplier_src t
+            , t.created_ts DESC  NULLS LAST
+       )                                                          data_rnk
+     , bu.array_business_unit
+  FROM cte_supplier_nrm           t
+       INNER JOIN
+       cte_supplier_business_unit bu
+         ON bu.nrm_vendor_name    = t.nrm_vendor_name
 ;
