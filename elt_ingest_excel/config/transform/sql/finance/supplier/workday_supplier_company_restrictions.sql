@@ -8,11 +8,6 @@ SELECT
      , COALESCE(m.target_value, TRIM(bu.business_unit)) restricted_to_companies
   FROM 
        src_fin_supplier                                  s
-       CROSS JOIN LATERAL
-       UNNEST(s.array_business_unit)                     bu(business_unit)
-       LEFT OUTER JOIN
-       ref_source_business_unit_mapping                  m
-         ON  m.source_value                              = UPPER(TRIM(bu.business_unit))
 ;
 
 todo: collapse to a single row per supplier.

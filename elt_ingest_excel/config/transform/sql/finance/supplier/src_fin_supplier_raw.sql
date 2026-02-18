@@ -47,19 +47,24 @@ SELECT
         , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%d-%m-%Y')
        )                                                          last_purchase_ts
      , t.*
-  FROM cte_supplier_src                t
- WHERE NULLIF(TRIM(t.payment_terms_id), '') IS NULL
+  FROM cte_supplier_src                      t
+ WHERE NULLIF(TRIM(t.payment_terms_id), '')  IS NULL
        ) 
      , cte_supplier_distinct
     AS (
 SELECT DISTINCT 
        t.*
-  FROM cte_supplier_nrm                t
+     , mbu.target_business_unit
+  FROM cte_supplier_nrm                      t
+       INNER JOIN
+       ref_source_business_unit_mapping      mbu
+          ON mbu.source_business_unit        = t.business_unit
        )
      , cte_supplier_business_unit
     AS (
 SELECT t.key_vendor_name
-     , ARRAY_AGG(DISTINCT t.business_unit ORDER BY t.business_unit) array_business_unit
+     , ARRAY_AGG(DISTINCT t.business_unit        ORDER BY t.business_unit       ) array_business_unit
+     , ARRAY_AGG(DISTINCT t.target_business_unit ORDER BY t.target_business_unit) array_target_business_unit
   FROM cte_supplier_distinct           t
  GROUP BY 
        t.key_vendor_name
