@@ -1,7 +1,9 @@
+../../ref/ref_country_tax_id_type_mapping.sql
 ../../ref/ref_country.sql
 ../../ref/ref_source_country_name_mapping.sql
 ../../ref/ref_source_country_code_mapping.sql
 ../../ref/ref_supplier_category_mapping.sql
+../../ref/ref_source_supplier_payment_terms.sql
 src_fin_supplier_raw.sql
 src_fin_supplier.sql
 workday_supplier_name.sql

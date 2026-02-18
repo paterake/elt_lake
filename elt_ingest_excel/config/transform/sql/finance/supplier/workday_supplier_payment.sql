@@ -5,7 +5,7 @@ CREATE TABLE workday_supplier_payment
 SELECT
        s.supplier_id                                  supplier_id
      , s.nrm_vendor_name                              supplier_name
-     , TRIM(s.payment_terms_id)                       payment_terms
+     , m.workday_payment_terms                        payment_terms
      , CASE
          WHEN s.eft_transfer_method IS NOT NULL AND TRIM(s.eft_transfer_method) != ''
          THEN CASE
@@ -42,5 +42,8 @@ SELECT
      , NULL                                           exclude_freight_amount_from_supplier_invoice_discount
      , NULL                                           exclude_other_charge_from_supplier_invoice_discount
      , NULL                                           exclude_tax_amount_from_supplier_invoice_discount
-  FROM src_fin_supplier s
+  FROM src_fin_supplier                                s
+       LEFT OUTER JOIN
+       ref_source_supplier_payment_terms               m
+         ON  UPPER(TRIM(s.payment_terms_id))         = m.source_payment_terms
 ;
