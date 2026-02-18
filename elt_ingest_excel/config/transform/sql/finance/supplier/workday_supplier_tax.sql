@@ -34,7 +34,7 @@ SELECT
                 THEN 'Company Number'
                 WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
                 THEN 'UTR - Unique Taxpayer Reference'
-                ELSE 'Other'
+                ELSE NULL
               END
          ELSE COALESCE(dm.tax_id_type_label, 'TIN')
        END                                                              tax_id_type
@@ -75,10 +75,19 @@ SELECT
      , NULL                                                             default_tax_code
      , NULL                                                             default_withholding_tax_code
      , 'No'                                                             fatca
-     , TRIM(s.tax_registration_number)                                  business_entity_tax_id
+     , CASE
+         WHEN s.nrm_country_code = 'GB'
+              AND NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
+         THEN NULLIF(TRIM(s.tax_registration_number), '')
+         ELSE NULL
+       END                                                              business_entity_tax_id
   FROM src_fin_supplier                s
        LEFT OUTER JOIN
        ref_country_tax_id_type_mapping dm
          ON  dm.country_code          = s.nrm_country_code
          AND dm.is_default            = TRUE
+ WHERE COALESCE(
+          NULLIF(TRIM(s.tax_id_number), ''),
+          NULLIF(TRIM(s.tax_registration_number), '')
+       ) IS NOT NULL
 ;
