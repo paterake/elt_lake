@@ -28,7 +28,7 @@ SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_w
      , cte_supplier_nrm
     AS (
 SELECT 
-       TRIM(t.vendor_id)                                          nrm_vendor_id
+       TRIM(t.vendor_id)                                          vendor_id
      , TRIM(t.vendor_name)                                        nrm_vendor_name
      , UPPER(TRIM(t.vendor_name))                                 key_vendor_name
      , COALESCE(
@@ -63,8 +63,12 @@ SELECT t.key_vendor_name
  GROUP BY 
        t.key_vendor_name
        )
+     , cte_supplier
+    AS (
 SELECT 
-       ROW_NUMBER() OVER
+       COUNT() OVER (PARTITION BY t.vendor_id)                             vendor_id_count
+     , RANK() OVER (PARTITION BY t.vendor_id ORDER BY t.nrm_vendor_name)   vendor_id_rnk
+     , ROW_NUMBER() OVER
        (
          PARTITION BY t.key_vendor_name
            ORDER BY
@@ -80,12 +84,21 @@ SELECT
                  ELSE 1
               END ASC NULLS LAST
             , t.created_ts DESC  NULLS LAST
-       )                                                          data_rnk
-     , COUNT() OVER(PARTITION BY t.key_vendor_name)               key_count
+       )                                                                   data_rnk
+     , COUNT() OVER(PARTITION BY t.key_vendor_name)                        key_count
      , t.* 
      , bu.array_business_unit
   FROM cte_supplier_distinct      t
        INNER JOIN
        cte_supplier_business_unit bu
          ON bu.key_vendor_name    = t.key_vendor_name
-;
+       )
+SELECT 
+       CASE 
+         WHEN t.vendor_id_count > 1 
+         THEN t.vendor_id || '_' || t.vendor_id_rnk::VARCHAR
+         ELSE t.vendor_id
+       END                                                                 nrm_vendor_id
+     , t.*
+  FROM cte_supplier              t
+ WHERE t.data_rnk = 1

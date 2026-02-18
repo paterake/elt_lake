@@ -25,7 +25,7 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl
      , cte_customer_nrm
     AS (
 SELECT 
-       TRIM(t.customer_number)                                                                        nrm_customer_number
+       TRIM(t.customer_number)                                                                        customer_number
      , COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))        nrm_customer_name
      , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))) key_customer_name
      , COALESCE(
@@ -60,8 +60,12 @@ SELECT t.key_customer_name
  GROUP BY 
        t.key_customer_name
        )
+     , cte_customer
+    AS (
 SELECT 
-       ROW_NUMBER() OVER
+       COUNT() OVER (PARTITION BY t.customer_number)                             customer_id_count
+     , RANK() OVER (PARTITION BY t.customer_number ORDER BY t.nrm_customer_name) customer_id_rnk
+     , ROW_NUMBER() OVER
        (
          PARTITION BY t.key_customer_name
              ORDER BY
@@ -72,9 +76,18 @@ SELECT
      , COUNT() OVER(PARTITION BY t.key_customer_name)                key_count
      , t.* 
      , bu.array_business_unit
-  FROM cte_customer_distinct      t
+  FROM cte_customer_distinct           t
        INNER JOIN
-       cte_customer_business_unit bu
-         ON bu.key_customer_name  = t.key_customer_name
+       cte_customer_business_unit      bu
+         ON bu.key_customer_name       = t.key_customer_name
+       )
+SELECT 
+       CASE 
+         WHEN t.customer_id_count > 1 
+         THEN t.customer_number || '_' || t.customer_id_rnk::VARCHAR
+         ELSE t.customer_number
+       END                                                           nrm_customer_id
+     , t.*
+  FROM cte_customer                    t
 ;
 
