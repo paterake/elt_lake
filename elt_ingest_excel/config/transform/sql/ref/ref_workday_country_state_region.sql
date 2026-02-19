@@ -11,9 +11,7 @@ SELECT
      , TRIM(workday_id)                    AS workday_id
      , TRIM(workbook_value_descriptor)     AS workbook_value_descriptor
      , TRIM(reference_id)                  AS reference_id
-  FROM read_csv_auto(
-           '/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/config/data/ref_workday_country_state_region.csv'
-         , header      = TRUE
-         , all_varchar = TRUE
+  FROM read_json_auto(
+             '/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/config/data/ref_workday_country_state_region.json'
        )
 ;

@@ -15,9 +15,7 @@ SELECT
      , TRIM("iso3166-2")                             AS iso3166_2
      , TRIM(region_code)                             AS region_code
      , TRIM(region_name)                             AS region_name
-  FROM read_csv_auto(
-           '/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/config/data/ref_post_code_county.csv'
-         , header      = TRUE
-         , all_varchar = TRUE
+  FROM read_json_auto(
+           '/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/config/data/ref_post_code_county.json'
        )
 ;
