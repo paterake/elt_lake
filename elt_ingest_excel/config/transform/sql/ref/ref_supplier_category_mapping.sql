@@ -11,39 +11,10 @@ DROP TABLE IF EXISTS ref_supplier_category_mapping
 -- - Utilities
 CREATE TABLE ref_supplier_category_mapping
     AS
-SELECT * FROM (VALUES
-      ('INFORMATION TECHNOLOGY' , 'Information Technology')
-    , ('OFFICE SUPPLIES'        , 'Office Supplies')
-    , ('PROFESSIONAL SERVICES'  , 'Professional Services')
-    , ('PROPERTY MANAGERS'      , 'Property Managers')
-    , ('SERVICES'               , 'Services')
-    , ('UTILITIES'              , 'Utilities')
-    -- Source → Target mappings from provided list
-    , ('MENS CLUBS'             , 'Services')
-    , ('EUROS'                  , 'Services')
-    , ('REFS INAC'              , 'Professional Services')
-    , ('QAR'                    , 'Services')
-    , ('GENERAL'                , 'Services')
-    , ('REFS CMH'               , 'Professional Services')
-    , ('AU DOLLARS'             , 'Services')
-    , ('DAN KRONER'             , 'Services')
-    , ('WOMENS'                 , 'Services')
-    , ('CW'                     , 'Services')
-    , ('CHARITY'                , 'Services')
-    , ('LEAGUE'                 , 'Services')
-    , ('NOR KRONE'              , 'Services')
-    , ('SEK'                    , 'Services')
-    , ('GBPFOREIGN'             , 'Services')
-    , ('PLN'                    , 'Services')
-    , ('NIKE PARTN'             , 'Services')
-    , ('GFSP'                   , 'Services')
-    , ('COUNTY FAS'             , 'Services')
-    , ('AED'                    , 'Services')
-    , ('US DOLLARS'             , 'Services')
-    , ('IR35'                   , 'Professional Services')
-    , ('ONE OFF'                , 'Services')
-    , ('PM&H'                   , 'Professional Services')
-    , ('CHF'                    , 'Services')
-    , ('DD'                     , 'Services')
-) AS t(source_supplier_category, supplier_category)
+SELECT
+       TRIM(source_supplier_category) AS source_supplier_category
+     , TRIM(supplier_category)        AS supplier_category
+  FROM read_json_auto(
+           '/Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_excel/config/data/ref_supplier_category_mapping.json'
+       )
 ;

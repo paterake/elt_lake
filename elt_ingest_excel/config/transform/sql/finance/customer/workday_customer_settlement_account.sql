@@ -22,31 +22,29 @@ SELECT
      , NULL                                                                swift_bank_identification_code
      , CASE
          WHEN c.nrm_currency_code = 'GBP'
-         THEN 'BACS'
+         THEN 'BACS|EFT|Manual'
          WHEN c.nrm_currency_code = 'EUR'
-         THEN 'SEPA'
-         WHEN c.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
-         THEN 'Wire'
-         ELSE 'BACS'
-       END                                                                 accepts_payment_types
+         THEN 'SEPA|Wire|Manual'
+         WHEN c.nrm_currency_code = 'USD'
+         THEN 'Wire|EFT|Manual'
+         WHEN c.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
+         THEN 'Wire|Manual'
+         ELSE 'BACS|EFT|Manual'
+       END                                                                 payment_types_accepted
      , CASE
-         WHEN c.nrm_currency_code = 'GBP'
-         THEN 'BACS'
-         WHEN c.nrm_currency_code = 'EUR'
+         WHEN s.nrm_currency_code = 'GBP'
+         THEN 'EFT'
+         WHEN s.nrm_currency_code = 'EUR'
          THEN 'SEPA'
-         WHEN c.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
+         WHEN s.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire'
          ELSE 'BACS'
        END                                                                 payment_types
      , NULL                                                                for_supplier_connections_only
      , NULL                                                                requires_prenote
      , NULL                                                                payment_type_prenote
-     , CASE
-         WHEN UPPER(TRIM(c.inactive)) = 'NO'         
-         THEN 'No'
-         ELSE 'Yes'
-       END                                            inactive
-     , NULL                                           bank_instructions
+     , NULL                                                                inactive
+     , NULL                                                                bank_instructions
   FROM src_fin_customer                c
  WHERE c.checkbook_id IS NOT NULL
    AND TRIM(c.checkbook_id) != ''

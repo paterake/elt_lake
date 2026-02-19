@@ -53,17 +53,14 @@ SELECT DISTINCT
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        ) 
-     , cte_customer_distinct
-    AS (
-SELECT DISTINCT 
-       t.*
-  FROM cte_customer_nrm                t
-       )
      , cte_customer_business_unit
     AS (
 SELECT t.key_customer_name
-     , ARRAY_AGG(DISTINCT t.business_unit ORDER BY t.business_unit)  array_business_unit
-  FROM cte_customer_distinct           t
+     , ARRAY_AGG (DISTINCT t.business_unit              ORDER BY t.business_unit       ) array_business_unit
+     , ARRAY_AGG (DISTINCT t.target_business_unit       ORDER BY t.target_business_unit) array_target_business_unit
+     , STRING_AGG(DISTINCT t.business_unit        , '|' ORDER BY t.business_unit       ) pipe_business_unit
+     , STRING_AGG(DISTINCT t.target_business_unit , '|' ORDER BY t.target_business_unit) pipe_target_business_unit
+  FROM cte_customer_nrm           t
  GROUP BY 
        t.key_customer_name
        )

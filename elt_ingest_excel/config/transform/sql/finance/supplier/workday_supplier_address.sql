@@ -19,15 +19,15 @@ SELECT
      , CASE
         WHEN r0.county              IS NOT NULL
         THEN r0.county
-        WHEN r1.county_state_name   IS NOT NULL
-        THEN r1.county_state_name
-        WHEN r2.county_state_name   IS NOT NULL
-        THEN r2.county_state_name
+        WHEN r1.instance            IS NOT NULL
+        THEN r1.instance
+        WHEN r2.instance            IS NOT NULL
+        THEN r2.instance
         WHEN r3.county_state_name   IS NOT NULL
         THEN r3.county_state_name
         WHEN r4.county_state_name   IS NOT NULL
         THEN r4.county_state_name
-        ELSE NULLIF(TRIM(s.nrm_county), '')
+        ELSE NULLIF(TRIM(s.county), '')
        END                                                                    region
      , NULL                                                                   subregion
      , CASE
@@ -59,22 +59,21 @@ SELECT
        ref_post_code_county                     r0
           ON UPPER(TRIM(s.post_code))           LIKE r0.postcode || ' %' 
        LEFT OUTER JOIN 
-       ref_country_county_state_mapping         r1
-         ON r1.country_code                     = s.nrm_country_code
-        AND UPPER(r1.county_state_name)         = UPPER(TRIM(s.nrm_county))
+       ref_workday_country_state_region         r1
+         ON r1.country_code                     = s.nrm_country_name
+        AND UPPER(TRIM(r1.instance))            = UPPER(TRIM(s.county))
        LEFT OUTER JOIN 
-       ref_country_county_state_mapping         r2
-         ON r2.country_code                     = s.nrm_country_code
-        AND UPPER(r2.county_state_name)         = UPPER(TRIM(s.city))
+       ref_workday_country_state_region         r2
+         ON r2.country_code                     = s.nrm_country_name
+        AND UPPER(TRIM(r2.instance))            = UPPER(TRIM(s.city))
        LEFT OUTER JOIN
        ref_country_county_state_town_mapping    r3
          ON r3.country_code                     = s.nrm_country_code
-        AND UPPER(r3.town_city_name)            = UPPER(TRIM(s.nrm_county))       
+        AND UPPER(TRIM(r3.town_city_name))      = UPPER(TRIM(s.nrm_county))       
        LEFT OUTER JOIN
        ref_country_county_state_town_mapping    r4
          ON r4.country_code                     = s.nrm_country_code
-        AND UPPER(r4.town_city_name)            = UPPER(TRIM(s.city))       
-
+        AND UPPER(TRIM(r4.town_city_name))      = UPPER(TRIM(s.city))       
  WHERE NULLIF(TRIM(s.address_1), '') IS NOT NULL
    AND NULLIF(TRIM(s.address_1), '') NOT IN ('[Not Known]')
 ;

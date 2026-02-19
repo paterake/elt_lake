@@ -35,5 +35,9 @@ SELECT
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
        ref_country                           r
-          ON r.country_code                  = COALESCE(m_name.country_code, m_code.country_code, 'GB')
+          ON r.country_code                  = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
+       -- Sort Code normalisation
+       LEFT OUTER JOIN
+       ref_bank_sort_code_prefix_mapping        rbsc
+          ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
 ;

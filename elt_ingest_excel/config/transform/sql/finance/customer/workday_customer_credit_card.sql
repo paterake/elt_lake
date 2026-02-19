@@ -15,5 +15,5 @@ SELECT
      , NULL                                           last_4_digits_of_credit_card_number
      , NULL                                           customer_profile_id
   FROM src_fin_customer                c
- WHERE 1 = 0
+ WHERE 1 = 2
 ;
