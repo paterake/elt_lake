@@ -1,0 +1,147 @@
+[
+	{
+		"source_column" : "user_type",
+		"source_value" : "Casual",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "Contractors",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "FA External Contractor",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "Fixed Term",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "Permanent",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "Third Party",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "third party",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "SERVICE_ACCOUNT",
+		"target_value" : "EXCLUDE"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "Service Account",
+		"target_value" : "EXCLUDE"
+	},
+	{
+		"source_column" : "user_type",
+		"source_value" : "service account",
+		"target_value" : "EXCLUDE"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Advantage",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Cognizant",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Consultant",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "FSP",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "First Response Group",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Innovate IT",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Orion",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Securitas",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Statsports",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Two Circle",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "littlethief",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "real-wireless",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Board & Council",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Chair",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "Chair's Assistant",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "County",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "NLS Leagues",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "National Leagues(FAS Users)",
+		"target_value" : "Supplier Staff"
+	},
+	{
+		"source_column" : "department_1",
+		"source_value" : "service account",
+		"target_value" : "EXCLUDE"
+	}
+]

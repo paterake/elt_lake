@@ -1,0 +1,2002 @@
+[
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Badakhshān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-BDS",
+		"workday_id" : "4d8f024c68ed4c7492cc5a29f6363709",
+		"workbook_value_descriptor" : "North Holland",
+		"reference_id" : "NLD-NH"
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Bādghīs",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-BDG",
+		"workday_id" : "2b709c7c3a3c4966800dc6674cd247b8",
+		"workbook_value_descriptor" : "New York",
+		"reference_id" : "USA-NY"
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Baghlān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-BGL",
+		"workday_id" : "29444d9295de4676bda1155854eb7224",
+		"workbook_value_descriptor" : "Georgia",
+		"reference_id" : "USA-GA"
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Balkh",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-BAL",
+		"workday_id" : "b219738bf5034574b8e4a2e866aca99b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Bāmyān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-BAM",
+		"workday_id" : "4c960cc13a354ff8a3f6b87e1a908394",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Dāykundī",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-DAY",
+		"workday_id" : "7b86abf90ce546cdaf3bef0df11bb94b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Farāh",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-FRA",
+		"workday_id" : "5384e9a8f23c42b0a771ac95dbec294a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Fāryāb",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-FYB",
+		"workday_id" : "632d794b601244a4a7cda26a86ec42bf",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Ghaznī",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-GHA",
+		"workday_id" : "f4f8bd1c37c64db28afe206a1d3445ff",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Ghōr",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-GHO",
+		"workday_id" : "7e1065a7620244eea8f6d1bd6793cd89",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Helmand",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-HEL",
+		"workday_id" : "6c68b6470add4bda83ab93ca2565bb98",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Herāt",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-HER",
+		"workday_id" : "1d7055e8db2840d99ba26eea6bf8ed98",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Jowzjān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-JOW",
+		"workday_id" : "7f8aa5ed0a544c70852eb2b5fece0d78",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Kābul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KAB",
+		"workday_id" : "2a70fce4ec0d453d8e6f9346e4cf5e7e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Kandahār",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KAN",
+		"workday_id" : "d375834ad0fe42dca984c4e40514711a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Kāpīsā",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KAP",
+		"workday_id" : "4446c07e75914f08aca2f3794e4c29c3",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Khōst",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KHO",
+		"workday_id" : "9829b08319a844c4a31688958e7214c1",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Kunar",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KNR",
+		"workday_id" : "672f08667714471ca70da42df112da02",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Kunduz",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-KDZ",
+		"workday_id" : "f3e43a65536745b49efbc1d6c256fd58",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Laghmān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-LAG",
+		"workday_id" : "a4c4ab679ed34bc5afcc98d0175be7d4",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Lōgar",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-LOG",
+		"workday_id" : "3fd615a6356f4473b42b9c0395cac371",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Nangarhār",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-NAN",
+		"workday_id" : "4772a953055e44ef8e3f43dedbd19cda",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Nīmrōz",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-NIM",
+		"workday_id" : "44d06d693c344fbd81aa43bda21a9ddb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Nūristān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-NUR",
+		"workday_id" : "219985280b014bf28aa92c7e10ebd50a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Uruzgān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-URU",
+		"workday_id" : "c18c146a7ae449d384186a25d3050aa5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Paktiyā",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-PIA",
+		"workday_id" : "6bf609ab3ff144da87d110de8f8ada76",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Paktīkā",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-PKA",
+		"workday_id" : "cb2ad5deaf4441c295988f281ac6362d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Panjshayr",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-PAN",
+		"workday_id" : "0d5a986484e049e8b0fda283d33528ea",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Parwān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-PAR",
+		"workday_id" : "5f0d036ebd3b40f688f49ceaa50a224d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Samangān",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-SAM",
+		"workday_id" : "4103b71b08c34142baf7270757b758a2",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Sar-e Pul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-SAR",
+		"workday_id" : "9dc7a87b001f405687d447dedf9ef27a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Takhār",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-TAK",
+		"workday_id" : "fb222b08bf2b4bb29e636fcb2796db79",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Wardak",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-WAR",
+		"workday_id" : "a28a4cb024c3429b9806634259d6140a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Afghanistan",
+		"region_type" : "Province",
+		"instance" : "Zābul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AFG-ZAB",
+		"workday_id" : "e17aa335250a46e3b48a8e25ac66d226",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Berat",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-01",
+		"workday_id" : "e917222c3d7540b3804d593fc0766e15",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Dibër",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-09",
+		"workday_id" : "c0d3935a060a4a7f8557c6fd07f824cb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Durrës",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-02",
+		"workday_id" : "b6f62954fc3d4f6b992a0ae9fa26bef1",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Elbasan",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-03",
+		"workday_id" : "f768067b0ef54462af7eb279a782dfbd",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Fier",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-04",
+		"workday_id" : "0c0de0e4fce84115a92295feaf0044f5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Gjirokastër",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-05",
+		"workday_id" : "2fd07148e7174a11b78b156f78c316a0",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Korçë",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-06",
+		"workday_id" : "d43a1c2a8b624dbb93bb8f928b6246cc",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Kukës",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-07",
+		"workday_id" : null,
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Lezhë",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-08",
+		"workday_id" : "591154832d0545b7b6489775a1a108ad",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Shkodër",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-10",
+		"workday_id" : "4081f48e555949f496cb238fdd49e62e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Tiranë",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-11",
+		"workday_id" : "abdac97329a54f50a570a03cf327ca77",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Albania",
+		"region_type" : "County",
+		"instance" : "Vlorë",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ALB-12",
+		"workday_id" : "a995c6b134634be7bc8194567559014b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Adrar",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-01",
+		"workday_id" : "c6c877c850fb4b32a031fd032c53326d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Chlef",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-02",
+		"workday_id" : "7a2af54e24194c76aeee8c08ef9cb13c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Laghouat",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-03",
+		"workday_id" : "455f1962bb2d48d6a5b7470a118ecbbf",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Oum el Bouaghi",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-04",
+		"workday_id" : "7677ae3114824e42814d57f2ca8e1026",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Batna",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-05",
+		"workday_id" : "f10a3f9f3c104853b165a9278d49153f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Bejaja",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-06",
+		"workday_id" : "4cda8837132c441cbf681c24e07421b5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Biskra",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-07",
+		"workday_id" : "a4eb25b468ff40c681e113af5538555e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Bechar",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-08",
+		"workday_id" : "6a374120b9734f128485fdea4a303d3b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Blida",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-09",
+		"workday_id" : "113b58c9c6dc4f49bca6f12980743b30",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Bouira",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-10",
+		"workday_id" : "4ff2d3a4ebad46e9ab7fcf91fc7a57c9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tamanghasset",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-11",
+		"workday_id" : "f21cc81f323a443b8bf415f2ea5fb570",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tebessa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-12",
+		"workday_id" : "95fa103cbd434243ab764fd9a2572f53",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tlemcen",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-13",
+		"workday_id" : "caeba3508798489c886e9dae13b16b9c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tiaret",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-14",
+		"workday_id" : "706106ba75fe43dbb81901db304d8c6c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tizi Ouzou",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-15",
+		"workday_id" : "36c01ef005364ae68aafe1cc72cfacdb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Algiers",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-16",
+		"workday_id" : "b90e86f29caa4f98aed579751a32c47c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Djelfa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-17",
+		"workday_id" : "ee2e2ef1bd4e4128b5697b2884d9be45",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Jijel",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-18",
+		"workday_id" : "72e065ea48dd470f998323e4720b1340",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Setif",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-19",
+		"workday_id" : "932ac3c4721e4407aee35efb0dd58c75",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "SaIda",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-20",
+		"workday_id" : "065dacfa368f45d992b2b6624f325bff",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Skikda",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-21",
+		"workday_id" : "e3d24d6d41f74e079a3c58e0f222fddb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Sidi Bel Abbes",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-22",
+		"workday_id" : "f9e6497176ea407e8729d255b6741c8e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Annaba",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-23",
+		"workday_id" : "b8df978e9507406ea7d421fbfd847194",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Guelma",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-24",
+		"workday_id" : "40974d81e9fe47a09da15447a68e0061",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Constantine",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-25",
+		"workday_id" : "96478440f682430a9143c5c1c9b86d3d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Medea",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-26",
+		"workday_id" : "5b7d1ba038a443fa84b20d483f4d1877",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Mostaganem",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-27",
+		"workday_id" : "9727db75524f4f80adcc1df4b0a9313d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Msila",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-28",
+		"workday_id" : "2d2a314548bb40eea6ee8508ff9a525c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Mascara",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-29",
+		"workday_id" : "d89bff18c80e4d2da5378b886a89edcd",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Ouargla",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-30",
+		"workday_id" : "9f8bc6e4bb0248c29616ab5a01d1ff8b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Oran",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-31",
+		"workday_id" : "62c981a06081415cab13694227040c78",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "El Bayadh",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-32",
+		"workday_id" : "0ade1d1d56aa40689721db076816a441",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Illizi",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-33",
+		"workday_id" : "a5da96a42ab24c66863ee1e9484d6bef",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Bordj Bou Arreridj",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-34",
+		"workday_id" : "0d64d288ad5846f7a764782a939a2bd6",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Boumerdes",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-35",
+		"workday_id" : "0ee876d7025345b093767d81b441e674",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "El Tarf",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-36",
+		"workday_id" : "23476a2e39ca46cbb26a0b8a6b7f966e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tindouf",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-37",
+		"workday_id" : "6fdf97f6aa314ace9dfdcb829af10461",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tissemsilt",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-38",
+		"workday_id" : "60fd448531e44b3ea9e204807eba93e7",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "El Oued",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-39",
+		"workday_id" : "c0adc790d4604e06a5309ef8c967e969",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Khenchela",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-40",
+		"workday_id" : "cd0b3f9a80e6430b874f626ead355274",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Souk Ahras",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-41",
+		"workday_id" : "5eeed5cde3b040208ff282dcc42fcfb9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Tipaza",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-42",
+		"workday_id" : "8d39f2426918476b93e41af1900dfe01",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Mila",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-43",
+		"workday_id" : "4c058334a77447f581f472551123f992",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Ain Defla",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-44",
+		"workday_id" : "d5781a3e577643fcb6eccf06a9c1d15f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Naama",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-45",
+		"workday_id" : "004a822d179547d29dd35ffa32aa8a66",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Ain Temouchent",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-46",
+		"workday_id" : "b712d220f336411ea5adb18cfb38aba5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Ghardaia",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-47",
+		"workday_id" : "e6b99aade2a34e1fa97cf3b77381d584",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Algeria",
+		"region_type" : "Province",
+		"instance" : "Relizane",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "DZA-48",
+		"workday_id" : "ba8b84f77fe84fce915deae48cc13f4f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Andorra la Vella",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-07",
+		"workday_id" : "d7cd7f5066984b009db86f1b53928b11",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Canillo",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-02",
+		"workday_id" : "0cbc38d80bcc454dac4934782bc3028c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Encamp",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-03",
+		"workday_id" : "a0cf317ebca64b1e82a0d16079ee963f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Escaldes-Engordany",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-08",
+		"workday_id" : "8a4b2b58fc46450195c75f660529c382",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "La Massana",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-04",
+		"workday_id" : "2fdd41dd9416482ea95a2127ea93e296",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Ordino",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-05",
+		"workday_id" : "167d95754c6e46a688a278dfb098a721",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Andorra",
+		"region_type" : "Parish",
+		"instance" : "Sant Julià de Lòria",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AND-06",
+		"workday_id" : "027f90c5d9024e6eb91827d79e8f52dd",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Bengo",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-BGO",
+		"workday_id" : "37e3f0c267f74853bbff8b20efcbc508",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Benguela",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-BGU",
+		"workday_id" : "51c99b8a18644171bf985d817f44b2eb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Bié",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-BIE",
+		"workday_id" : "cbbb58b42af940a6a7aae1f262a44554",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Cabinda",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-CAB",
+		"workday_id" : "a1bcad6c735649c19c4a7d842bca2c81",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Cuando-Cubango",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-CCU",
+		"workday_id" : "d7473dae50f54806bfd3ee30570ff3b5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Cuanza Norte",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-CNO",
+		"workday_id" : "e3a0a26eab41433994e96085d28f8a10",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Cuanza Sul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-CUS",
+		"workday_id" : "65dd8b2aa67a43cb9a1d20448030c778",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Cunene",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-CNN",
+		"workday_id" : "8ed4d54f0631431491390953c2438f29",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Huambo",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-HUA",
+		"workday_id" : "112fce9ce3fc4fee849b2c292c462703",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Huíla",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-HUI",
+		"workday_id" : "6080c3b66ba641f7b40e227ae577eefe",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Luanda",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-LUA",
+		"workday_id" : "dc289b7fae1d445bad389689334c0bcd",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Lunda Norte",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-LNO",
+		"workday_id" : "f59c8c952c2b4f1386afa0958f98296a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Lunda Sul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-LSU",
+		"workday_id" : "65ee9fd6aa1f4993926e8619baca42b8",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Malange",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-MAL",
+		"workday_id" : "66c403f37ac6466f85b602ec1cbb26f3",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Moxico",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-MOX",
+		"workday_id" : "426f58336d1742c098fc045d021b7a60",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Namibe",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-NAM",
+		"workday_id" : "2534c1dcdc4649708581fa3b4d9c5d97",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Uíge",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-UIG",
+		"workday_id" : "9d59069ceffe4a739148eb02ac4e35d3",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Angola",
+		"region_type" : "Province",
+		"instance" : "Zaire",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AGO-ZAI",
+		"workday_id" : "ea3fd28429d548b49041acf8ca56514b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Federal District",
+		"instance" : "Capital Federal",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-C",
+		"workday_id" : "758d5939ee334162b54a2ef2d7d29ab6",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Salta",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-A",
+		"workday_id" : "6cdeda8e24514447802492d01abfdbb6",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Buenos Aires",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-B",
+		"workday_id" : "309fa479bd0f44188682eed16739a814",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "San Luis",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-D",
+		"workday_id" : "94b39fc3100f4653acf6dd008dc9f78c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Entre Rios",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-E",
+		"workday_id" : "0e9f3f9056ad428c99819b00dec0afb9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "La Rioja",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-F",
+		"workday_id" : "189bed481f054fa9a20ced9aeabab899",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Santiago del Estero",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-G",
+		"workday_id" : "79f4b8127e2e40d582685c6185ed5260",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Chaco",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-H",
+		"workday_id" : "cb387aa7e09f41a8a964842e9b69776b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "San Juan",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-J",
+		"workday_id" : "95812d4edf644940b45a4226b03f6cf0",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Catamarca",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-K",
+		"workday_id" : "7c0af887e09d404b957c88bb1159e4ab",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "La Pampa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-L",
+		"workday_id" : "624c489c7abe4ce1b12e073d41af830d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Mendoza",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-M",
+		"workday_id" : "9c13451353504877bc0fb3855a01f9d2",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Misiones",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-N",
+		"workday_id" : "1d99356933d14c768cc36dc93740acfe",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Formosa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-P",
+		"workday_id" : "ca077251acde4073999ad11f5e6d08bc",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Neuquen",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-Q",
+		"workday_id" : "976476179a3e4cacac57bffc8750ff03",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Rio Negro",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-R",
+		"workday_id" : "e40eb9ae5df34a008929da89c2a232cc",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Santa Fe",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-S",
+		"workday_id" : "befe350bef3442d2a488eec23b62bb5f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Tucuman",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-T",
+		"workday_id" : "9a2399283fed44aa9627b6375c3e9c69",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Chubut",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-U",
+		"workday_id" : "289536ce6930415da16ac3ca26c8bbe1",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Tierra del Fuego",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-V",
+		"workday_id" : "73d7b63de7124eadbb4305d7c6552664",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Corrientes",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-W",
+		"workday_id" : "0f6a31ad091444efbdbff7ce8dfc0bed",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Cordoba",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-X",
+		"workday_id" : "a84072cd5caf4907915a7a03366f77ab",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Jujuy",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-Y",
+		"workday_id" : "cbad21df3d80473fb9271d298d45247a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Argentina",
+		"region_type" : "Province",
+		"instance" : "Santa Cruz",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARG-Z",
+		"workday_id" : "beee42f133a2435fa7e3352e6f6ebae5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "City",
+		"instance" : "Erevan",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-ER",
+		"workday_id" : "440ec6a672cc4afabe5ef9fd485076b4",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Vayoc Jor",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-VD",
+		"workday_id" : "01859ec970f04a11b3cbcc04c16197b3",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Tavuš",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-TV",
+		"workday_id" : "384d0cb8618f4b67900ef64b36e91ae7",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Syunik'",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-SU",
+		"workday_id" : "a136a4787497410cb314e7659b1ba585",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Sirak Širak",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-SH",
+		"workday_id" : "b9caf1fc607f4b9f87ee7538f0165fd9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Loṙy",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-LO",
+		"workday_id" : "a55566b8037344d7be52c7012b1152a5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Kotayk'",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-KT",
+		"workday_id" : "c0e1e2b7535e40fdb847609f3db3a728",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Geġark'unik'",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-GR",
+		"workday_id" : "493285c536d64176b19a8ed12c6b37ef",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Armavir",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-AV",
+		"workday_id" : "0ddeae39f6df417bb791bdc3858d5cab",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Ararat",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-AR",
+		"workday_id" : "ab28168cb4eb45e9bf0ffc56fdc91fff",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Armenia",
+		"region_type" : "Region",
+		"instance" : "Aragac̣otn",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "ARM-AG",
+		"workday_id" : "84a282321f50441a8fe36040f9b90027",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "New South Wales",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-NSW",
+		"workday_id" : "c7cff0e46d864ae49ef40b4ba71e7e5c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "Queensland",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-QLD",
+		"workday_id" : "1f25a5a5a98e4be1b1f49d5ad0ac8230",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "South Australia",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-SA",
+		"workday_id" : "fe22ac414d814113b975e4944a564b13",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "Tasmania",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-TAS",
+		"workday_id" : "72de81fc3e6c414ebfbc8bb8f7a2c2c8",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "Victoria",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-VIC",
+		"workday_id" : "e532928533d343429da67e9c7399cdcc",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "State",
+		"instance" : "Western Australia",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-WA",
+		"workday_id" : "ab28d9dc175e444fa11c7c0f28f52e2c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "Territory",
+		"instance" : "Australian Capital Territory",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-ACT",
+		"workday_id" : "176b48f059cc4808b4d5ca033dfa986b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Australia",
+		"region_type" : "Territory",
+		"instance" : "Northern Territory",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUS-NT",
+		"workday_id" : "85b9260a94dc463eadd4ed79be2992ff",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Burgenland",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-1",
+		"workday_id" : "66d2b4609b7f4c7aa2e34acf365ab1de",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Carinthia",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-2",
+		"workday_id" : "0fb52ba5399f4755917d69cbfd1b3b35",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Lower Austria",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-3",
+		"workday_id" : "f43b5421a227407cafd36f6c49abf6db",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Upper Austria",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-4",
+		"workday_id" : "8c864bddaa754daca3ee9028a54ed348",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Salzburg",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-5",
+		"workday_id" : "3af5dbf89f164c3dbb47d12edb093d71",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Styria",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-6",
+		"workday_id" : "9c78ea59182e41619091f2c0efb1f35b",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Tyrol",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-7",
+		"workday_id" : "a6d9cf48be154939abda279a275763c1",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Vorarlberg",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-8",
+		"workday_id" : "eb8327b8071d4011ac36f81ce91c6dea",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Austria",
+		"region_type" : "State",
+		"instance" : "Vienna",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AUT-9",
+		"workday_id" : "bf4ab6a367d44181a8c4bdd8610eeacb",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "Autonomous Republic",
+		"instance" : "Naxçıvan",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-NX",
+		"workday_id" : "796db1924ac64890b651a50ab74c8357",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Abşeron",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-ABS",
+		"workday_id" : "ec0f5b038f6d4c76a7132828796cd099",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Ağcabədi",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AGC",
+		"workday_id" : "5df8180267d84795a07f025fb64239f7",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Ağdam",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AGM",
+		"workday_id" : "23a9ffe0f69b45239ca5bae678357dec",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Ağdaş",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AGS",
+		"workday_id" : "4d56b016826f46f4aab6680ce4fa1096",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Ağstafa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AGA",
+		"workday_id" : "62b36e00efba45dc934794c58ea63552",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Ağsu",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AGU",
+		"workday_id" : "9e08cca1f01444fa946c4bccbfa78151",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Astara",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-AST",
+		"workday_id" : "d6ff1b7d2b744cf790ecaba2c4ac9fe0",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Babək",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-BAB",
+		"workday_id" : "e9c381911fa64e609e396a23f1a42df9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Balakən",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-BAL",
+		"workday_id" : "5b805e9fc6c54ae481a06b94243b864e",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Bərdə",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-BAR",
+		"workday_id" : "deba2385e75e4948a446673bf72cc4e5",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Beyləqan",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-BEY",
+		"workday_id" : "a553d3fd5fe14d5ebd0620988089ebae",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Biləsuvar",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-BIL",
+		"workday_id" : "bc6cea0e43d8403da70e640294272d1f",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Cəbrayıl",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-CAB",
+		"workday_id" : "e4ef3534243543e29cdf4db3eeadb468",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Cəlilabab",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-CAL",
+		"workday_id" : "0eafef25962f43c1af98d69a4e803e22",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Culfa",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-CUL",
+		"workday_id" : "ebb85c9910854403ba68d5bdce128811",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Daşkəsən",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-DAS",
+		"workday_id" : "3b1d9ffcd9434a96852c05cd4ba21cbc",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Dəvəçi (obsolete)",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-DAV",
+		"workday_id" : "a9cb599fb519404f93290feb6c6590d8",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Füzuli",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-FUZ",
+		"workday_id" : "34832b3786cf400784f465ac27aad88a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Gədəbəy",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-GAD",
+		"workday_id" : "2e6b978d268b402ba3f498dcebc25e0c",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Goranboy",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-GOR",
+		"workday_id" : "e2264bf9dc0a451e9afb088a310cdb8a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Göyçay",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-GOY",
+		"workday_id" : "82c6dbc79d6c4e30827c7c8ec42fcfa7",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Hacıqabul",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-HAC",
+		"workday_id" : "5aaac841bd2c41a19d18eb73cf19bee1",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "İmişli",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-IMI",
+		"workday_id" : "9401eb2fead24281859703e93f19ac5a",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "İsmayıllı",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-ISM",
+		"workday_id" : "c8fda151eef743c8b564b1cbaf728ed9",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Kəlbəcər",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-KAL",
+		"workday_id" : "0ca3e6d143a9481a97a20ae7c3778f22",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Kürdəmir",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-KUR",
+		"workday_id" : "f51e5c41d0234dd5a193c3d9813da7ec",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Laçın",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-LAC",
+		"workday_id" : "42ae444e81af40e28f1c89acfc8a632d",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	},
+	{
+		"country" : "Azerbaijan",
+		"region_type" : "District",
+		"instance" : "Lənkəran",
+		"instance_type" : "Country_Region_ID",
+		"reference_ids" : "AZE-LAN",
+		"workday_id" : "63e3efd805db4c60a4a9808a27e6c308",
+		"workbook_value_descriptor" : null,
+		"reference_id" : null
+	}
+]

@@ -1,0 +1,130 @@
+[
+	{
+		"source_supplier_category" : "INFORMATION TECHNOLOGY",
+		"supplier_category" : "Information Technology"
+	},
+	{
+		"source_supplier_category" : "OFFICE SUPPLIES",
+		"supplier_category" : "Office Supplies"
+	},
+	{
+		"source_supplier_category" : "PROFESSIONAL SERVICES",
+		"supplier_category" : "Professional Services"
+	},
+	{
+		"source_supplier_category" : "PROPERTY MANAGERS",
+		"supplier_category" : "Property Managers"
+	},
+	{
+		"source_supplier_category" : "SERVICES",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "UTILITIES",
+		"supplier_category" : "Utilities"
+	},
+	{
+		"source_supplier_category" : "MENS CLUBS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "EUROS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "REFS INAC",
+		"supplier_category" : "Professional Services"
+	},
+	{
+		"source_supplier_category" : "QAR",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "GENERAL",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "REFS CMH",
+		"supplier_category" : "Professional Services"
+	},
+	{
+		"source_supplier_category" : "AU DOLLARS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "DAN KRONER",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "WOMENS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "CW",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "CHARITY",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "LEAGUE",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "NOR KRONE",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "SEK",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "GBPFOREIGN",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "PLN",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "NIKE PARTN",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "GFSP",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "COUNTY FAS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "AED",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "US DOLLARS",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "IR35",
+		"supplier_category" : "Professional Services"
+	},
+	{
+		"source_supplier_category" : "ONE OFF",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "PM&H",
+		"supplier_category" : "Professional Services"
+	},
+	{
+		"source_supplier_category" : "CHF",
+		"supplier_category" : "Services"
+	},
+	{
+		"source_supplier_category" : "DD",
+		"supplier_category" : "Services"
+	}
+]
