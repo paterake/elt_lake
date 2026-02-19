@@ -236,7 +236,7 @@ SELECT *
         -- Hartlepool
         , ('GB', 'Hartlepool',            'Hartlepool')
         -- Isle of Wight
-        , ('GB', 'Newport',               'Isle of Wight')          -- NB: different Newport to Wales
+      --, ('GB', 'Newport',               'Isle of Wight')          -- NB: different Newport to Wales
         , ('GB', 'Ryde',                  'Isle of Wight')
         -- Leicester
         , ('GB', 'Leicester',             'Leicester')
@@ -402,7 +402,7 @@ SELECT *
         , ('GB', 'Magherafelt',           'Mid Ulster')
         , ('GB', 'Coleraine',             'Causeway Coast and Glens')
         , ('GB', 'Ballymoney',            'Causeway Coast and Glens')
-        , ('GB', 'Bangor',                'Ards and North Down')
+      --, ('GB', 'Bangor',                'Ards and North Down')
         , ('GB', 'Newtownards',           'Ards and North Down')
         , ('GB', 'Castlereagh',           'Lisburn and Castlereagh')
 ) AS t(country_code, town_city_name, county_state_name)

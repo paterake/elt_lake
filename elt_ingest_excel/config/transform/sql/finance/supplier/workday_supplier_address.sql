@@ -16,9 +16,29 @@ SELECT
                                                                               address_id
      , s.nrm_country_name                                                     country
      , s.nrm_country_code                                                     country_code
-     , s.nrm_county                                                           region
+     , CASE
+        WHEN r0.county              IS NOT NULL
+        THEN r0.county
+        WHEN r1.county_state_name   IS NOT NULL
+        THEN r1.county_state_name
+        WHEN r2.county_state_name   IS NOT NULL
+        THEN r2.county_state_name
+        WHEN r3.county_state_name   IS NOT NULL
+        THEN r3.county_state_name
+        WHEN r4.county_state_name   IS NOT NULL
+        THEN r4.county_state_name
+        ELSE NULLIF(TRIM(s.nrm_county), '')
+       END                                                                    region
      , NULL                                                                   subregion
-     , TRIM(s.city)                                                           city
+     , CASE
+        WHEN r0.city                IS NOT NULL
+        THEN r0.city
+        WHEN r3.town_city_name      IS NOT NULL
+        THEN r3.town_city_name
+        WHEN r4.town_city_name      IS NOT NULL
+        THEN r4.town_city_name
+        ELSE NULLIF(TRIM(s.city), '')
+       END                                                                    city
      , NULL                                                                   submunicipality
      , TRIM(s.address_1)                                                      address_line_1
      , NULLIF(TRIM(s.address_2), '')                                          address_line_2
@@ -34,7 +54,27 @@ SELECT
      , NULL                                                                   address_comments
      , NULL                                                                   number_of_days
      , NULL                                                                   municipality_local
-  FROM src_fin_supplier s
- WHERE s.address_1 IS NOT NULL
-   AND TRIM(s.address_1) != ''
+  FROM src_fin_supplier                         s
+       LEFT OUTER JOIN
+       ref_post_code_county                     r0
+          ON UPPER(TRIM(s.post_code))           LIKE r0.postcode || ' %' 
+       LEFT OUTER JOIN 
+       ref_country_county_state_mapping         r1
+         ON r1.country_code                     = s.nrm_country_code
+        AND UPPER(r1.county_state_name)         = UPPER(TRIM(s.nrm_county))
+       LEFT OUTER JOIN 
+       ref_country_county_state_mapping         r2
+         ON r2.country_code                     = s.nrm_country_code
+        AND UPPER(r2.county_state_name)         = UPPER(TRIM(s.city))
+       LEFT OUTER JOIN
+       ref_country_county_state_town_mapping    r3
+         ON r3.country_code                     = s.nrm_country_code
+        AND UPPER(r3.town_city_name)            = UPPER(TRIM(s.nrm_county))       
+       LEFT OUTER JOIN
+       ref_country_county_state_town_mapping    r4
+         ON r4.country_code                     = s.nrm_country_code
+        AND UPPER(r4.town_city_name)            = UPPER(TRIM(s.city))       
+
+ WHERE NULLIF(TRIM(s.address_1), '') IS NOT NULL
+   AND NULLIF(TRIM(s.address_1), '') NOT IN ('[Not Known]')
 ;

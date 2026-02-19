@@ -22,71 +22,67 @@ SELECT
          , '([0-9]+)'
          , 1
        )                                                                  AS international_phone_code_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digits', 1)
-             , REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
        )                                                                  AS landline_area_min_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digits', 2)
-             , REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.area_code_msg, '([0-9]+)-([0-9]+) digit(s)?', 2), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.area_code_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
        )                                                                  AS landline_area_max_digits
      , CASE
-         WHEN s.area_code_msg ILIKE '%may be preceded by ''0''%'
+        WHEN s.area_code_msg ILIKE '%may be preceded by ''0%'
          THEN TRUE
          ELSE FALSE
        END                                                                AS landline_area_trunk_zero
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digits', 1)
-             , REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CASE
+             WHEN NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 1), '') IS NOT NULL
+             THEN CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+                + CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 3), '') AS INTEGER)
+           END
        )                                                                  AS landline_phone_min_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digits', 2)
-             , REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+)-([0-9]+) digit(s)?', 2), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CASE
+             WHEN NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 1), '') IS NOT NULL
+             THEN CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+                + CAST(NULLIF(REGEXP_EXTRACT(s.phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 3), '') AS INTEGER)
+           END
        )                                                                  AS landline_phone_max_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digits', 1)
-             , REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
        )                                                                  AS mobile_area_min_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digits', 2)
-             , REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+)-([0-9]+) digit(s)?', 2), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.mobile_area_code_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
        )                                                                  AS mobile_area_max_digits
      , CASE
-         WHEN s.mobile_area_code_msg ILIKE '%may be preceded by ''0''%'
+        WHEN s.mobile_area_code_msg ILIKE '%may be preceded by ''0%'
          THEN TRUE
          ELSE FALSE
        END                                                                AS mobile_area_trunk_zero
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digits', 1)
-             , REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CASE
+             WHEN NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 1), '') IS NOT NULL
+             THEN CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+                + CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 3), '') AS INTEGER)
+           END
        )                                                                  AS mobile_phone_min_digits
-     , CAST(
-           COALESCE(
-               REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digits', 2)
-             , REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digits', 1)
-           )
-           AS INTEGER
+    , COALESCE(
+           CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+)-([0-9]+) digit(s)?', 2), '') AS INTEGER)
+         , CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+         , CASE
+             WHEN NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 1), '') IS NOT NULL
+             THEN CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)?', 1), '') AS INTEGER)
+                + CAST(NULLIF(REGEXP_EXTRACT(s.mobile_phone_number_msg, '([0-9]+) digit(s)? .* ([0-9]+) digit(s)?', 3), '') AS INTEGER)
+           END
        )                                                                  AS mobile_phone_max_digits
   FROM src_phone_format s
        )
