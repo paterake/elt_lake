@@ -12,6 +12,7 @@ from .parsers import JsonConfigParser, PublishConfigParser
 from .publish import ExcelPublisherOpenpyxl, ExcelPublisherXlwings, PublishResult
 from .reporting import PipelineReporter
 from .transform import SqlExecutor, TransformResult
+from .transform.validation import validate_counties_against_master
 from .writers import SaveMode, DuckDBWriter, WriteResult
 
 
@@ -193,6 +194,24 @@ class FileIngestor:
         self.transform_results = executor.execute()
 
         self.reporter.print_transform_summary(self.transform_results)
+
+        master_path = Path("~/Downloads/FIN Master Supplier Workbook Instructions.xlsx").expanduser()
+        ok, missing, _ = validate_counties_against_master(
+            database_path=self.database_path,
+            master_workbook_path=master_path,
+            sheet_name="Country States-Regions",
+        )
+        if master_path.exists():
+            print("\n" + "=" * self.reporter.SEPARATOR_WIDTH)
+            print("COUNTY VALIDATION")
+            print("=" * self.reporter.SEPARATOR_WIDTH)
+            if ok:
+                print("All counties match the master list")
+            else:
+                print("Counties not in master list:")
+                for c in sorted(missing):
+                    print(f"- {c}")
+                raise RuntimeError("County validation failed")
 
         # Print reconciliation results if tables exist
         self._print_reconciliation_results()
