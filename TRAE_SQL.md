@@ -8,6 +8,7 @@
 - Always alias tables and prefix columns with the alias
 - Align major clauses vertically for easy eye tracing
 - Format CTEs with leading commas and consistent indentation
+ - Alias column rules for SELECT (see below)
 
 ## SELECT Example
 
@@ -185,7 +186,7 @@ ORDER BY
   - Align the table alias column in FROM/JOIN lines to a common stop.
   - Ensure all aliases (e.g., `t`, `bu`) start in the same column across FROM and JOIN lines.
   - Align ON predicates so the `=` operator forms a vertical column across related lines; pad spaces after the left-hand side to hit the shared `=` column.
-  - Align SELECT aliases to a consistent column.
+  - Align SELECT aliases to a consistent column (rules below).
 - Exception: If a left-hand expression is significantly longer than the rest, do not over‑pad; keep a single space before the alias or operator instead of breaking the layout.
 
 Example (3‑space stops for FROM/JOIN alias and ON `=`):
@@ -218,3 +219,39 @@ SELECT
 - Table/column aliases aligned to shared columns
 - `=` in ON predicates vertically aligned
 - Parentheses aligned under the function keyword (if on a new line)
+
+## SELECT Alias Column Rules
+
+- Minimum alias start column is 40 (absolute column from line start).
+- Determine the alias column within a SELECT list by:
+  - Find the longest single‑line projection expression in that list.
+  - Set the alias column to the next 3‑space tab stop past the end of that expression.
+  - If that position is less than column 40, set the alias column to exactly column 40 (do NOT advance to a later tab stop).
+- For projections whose expression end would place the alias beyond column 70:
+  - Place the alias on the next line, starting at the same alias column chosen for the list.
+  - Multi‑line expressions use the alias after the final token if the end column ≤ 70; otherwise, put the alias on the next line, aligned to the list’s alias column.
+- Always keep one space between the alias column and the alias itself (after padding to the column).
+
+Example (single‑line longest expression sets the alias column):
+
+```sql
+SELECT
+       TRIM(col_one)                                  col_one
+     , COALESCE(NULLIF(TRIM(col_two), ''), '0')       col_two
+     , LOWER(col_three)                               col_three
+```
+
+Example (multi‑line with alias pushed to next line due to >70 column):
+
+```sql
+SELECT
+       CASE
+         WHEN long_expression_part_one  = 1
+          AND long_expression_part_two  = 2
+         THEN 'X'
+         ELSE 'Y'
+       END                                            case_result
+     , very_very_very_very_very_very_very_very_very_very_long_function_name(col)
+                                                     long_fn_alias
+;
+```
