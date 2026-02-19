@@ -38,7 +38,7 @@ SELECT *
         -- ---------------------------------------------------------------------
         -- England: Metropolitan Counties (current - retained for statistics)
         -- ---------------------------------------------------------------------
-        , ('GB', 'Greater Manchester',                   'current')
+        , ('GB', 'Manchester',                           'current')
         , ('GB', 'Merseyside',                           'current')
         , ('GB', 'South Yorkshire',                      'current')
         , ('GB', 'Tyne and Wear',                        'current')
@@ -48,21 +48,16 @@ SELECT *
         -- England: Unitary Authorities (outside London, current)
         -- ---------------------------------------------------------------------
         , ('GB', 'Bath and North East Somerset',         'current')
-        , ('GB', 'Bedford',                              'current')
         , ('GB', 'Blackburn with Darwen',                'current')
         , ('GB', 'Blackpool',                            'current')
-        , ('GB', 'Bournemouth, Christchurch and Poole',  'current')
         , ('GB', 'Bracknell Forest',                     'current')
         , ('GB', 'Brighton and Hove',                    'current')
         , ('GB', 'Buckinghamshire',                      'current')
-        , ('GB', 'Central Bedfordshire',                 'current')
-        , ('GB', 'Cheshire East',                        'current')
-        , ('GB', 'Cheshire West and Chester',            'current')
-        , ('GB', 'City of Bristol',                      'current')
-        , ('GB', 'City of Kingston upon Hull',           'current')
+        , ('GB', 'Bristol, City of',                     'current')
+        , ('GB', 'Kingston upon Hull, City of',          'current')
         , ('GB', 'Cornwall',                             'current')
-        , ('GB', 'County Durham',                        'current')
-        , ('GB', 'County of Herefordshire',              'current')
+        , ('GB', 'Durham',                               'current')
+        , ('GB', 'Herefordshire',                        'current')
         , ('GB', 'Darlington',                           'current')
         , ('GB', 'Derby',                                'current')
         , ('GB', 'East Riding of Yorkshire',             'current')
@@ -77,7 +72,6 @@ SELECT *
         , ('GB', 'Milton Keynes',                        'current')
         , ('GB', 'North East Lincolnshire',              'current')
         , ('GB', 'North Lincolnshire',                   'current')
-        , ('GB', 'North Northamptonshire',               'current')
         , ('GB', 'North Somerset',                       'current')
         , ('GB', 'Northumberland',                       'current')
         , ('GB', 'Nottingham',                           'current')
@@ -100,7 +94,6 @@ SELECT *
         , ('GB', 'Torbay',                               'current')
         , ('GB', 'Warrington',                           'current')
         , ('GB', 'West Berkshire',                       'current')
-        , ('GB', 'West Northamptonshire',                'current')
         , ('GB', 'Wiltshire',                            'current')
         , ('GB', 'Windsor and Maidenhead',               'current')
         , ('GB', 'Wokingham',                            'current')
@@ -114,7 +107,7 @@ SELECT *
         , ('GB', 'Brent',                                'current')
         , ('GB', 'Bromley',                              'current')
         , ('GB', 'Camden',                               'current')
-        , ('GB', 'City of London',                       'current')
+        , ('GB', 'London, City of',                      'current')
         , ('GB', 'Croydon',                              'current')
         , ('GB', 'Ealing',                               'current')
         , ('GB', 'Enfield',                              'current')
@@ -161,7 +154,7 @@ SELECT *
         , ('GB', 'Newport',                              'current')
         , ('GB', 'Pembrokeshire',                        'current')
         , ('GB', 'Powys',                                'current')
-        , ('GB', 'Rhondda Cynon Taf',                    'current')
+        , ('GB', 'Rhondda Cynon Taff',                   'current')
         , ('GB', 'Swansea',                              'current')
         , ('GB', 'Torfaen',                              'current')
         , ('GB', 'Vale of Glamorgan',                    'current')
@@ -173,7 +166,7 @@ SELECT *
         , ('GB', 'Aberdeenshire',                        'current')
         , ('GB', 'Angus',                                'current')
         , ('GB', 'Argyll and Bute',                      'current')
-        , ('GB', 'City of Edinburgh',                    'current')
+        , ('GB', 'Edinburgh, City of',                   'current')
         , ('GB', 'Clackmannanshire',                     'current')
         , ('GB', 'Dumfries and Galloway',                'current')
         , ('GB', 'Dundee City',                          'current')
@@ -191,30 +184,34 @@ SELECT *
         , ('GB', 'Moray',                                'current')
         , ('GB', 'North Ayrshire',                       'current')
         , ('GB', 'North Lanarkshire',                    'current')
-        , ('GB', 'Orkney Islands',                       'current')
+        , ('GB', 'Orkney',                               'current')
         , ('GB', 'Perth and Kinross',                    'current')
         , ('GB', 'Renfrewshire',                         'current')
-        , ('GB', 'Scottish Borders',                     'current')
-        , ('GB', 'Shetland Islands',                     'current')
+        , ('GB', 'Scottish Borders, The',               'current')
+        , ('GB', 'Shetland',                             'current')
         , ('GB', 'South Ayrshire',                       'current')
         , ('GB', 'South Lanarkshire',                    'current')
         , ('GB', 'Stirling',                             'current')
         , ('GB', 'West Dunbartonshire',                  'current')
         , ('GB', 'West Lothian',                         'current')
         -- ---------------------------------------------------------------------
-        -- Northern Ireland: 11 Local Government Districts (current, ONS 2021)
+        -- Northern Ireland: Old District Councils (Workday values; pre-2015 reorganisation)
         -- ---------------------------------------------------------------------
-        , ('GB', 'Antrim and Newtownabbey',              'current')
-        , ('GB', 'Ards and North Down',                  'current')
-        , ('GB', 'Armagh City, Banbridge and Craigavon', 'current')
+        , ('GB', 'Ards',                                 'current')
+        , ('GB', 'Ballymena',                            'current')
+        , ('GB', 'Ballymoney',                           'current')
+        , ('GB', 'Banbridge',                            'current')
         , ('GB', 'Belfast',                              'current')
-        , ('GB', 'Causeway Coast and Glens',             'current')
-        , ('GB', 'Derry City and Strabane',              'current')
-        , ('GB', 'Fermanagh and Omagh',                  'current')
-        , ('GB', 'Lisburn and Castlereagh',              'current')
-        , ('GB', 'Mid and East Antrim',                  'current')
-        , ('GB', 'Mid Ulster',                           'current')
-        , ('GB', 'Newry, Mourne and Down',               'current')
+        , ('GB', 'Carrickfergus',                        'current')
+        , ('GB', 'Castlereagh',                          'current')
+        , ('GB', 'Coleraine',                            'current')
+        , ('GB', 'Cookstown',                            'current')
+        , ('GB', 'Derry',                                'current')
+        , ('GB', 'Lisburn',                              'current')
+        , ('GB', 'Magherafelt',                          'current')
+        , ('GB', 'Newtownabbey',                         'current')
+        , ('GB', 'Newry and Mourne',                     'current')
+        , ('GB', 'Omagh',                                'current')
         -- =====================================================================
         -- United Kingdom (GB) - Historic / Abolished Counties
         -- Useful for matching against legacy records
@@ -226,37 +223,17 @@ SELECT *
         , ('GB', 'Berkshire',                            'historic')   -- → 6 UAs (1998)
         , ('GB', 'Cheshire',                             'historic')   -- → Cheshire East + Cheshire West and Chester (2009)
         , ('GB', 'Cleveland',                            'historic')   -- → Hartlepool, Middlesbrough, Stockton-on-Tees, Redcar and Cleveland (1996)
-        , ('GB', 'Durham',                               'historic')   -- → County Durham UA (2009); short-form alias
-        , ('GB', 'Greater London',                       'historic')   -- → 32 boroughs + City of London; still used colloquially
-        , ('GB', 'Herefordshire',                        'historic')   -- short-form alias for County of Herefordshire
+        , ('GB', 'London',                               'historic')   -- → 32 boroughs + City of London; still used colloquially
         , ('GB', 'Northamptonshire',                     'historic')   -- → North + West Northamptonshire (2021)
-        -- ---------------------------------------------------------------------
-        -- England: Other common aliases / short forms (alias)
-        -- ---------------------------------------------------------------------
-        , ('GB', 'Bristol',                              'alias')      -- common short form of City of Bristol
-        , ('GB', 'Hull',                                 'alias')      -- common short form of City of Kingston upon Hull
-        -- ---------------------------------------------------------------------
-        -- Wales: Pre-1974 historic counties (historic)
-        -- ---------------------------------------------------------------------
-        , ('GB', 'Anglesey',                             'historic')   -- → Isle of Anglesey
-        , ('GB', 'Breconshire',                          'historic')   -- → Powys
-        , ('GB', 'Caernarvonshire',                      'historic')   -- → Gwynedd
-        , ('GB', 'Cardiganshire',                        'historic')   -- → Ceredigion
-        , ('GB', 'Glamorgan',                            'historic')   -- → Cardiff, Vale of Glamorgan, Bridgend et al.
-        , ('GB', 'Merionethshire',                       'historic')   -- → Gwynedd
-        , ('GB', 'Montgomeryshire',                      'historic')   -- → Powys
-        , ('GB', 'Radnorshire',                          'historic')   -- → Powys
         -- ---------------------------------------------------------------------
         -- Northern Ireland: 6 Traditional Counties (historic)
         -- ---------------------------------------------------------------------
-        , ('GB', 'Antrim',                               'historic')
-        , ('GB', 'Armagh',                               'historic')
-        , ('GB', 'Down',                                 'historic')
-        , ('GB', 'Fermanagh',                            'historic')
-        , ('GB', 'Londonderry',                          'historic')   -- traditional county name
-        , ('GB', 'Derry',                                'alias')      -- common alternative to Londonderry
-        , ('GB', 'Derry and Londonderry',                'alias')      -- combined alias used in some legacy systems
-        , ('GB', 'Tyrone',                               'historic')
+        , ('GB', 'County Antrim',                         'historic')
+        , ('GB', 'County Armagh',                        'historic')
+        , ('GB', 'County Down',                          'historic')
+        , ('GB', 'County Fermanagh',                     'historic')
+        , ('GB', 'County Londonderry',                   'historic')
+        , ('GB', 'County Tyrone',                        'historic')
         -- =====================================================================
         -- United States (US): 50 States + District of Columbia (current)
         -- =====================================================================

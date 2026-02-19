@@ -8,30 +8,30 @@ SELECT *
         -- England: Metropolitan Counties
         -- =====================================================================
         -- Greater London (London Boroughs)
-          ('GB', 'London',                 'Greater London')       -- colloquial city-level entry
-        , ('GB', 'Croydon',                'Greater London')
-        , ('GB', 'Ilford',                 'Greater London')
-        , ('GB', 'Harrow',                 'Greater London')
-        , ('GB', 'Wembley',                'Greater London')
-        , ('GB', 'Enfield',                'Greater London')
-        , ('GB', 'Bromley',                'Greater London')
-        , ('GB', 'Romford',                'Greater London')
-        , ('GB', 'Ealing',                 'Greater London')
-        , ('GB', 'Hackney',                'Greater London')
-        , ('GB', 'Islington',              'Greater London')
-        , ('GB', 'Hounslow',               'Greater London')
-        , ('GB', 'Kingston upon Thames',   'Greater London')
+          ('GB', 'London',                 'London')       -- colloquial city-level entry
+        , ('GB', 'Croydon',                'London')
+        , ('GB', 'Ilford',                 'London')
+        , ('GB', 'Harrow',                 'London')
+        , ('GB', 'Wembley',                'London')
+        , ('GB', 'Enfield',                'London')
+        , ('GB', 'Bromley',                'London')
+        , ('GB', 'Romford',                'London')
+        , ('GB', 'Ealing',                 'London')
+        , ('GB', 'Hackney',                'London')
+        , ('GB', 'Islington',              'London')
+        , ('GB', 'Hounslow',               'London')
+        , ('GB', 'Kingston upon Thames',   'London')
         -- Greater Manchester
-        , ('GB', 'Manchester',             'Greater Manchester')
-        , ('GB', 'Salford',               'Greater Manchester')
-        , ('GB', 'Stockport',             'Greater Manchester')
-        , ('GB', 'Bolton',                'Greater Manchester')
-        , ('GB', 'Wigan',                 'Greater Manchester')
-        , ('GB', 'Oldham',                'Greater Manchester')
-        , ('GB', 'Rochdale',              'Greater Manchester')
-        , ('GB', 'Bury',                  'Greater Manchester')
-        , ('GB', 'Tameside',              'Greater Manchester')
-        , ('GB', 'Trafford',              'Greater Manchester')
+        , ('GB', 'Manchester',             'Manchester')
+        , ('GB', 'Salford',               'Manchester')
+        , ('GB', 'Stockport',             'Manchester')
+        , ('GB', 'Bolton',                'Manchester')
+        , ('GB', 'Wigan',                 'Manchester')
+        , ('GB', 'Oldham',                'Manchester')
+        , ('GB', 'Rochdale',              'Manchester')
+        , ('GB', 'Bury',                  'Manchester')
+        , ('GB', 'Tameside',              'Manchester')
+        , ('GB', 'Trafford',              'Manchester')
         -- Merseyside
         , ('GB', 'Liverpool',             'Merseyside')
         , ('GB', 'Birkenhead',            'Merseyside')
@@ -180,15 +180,15 @@ SELECT *
         -- Bath and North East Somerset
         , ('GB', 'Bath',                  'Bath and North East Somerset')
         -- Bedford
-        , ('GB', 'Bedford',               'Bedford')
+        , ('GB', 'Bedford',               'Bedfordshire')
         -- Blackburn with Darwen
         , ('GB', 'Blackburn',             'Blackburn with Darwen')
         -- Blackpool
         , ('GB', 'Blackpool',             'Blackpool')
         -- Bournemouth, Christchurch and Poole
-        , ('GB', 'Bournemouth',           'Bournemouth, Christchurch and Poole')
-        , ('GB', 'Poole',                 'Bournemouth, Christchurch and Poole')
-        , ('GB', 'Christchurch',          'Bournemouth, Christchurch and Poole')
+        , ('GB', 'Bournemouth',           'Bournemouth')
+        , ('GB', 'Poole',                 'Poole')
+        , ('GB', 'Christchurch',          'Dorset')
         -- Bracknell Forest
         , ('GB', 'Bracknell',             'Bracknell Forest')
         -- Brighton and Hove
@@ -198,30 +198,30 @@ SELECT *
         , ('GB', 'Aylesbury',             'Buckinghamshire')
         , ('GB', 'High Wycombe',          'Buckinghamshire')
         -- Central Bedfordshire
-        , ('GB', 'Dunstable',             'Central Bedfordshire')
-        , ('GB', 'Leighton Buzzard',      'Central Bedfordshire')
+        , ('GB', 'Dunstable',             'Bedfordshire')
+        , ('GB', 'Leighton Buzzard',      'Bedfordshire')
         -- Cheshire East
-        , ('GB', 'Crewe',                 'Cheshire East')
-        , ('GB', 'Macclesfield',          'Cheshire East')
-        , ('GB', 'Congleton',             'Cheshire East')
+        , ('GB', 'Crewe',                 'Cheshire')
+        , ('GB', 'Macclesfield',          'Cheshire')
+        , ('GB', 'Congleton',             'Cheshire')
         -- Cheshire West and Chester
-        , ('GB', 'Chester',               'Cheshire West and Chester')
-        , ('GB', 'Ellesmere Port',        'Cheshire West and Chester')
+        , ('GB', 'Chester',               'Cheshire')
+        , ('GB', 'Ellesmere Port',        'Cheshire')
         -- City of Bristol
-        , ('GB', 'Bristol',               'City of Bristol')
+        , ('GB', 'Bristol',               'Bristol, City of')
         -- City of Kingston upon Hull
-        , ('GB', 'Hull',                  'City of Kingston upon Hull')
-        , ('GB', 'Kingston upon Hull',    'City of Kingston upon Hull')
+        , ('GB', 'Hull',                  'Kingston upon Hull, City of')
+        , ('GB', 'Kingston upon Hull',    'Kingston upon Hull, City of')
         -- Cornwall
         , ('GB', 'Truro',                 'Cornwall')
         , ('GB', 'Penzance',              'Cornwall')
         , ('GB', 'St Ives',               'Cornwall')
         , ('GB', 'Newquay',               'Cornwall')
         , ('GB', 'Falmouth',              'Cornwall')
-        -- County Durham
-        , ('GB', 'Durham',                'County Durham')
-        -- County of Herefordshire
-        , ('GB', 'Hereford',              'County of Herefordshire')
+        -- Durham
+        , ('GB', 'Durham',                'Durham')
+        -- Herefordshire
+        , ('GB', 'Hereford',              'Herefordshire')
         -- Darlington
         , ('GB', 'Darlington',            'Darlington')
         -- Derby
@@ -256,9 +256,9 @@ SELECT *
         -- North Lincolnshire
         , ('GB', 'Scunthorpe',            'North Lincolnshire')
         -- North Northamptonshire
-        , ('GB', 'Corby',                 'North Northamptonshire')
-        , ('GB', 'Kettering',             'North Northamptonshire')
-        , ('GB', 'Wellingborough',        'North Northamptonshire')
+        , ('GB', 'Corby',                 'Northamptonshire')
+        , ('GB', 'Kettering',             'Northamptonshire')
+        , ('GB', 'Wellingborough',        'Northamptonshire')
         -- North Somerset
         , ('GB', 'Weston-super-Mare',     'North Somerset')
         -- Northumberland
@@ -311,8 +311,8 @@ SELECT *
         -- West Berkshire
         , ('GB', 'Newbury',               'West Berkshire')
         -- West Northamptonshire
-        , ('GB', 'Northampton',           'West Northamptonshire')
-        , ('GB', 'Daventry',              'West Northamptonshire')
+        , ('GB', 'Northampton',           'Northamptonshire')
+        , ('GB', 'Daventry',              'Northamptonshire')
         -- Wiltshire
         , ('GB', 'Salisbury',             'Wiltshire')
         , ('GB', 'Trowbridge',            'Wiltshire')
@@ -334,7 +334,7 @@ SELECT *
         , ('GB', 'Barry',                 'Vale of Glamorgan')
         , ('GB', 'Penarth',               'Vale of Glamorgan')
         , ('GB', 'Bridgend',              'Bridgend')
-        , ('GB', 'Pontypridd',            'Rhondda Cynon Taf')
+        , ('GB', 'Pontypridd',            'Rhondda Cynon Taff')
         , ('GB', 'Merthyr Tydfil',        'Merthyr Tydfil')
         , ('GB', 'Caerphilly',            'Caerphilly')
         , ('GB', 'Abertillery',           'Blaenau Gwent')
@@ -360,7 +360,7 @@ SELECT *
         -- =====================================================================
         -- Scotland: Council Areas
         -- =====================================================================
-        , ('GB', 'Edinburgh',             'City of Edinburgh')
+        , ('GB', 'Edinburgh',             'Edinburgh, City of')
         , ('GB', 'Glasgow',               'Glasgow City')
         , ('GB', 'Aberdeen',              'Aberdeen City')
         , ('GB', 'Dundee',                'Dundee City')
@@ -383,27 +383,27 @@ SELECT *
         , ('GB', 'Elgin',                 'Moray')
         , ('GB', 'Fort William',          'Highland')
         -- =====================================================================
-        -- Northern Ireland: 11 Local Government Districts (ONS 2021)
+        -- Northern Ireland: Old District Councils (Workday values; pre-2015 reorganisation)
         -- =====================================================================
         , ('GB', 'Belfast',               'Belfast')
-        , ('GB', 'Derry',                 'Derry City and Strabane')
-        , ('GB', 'Londonderry',           'Derry City and Strabane')
-        , ('GB', 'Lisburn',               'Lisburn and Castlereagh')
-        , ('GB', 'Newry',                 'Newry, Mourne and Down')
-        , ('GB', 'Armagh',                'Armagh City, Banbridge and Craigavon')
-        , ('GB', 'Banbridge',             'Armagh City, Banbridge and Craigavon')
-        , ('GB', 'Antrim',                'Antrim and Newtownabbey')
-        , ('GB', 'Newtownabbey',          'Antrim and Newtownabbey')
-        , ('GB', 'Ballymena',             'Mid and East Antrim')
-        , ('GB', 'Carrickfergus',         'Mid and East Antrim')
-        , ('GB', 'Enniskillen',           'Fermanagh and Omagh')
-        , ('GB', 'Omagh',                 'Fermanagh and Omagh')
-        , ('GB', 'Cookstown',             'Mid Ulster')
-        , ('GB', 'Magherafelt',           'Mid Ulster')
-        , ('GB', 'Coleraine',             'Causeway Coast and Glens')
-        , ('GB', 'Ballymoney',            'Causeway Coast and Glens')
-      --, ('GB', 'Bangor',                'Ards and North Down')
-        , ('GB', 'Newtownards',           'Ards and North Down')
-        , ('GB', 'Castlereagh',           'Lisburn and Castlereagh')
+        , ('GB', 'Derry',                 'Derry')
+        , ('GB', 'Londonderry',           'Derry')
+        , ('GB', 'Lisburn',               'Lisburn')
+        , ('GB', 'Newry',                 'Newry and Mourne')
+        , ('GB', 'Armagh',                'County Armagh')
+        , ('GB', 'Banbridge',             'Banbridge')
+        , ('GB', 'Antrim',                'County Antrim')
+        , ('GB', 'Newtownabbey',          'Newtownabbey')
+        , ('GB', 'Ballymena',             'Ballymena')
+        , ('GB', 'Carrickfergus',         'Carrickfergus')
+        , ('GB', 'Enniskillen',           'County Fermanagh')
+        , ('GB', 'Omagh',                 'Omagh')
+        , ('GB', 'Cookstown',             'Cookstown')
+        , ('GB', 'Magherafelt',           'Magherafelt')
+        , ('GB', 'Coleraine',             'Coleraine')
+        , ('GB', 'Ballymoney',            'Ballymoney')
+      --, ('GB', 'Bangor',                'Ards')
+        , ('GB', 'Newtownards',           'Ards')
+        , ('GB', 'Castlereagh',           'Castlereagh')
 ) AS t(country_code, town_city_name, county_state_name)
 ;
