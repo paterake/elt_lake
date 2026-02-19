@@ -1,4 +1,3 @@
-
 postcode,easting,northing,latitude,longitude,city,county,country_code,country_name,iso3166-2,region_code,region_name
 S36,425700,400800,53.50302,-1.61249,Hunshelf,Barnsley,ENG,England,GB-ENG,NORTHWEST,North West 
 S63,444500,402600,53.51794,-1.32879,,Barnsley,ENG,England,GB-ENG,NORTHWEST,North West 
@@ -13,11 +12,11 @@ BA2,373800,162400,51.35957,-2.37633,Bath,Bath and North East Somerset,ENG,Englan
 BS31,365800,167800,51.4077,-2.49176,Keynsham,Bath and North East Somerset,ENG,England,GB-ENG,SOUTHWEST,South West 
 BS39,363000,158900,51.32749,-2.53109,Clutton,Bath and North East Somerset,ENG,England,GB-ENG,SOUTHWEST,South West 
 BS40,351900,161100,51.34644,-2.69071,Nempnett Thrubwell,Bath and North East Somerset,ENG,England,GB-ENG,SOUTHWEST,South West 
-MK40,504600,250000,52.13797,-0.47145,Bedford,Bedford Borough,ENG,England,GB-ENG,EAST,East of England
-MK41,506300,251500,52.15113,-0.44614,Bedford,Bedford Borough,ENG,England,GB-ENG,EAST,East of England
-MK42,504500,248000,52.12002,-0.47352,Kempston,Bedford Borough,ENG,England,GB-ENG,EAST,East of England
-MK43,498800,247700,52.11837,-0.55684,Kempston Rural,Bedford Borough,ENG,England,GB-ENG,EAST,East of England
-MK44,507600,256300,52.19402,-0.42563,Wilden,Bedford Borough,ENG,England,GB-ENG,EAST,East of England
+MK40,504600,250000,52.13797,-0.47145,Bedford,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+MK41,506300,251500,52.15113,-0.44614,Bedford,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+MK42,504500,248000,52.12002,-0.47352,Kempston,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+MK43,498800,247700,52.11837,-0.55684,Kempston Rural,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+MK44,507600,256300,52.19402,-0.42563,Wilden,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
 B1,406300,286800,52.47872,-1.90723,,Birmingham,ENG,England,GB-ENG,WESTMID,West Midlands 
 B10,410100,285800,52.46967,-1.8513,,Birmingham,ENG,England,GB-ENG,WESTMID,West Midlands 
 B11,409600,284100,52.4544,-1.85871,,Birmingham,ENG,England,GB-ENG,WESTMID,West Midlands 
@@ -114,7 +113,7 @@ BN1,531100,106100,50.839,-0.13786,Brighton,Brighton and Hove,ENG,England,GB-ENG,
 BN2,533600,104500,50.82405,-0.10296,Brighton,Brighton and Hove,ENG,England,GB-ENG,SOUTHEAST,South East 
 BN3,528500,105500,50.83419,-0.17498,Brighton,Brighton and Hove,ENG,England,GB-ENG,SOUTHEAST,South East 
 BN41,525700,106100,50.8402,-0.21452,Brighton,Brighton and Hove,ENG,England,GB-ENG,SOUTHEAST,South East 
-MK18,470800,231800,51.97972,-0.96904,,Buckingham,ENG,England,GB-ENG,SOUTHWEST,#N/A
+MK18,470800,231800,51.97972,-0.96904,,Buckinghamshire,ENG,England,GB-ENG,SOUTHWEST,#N/A
 HP10,489900,190900,51.60928,-0.70159,Chepping Wycombe,Buckinghamshire,ENG,England,GB-ENG,SOUTHEAST,South East 
 HP11,486900,192500,51.62413,-0.74451,High Wycombe,Buckinghamshire,ENG,England,GB-ENG,SOUTHEAST,South East 
 HP12,484600,192600,51.62538,-0.77771,High Wycombe,Buckinghamshire,ENG,England,GB-ENG,SOUTHEAST,South East 
@@ -177,81 +176,81 @@ PE28,523500,274900,52.35784,-0.18629,The Stukeleys,Cambridgeshire,ENG,England,GB
 PE29,524100,272200,52.33345,-0.17848,Huntingdon,Cambridgeshire,ENG,England,GB-ENG,EAST,East of England
 PE7,522200,295000,52.53877,-0.19801,Farcet,Cambridgeshire,ENG,England,GB-ENG,EAST,East of England
 SG8,536200,242500,52.06369,-0.01293,Melbourn,Cambridgeshire,ENG,England,GB-ENG,EAST,East of England
-LU5,502300,224400,51.90829,-0.5127,Thorn,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-LU6,500800,220900,51.87711,-0.53552,Dunstable,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-LU7,491900,224300,51.90921,-0.66388,Leighton-Linslade,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-MK45,505100,237400,52.02462,-0.46803,Maulden,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-SG15,519300,236400,52.01276,-0.26149,Arlesey,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-SG16,516900,236600,52.01507,-0.29638,Henlow,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-SG17,514500,238700,52.03445,-0.33063,Shefford,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-SG18,518800,244100,52.08208,-0.26609,Biggleswade,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-SG19,520400,250500,52.13925,-0.24049,Everton,Central Bedfordshire,ENG,England,GB-ENG,EAST,East of England
-CW1,370900,356300,53.10281,-2.43469,Crewe,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW10,370200,365900,53.18907,-2.44604,Middlewich,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW11,375600,360700,53.1426,-2.36482,Sandbach,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW12,385900,363100,53.16455,-2.21093,Congleton,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW2,370100,353900,53.08119,-2.44642,Crewe,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW3,372800,344800,52.99952,-2.40534,Bridgemere,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW4,376800,367800,53.20648,-2.34739,Holmes Chapel,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CW5,365100,351800,53.062,-2.52084,Nantwich,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-SK10,391400,375700,53.27793,-2.12899,Macclesfield,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-SK11,390500,372200,53.24646,-2.14238,Macclesfield,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-SK12,393900,383900,53.35169,-2.09165,Poynton,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-SK9,384700,381200,53.32723,-2.22975,Macclesfield,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-WA16,375300,378500,53.3026,-2.37068,Knutsford,Cheshire East,ENG,England,GB-ENG,NORTHWEST,North West 
-CH1,339400,367600,53.20173,-2.90732,Chester,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CH2,342000,369200,53.2164,-2.86869,Upton,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CH3,345100,363600,53.1664,-2.8213,Waverton,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CH64,330200,377300,53.28779,-3.04717,Ellesmere Port,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CH65,339900,376000,53.27729,-2.90142,Ellesmere Port,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CH66,337700,376000,53.27704,-2.93442,Ellesmere Port,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CW6,355500,363000,53.16197,-2.66565,Tarporley,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CW7,364800,366100,53.19054,-2.52688,Winsford,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CW8,362400,373100,53.2533,-2.56363,Weaverham,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-CW9,366600,373700,53.25897,-2.50074,Northwich,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-SY14,348900,348300,53.02924,-2.76203,Malpas,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-WA6,351800,375300,53.27222,-2.72285,Frodsham,Cheshire West and Chester,ENG,England,GB-ENG,NORTHWEST,North West 
-BS1,358800,172900,51.45309,-2.593,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS10,357700,178800,51.50606,-2.60954,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS11,353200,177800,51.49672,-2.67425,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS13,357500,168300,51.41163,-2.61116,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS14,361000,168400,51.41278,-2.56084,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS2,359700,173600,51.45945,-2.58013,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS3,358200,171200,51.43776,-2.60144,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS4,361000,170800,51.43437,-2.56111,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS5,361800,173800,51.4614,-2.54992,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS6,358400,174800,51.47015,-2.59898,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS7,359700,176600,51.48643,-2.58047,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS8,356900,173400,51.45745,-2.62041,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS9,356600,176700,51.4871,-2.62513,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-BS99,360200,173400,51.45769,-2.57291,Bristol,City of Bristol,ENG,England,GB-ENG,SOUTHWEST,South West 
-HU1,509800,428700,53.74288,-0.33494,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU2,509600,429500,53.75011,-0.33769,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU3,507900,428500,53.74148,-0.36381,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU4,505500,427800,53.73568,-0.40043,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU5,507100,430500,53.75961,-0.37524,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU6,507500,432900,53.7811,-0.36834,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU7,510300,433800,53.7886,-0.32554,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU8,512100,431600,53.76845,-0.29903,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-HU9,513000,430200,53.75567,-0.28589,Hull,City of Kingston-upon-Hull,ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
-EC2M,532800,181700,51.51811,-0.08578,,City of London,ENG,England,GB-ENG,LONDON,London
-EC2N,532800,181500,51.51631,-0.08586,,City of London,ENG,England,GB-ENG,LONDON,London
-EC2R,532400,181500,51.5164,-0.09162,,City of London,ENG,England,GB-ENG,LONDON,London
-EC2V,532300,181400,51.51553,-0.0931,,City of London,ENG,England,GB-ENG,LONDON,London
-EC2Y,532100,181900,51.52007,-0.09579,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3,533000,181200,51.51357,-0.08309,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3A,533100,181400,51.51534,-0.08158,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3M,533000,181100,51.51267,-0.08313,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3N,533300,181100,51.5126,-0.07881,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3R,532900,181000,51.51179,-0.08461,,City of London,ENG,England,GB-ENG,LONDON,London
-EC3V,532800,181200,51.51361,-0.08597,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4,531800,181300,51.51475,-0.10034,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4A,531300,181400,51.51576,-0.10751,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4M,531800,181300,51.51475,-0.10034,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4N,532300,181300,51.51463,-0.09314,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4R,532400,181000,51.51191,-0.09181,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4V,531900,181100,51.51293,-0.09897,,City of London,ENG,England,GB-ENG,LONDON,London
-EC4Y,531300,181200,51.51397,-0.10758,,City of London,ENG,England,GB-ENG,LONDON,London
+LU5,502300,224400,51.90829,-0.5127,Thorn,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+LU6,500800,220900,51.87711,-0.53552,Dunstable,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+LU7,491900,224300,51.90921,-0.66388,Leighton-Linslade,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+MK45,505100,237400,52.02462,-0.46803,Maulden,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+SG15,519300,236400,52.01276,-0.26149,Arlesey,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+SG16,516900,236600,52.01507,-0.29638,Henlow,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+SG17,514500,238700,52.03445,-0.33063,Shefford,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+SG18,518800,244100,52.08208,-0.26609,Biggleswade,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+SG19,520400,250500,52.13925,-0.24049,Everton,Bedfordshire,ENG,England,GB-ENG,EAST,East of England
+CW1,370900,356300,53.10281,-2.43469,Crewe,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW10,370200,365900,53.18907,-2.44604,Middlewich,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW11,375600,360700,53.1426,-2.36482,Sandbach,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW12,385900,363100,53.16455,-2.21093,Congleton,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW2,370100,353900,53.08119,-2.44642,Crewe,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW3,372800,344800,52.99952,-2.40534,Bridgemere,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW4,376800,367800,53.20648,-2.34739,Holmes Chapel,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW5,365100,351800,53.062,-2.52084,Nantwich,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+SK10,391400,375700,53.27793,-2.12899,Macclesfield,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+SK11,390500,372200,53.24646,-2.14238,Macclesfield,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+SK12,393900,383900,53.35169,-2.09165,Poynton,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+SK9,384700,381200,53.32723,-2.22975,Macclesfield,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+WA16,375300,378500,53.3026,-2.37068,Knutsford,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH1,339400,367600,53.20173,-2.90732,Chester,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH2,342000,369200,53.2164,-2.86869,Upton,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH3,345100,363600,53.1664,-2.8213,Waverton,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH64,330200,377300,53.28779,-3.04717,Ellesmere Port,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH65,339900,376000,53.27729,-2.90142,Ellesmere Port,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CH66,337700,376000,53.27704,-2.93442,Ellesmere Port,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW6,355500,363000,53.16197,-2.66565,Tarporley,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW7,364800,366100,53.19054,-2.52688,Winsford,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW8,362400,373100,53.2533,-2.56363,Weaverham,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+CW9,366600,373700,53.25897,-2.50074,Northwich,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+SY14,348900,348300,53.02924,-2.76203,Malpas,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+WA6,351800,375300,53.27222,-2.72285,Frodsham,Cheshire,ENG,England,GB-ENG,NORTHWEST,North West 
+BS1,358800,172900,51.45309,-2.593,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS10,357700,178800,51.50606,-2.60954,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS11,353200,177800,51.49672,-2.67425,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS13,357500,168300,51.41163,-2.61116,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS14,361000,168400,51.41278,-2.56084,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS2,359700,173600,51.45945,-2.58013,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS3,358200,171200,51.43776,-2.60144,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS4,361000,170800,51.43437,-2.56111,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS5,361800,173800,51.4614,-2.54992,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS6,358400,174800,51.47015,-2.59898,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS7,359700,176600,51.48643,-2.58047,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS8,356900,173400,51.45745,-2.62041,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS9,356600,176700,51.4871,-2.62513,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+BS99,360200,173400,51.45769,-2.57291,Bristol,"Bristol, City of",ENG,England,GB-ENG,SOUTHWEST,South West 
+HU1,509800,428700,53.74288,-0.33494,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU2,509600,429500,53.75011,-0.33769,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU3,507900,428500,53.74148,-0.36381,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU4,505500,427800,53.73568,-0.40043,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU5,507100,430500,53.75961,-0.37524,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU6,507500,432900,53.7811,-0.36834,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU7,510300,433800,53.7886,-0.32554,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU8,512100,431600,53.76845,-0.29903,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+HU9,513000,430200,53.75567,-0.28589,Hull,"Kingston upon Hull, City of",ENG,England,GB-ENG,YORKHUMB,Yorkshire and the Humber 
+EC2M,532800,181700,51.51811,-0.08578,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC2N,532800,181500,51.51631,-0.08586,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC2R,532400,181500,51.5164,-0.09162,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC2V,532300,181400,51.51553,-0.0931,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC2Y,532100,181900,51.52007,-0.09579,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3,533000,181200,51.51357,-0.08309,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3A,533100,181400,51.51534,-0.08158,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3M,533000,181100,51.51267,-0.08313,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3N,533300,181100,51.5126,-0.07881,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3R,532900,181000,51.51179,-0.08461,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC3V,532800,181200,51.51361,-0.08597,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4,531800,181300,51.51475,-0.10034,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4A,531300,181400,51.51576,-0.10751,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4M,531800,181300,51.51475,-0.10034,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4N,532300,181300,51.51463,-0.09314,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4R,532400,181000,51.51191,-0.09181,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4V,531900,181100,51.51293,-0.09897,,"London, City of",ENG,England,GB-ENG,LONDON,London
+EC4Y,531300,181200,51.51397,-0.10758,,"London, City of",ENG,England,GB-ENG,LONDON,London
 EX23,221600,105800,50.82366,-4.53323,Bude,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
 PL10,242700,51900,50.34537,-4.21106,Rame,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
 PL11,240000,55000,50.3725,-4.2503,Antony,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
@@ -297,37 +296,37 @@ TR6,175800,53900,50.34167,-5.15134,Perranporth,Cornwall,ENG,England,GB-ENG,SOUTH
 TR7,181700,61600,50.41304,-5.073,Newquay,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
 TR8,184200,59900,50.39869,-5.03689,Colan,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
 TR9,191400,61300,50.41387,-4.93648,St Columb Major,Cornwall,ENG,England,GB-ENG,SOUTHWEST,South West 
-DH1,427900,543000,54.78103,-1.56616,Durham,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH2,425900,551700,54.85933,-1.59648,Chester-le-Street,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH3,427800,553100,54.87181,-1.56675,North Lodge,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH6,434500,539900,54.75276,-1.46391,Shadforth,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH7,421600,543900,54.78943,-1.66406,Esh,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH8,410000,551200,54.85541,-1.84422,Burnhope,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DH9,418800,552600,54.86773,-1.70704,Stanley,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL12,401000,519700,54.57239,-1.98453,Cotherstone,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL13,403000,535700,54.71619,-1.95343,Stanhope,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL14,420000,528600,54.65199,-1.68999,Lcp Stanhope and Wolsingham Parishes And,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL15,417500,535000,54.7096,-1.72836,Lcp Stanhope and Wolsingham Parishes And,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL16,425500,533800,54.69848,-1.60429,Spennymoor,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL17,429600,531900,54.68118,-1.54086,Ferryhill,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL4,423000,526200,54.63029,-1.64368,Shildon,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-DL5,427400,524800,54.61749,-1.57565,Great Aycliffe,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-SR7,441000,548600,54.83046,-1.36168,Dalton-le-Dale,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-SR8,442800,541500,54.7665,-1.33471,Peterlee,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-TS21,437100,525900,54.62676,-1.42529,Sedgefield,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-TS27,445900,536700,54.72309,-1.28728,Monk Hesleden,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-TS28,440400,536900,54.72536,-1.37265,Hutton Henry,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-TS29,437400,535200,54.71032,-1.41945,Trimdon,County Durham,ENG,England,GB-ENG,NORTHEAST,North East 
-HR1,354100,240900,52.06415,-2.66963,Hampton Bishop,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR2,346200,234900,52.0095,-2.78393,Allensmore,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR3,326400,244500,52.09353,-3.07446,Clifford,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR4,347500,243600,52.08784,-2.76632,Burghill,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR5,329800,255400,52.19196,-3.02708,Kington Rural,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR6,347400,259700,52.23258,-2.77028,Leominster,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR7,364400,254400,52.18629,-2.52079,Bromyard,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR8,369600,238600,52.04454,-2.44331,Ledbury,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-HR9,360000,223500,51.90816,-2.58153,Ross-on-Wye,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR13,376600,244100,52.09433,-2.34161,Colwall,County of Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+DH1,427900,543000,54.78103,-1.56616,Durham,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH2,425900,551700,54.85933,-1.59648,Chester-le-Street,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH3,427800,553100,54.87181,-1.56675,North Lodge,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH6,434500,539900,54.75276,-1.46391,Shadforth,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH7,421600,543900,54.78943,-1.66406,Esh,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH8,410000,551200,54.85541,-1.84422,Burnhope,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DH9,418800,552600,54.86773,-1.70704,Stanley,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL12,401000,519700,54.57239,-1.98453,Cotherstone,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL13,403000,535700,54.71619,-1.95343,Stanhope,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL14,420000,528600,54.65199,-1.68999,Lcp Stanhope and Wolsingham Parishes And,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL15,417500,535000,54.7096,-1.72836,Lcp Stanhope and Wolsingham Parishes And,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL16,425500,533800,54.69848,-1.60429,Spennymoor,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL17,429600,531900,54.68118,-1.54086,Ferryhill,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL4,423000,526200,54.63029,-1.64368,Shildon,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+DL5,427400,524800,54.61749,-1.57565,Great Aycliffe,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+SR7,441000,548600,54.83046,-1.36168,Dalton-le-Dale,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+SR8,442800,541500,54.7665,-1.33471,Peterlee,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+TS21,437100,525900,54.62676,-1.42529,Sedgefield,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+TS27,445900,536700,54.72309,-1.28728,Monk Hesleden,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+TS28,440400,536900,54.72536,-1.37265,Hutton Henry,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+TS29,437400,535200,54.71032,-1.41945,Trimdon,Durham,ENG,England,GB-ENG,NORTHEAST,North East 
+HR1,354100,240900,52.06415,-2.66963,Hampton Bishop,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR2,346200,234900,52.0095,-2.78393,Allensmore,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR3,326400,244500,52.09353,-3.07446,Clifford,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR4,347500,243600,52.08784,-2.76632,Burghill,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR5,329800,255400,52.19196,-3.02708,Kington Rural,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR6,347400,259700,52.23258,-2.77028,Leominster,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR7,364400,254400,52.18629,-2.52079,Bromyard,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR8,369600,238600,52.04454,-2.44331,Ledbury,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+HR9,360000,223500,51.90816,-2.58153,Ross-on-Wye,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR13,376600,244100,52.09433,-2.34161,Colwall,Herefordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
 CV1,433600,279200,52.40939,-1.506,,Coventry,ENG,England,GB-ENG,EASTMID,East Midlands 
 CV2,436400,280700,52.4227,-1.46467,,Coventry,ENG,England,GB-ENG,EASTMID,East Midlands 
 CV3,435300,277400,52.3931,-1.48119,,Coventry,ENG,England,GB-ENG,EASTMID,East Midlands 
@@ -645,261 +644,261 @@ GL56,420300,232300,51.98836,-1.70435,Moreton-in-Marsh,Gloucestershire,ENG,Englan
 GL6,386800,204100,51.735,-2.19117,Thrupp,Gloucestershire,ENG,England,GB-ENG,SOUTHWEST,South West 
 GL7,407100,201600,51.71263,-1.89723,Ampney St Mary,Gloucestershire,ENG,England,GB-ENG,SOUTHWEST,South West 
 GL8,388200,193700,51.64151,-2.17054,Tetbury,Gloucestershire,ENG,England,GB-ENG,SOUTHWEST,South West 
-BR1,540600,170000,51.41107,0.02192,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR2,540700,167500,51.38858,0.02237,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR3,537000,169000,51.40297,-0.0302,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR4,538700,166000,51.37559,-0.00695,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR5,546400,167800,51.38983,0.10436,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR6,545700,165100,51.36575,0.0932,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-BR7,544100,170000,51.41019,0.07222,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR0,534000,165500,51.37223,-0.07463,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR2,533700,163000,51.34983,-0.07988,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR4,528100,168900,51.40415,-0.15813,Merton,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR5,529700,158700,51.31211,-0.13886,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR7,532000,168000,51.39517,-0.10242,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-CR8,531600,161400,51.33594,-0.11061,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA14,546900,171700,51.42475,0.11316,Bexley,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA15,545900,173400,51.44029,0.09948,Bexley,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA16,546500,176100,51.4644,0.10923,Bexley,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA17,549200,178700,51.48706,0.14917,Crayford,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA18,548800,179200,51.49165,0.14363,Crayford,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA5,549200,173500,51.44033,0.14698,Bexley,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA6,548700,175100,51.45484,0.14046,Bexley,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA7,549100,176300,51.46552,0.14672,Crayford,Greater London,ENG,England,GB-ENG,LONDON,London 
-DA8,551200,177500,51.47574,0.17745,Crayford,Greater London,ENG,England,GB-ENG,LONDON,London 
-E1,534700,181700,51.51766,-0.05841,Poplar,Greater London,ENG,England,GB-ENG,LONDON,London 
-E10,537800,187400,51.56814,-0.01153,Walthamstow,Greater London,ENG,England,GB-ENG,LONDON,London 
-E11,539600,187400,51.56769,0.01443,Walthamstow,Greater London,ENG,England,GB-ENG,LONDON,London 
-E12,542400,185500,51.54992,0.05404,Stratford,Greater London,ENG,England,GB-ENG,LONDON,London 
-E13,540600,182900,51.527,0.02705,East Ham,Greater London,ENG,England,GB-ENG,LONDON,London 
-E14,537500,180500,51.5062,-0.01855,Poplar,Greater London,ENG,England,GB-ENG,LONDON,London 
-E15,538900,184200,51.53911,0.00307,Stratford,Greater London,ENG,England,GB-ENG,LONDON,London 
-E16,540600,181100,51.51083,0.02633,East Ham,Greater London,ENG,England,GB-ENG,LONDON,London 
-E17,537300,189400,51.58623,-0.01796,Walthamstow,Greater London,ENG,England,GB-ENG,LONDON,London 
-E18,540400,190100,51.59176,0.02705,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-E1W,534800,180600,51.50775,-0.05739,Poplar,Greater London,ENG,England,GB-ENG,LONDON,London 
-E2,534500,183000,51.52939,-0.0608,Poplar,Greater London,ENG,England,GB-ENG,LONDON,London 
-E3,537000,182900,51.52789,-0.02482,Poplar,Greater London,ENG,England,GB-ENG,LONDON,London 
-E4,538200,193400,51.62196,-0.00339,Walthamstow,Greater London,ENG,England,GB-ENG,LONDON,London 
-E5,535000,186300,51.55893,-0.05233,Hackney,Greater London,ENG,England,GB-ENG,LONDON,London 
-E6,542600,182800,51.5256,0.05583,East Ham,Greater London,ENG,England,GB-ENG,LONDON,London 
-E7,540600,185100,51.54678,0.02793,Stratford,Greater London,ENG,England,GB-ENG,LONDON,London 
-E8,534300,184400,51.54202,-0.06315,Hackney,Greater London,ENG,England,GB-ENG,LONDON,London 
-E9,535700,184500,51.54258,-0.04293,Hackney,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1,531700,182200,51.52286,-0.10144,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1A,531600,181900,51.52019,-0.103,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1M,531700,182000,51.52106,-0.10152,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1N,531300,181900,51.52026,-0.10732,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1R,531300,182400,51.52475,-0.10713,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1V,532000,182500,51.52549,-0.09701,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC1Y,532300,182200,51.52272,-0.0928,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC2,532600,181900,51.51995,-0.08859,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC2A,532800,182200,51.5226,-0.0856,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EC3P,531700,181900,51.52016,-0.10156,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-EN1,533700,196800,51.6536,-0.06707,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-EN2,532000,197300,51.6585,-0.09144,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-EN3,535700,197400,51.65852,-0.03794,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-EN4,527300,196000,51.6479,-0.15983,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-EN5,524900,196100,51.64934,-0.19447,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA0,517600,184900,51.55024,-0.3037,Brent,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA1,515300,188100,51.57948,-0.33581,Harrow,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA2,513800,187400,51.57349,-0.35768,Harrow,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA3,516400,189600,51.59274,-0.31945,Harrow,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA4,510200,186900,51.56971,-0.40977,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA5,511900,189700,51.59455,-0.38436,Harrow,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA6,509400,191400,51.61032,-0.41991,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA7,517200,191500,51.60965,-0.30727,Harrow,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA8,519600,191700,51.61094,-0.27255,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-HA9,518800,185900,51.55898,-0.28606,Brent,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG1,543800,186500,51.55855,0.07463,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG11,545200,184000,51.53573,0.09378,Barking,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG2,544200,188200,51.57373,0.08109,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG3,545600,186900,51.56168,0.10074,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG4,542400,188500,51.57688,0.05525,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG5,543100,189700,51.58749,0.06584,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG6,544700,190300,51.59247,0.08917,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-IG8,540800,191800,51.60694,0.0335,Ilford,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT1,518500,169000,51.40713,-0.29606,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT2,519000,170000,51.41602,-0.28854,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT3,521300,168200,51.39935,-0.25609,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT4,522300,165800,51.37757,-0.24255,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT5,519200,167300,51.39171,-0.28657,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT6,518300,167000,51.3892,-0.2996,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-KT9,518200,164200,51.36405,-0.30197,Kingston Upon Thames,Greater London,ENG,England,GB-ENG,LONDON,London 
-N1,532000,183800,51.53717,-0.09652,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-N10,528600,190000,51.59368,-0.14325,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N11,528900,192200,51.61338,-0.13812,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-N12,526300,192300,51.61487,-0.17561,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-N13,531400,192900,51.6191,-0.10176,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-N14,529500,194500,51.63392,-0.1286,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-N15,532900,188800,51.5819,-0.08166,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N16,533400,186700,51.5629,-0.07525,Hackney,Greater London,ENG,England,GB-ENG,LONDON,London 
-N17,533600,190600,51.59791,-0.07088,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N18,534000,192300,51.61309,-0.06446,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-N19,529800,186800,51.56464,-0.12712,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-N2,526900,189500,51.58957,-0.16797,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-N20,526400,193900,51.62923,-0.17359,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-N21,531600,194800,51.63612,-0.09816,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-N22,530900,190700,51.59944,-0.1098,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N3,525200,190600,51.59984,-0.1921,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-N4,531600,187500,51.57052,-0.1009,Hackney,Greater London,ENG,England,GB-ENG,LONDON,London 
-N5,531900,185600,51.55337,-0.09729,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-N6,528800,187500,51.57116,-0.14129,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N7,530600,185500,51.55277,-0.11607,Islington,Greater London,ENG,England,GB-ENG,LONDON,London 
-N8,530500,188900,51.58335,-0.11625,Tottenham,Greater London,ENG,England,GB-ENG,LONDON,London 
-N9,534500,194000,51.62825,-0.05659,Enfield,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW1,528800,183200,51.53252,-0.14286,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW10,521600,183800,51.53951,-0.24641,Brent,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW11,525000,188200,51.57831,-0.19584,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW2,523500,185900,51.55797,-0.21829,Brent,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW3,526800,185300,51.55184,-0.17093,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW4,523100,189100,51.58682,-0.22294,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW5,528800,185300,51.55139,-0.14209,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW6,525200,184100,51.54142,-0.19442,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW7,522200,192200,51.61488,-0.23484,Barnet,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW8,526800,183000,51.53117,-0.17175,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-NW9,520900,189000,51.5864,-0.25472,Brent,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM1,551300,189300,51.58175,0.18395,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM10,549700,185100,51.54443,0.15909,Barking,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM11,553800,188000,51.56939,0.21944,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM12,553100,186100,51.55251,0.20852,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM13,552300,182900,51.52397,0.19561,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM14,557000,186600,51.55593,0.26496,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM2,552600,189500,51.5832,0.20279,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM3,554200,191600,51.60163,0.22679,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM5,550000,191200,51.59917,0.16602,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM6,547800,188500,51.57549,0.13313,Barking,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM7,550400,188500,51.5748,0.17063,Romford,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM8,547800,186400,51.55662,0.13225,Barking,Greater London,ENG,England,GB-ENG,LONDON,London 
-RM9,548100,184600,51.54036,0.13582,Barking,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE1,532600,179500,51.49838,-0.08949,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE10,538800,177800,51.48162,-0.00089,Greenwich,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE11,531300,178400,51.4888,-0.10862,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE12,540700,173700,51.4443,0.02483,Greenwich,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE13,538300,175200,51.45837,-0.0091,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE14,536000,177000,51.47511,-0.0415,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE15,534400,176600,51.47189,-0.06468,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE16,535200,179300,51.49597,-0.05213,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE17,532400,178300,51.48764,-0.09282,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE18,544000,178200,51.48391,0.07412,Eltham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE19,533200,170500,51.41735,-0.08424,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE2,547000,178900,51.48943,0.11759,Eltham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE20,535100,169900,51.41151,-0.05716,Bromley,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE21,533000,172800,51.43807,-0.08626,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE22,534000,174600,51.45401,-0.07119,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE23,535600,173100,51.44015,-0.04875,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE24,532100,174600,51.45446,-0.09853,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE25,533900,168300,51.39742,-0.07501,Croydon,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE26,535300,171600,51.42674,-0.05364,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE27,532000,171900,51.43022,-0.10097,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE28,546300,180300,51.50219,0.10809,Eltham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE3,540300,176400,51.46866,0.02015,Greenwich,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE4,536600,175400,51.46058,-0.03348,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE5,532600,176700,51.47322,-0.09055,Camberwell,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE6,538000,172900,51.43777,-0.01432,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE7,541300,178100,51.48369,0.03521,Greenwich,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE8,536900,177700,51.48118,-0.02828,Lewisham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SE9,542900,173800,51.44465,0.05651,Eltham,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM1,525900,164600,51.36599,-0.19127,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM2,525600,163100,51.35258,-0.19611,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM3,524400,165000,51.36992,-0.21267,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM4,525300,167500,51.39219,-0.19886,Merton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM5,527600,164800,51.36741,-0.16679,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SM6,529300,164000,51.35984,-0.14267,Sutton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW10,526300,177700,51.48365,-0.18086,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW11,527500,175800,51.4663,-0.16427,Wandsworth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW12,528700,173500,51.44536,-0.14784,Wandsworth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW13,521900,176600,51.47473,-0.24458,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW14,520500,175500,51.46514,-0.26511,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW15,523300,174700,51.45734,-0.22509,Wandsworth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW16,530200,170900,51.42165,-0.12722,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW17,527700,171800,51.4303,-0.16283,Wandsworth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW18,525800,173900,51.4496,-0.18941,Wandsworth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW19,524900,170900,51.42284,-0.20341,Merton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW2,530700,174000,51.44939,-0.11889,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW20,523400,169500,51.41058,-0.22547,Merton,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW3,527400,178400,51.48969,-0.16477,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW4,529500,175200,51.46045,-0.13571,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW5,525800,178400,51.49005,-0.18781,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW6,525000,176900,51.47675,-0.19986,Hammersmith,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW7,526700,179100,51.49614,-0.1746,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW8,529800,176900,51.47566,-0.13077,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-SW9,531100,176200,51.46907,-0.11232,Lambeth,Greater London,ENG,England,GB-ENG,LONDON,London 
-TN16,543100,157000,51.29362,0.05262,,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW1,516400,173700,51.44982,-0.3247,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW10,518000,173700,51.44949,-0.30168,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW11,516000,171100,51.42653,-0.33131,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW12,513400,170500,51.42166,-0.36888,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW13,511200,172300,51.43828,-0.39995,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW14,509900,173800,51.45202,-0.41818,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW2,514700,173300,51.44657,-0.34929,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW3,513800,175600,51.46742,-0.36149,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW4,512300,175400,51.46593,-0.38314,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW5,512400,177000,51.48029,-0.3812,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW6,507900,175700,51.46948,-0.44638,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW7,515800,176300,51.47331,-0.33248,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW8,517600,177700,51.48552,-0.30611,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-TW9,518500,175700,51.46736,-0.29382,Richmond,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB1,512900,180800,51.51435,-0.37278,Southall,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB10,507300,184400,51.5478,-0.45236,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB11,507000,181200,51.51909,-0.45766,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB2,512500,179100,51.49915,-0.37909,Southall,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB3,509500,179700,51.50513,-0.42211,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB4,510500,181800,51.52381,-0.40704,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB5,512700,184000,51.54315,-0.37464,Southall,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB6,514900,183600,51.53911,-0.34306,Southall,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB7,506200,179700,51.50576,-0.46964,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-UB8,505900,182900,51.53458,-0.473,Hillingdon,Greater London,ENG,England,GB-ENG,LONDON,London 
-W10,523900,181800,51.52103,-0.21397,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W11,524600,180800,51.51189,-0.20424,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W12,522900,180300,51.50777,-0.2289,Hammersmith,Greater London,ENG,England,GB-ENG,LONDON,London 
-W13,516600,180700,51.5127,-0.31951,Ealing,Greater London,ENG,England,GB-ENG,LONDON,London 
-W14,524300,178900,51.49488,-0.20923,Hammersmith,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1G,528600,181600,51.51818,-0.14633,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1H,527700,181400,51.51659,-0.15936,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1M,528400,181600,51.51823,-0.14921,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1T,529400,181800,51.5198,-0.13473,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1U,528200,181600,51.51827,-0.15209,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W1W,529100,181700,51.51897,-0.13909,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W2,526400,181200,51.51508,-0.17816,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W3,520200,180400,51.50925,-0.26775,Ealing,Greater London,ENG,England,GB-ENG,LONDON,London 
-W4,520600,178400,51.49118,-0.26268,Hounslow,Greater London,ENG,England,GB-ENG,LONDON,London 
-W5,517900,180700,51.51243,-0.30078,Ealing,Greater London,ENG,England,GB-ENG,LONDON,London 
-W6,523000,178600,51.49246,-0.22805,Hammersmith,Greater London,ENG,England,GB-ENG,LONDON,London 
-W7,515600,180500,51.5111,-0.33398,Ealing,Greater London,ENG,England,GB-ENG,LONDON,London 
-W8,525400,179500,51.50003,-0.19317,Kensington,Greater London,ENG,England,GB-ENG,LONDON,London 
-W9,525500,182400,51.52607,-0.1907,Paddington,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1,530300,182000,51.52139,-0.12169,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1A,530100,181500,51.51694,-0.12475,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1B,530000,181700,51.51876,-0.12612,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1E,529600,181900,51.52065,-0.13181,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1H,530000,182300,51.52415,-0.1259,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1N,530400,182000,51.52136,-0.12025,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1R,530700,181700,51.5186,-0.11604,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1V,530500,181500,51.51685,-0.11899,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC1X,530700,182400,51.52489,-0.11578,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC2A,530800,181400,51.51588,-0.11471,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-WC2H,529900,181100,51.51339,-0.12778,Camden Town,Greater London,ENG,England,GB-ENG,LONDON,London 
-M1,384400,397900,53.47734,-2.23508,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M11,388100,398000,53.47834,-2.17933,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M12,386600,396500,53.46482,-2.20187,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M13,385800,396000,53.4603,-2.21389,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M14,385100,394600,53.4477,-2.22437,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M15,383400,396600,53.46563,-2.25008,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M16,382500,395400,53.45481,-2.26357,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M18,388800,396100,53.46127,-2.16871,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M19,387100,393400,53.43696,-2.19421,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M2,383900,398200,53.48003,-2.24263,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M20,384700,392100,53.42521,-2.23027,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M21,382000,393500,53.43771,-2.27099,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M22,382800,387700,53.3856,-2.25863,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M23,380900,389200,53.39902,-2.28729,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M4,384800,398700,53.48455,-2.22909,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M40,387400,400800,53.50349,-2.18999,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M60,384900,398900,53.48635,-2.22759,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M8,384200,401400,53.5088,-2.23827,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M9,385900,402800,53.52143,-2.21269,Manchester,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
-M90,381600,385200,53.36309,-2.27653,Ringway,Greater Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+BR1,540600,170000,51.41107,0.02192,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR2,540700,167500,51.38858,0.02237,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR3,537000,169000,51.40297,-0.0302,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR4,538700,166000,51.37559,-0.00695,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR5,546400,167800,51.38983,0.10436,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR6,545700,165100,51.36575,0.0932,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+BR7,544100,170000,51.41019,0.07222,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+CR0,534000,165500,51.37223,-0.07463,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+CR2,533700,163000,51.34983,-0.07988,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+CR4,528100,168900,51.40415,-0.15813,Merton,London,ENG,England,GB-ENG,LONDON,London 
+CR5,529700,158700,51.31211,-0.13886,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+CR7,532000,168000,51.39517,-0.10242,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+CR8,531600,161400,51.33594,-0.11061,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+DA14,546900,171700,51.42475,0.11316,Bexley,London,ENG,England,GB-ENG,LONDON,London 
+DA15,545900,173400,51.44029,0.09948,Bexley,London,ENG,England,GB-ENG,LONDON,London 
+DA16,546500,176100,51.4644,0.10923,Bexley,London,ENG,England,GB-ENG,LONDON,London 
+DA17,549200,178700,51.48706,0.14917,Crayford,London,ENG,England,GB-ENG,LONDON,London 
+DA18,548800,179200,51.49165,0.14363,Crayford,London,ENG,England,GB-ENG,LONDON,London 
+DA5,549200,173500,51.44033,0.14698,Bexley,London,ENG,England,GB-ENG,LONDON,London 
+DA6,548700,175100,51.45484,0.14046,Bexley,London,ENG,England,GB-ENG,LONDON,London 
+DA7,549100,176300,51.46552,0.14672,Crayford,London,ENG,England,GB-ENG,LONDON,London 
+DA8,551200,177500,51.47574,0.17745,Crayford,London,ENG,England,GB-ENG,LONDON,London 
+E1,534700,181700,51.51766,-0.05841,Poplar,London,ENG,England,GB-ENG,LONDON,London 
+E10,537800,187400,51.56814,-0.01153,Walthamstow,London,ENG,England,GB-ENG,LONDON,London 
+E11,539600,187400,51.56769,0.01443,Walthamstow,London,ENG,England,GB-ENG,LONDON,London 
+E12,542400,185500,51.54992,0.05404,Stratford,London,ENG,England,GB-ENG,LONDON,London 
+E13,540600,182900,51.527,0.02705,East Ham,London,ENG,England,GB-ENG,LONDON,London 
+E14,537500,180500,51.5062,-0.01855,Poplar,London,ENG,England,GB-ENG,LONDON,London 
+E15,538900,184200,51.53911,0.00307,Stratford,London,ENG,England,GB-ENG,LONDON,London 
+E16,540600,181100,51.51083,0.02633,East Ham,London,ENG,England,GB-ENG,LONDON,London 
+E17,537300,189400,51.58623,-0.01796,Walthamstow,London,ENG,England,GB-ENG,LONDON,London 
+E18,540400,190100,51.59176,0.02705,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+E1W,534800,180600,51.50775,-0.05739,Poplar,London,ENG,England,GB-ENG,LONDON,London 
+E2,534500,183000,51.52939,-0.0608,Poplar,London,ENG,England,GB-ENG,LONDON,London 
+E3,537000,182900,51.52789,-0.02482,Poplar,London,ENG,England,GB-ENG,LONDON,London 
+E4,538200,193400,51.62196,-0.00339,Walthamstow,London,ENG,England,GB-ENG,LONDON,London 
+E5,535000,186300,51.55893,-0.05233,Hackney,London,ENG,England,GB-ENG,LONDON,London 
+E6,542600,182800,51.5256,0.05583,East Ham,London,ENG,England,GB-ENG,LONDON,London 
+E7,540600,185100,51.54678,0.02793,Stratford,London,ENG,England,GB-ENG,LONDON,London 
+E8,534300,184400,51.54202,-0.06315,Hackney,London,ENG,England,GB-ENG,LONDON,London 
+E9,535700,184500,51.54258,-0.04293,Hackney,London,ENG,England,GB-ENG,LONDON,London 
+EC1,531700,182200,51.52286,-0.10144,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC1A,531600,181900,51.52019,-0.103,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC1M,531700,182000,51.52106,-0.10152,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC1N,531300,181900,51.52026,-0.10732,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+EC1R,531300,182400,51.52475,-0.10713,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC1V,532000,182500,51.52549,-0.09701,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC1Y,532300,182200,51.52272,-0.0928,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC2,532600,181900,51.51995,-0.08859,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC2A,532800,182200,51.5226,-0.0856,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EC3P,531700,181900,51.52016,-0.10156,Islington,London,ENG,England,GB-ENG,LONDON,London 
+EN1,533700,196800,51.6536,-0.06707,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+EN2,532000,197300,51.6585,-0.09144,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+EN3,535700,197400,51.65852,-0.03794,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+EN4,527300,196000,51.6479,-0.15983,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+EN5,524900,196100,51.64934,-0.19447,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+HA0,517600,184900,51.55024,-0.3037,Brent,London,ENG,England,GB-ENG,LONDON,London 
+HA1,515300,188100,51.57948,-0.33581,Harrow,London,ENG,England,GB-ENG,LONDON,London 
+HA2,513800,187400,51.57349,-0.35768,Harrow,London,ENG,England,GB-ENG,LONDON,London 
+HA3,516400,189600,51.59274,-0.31945,Harrow,London,ENG,England,GB-ENG,LONDON,London 
+HA4,510200,186900,51.56971,-0.40977,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+HA5,511900,189700,51.59455,-0.38436,Harrow,London,ENG,England,GB-ENG,LONDON,London 
+HA6,509400,191400,51.61032,-0.41991,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+HA7,517200,191500,51.60965,-0.30727,Harrow,London,ENG,England,GB-ENG,LONDON,London 
+HA8,519600,191700,51.61094,-0.27255,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+HA9,518800,185900,51.55898,-0.28606,Brent,London,ENG,England,GB-ENG,LONDON,London 
+IG1,543800,186500,51.55855,0.07463,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG11,545200,184000,51.53573,0.09378,Barking,London,ENG,England,GB-ENG,LONDON,London 
+IG2,544200,188200,51.57373,0.08109,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG3,545600,186900,51.56168,0.10074,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG4,542400,188500,51.57688,0.05525,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG5,543100,189700,51.58749,0.06584,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG6,544700,190300,51.59247,0.08917,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+IG8,540800,191800,51.60694,0.0335,Ilford,London,ENG,England,GB-ENG,LONDON,London 
+KT1,518500,169000,51.40713,-0.29606,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+KT2,519000,170000,51.41602,-0.28854,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+KT3,521300,168200,51.39935,-0.25609,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+KT4,522300,165800,51.37757,-0.24255,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+KT5,519200,167300,51.39171,-0.28657,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+KT6,518300,167000,51.3892,-0.2996,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+KT9,518200,164200,51.36405,-0.30197,Kingston Upon Thames,London,ENG,England,GB-ENG,LONDON,London 
+N1,532000,183800,51.53717,-0.09652,Islington,London,ENG,England,GB-ENG,LONDON,London 
+N10,528600,190000,51.59368,-0.14325,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N11,528900,192200,51.61338,-0.13812,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+N12,526300,192300,51.61487,-0.17561,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+N13,531400,192900,51.6191,-0.10176,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+N14,529500,194500,51.63392,-0.1286,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+N15,532900,188800,51.5819,-0.08166,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N16,533400,186700,51.5629,-0.07525,Hackney,London,ENG,England,GB-ENG,LONDON,London 
+N17,533600,190600,51.59791,-0.07088,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N18,534000,192300,51.61309,-0.06446,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+N19,529800,186800,51.56464,-0.12712,Islington,London,ENG,England,GB-ENG,LONDON,London 
+N2,526900,189500,51.58957,-0.16797,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+N20,526400,193900,51.62923,-0.17359,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+N21,531600,194800,51.63612,-0.09816,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+N22,530900,190700,51.59944,-0.1098,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N3,525200,190600,51.59984,-0.1921,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+N4,531600,187500,51.57052,-0.1009,Hackney,London,ENG,England,GB-ENG,LONDON,London 
+N5,531900,185600,51.55337,-0.09729,Islington,London,ENG,England,GB-ENG,LONDON,London 
+N6,528800,187500,51.57116,-0.14129,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N7,530600,185500,51.55277,-0.11607,Islington,London,ENG,England,GB-ENG,LONDON,London 
+N8,530500,188900,51.58335,-0.11625,Tottenham,London,ENG,England,GB-ENG,LONDON,London 
+N9,534500,194000,51.62825,-0.05659,Enfield,London,ENG,England,GB-ENG,LONDON,London 
+NW1,528800,183200,51.53252,-0.14286,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+NW10,521600,183800,51.53951,-0.24641,Brent,London,ENG,England,GB-ENG,LONDON,London 
+NW11,525000,188200,51.57831,-0.19584,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+NW2,523500,185900,51.55797,-0.21829,Brent,London,ENG,England,GB-ENG,LONDON,London 
+NW3,526800,185300,51.55184,-0.17093,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+NW4,523100,189100,51.58682,-0.22294,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+NW5,528800,185300,51.55139,-0.14209,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+NW6,525200,184100,51.54142,-0.19442,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+NW7,522200,192200,51.61488,-0.23484,Barnet,London,ENG,England,GB-ENG,LONDON,London 
+NW8,526800,183000,51.53117,-0.17175,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+NW9,520900,189000,51.5864,-0.25472,Brent,London,ENG,England,GB-ENG,LONDON,London 
+RM1,551300,189300,51.58175,0.18395,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM10,549700,185100,51.54443,0.15909,Barking,London,ENG,England,GB-ENG,LONDON,London 
+RM11,553800,188000,51.56939,0.21944,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM12,553100,186100,51.55251,0.20852,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM13,552300,182900,51.52397,0.19561,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM14,557000,186600,51.55593,0.26496,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM2,552600,189500,51.5832,0.20279,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM3,554200,191600,51.60163,0.22679,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM5,550000,191200,51.59917,0.16602,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM6,547800,188500,51.57549,0.13313,Barking,London,ENG,England,GB-ENG,LONDON,London 
+RM7,550400,188500,51.5748,0.17063,Romford,London,ENG,England,GB-ENG,LONDON,London 
+RM8,547800,186400,51.55662,0.13225,Barking,London,ENG,England,GB-ENG,LONDON,London 
+RM9,548100,184600,51.54036,0.13582,Barking,London,ENG,England,GB-ENG,LONDON,London 
+SE1,532600,179500,51.49838,-0.08949,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE10,538800,177800,51.48162,-0.00089,Greenwich,London,ENG,England,GB-ENG,LONDON,London 
+SE11,531300,178400,51.4888,-0.10862,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SE12,540700,173700,51.4443,0.02483,Greenwich,London,ENG,England,GB-ENG,LONDON,London 
+SE13,538300,175200,51.45837,-0.0091,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE14,536000,177000,51.47511,-0.0415,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE15,534400,176600,51.47189,-0.06468,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE16,535200,179300,51.49597,-0.05213,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE17,532400,178300,51.48764,-0.09282,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE18,544000,178200,51.48391,0.07412,Eltham,London,ENG,England,GB-ENG,LONDON,London 
+SE19,533200,170500,51.41735,-0.08424,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+SE2,547000,178900,51.48943,0.11759,Eltham,London,ENG,England,GB-ENG,LONDON,London 
+SE20,535100,169900,51.41151,-0.05716,Bromley,London,ENG,England,GB-ENG,LONDON,London 
+SE21,533000,172800,51.43807,-0.08626,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE22,534000,174600,51.45401,-0.07119,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE23,535600,173100,51.44015,-0.04875,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE24,532100,174600,51.45446,-0.09853,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE25,533900,168300,51.39742,-0.07501,Croydon,London,ENG,England,GB-ENG,LONDON,London 
+SE26,535300,171600,51.42674,-0.05364,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE27,532000,171900,51.43022,-0.10097,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SE28,546300,180300,51.50219,0.10809,Eltham,London,ENG,England,GB-ENG,LONDON,London 
+SE3,540300,176400,51.46866,0.02015,Greenwich,London,ENG,England,GB-ENG,LONDON,London 
+SE4,536600,175400,51.46058,-0.03348,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE5,532600,176700,51.47322,-0.09055,Camberwell,London,ENG,England,GB-ENG,LONDON,London 
+SE6,538000,172900,51.43777,-0.01432,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE7,541300,178100,51.48369,0.03521,Greenwich,London,ENG,England,GB-ENG,LONDON,London 
+SE8,536900,177700,51.48118,-0.02828,Lewisham,London,ENG,England,GB-ENG,LONDON,London 
+SE9,542900,173800,51.44465,0.05651,Eltham,London,ENG,England,GB-ENG,LONDON,London 
+SM1,525900,164600,51.36599,-0.19127,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+SM2,525600,163100,51.35258,-0.19611,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+SM3,524400,165000,51.36992,-0.21267,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+SM4,525300,167500,51.39219,-0.19886,Merton,London,ENG,England,GB-ENG,LONDON,London 
+SM5,527600,164800,51.36741,-0.16679,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+SM6,529300,164000,51.35984,-0.14267,Sutton,London,ENG,England,GB-ENG,LONDON,London 
+SW10,526300,177700,51.48365,-0.18086,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+SW11,527500,175800,51.4663,-0.16427,Wandsworth,London,ENG,England,GB-ENG,LONDON,London 
+SW12,528700,173500,51.44536,-0.14784,Wandsworth,London,ENG,England,GB-ENG,LONDON,London 
+SW13,521900,176600,51.47473,-0.24458,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+SW14,520500,175500,51.46514,-0.26511,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+SW15,523300,174700,51.45734,-0.22509,Wandsworth,London,ENG,England,GB-ENG,LONDON,London 
+SW16,530200,170900,51.42165,-0.12722,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SW17,527700,171800,51.4303,-0.16283,Wandsworth,London,ENG,England,GB-ENG,LONDON,London 
+SW18,525800,173900,51.4496,-0.18941,Wandsworth,London,ENG,England,GB-ENG,LONDON,London 
+SW19,524900,170900,51.42284,-0.20341,Merton,London,ENG,England,GB-ENG,LONDON,London 
+SW2,530700,174000,51.44939,-0.11889,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SW20,523400,169500,51.41058,-0.22547,Merton,London,ENG,England,GB-ENG,LONDON,London 
+SW3,527400,178400,51.48969,-0.16477,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+SW4,529500,175200,51.46045,-0.13571,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SW5,525800,178400,51.49005,-0.18781,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+SW6,525000,176900,51.47675,-0.19986,Hammersmith,London,ENG,England,GB-ENG,LONDON,London 
+SW7,526700,179100,51.49614,-0.1746,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+SW8,529800,176900,51.47566,-0.13077,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+SW9,531100,176200,51.46907,-0.11232,Lambeth,London,ENG,England,GB-ENG,LONDON,London 
+TN16,543100,157000,51.29362,0.05262,,London,ENG,England,GB-ENG,LONDON,London 
+TW1,516400,173700,51.44982,-0.3247,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+TW10,518000,173700,51.44949,-0.30168,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+TW11,516000,171100,51.42653,-0.33131,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+TW12,513400,170500,51.42166,-0.36888,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+TW13,511200,172300,51.43828,-0.39995,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW14,509900,173800,51.45202,-0.41818,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW2,514700,173300,51.44657,-0.34929,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+TW3,513800,175600,51.46742,-0.36149,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW4,512300,175400,51.46593,-0.38314,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW5,512400,177000,51.48029,-0.3812,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW6,507900,175700,51.46948,-0.44638,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+TW7,515800,176300,51.47331,-0.33248,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW8,517600,177700,51.48552,-0.30611,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+TW9,518500,175700,51.46736,-0.29382,Richmond,London,ENG,England,GB-ENG,LONDON,London 
+UB1,512900,180800,51.51435,-0.37278,Southall,London,ENG,England,GB-ENG,LONDON,London 
+UB10,507300,184400,51.5478,-0.45236,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+UB11,507000,181200,51.51909,-0.45766,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+UB2,512500,179100,51.49915,-0.37909,Southall,London,ENG,England,GB-ENG,LONDON,London 
+UB3,509500,179700,51.50513,-0.42211,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+UB4,510500,181800,51.52381,-0.40704,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+UB5,512700,184000,51.54315,-0.37464,Southall,London,ENG,England,GB-ENG,LONDON,London 
+UB6,514900,183600,51.53911,-0.34306,Southall,London,ENG,England,GB-ENG,LONDON,London 
+UB7,506200,179700,51.50576,-0.46964,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+UB8,505900,182900,51.53458,-0.473,Hillingdon,London,ENG,England,GB-ENG,LONDON,London 
+W10,523900,181800,51.52103,-0.21397,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+W11,524600,180800,51.51189,-0.20424,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+W12,522900,180300,51.50777,-0.2289,Hammersmith,London,ENG,England,GB-ENG,LONDON,London 
+W13,516600,180700,51.5127,-0.31951,Ealing,London,ENG,England,GB-ENG,LONDON,London 
+W14,524300,178900,51.49488,-0.20923,Hammersmith,London,ENG,England,GB-ENG,LONDON,London 
+W1G,528600,181600,51.51818,-0.14633,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W1H,527700,181400,51.51659,-0.15936,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W1M,528400,181600,51.51823,-0.14921,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W1T,529400,181800,51.5198,-0.13473,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+W1U,528200,181600,51.51827,-0.15209,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W1W,529100,181700,51.51897,-0.13909,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W2,526400,181200,51.51508,-0.17816,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+W3,520200,180400,51.50925,-0.26775,Ealing,London,ENG,England,GB-ENG,LONDON,London 
+W4,520600,178400,51.49118,-0.26268,Hounslow,London,ENG,England,GB-ENG,LONDON,London 
+W5,517900,180700,51.51243,-0.30078,Ealing,London,ENG,England,GB-ENG,LONDON,London 
+W6,523000,178600,51.49246,-0.22805,Hammersmith,London,ENG,England,GB-ENG,LONDON,London 
+W7,515600,180500,51.5111,-0.33398,Ealing,London,ENG,England,GB-ENG,LONDON,London 
+W8,525400,179500,51.50003,-0.19317,Kensington,London,ENG,England,GB-ENG,LONDON,London 
+W9,525500,182400,51.52607,-0.1907,Paddington,London,ENG,England,GB-ENG,LONDON,London 
+WC1,530300,182000,51.52139,-0.12169,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1A,530100,181500,51.51694,-0.12475,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1B,530000,181700,51.51876,-0.12612,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1E,529600,181900,51.52065,-0.13181,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1H,530000,182300,51.52415,-0.1259,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1N,530400,182000,51.52136,-0.12025,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1R,530700,181700,51.5186,-0.11604,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1V,530500,181500,51.51685,-0.11899,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC1X,530700,182400,51.52489,-0.11578,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC2A,530800,181400,51.51588,-0.11471,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+WC2H,529900,181100,51.51339,-0.12778,Camden Town,London,ENG,England,GB-ENG,LONDON,London 
+M1,384400,397900,53.47734,-2.23508,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M11,388100,398000,53.47834,-2.17933,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M12,386600,396500,53.46482,-2.20187,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M13,385800,396000,53.4603,-2.21389,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M14,385100,394600,53.4477,-2.22437,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M15,383400,396600,53.46563,-2.25008,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M16,382500,395400,53.45481,-2.26357,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M18,388800,396100,53.46127,-2.16871,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M19,387100,393400,53.43696,-2.19421,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M2,383900,398200,53.48003,-2.24263,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M20,384700,392100,53.42521,-2.23027,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M21,382000,393500,53.43771,-2.27099,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M22,382800,387700,53.3856,-2.25863,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M23,380900,389200,53.39902,-2.28729,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M4,384800,398700,53.48455,-2.22909,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M40,387400,400800,53.50349,-2.18999,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M60,384900,398900,53.48635,-2.22759,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M8,384200,401400,53.5088,-2.23827,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M9,385900,402800,53.52143,-2.21269,Manchester,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
+M90,381600,385200,53.36309,-2.27653,Ringway,Manchester,ENG,England,GB-ENG,NORTHWEST,North West 
 WA7,353200,381700,53.32987,-2.7028,Runcorn,Halton,ENG,England,GB-ENG,NORTHWEST,North West 
 WA8,350700,386400,53.37189,-2.74107,Runcorn,Halton,ENG,England,GB-ENG,NORTHWEST,North West 
 BH24,415100,105000,50.84377,-1.78551,Ringwood,Hampshire,ENG,England,GB-ENG,SOUTHEAST,South East 
@@ -960,8 +959,8 @@ SP9,423700,148000,51.23018,-1.66053,South Tidworth,Hampshire,ENG,England,GB-ENG,
 TS24,450900,533800,54.69655,-1.21016,,Hartlepool,ENG,England,GB-ENG,NORTHEAST,North East 
 TS25,450100,530100,54.66338,-1.22321,,Hartlepool,ENG,England,GB-ENG,NORTHEAST,North East 
 TS26,449700,532800,54.68768,-1.22895,,Hartlepool,ENG,England,GB-ENG,NORTHEAST,North East 
-SG13,533200,211600,51.78673,-0.06863,,Hertford,ENG,England,GB-ENG,EAST,East of England
-SG14,531600,213800,51.80688,-0.09098,,Hertford,ENG,England,GB-ENG,EAST,East of England
+SG13,533200,211600,51.78673,-0.06863,,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
+SG14,531600,213800,51.80688,-0.09098,,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
 AL1,515800,206900,51.74836,-0.32237,St Albans,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
 AL10,522200,208300,51.75958,-0.2292,Hatfield,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
 AL2,515100,203800,51.72064,-0.33353,St Albans,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
@@ -1008,23 +1007,23 @@ WD4,506700,202300,51.70882,-0.45556,Kings Langley,Hertfordshire,ENG,England,GB-E
 WD5,509400,201900,51.7047,-0.41662,Abbots Langley,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
 WD6,519300,196800,51.65684,-0.27514,Borehamwood,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
 WD7,516900,200000,51.68611,-0.30876,Radlett,Hertfordshire,ENG,England,GB-ENG,EAST,East of England
-PO30,448500,88200,50.69085,-1.3133,Newport,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO31,449000,95100,50.75286,-1.30531,Cowes,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO32,450800,94900,50.75091,-1.27982,Newport,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO33,458600,91700,50.72139,-1.16976,Newport,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO34,462700,91100,50.71557,-1.11178,Nettlestone,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO35,464700,87900,50.68657,-1.08401,Bembridge,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO36,459200,84600,50.65748,-1.1624,Sandown,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO37,458200,81700,50.63151,-1.177,Shanklin,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO38,453700,78600,50.60406,-1.24108,Ventnor,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO39,432600,86900,50.68027,-1.53853,Totland,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO40,433900,87100,50.68199,-1.52011,Freshwater,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-PO41,436900,89100,50.69979,-1.47744,Yarmouth,Isle Of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
-TR21,94600,12000,49.92936,-6.25622,Isles of Scilly,Isles Of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
-TR22,88100,8200,49.89192,-6.34346,Isles of Scilly,Isles Of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
-TR23,87900,15000,49.95281,-6.35174,Isles of Scilly,Isles Of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
-TR24,89200,15200,49.95528,-6.33383,Isles of Scilly,Isles Of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
-TR25,92200,16000,49.96401,-6.29276,Isles of Scilly,Isles Of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
+PO30,448500,88200,50.69085,-1.3133,Newport,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO31,449000,95100,50.75286,-1.30531,Cowes,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO32,450800,94900,50.75091,-1.27982,Newport,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO33,458600,91700,50.72139,-1.16976,Newport,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO34,462700,91100,50.71557,-1.11178,Nettlestone,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO35,464700,87900,50.68657,-1.08401,Bembridge,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO36,459200,84600,50.65748,-1.1624,Sandown,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO37,458200,81700,50.63151,-1.177,Shanklin,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO38,453700,78600,50.60406,-1.24108,Ventnor,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO39,432600,86900,50.68027,-1.53853,Totland,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO40,433900,87100,50.68199,-1.52011,Freshwater,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+PO41,436900,89100,50.69979,-1.47744,Yarmouth,Isle of Wight,ENG,England,GB-ENG,SOUTHEAST,South East 
+TR21,94600,12000,49.92936,-6.25622,Isles of Scilly,Isles of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
+TR22,88100,8200,49.89192,-6.34346,Isles of Scilly,Isles of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
+TR23,87900,15000,49.95281,-6.35174,Isles of Scilly,Isles of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
+TR24,89200,15200,49.95528,-6.33383,Isles of Scilly,Isles of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
+TR25,92200,16000,49.96401,-6.29276,Isles of Scilly,Isles of Scilly,ENG,England,GB-ENG,SOUTHWEST,South West 
 BR8,551400,168800,51.39751,0.1766,Swanley,Kent,ENG,England,GB-ENG,SOUTHEAST,South East 
 CT1,615300,157700,51.27719,1.08733,Canterbury,Kent,ENG,England,GB-ENG,SOUTHEAST,South East 
 CT10,638800,168200,51.36208,1.43073,Broadstairs,Kent,ENG,England,GB-ENG,SOUTHEAST,South East 
@@ -1307,16 +1306,16 @@ MK6,486300,237600,52.02967,-0.74193,Woughton On The Green,Milton Keynes,ENG,Engl
 MK7,489900,236500,52.01921,-0.68976,Walton,Milton Keynes,ENG,England,GB-ENG,SOUTHEAST,South East 
 MK8,482100,238200,52.0357,-0.803,Bradwell Abbey,Milton Keynes,ENG,England,GB-ENG,SOUTHEAST,South East 
 MK9,485100,238800,52.04064,-0.75912,,Milton Keynes,ENG,England,GB-ENG,SOUTHEAST,South East 
-NE1,424900,564300,54.97262,-1.61097,,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE13,422700,572500,55.04642,-1.64469,Brunswick,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE15,417900,565500,54.9837,-1.72026,Newburn,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE2,425300,565900,54.98698,-1.60458,Byker,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE3,423500,568500,55.01043,-1.6325,,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE4,422900,564400,54.97361,-1.64221,,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE5,420000,566900,54.99621,-1.68735,Newburn,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE6,427900,564800,54.97695,-1.56405,Byker,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE7,427000,567300,54.99947,-1.57788,Byker,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
-NE99,424800,563700,54.96723,-1.61259,,Newcastle Upon Tyne,ENG,England,GB-ENG,NORTHEAST,North East 
+NE1,424900,564300,54.97262,-1.61097,,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE13,422700,572500,55.04642,-1.64469,Brunswick,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE15,417900,565500,54.9837,-1.72026,Newburn,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE2,425300,565900,54.98698,-1.60458,Byker,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE3,423500,568500,55.01043,-1.6325,,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE4,422900,564400,54.97361,-1.64221,,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE5,420000,566900,54.99621,-1.68735,Newburn,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE6,427900,564800,54.97695,-1.56405,Byker,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE7,427000,567300,54.99947,-1.57788,Byker,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
+NE99,424800,563700,54.96723,-1.61259,,Tyne and Wear,ENG,England,GB-ENG,NORTHEAST,North East 
 IP20,625900,283900,52.40601,1.3215,Harleston,Norfolk,ENG,England,GB-ENG,EAST,East of England
 IP24,587600,283700,52.41869,0.75903,Thetford,Norfolk,ENG,England,GB-ENG,EAST,East of England
 IP25,592300,302500,52.58588,0.83892,Ovington,Norfolk,ENG,England,GB-ENG,EAST,East of England
@@ -1733,11 +1732,11 @@ SS1,589500,185600,51.53697,0.73275,,Southend-on-Sea,ENG,England,GB-ENG,EAST,East
 SS2,588400,187000,51.54991,0.71766,,Southend-on-Sea,ENG,England,GB-ENG,EAST,East of England
 SS3,593600,186400,51.54276,0.79224,,Southend-on-Sea,ENG,England,GB-ENG,EAST,East of England
 SS9,583900,187300,51.55409,0.65298,,Southend-on-Sea,ENG,England,GB-ENG,EAST,East of England
-L35,348000,391200,53.41478,-2.78244,Rainhill,St Helens,ENG,England,GB-ENG,NORTHWEST,North West 
-WA10,349900,395500,53.45362,-2.75454,,St Helens,ENG,England,GB-ENG,NORTHWEST,North West 
-WA11,352300,398100,53.47721,-2.71879,,St Helens,ENG,England,GB-ENG,NORTHWEST,North West 
-WA12,358100,395400,53.45343,-2.63104,,St Helens,ENG,England,GB-ENG,NORTHWEST,North West 
-WA9,352300,393600,53.43676,-2.71811,,St Helens,ENG,England,GB-ENG,NORTHWEST,North West 
+L35,348000,391200,53.41478,-2.78244,Rainhill,St. Helens,ENG,England,GB-ENG,NORTHWEST,North West 
+WA10,349900,395500,53.45362,-2.75454,,St. Helens,ENG,England,GB-ENG,NORTHWEST,North West 
+WA11,352300,398100,53.47721,-2.71879,,St. Helens,ENG,England,GB-ENG,NORTHWEST,North West 
+WA12,358100,395400,53.45343,-2.63104,,St. Helens,ENG,England,GB-ENG,NORTHWEST,North West 
+WA9,352300,393600,53.43676,-2.71811,,St. Helens,ENG,England,GB-ENG,NORTHWEST,North West 
 B77,422500,302400,52.61855,-1.66762,Tamworth,Staffordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
 B78,422100,301000,52.60598,-1.67362,Tamworth,Staffordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
 B79,421600,305900,52.65005,-1.68069,Wigginton,Staffordshire,ENG,England,GB-ENG,WESTMID,West Midlands 
@@ -2082,11 +2081,11 @@ WV3,389800,298000,52.57936,-2.15054,,Wolverhampton,ENG,England,GB-ENG,WESTMID,We
 WV4,390400,296100,52.56229,-2.14163,,Wolverhampton,ENG,England,GB-ENG,WESTMID,West Midlands 
 WV6,387700,299800,52.5955,-2.18161,,Wolverhampton,ENG,England,GB-ENG,WESTMID,West Midlands 
 WV9,390500,304000,52.63332,-2.14039,,Wolverhampton,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR1,385200,255500,52.19713,-2.21656,,Worcester,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR2,383500,254700,52.18989,-2.24139,,Worcester,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR3,385600,257600,52.21603,-2.21079,,Worcester,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR4,387400,256300,52.20438,-2.1844,,Worcester,ENG,England,GB-ENG,WESTMID,West Midlands 
-WR5,386400,253300,52.17738,-2.19891,,Worcester,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR1,385200,255500,52.19713,-2.21656,,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR2,383500,254700,52.18989,-2.24139,,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR3,385600,257600,52.21603,-2.21079,,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR4,387400,256300,52.20438,-2.1844,,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
+WR5,386400,253300,52.17738,-2.19891,,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
 B47,408200,276600,52.38699,-1.8795,Wythall,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
 B48,403500,273100,52.35557,-1.9486,Alvechurch,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
 B60,396600,269800,52.3259,-2.04989,Bromsgrove,Worcestershire,ENG,England,GB-ENG,WESTMID,West Midlands 
@@ -2138,8 +2137,8 @@ JE1,391286,-78769,49.19094,-2.11961,St Helier,Jersey,JEY,Jersey,JE,JEY,Jersey
 JE2,392192,-77560,49.20183,-2.10719,St Helier,Jersey,JEY,Jersey,JE,JEY,Jersey
 JE3,390223,-79337,49.18581,-2.13418,St+F2813 Ouen,Jersey,JEY,Jersey,JE,JEY,Jersey
 JE4,393368,-78440,49.19392,-2.09104,St Helier,Jersey,JEY,Jersey,JE,JEY,Jersey
-BT29,129300,533100,54.62018,-6.1939,,Antrim,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
-BT41,125800,545900,54.73301,-6.25997,Mill Town,Antrim,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
+BT29,129300,533100,54.62018,-6.1939,,County Antrim,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
+BT41,125800,545900,54.73301,-6.25997,Mill Town,County Antrim,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT21,171300,532800,54.63826,-5.54448,Donaghadee,Ards,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT22,172200,517700,54.5032,-5.51886,,Ards,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT23,159900,525000,54.56301,-5.71437,,Ards,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
@@ -2186,9 +2185,9 @@ BT66,119200,515300,54.45514,-6.33292,Lurgan,Craigavon,NIR,Northern Ireland,GB-NI
 BT67,123600,518600,54.48713,-6.26832,,Craigavon,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT47,66600,576800,54.97386,-7.21151,,Derry,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT48,59500,581300,55.00933,-7.32731,Londonderry,Derry,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
-BT24,148800,509300,54.41683,-5.87232,,Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
-BT30,159200,499500,54.33396,-5.70444,Downpatrick,Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
-BT33,146200,487600,54.22095,-5.89385,Newcastle,Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
+BT24,148800,509300,54.41683,-5.87232,,County Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
+BT30,159200,499500,54.33396,-5.70444,Downpatrick,County Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
+BT33,146200,487600,54.22095,-5.89385,Newcastle,County Down,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT68,85200,507600,54.36626,-6.84743,,Dungannon,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT69,79100,514500,54.42425,-6.94843,,Dungannon,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
 BT70,83800,524300,54.51495,-6.88672,,Dungannon,NIR,Northern Ireland,GB-NIR,NI,Northern ireland
@@ -2299,26 +2298,26 @@ PA75,147100,754300,56.61228,-6.12216,,Argyll and Bute,SCT,Scotland,GB-SCT,SCOT,S
 PA76,128500,724400,56.33403,-6.39324,,Argyll and Bute,SCT,Scotland,GB-SCT,SCOT,Scotland
 PA77,99500,744300,56.49469,-6.8835,Crossapol,Argyll and Bute,SCT,Scotland,GB-SCT,SCOT,Scotland
 PA78,121300,757300,56.62454,-6.54449,,Argyll and Bute,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH1,325800,673900,55.95243,-3.1884,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH10,324400,670400,55.92077,-3.20984,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH11,322000,671900,55.93387,-3.24867,Juniper Green,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH12,320600,672900,55.94262,-3.27137,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH13,322400,669000,55.90788,-3.24144,Juniper Green,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH14,319800,669200,55.90925,-3.28308,Juniper Green,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH15,330600,673200,55.94686,-3.11136,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH16,327900,670500,55.92221,-3.15387,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH17,328600,668800,55.90704,-3.14222,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH2,325400,674100,55.95417,-3.19486,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH28,313400,671700,55.9306,-3.38624,,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH29,312700,674600,55.95652,-3.39838,Kirkliston,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH3,325100,674100,55.95412,-3.19967,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH30,313700,677700,55.98455,-3.38336,Queensferry,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH4,321500,675100,55.96253,-3.25761,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH5,324100,676400,55.97463,-3.21633,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH6,326700,676000,55.97144,-3.17456,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH7,327300,674800,55.96075,-3.16463,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH8,327400,673500,55.94909,-3.16268,,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH9,326000,671800,55.9336,-3.18463,Edinburgh,City of Edinburgh,SCT,Scotland,GB-SCT,SCOT,Scotland
+EH1,325800,673900,55.95243,-3.1884,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH10,324400,670400,55.92077,-3.20984,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH11,322000,671900,55.93387,-3.24867,Juniper Green,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH12,320600,672900,55.94262,-3.27137,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH13,322400,669000,55.90788,-3.24144,Juniper Green,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH14,319800,669200,55.90925,-3.28308,Juniper Green,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH15,330600,673200,55.94686,-3.11136,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH16,327900,670500,55.92221,-3.15387,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH17,328600,668800,55.90704,-3.14222,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH2,325400,674100,55.95417,-3.19486,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH28,313400,671700,55.9306,-3.38624,,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH29,312700,674600,55.95652,-3.39838,Kirkliston,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH3,325100,674100,55.95412,-3.19967,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH30,313700,677700,55.98455,-3.38336,Queensferry,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH4,321500,675100,55.96253,-3.25761,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH5,324100,676400,55.97463,-3.21633,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH6,326700,676000,55.97144,-3.17456,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH7,327300,674800,55.96075,-3.16463,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH8,327400,673500,55.94909,-3.16268,,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH9,326000,671800,55.9336,-3.18463,Edinburgh,"Edinburgh, City of",SCT,Scotland,GB-SCT,SCOT,Scotland
 FK10,289300,692800,56.11516,-3.78053,Alloa,Clackmannanshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 FK11,285100,696800,56.15009,-3.84977,Menstrie,Clackmannanshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 FK12,288200,697000,56.15263,-3.79998,Alva,Clackmannanshire,SCT,Scotland,GB-SCT,SCOT,Scotland
@@ -2563,9 +2562,9 @@ ML6,277200,665500,55.86704,-3.96257,Airdrie,North Lanarkshire,SCT,Scotland,GB-SC
 ML7,287700,661100,55.83008,-3.79303,,North Lanarkshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 TD12,385000,640000,55.65331,-2.2384,Cornhill-on-Tweed,Northumberland,SCT,Scotland,GB-SCT,SCOT,Scotland
 TD15,399200,650400,55.74699,-2.01275,Berwick-upon-Tweed,Northumberland,SCT,Scotland,GB-SCT,SCOT,Scotland
-KW15,344900,1010700,58.9803,-2.95862,Kirkwall,Orkney Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
-KW16,326800,1008700,58.95963,-3.27278,Stromness,Orkney Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
-KW17,342500,1017600,59.04195,-3.00217,Gorseness,Orkney Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
+KW15,344900,1010700,58.9803,-2.95862,Kirkwall,Orkney,SCT,Scotland,GB-SCT,SCOT,Scotland
+KW16,326800,1008700,58.95963,-3.27278,Stromness,Orkney,SCT,Scotland,GB-SCT,SCOT,Scotland
+KW17,342500,1017600,59.04195,-3.00217,Gorseness,Orkney,SCT,Scotland,GB-SCT,SCOT,Scotland
 KY13,311200,702700,56.20866,-3.43173,Kinross,Perth and Kinross,SCT,Scotland,GB-SCT,SCOT,Scotland
 PH1,309000,726400,56.42113,-3.47537,,Perth and Kinross,SCT,Scotland,GB-SCT,SCOT,Scotland
 PH10,316500,747100,56.60845,-3.36046,,Perth and Kinross,SCT,Scotland,GB-SCT,SCOT,Scotland
@@ -2597,9 +2596,9 @@ PA6,241400,666300,55.86377,-4.53462,,Renfrewshire,SCT,Scotland,GB-SCT,SCOT,Scotl
 PA7,243800,671300,55.90944,-4.49919,Bishopton,Renfrewshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 PA8,246700,670300,55.9014,-4.45228,,Renfrewshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 PA9,240100,660300,55.80948,-4.55184,Howwood,Renfrewshire,SCT,Scotland,GB-SCT,SCOT,Scotland
-ZE1,446200,1141100,60.15232,-1.16779,Sound,Shetland Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
-ZE2,442800,1160900,60.33047,-1.22484,,Shetland Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
-ZE3,439000,1111100,59.88369,-1.30316,Toab,Shetland Islands,SCT,Scotland,GB-SCT,SCOT,Scotland
+ZE1,446200,1141100,60.15232,-1.16779,Sound,Shetland,SCT,Scotland,GB-SCT,SCOT,Scotland
+ZE2,442800,1160900,60.33047,-1.22484,,Shetland,SCT,Scotland,GB-SCT,SCOT,Scotland
+ZE3,439000,1111100,59.88369,-1.30316,Toab,Shetland,SCT,Scotland,GB-SCT,SCOT,Scotland
 KA10,233000,631600,55.54945,-4.64755,Troon,South Ayrshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 KA19,230900,609000,55.34585,-4.66707,,South Ayrshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 KA26,219800,595300,55.21894,-4.83313,,South Ayrshire,SCT,Scotland,GB-SCT,SCOT,Scotland
@@ -2628,24 +2627,24 @@ FK7,280800,691000,56.09695,-3.91636,,Stirling,SCT,Scotland,GB-SCT,SCOT,Scotland
 FK8,272600,695000,56.13075,-4.05001,,Stirling,SCT,Scotland,GB-SCT,SCOT,Scotland
 FK9,279500,696100,56.14242,-3.93955,Bridge Of Allan,Stirling,SCT,Scotland,GB-SCT,SCOT,Scotland
 G63,252700,685800,56.04243,-4.36487,Killearn,Stirling,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH38,339800,655200,55.78638,-2.96006,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH43,336400,637200,55.62422,-3.0101,Walkerburn,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH44,332900,636800,55.62015,-3.06558,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH45,325000,640800,55.65494,-3.19209,Peebles,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-EH46,315300,650100,55.73689,-3.3491,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD1,349000,637000,55.6239,-2.80997,Galashiels,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD10,371800,646600,55.71203,-2.44887,Greenlaw,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD11,380200,655000,55.78792,-2.31578,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD13,376900,670800,55.92975,-2.36975,Cockburnspath,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD14,392300,663800,55.86735,-2.12305,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD2,352700,649100,55.733,-2.7533,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD3,364100,645400,55.70073,-2.57127,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD4,357800,638900,55.64182,-2.67051,Earlston,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD5,373800,632700,55.58723,-2.41571,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD6,356300,632300,55.58238,-2.6933,Newtown St Boswells,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD7,345000,627300,55.53631,-2.87156,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD8,365800,620300,55.47531,-2.54111,Jedburgh,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
-TD9,350900,611800,55.39766,-2.77533,,The Scottish Borders,SCT,Scotland,GB-SCT,SCOT,Scotland
+EH38,339800,655200,55.78638,-2.96006,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH43,336400,637200,55.62422,-3.0101,Walkerburn,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH44,332900,636800,55.62015,-3.06558,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH45,325000,640800,55.65494,-3.19209,Peebles,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+EH46,315300,650100,55.73689,-3.3491,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD1,349000,637000,55.6239,-2.80997,Galashiels,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD10,371800,646600,55.71203,-2.44887,Greenlaw,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD11,380200,655000,55.78792,-2.31578,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD13,376900,670800,55.92975,-2.36975,Cockburnspath,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD14,392300,663800,55.86735,-2.12305,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD2,352700,649100,55.733,-2.7533,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD3,364100,645400,55.70073,-2.57127,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD4,357800,638900,55.64182,-2.67051,Earlston,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD5,373800,632700,55.58723,-2.41571,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD6,356300,632300,55.58238,-2.6933,Newtown St Boswells,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD7,345000,627300,55.53631,-2.87156,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD8,365800,620300,55.47531,-2.54111,Jedburgh,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
+TD9,350900,611800,55.39766,-2.77533,,"Scottish Borders, The",SCT,Scotland,GB-SCT,SCOT,Scotland
 G60,246700,672600,55.92205,-4.45358,Clydebank,West Dunbartonshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 G81,249600,671500,55.91309,-4.4066,Clydebank,West Dunbartonshire,SCT,Scotland,GB-SCT,SCOT,Scotland
 G82,239300,676200,55.95195,-4.57403,Dumbarton,West Dunbartonshire,SCT,Scotland,GB-SCT,SCOT,Scotland
@@ -2837,11 +2836,11 @@ SA4,258400,198900,51.67054,-4.04792,Gorseinon,Swansea,WLS,Wales,GB-WLS,WALES,Wal
 SA5,263800,196300,51.64851,-3.96886,Penderry,Swansea,WLS,Wales,GB-WLS,WALES,Wales
 SA6,267200,199200,51.67539,-3.92084,Morriston,Swansea,WLS,Wales,GB-WLS,WALES,Wales
 SA7,269300,197600,51.6615,-3.88989,Llansamlet,Swansea,WLS,Wales,GB-WLS,WALES,Wales
-CF61,297100,168700,51.40748,-3.47962,Llantwit Major,The Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
-CF62,309000,168100,51.40412,-3.30841,Barry,The Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
-CF63,312700,168900,51.4119,-3.25542,Barry,The Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
-CF64,317400,171200,51.43328,-3.18838,Penarth,The Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
-CF71,299000,174700,51.46176,-3.45402,Cowbridge,The Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
+CF61,297100,168700,51.40748,-3.47962,Llantwit Major,Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
+CF62,309000,168100,51.40412,-3.30841,Barry,Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
+CF63,312700,168900,51.4119,-3.25542,Barry,Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
+CF64,317400,171200,51.43328,-3.18838,Penarth,Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
+CF71,299000,174700,51.46176,-3.45402,Cowbridge,Vale of Glamorgan,WLS,Wales,GB-WLS,WALES,Wales
 NP4,327800,202800,51.71882,-3.04528,Trevethin,Torfaen,WLS,Wales,GB-WLS,WALES,Wales
 NP44,329000,195200,51.65064,-3.02637,Cwmbran,Torfaen,WLS,Wales,GB-WLS,WALES,Wales
 LL11,330700,352300,53.06314,-3.03425,Broughton,Wrexham,WLS,Wales,GB-WLS,WALES,Wales

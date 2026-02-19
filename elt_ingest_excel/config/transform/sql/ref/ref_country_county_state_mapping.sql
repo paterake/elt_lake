@@ -187,7 +187,7 @@ SELECT *
         , ('GB', 'Orkney',                               'current')
         , ('GB', 'Perth and Kinross',                    'current')
         , ('GB', 'Renfrewshire',                         'current')
-        , ('GB', 'Scottish Borders, The',               'current')
+        , ('GB', 'Scottish Borders, The',                'current')
         , ('GB', 'Shetland',                             'current')
         , ('GB', 'South Ayrshire',                       'current')
         , ('GB', 'South Lanarkshire',                    'current')
@@ -228,7 +228,7 @@ SELECT *
         -- ---------------------------------------------------------------------
         -- Northern Ireland: 6 Traditional Counties (historic)
         -- ---------------------------------------------------------------------
-        , ('GB', 'County Antrim',                         'historic')
+        , ('GB', 'County Antrim',                        'historic')
         , ('GB', 'County Armagh',                        'historic')
         , ('GB', 'County Down',                          'historic')
         , ('GB', 'County Fermanagh',                     'historic')
