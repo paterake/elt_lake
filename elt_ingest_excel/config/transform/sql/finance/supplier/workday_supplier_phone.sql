@@ -79,6 +79,18 @@ SELECT s.*
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
+    , cte_phone_parse
+   AS (
+SELECT *
+       t.*
+     , get_area_code(s.international_phone_code || s.phone_number)         drv_area_code
+     , CASE
+         WHEN s.phone_type = 'fax'
+         THEN 'Fax'
+         ELSE get_phone_type(s.international_phone_code || s.phone_number)
+       END                                                                 drv_phone_device_type
+  FROM cte_cleaned   t
+      )
 SELECT s.supplier_id                                                       supplier_id
      , s.supplier_name                                                     supplier_name
      , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
@@ -88,14 +100,18 @@ SELECT s.supplier_id                                                       suppl
      , s.phone_country                                                     phone_country
      , s.country_code                                                      country_code
      , s.international_phone_code                                          international_phone_code
-     , get_area_code(s.international_phone_code || s.phone_number)        area_code
-     , s.phone_number                                                      phone_number
-     , NULL                                                                phone_number_extension
      , CASE
-         WHEN s.phone_type = 'fax'
-         THEN 'Fax'
-         ELSE get_phone_type(s.international_phone_code || s.phone_number)
-       END                                                                 phone_device_type
+         WHEN s.drv_phone_device_type = 'Mobile'
+         THEN SUBSTR(s.phone_number, 1, 4)
+         ELSE s.drv_area_code
+       END                                                                 area_code
+     , CASE s.drv_phone_device_type
+         WHEN 'Mobile'
+         THEN SUBSTR(s.phone_number, 5)
+         ELSE SUBSTR(s.phone_number, LENGTH(s.drv_area_code) + 1)
+       END                                                                 phone_number
+     , NULL                                                                phone_number_extension
+     , s.drv_phone_device_type                                             phone_device_type
      , 'Yes'                                                               public_flag
      , CASE
          WHEN s.phone_type = 'primary'
@@ -106,6 +122,5 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                use_for
      , NULL                                                                use_for_tenanted
      , NULL                                                                phone_comments
-  FROM cte_cleaned s
-   --AND LENGTH(s.phone_number_raw) >= 7
+  FROM cte_phone_parse s
 ;
