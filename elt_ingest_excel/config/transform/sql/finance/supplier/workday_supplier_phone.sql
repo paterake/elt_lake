@@ -70,8 +70,8 @@ SELECT DISTINCT
      , p.supplier_name                                                     supplier_name
      , p.phone_country                                                     phone_country
      , p.country_code                                                      country_code
-     , TRIM(REGEXP_REPLACE(p.international_phone_code, '[^0-9]', ''))      international_phone_code
-     , LTRIM(TRIM(REGEXP_REPLACE(u.phone, '[^0-9]', '')), '0')             phone_number_raw
+     , REGEXP_REPLACE(TRIM(p.international_phone_code), '[^0-9]', '', 'g') international_phone_code
+     , REGEXP_REPLACE(TRIM(u.phone), '[^0-9]', '', 'g')                    phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
      , p.phone_device_type                                                 phone_device_type
@@ -89,9 +89,16 @@ SELECT s.supplier_id                                                       suppl
      , s.international_phone_code                                          international_phone_code
      , NULL                                                                area_code
      , CASE
-         WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
-         THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
-         ELSE s.phone_number_raw
+         WHEN REGEXP_REPLACE(s.phone_number_raw, '^0+', '') LIKE s.international_phone_code || '%'
+         THEN REGEXP_REPLACE(
+                REGEXP_REPLACE(
+                  REGEXP_REPLACE(s.phone_number_raw, '^0+', ''),
+                  '^' || s.international_phone_code,
+                  ''
+                ),
+                '^0+', ''  -- strip any leading zero from the local number
+              )
+         ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
        END                                                                 phone_number
      , NULL                                                                phone_number_extension
      , s.phone_device_type                                                 phone_device_type
