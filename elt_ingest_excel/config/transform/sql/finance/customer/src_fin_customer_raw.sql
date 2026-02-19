@@ -27,7 +27,7 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl
        )
      , cte_customer_nrm
     AS (
-SELECT 
+SELECT DISTINCT
        TRIM(t.customer_number)                                                                        customer_number
      , COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))        nrm_customer_name
      , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))) key_customer_name
@@ -47,7 +47,11 @@ SELECT
         , TRY_STRPTIME(NULLIF(TRIM(t.last_transaction_date ), ''), '%d-%m-%Y')
        )                                                                                              last_transaction_ts
      , t.*
-  FROM cte_customer_src                t
+     , mbu.target_value                                                                               target_business_unit
+  FROM cte_customer_src                      t
+       INNER JOIN
+       ref_source_business_unit_mapping      mbu
+          ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        ) 
      , cte_customer_distinct
     AS (
