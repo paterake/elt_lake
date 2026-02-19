@@ -11,11 +11,6 @@ SELECT s.supplier_id                         supplier_id
      , s.phone_number_1                      phone_raw
      , 'primary'                             phone_type
      , '_PH1'                                suffix
-     , CASE
-         WHEN REGEXP_REPLACE(s.phone_number_1, '[^0-9]', '') LIKE '07%'
-         THEN 'Mobile'
-         ELSE 'Landline'
-       END                                   phone_device_type
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.phone_number_1)), '') IS NOT NULL
 UNION ALL
@@ -27,11 +22,6 @@ SELECT s.supplier_id                         supplier_id
      , s.phone_number_2                      phone_raw
      , 'secondary'                           phone_type
      , '_PH2'                                suffix
-     , CASE
-         WHEN REGEXP_REPLACE(s.phone_number_2, '[^0-9]', '') LIKE '07%'
-         THEN 'Mobile'
-         ELSE 'Landline'
-       END                                   phone_device_type
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.phone_number_2)), '') IS NOT NULL
 UNION ALL
@@ -43,11 +33,6 @@ SELECT s.supplier_id                         supplier_id
      , s.phone_3                             phone_raw
      , 'tertiary'                            phone_type
      , '_PH3'                                suffix
-     , CASE
-         WHEN REGEXP_REPLACE(s.phone_3, '[^0-9]', '') LIKE '07%'
-         THEN 'Mobile'
-         ELSE 'Landline'
-       END                                   phone_device_type
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.phone_3)), '') IS NOT NULL
 UNION ALL
@@ -59,7 +44,6 @@ SELECT s.supplier_id                         supplier_id
      , s.fax_number                          phone_raw
      , 'fax'                                 phone_type
      , '_FAX'                                suffix
-     , 'Fax'                                 phone_device_type
   FROM src_fin_supplier s
  WHERE NULLIF(UPPER(TRIM(s.fax_number)), '') IS NOT NULL
        )
@@ -74,7 +58,6 @@ SELECT DISTINCT
      , REGEXP_REPLACE(TRIM(u.phone), '[^0-9]', '', 'g')                    phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
-     , p.phone_device_type                                                 phone_device_type
   FROM cte_supplier_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
@@ -108,7 +91,11 @@ SELECT s.supplier_id                                                       suppl
      , get_area_code(s.international_phone_code || s.phone_number)        area_code
      , s.phone_number                                                      phone_number
      , NULL                                                                phone_number_extension
-     , s.phone_device_type                                                 phone_device_type
+     , CASE
+         WHEN s.phone_type = 'fax'
+         THEN 'Fax'
+         ELSE get_phone_type(s.international_phone_code || s.phone_number)
+       END                                                                 phone_device_type
      , 'Yes'                                                               public_flag
      , CASE
          WHEN s.phone_type = 'primary'
