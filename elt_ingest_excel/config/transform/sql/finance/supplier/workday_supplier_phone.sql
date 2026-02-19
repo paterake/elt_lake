@@ -81,13 +81,12 @@ SELECT s.*
        )
     , cte_phone_parse
    AS (
-SELECT *
-       t.*
-     , get_area_code(s.international_phone_code || s.phone_number)         drv_area_code
+SELECT t.*
+     , get_area_code(t.international_phone_code || t.phone_number)         drv_area_code
      , CASE
-         WHEN s.phone_type = 'fax'
+         WHEN t.phone_type = 'fax'
          THEN 'Fax'
-         ELSE get_phone_type(s.international_phone_code || s.phone_number)
+         ELSE get_phone_type(t.international_phone_code || t.phone_number)
        END                                                                 drv_phone_device_type
   FROM cte_cleaned   t
       )

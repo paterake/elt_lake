@@ -60,16 +60,16 @@ SELECT
           ON UPPER(TRIM(s.post_code))           LIKE r0.postcode || ' %' 
        LEFT OUTER JOIN 
        ref_workday_country_state_region         r1
-         ON r1.country_code                     = s.nrm_country_name
+         ON r1.country                          = s.nrm_country_name
         AND UPPER(TRIM(r1.instance))            = UPPER(TRIM(s.county))
        LEFT OUTER JOIN 
        ref_workday_country_state_region         r2
-         ON r2.country_code                     = s.nrm_country_name
+         ON r2.country                          = s.nrm_country_name
         AND UPPER(TRIM(r2.instance))            = UPPER(TRIM(s.city))
        LEFT OUTER JOIN
        ref_country_county_state_town_mapping    r3
          ON r3.country_code                     = s.nrm_country_code
-        AND UPPER(TRIM(r3.town_city_name))      = UPPER(TRIM(s.nrm_county))       
+        AND UPPER(TRIM(r3.town_city_name))      = UPPER(TRIM(s.county))       
        LEFT OUTER JOIN
        ref_country_county_state_town_mapping    r4
          ON r4.country_code                     = s.nrm_country_code

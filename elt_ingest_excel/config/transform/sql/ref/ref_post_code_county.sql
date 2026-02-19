@@ -4,10 +4,10 @@ CREATE TABLE ref_post_code_county
     AS
 SELECT
        TRIM(postcode)                                postcode
-     , CAST(NULLIF(easting  , '') AS INTEGER)        easting
-     , CAST(NULLIF(northing , '') AS INTEGER)        northing
-     , CAST(NULLIF(latitude , '') AS DOUBLE )        latitude
-     , CAST(NULLIF(longitude, '') AS DOUBLE )        longitude
+     , TRY_CAST(easting  AS INTEGER)                 easting
+     , TRY_CAST(northing AS INTEGER)                 northing
+     , TRY_CAST(latitude AS DOUBLE )                 latitude
+     , TRY_CAST(longitude AS DOUBLE )                longitude
      , TRIM(city)                                    city
      , TRIM(county)                                  county
      , TRIM(country_code)                            country_code
