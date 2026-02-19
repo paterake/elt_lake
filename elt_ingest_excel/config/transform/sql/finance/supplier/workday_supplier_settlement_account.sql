@@ -20,13 +20,13 @@ SELECT
          THEN TRIM(REPLACE(REPLACE(s.eft_transit_routing_no, ' ', ''), '-', ''))
          ELSE TRIM(REPLACE(REPLACE(s.eft_bank_code, ' ', ''), '-', ''))
        END                                                                       routing_number_bank_code
-     , TRIM(REPLACE(REPLACE(UPPER(s.iban), ' ', ''), '-', ''))                   iban
-     , TRIM(UPPER(s.swift_address))                                              swift_bank_identification_code
-     , TRIM(s.building_society_roll_no)                                          roll_number
-     , TRIM(s.eft_bank_check_digit)                                              check_digit
-     , TRIM(s.eft_bank_branch_code)                                              branch_id
-     , TRIM(s.eft_bank_branch)                                                   branch_name
-     , TRIM(s.eft_transfer_method)                                               accepts_payment_types_plus
+     , NULLIF(TRIM(REPLACE(REPLACE(UPPER(s.iban), ' ', ''), '-', '')), '')       iban
+     , NULLIF(TRIM(UPPER(s.swift_address)), '')                                  swift_bank_identification_code
+     , NULLIF(TRIM(s.building_society_roll_no), '')                              roll_number
+     , NULLIF(TRIM(s.eft_bank_check_digit), '')                                  check_digit
+     , NULLIF(TRIM(s.eft_bank_branch_code), '')                                  branch_id
+     , NULLIF(TRIM(s.eft_bank_branch), '')                                       branch_name
+     , NULLIF(TRIM(s.eft_transfer_method), '')                                   accepts_payment_types_plus
      , NULL                                                                      payment_types_plus
      , NULL                                                                      for_supplier_connections_only
      , NULL                                                                      requires_prenote
