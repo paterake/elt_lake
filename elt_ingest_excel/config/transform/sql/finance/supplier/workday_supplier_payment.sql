@@ -8,18 +8,18 @@ SELECT
      , m.workday_payment_terms                           payment_terms
      , CASE
          WHEN s.nrm_currency_code = 'GBP'
-         THEN 'BACS|Faster Payments|Manual'
+         THEN 'BACS|EFT|Manual'
          WHEN s.nrm_currency_code = 'EUR'
          THEN 'SEPA|Wire|Manual'
          WHEN s.nrm_currency_code = 'USD'
          THEN 'Wire|EFT|Manual'
          WHEN s.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire|Manual'
-         ELSE 'BACS|Faster Payments|Manual'
+         ELSE 'BACS|EFT|Manual'
        END                                              payment_types_accepted
      , CASE
          WHEN s.nrm_currency_code = 'GBP'
-         THEN 'BACS'
+         THEN 'EFT'
          WHEN s.nrm_currency_code = 'EUR'
          THEN 'SEPA'
          WHEN s.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
