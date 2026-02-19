@@ -1,6 +1,5 @@
 DROP TABLE IF EXISTS ref_bank_sort_code_prefix_mapping
-
-
+;
 CREATE TABLE ref_bank_sort_code_prefix_mapping
     AS
 SELECT
