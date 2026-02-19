@@ -9,6 +9,7 @@ dependencies = [
     "openpyxl>=3.1.5",
     "duckdb>=1.4.4",
     "xlwings>=0.33.20",
+    "phonenumbers>=8.13.0",
 ]
 
 [build-system]

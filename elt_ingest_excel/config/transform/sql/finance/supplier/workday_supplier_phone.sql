@@ -78,16 +78,9 @@ SELECT DISTINCT
   FROM cte_supplier_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
-SELECT s.supplier_id                                                       supplier_id
-     , s.supplier_name                                                     supplier_name
-     , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
-           PARTITION BY s.supplier_id, s.suffix
-               ORDER BY s.phone_number_raw
-       )                                                                   phone_id
-     , s.phone_country                                                     phone_country
-     , s.country_code                                                      country_code
-     , s.international_phone_code                                          international_phone_code
-     , NULL                                                                area_code
+     , cte_cleaned
+    AS (
+SELECT s.*
      , CASE
          WHEN REGEXP_REPLACE(s.phone_number_raw, '^0+', '') LIKE s.international_phone_code || '%'
          THEN REGEXP_REPLACE(
@@ -100,6 +93,20 @@ SELECT s.supplier_id                                                       suppl
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
        END                                                                 phone_number
+  FROM cte_phone_split s
+ WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
+       )
+SELECT s.supplier_id                                                       supplier_id
+     , s.supplier_name                                                     supplier_name
+     , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
+           PARTITION BY s.supplier_id, s.suffix
+               ORDER BY s.phone_number_raw
+       )                                                                   phone_id
+     , s.phone_country                                                     phone_country
+     , s.country_code                                                      country_code
+     , s.international_phone_code                                          international_phone_code
+     , get_area_code(s.international_phone_code || s.phone_number)        area_code
+     , s.phone_number                                                      phone_number
      , NULL                                                                phone_number_extension
      , s.phone_device_type                                                 phone_device_type
      , 'Yes'                                                               public_flag
@@ -112,7 +119,6 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                use_for
      , NULL                                                                use_for_tenanted
      , NULL                                                                phone_comments
-  FROM cte_phone_split s
- WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
+  FROM cte_cleaned s
    --AND LENGTH(s.phone_number_raw) >= 7
 ;

@@ -53,6 +53,7 @@ class SqlExecutor:
         results = []
 
         with duckdb.connect(str(self.database_path)) as conn:
+            self._register_udfs(conn)
             for sql_file in sql_files:
                 result = self._execute_sql_file(conn, sql_file)
                 results.append(result)
@@ -62,6 +63,30 @@ class SqlExecutor:
                     break
 
         return results
+
+    @staticmethod
+    def _register_udfs(conn: duckdb.DuckDBPyConnection) -> None:
+        """Register Python UDFs on the DuckDB connection.
+
+        Called once per execute() before any SQL files run, so all UDFs
+        are available to every SQL file in the session.
+        """
+        import phonenumbers
+        from phonenumbers.phonenumberutil import length_of_geographical_area_code
+        from duckdb.typing import VARCHAR
+
+        def get_area_code(phone_str: str) -> str:
+            if not phone_str:
+                return None
+            try:
+                p = phonenumbers.parse('+' + phone_str)
+                nsn = phonenumbers.national_significant_number(p)
+                ac_len = length_of_geographical_area_code(p)
+                return nsn[:ac_len] if ac_len > 0 else None
+            except Exception:
+                return None
+
+        conn.create_function('get_area_code', get_area_code, [VARCHAR], VARCHAR, null_handling='special')
 
     def _read_order_file(self, order_file: Path) -> list[str]:
         """Read order.txt and return list of SQL file names.
