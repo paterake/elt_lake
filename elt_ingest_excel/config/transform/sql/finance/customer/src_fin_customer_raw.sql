@@ -4,18 +4,21 @@ CREATE TABLE src_fin_customer_raw
     AS
   WITH cte_customer_src
     AS (
+-- FA business unit
 SELECT 'FA'   business_unit, t.* FROM fin_customer_debtor_last_3_years_fa      t
 UNION ALL
 SELECT 'FA'   business_unit, t.* FROM fin_customer_debtor_created_date_fa      t
 UNION ALL
 SELECT 'FA'   business_unit, t.* FROM fin_customer_debtor_last_payment_date_fa t
 UNION ALL
+-- NFC business unit
 SELECT 'NFC'  business_unit, t.* FROM fin_customer_debtor_last_3_years_nfc     t
 UNION ALL
 SELECT 'NFC'  business_unit, t.* FROM fin_customer_debtor_created_date_nfc     t
 UNION ALL
 SELECT 'NFC'  business_unit, t.* FROM fin_customer_debtor_last_payment_date_nfc t
 UNION ALL
+-- WNSL business unit
 SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_3_years_wnsl    t
 UNION ALL
 SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_created_date_wnsl    t
