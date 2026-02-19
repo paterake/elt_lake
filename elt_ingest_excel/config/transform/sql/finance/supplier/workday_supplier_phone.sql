@@ -107,8 +107,5 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                phone_comments
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
-   AND LENGTH(s.phone_number_raw) >= 7
+   --AND LENGTH(s.phone_number_raw) >= 7
 ;
-
-
-Derive area code from the phone number
