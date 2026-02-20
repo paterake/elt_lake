@@ -24,7 +24,7 @@ SELECT
         THEN r3.town_city_name
         WHEN r4.town_city_name      IS NOT NULL
         THEN r4.town_city_name
-        ELSE NULLIF(TRIM(s.city), '')
+        ELSE NULLIF(TRIM(c.city), '')
        END                                                                    city
      , NULL                                                                   submunicipality
      , COALESCE(NULLIF(TRIM(c.address_1), ''), NULLIF(TRIM(c.address_2), ''), NULLIF(TRIM(c.address_3), ''))
@@ -72,7 +72,7 @@ SELECT
                                                    WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
                                                    WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
                                                    WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
-                                                   ELSE NULLIF(UPPER(TRIM(s.county)), '')
+                                                   ELSE NULLIF(UPPER(TRIM(c.county)), '')
                                                   END
  WHERE COALESCE(NULLIF(TRIM(c.address_1), ''), NULLIF(TRIM(c.address_2), ''), NULLIF(TRIM(c.address_3), '')) IS NOT NULL
    AND NULLIF(TRIM(c.address_1), '') NOT IN ('[Not Known]') 

@@ -80,6 +80,9 @@ SELECT
      , COUNT() OVER(PARTITION BY t.key_customer_name)                key_count
      , t.* 
      , bu.array_business_unit
+     , bu.array_target_business_unit
+     , bu.pipe_business_unit
+     , bu.pipe_target_business_unit
   FROM cte_customer_time_nrm           t
        INNER JOIN
        cte_customer_business_unit      bu

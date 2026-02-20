@@ -58,7 +58,6 @@ SELECT DISTINCT
      , LTRIM(TRIM(REGEXP_REPLACE(u.phone, '[^0-9]', '')), '0')             phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
-     , p.phone_device_type                                                 phone_device_type
   FROM cte_customer_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
@@ -85,7 +84,7 @@ SELECT s.*
 SELECT t.*
      , get_area_code(t.international_phone_code || t.phone_number)         drv_area_code
      , CASE
-         WHEN s.phone_type = 'fax'
+         WHEN t.phone_type = 'fax'
          THEN 'Fax'
          ELSE get_phone_type(t.international_phone_code || t.phone_number)
        END                                                                 drv_phone_device_type
@@ -116,7 +115,7 @@ SELECT s.customer_id                                                       custo
          ELSE s.phone_number_raw
        END                                                                 formatted_phone_number
      , NULL                                                                phone_number_extension
-     , s.phone_device_type                                                 phone_device_type
+     , s.drv_phone_device_type                                             phone_device_type
      , 'Yes'                                                               is_public
      , CASE WHEN s.phone_type = 'primary' THEN 'Yes' ELSE 'No' END         is_primary
      , s.phone_type                                                        phone_type

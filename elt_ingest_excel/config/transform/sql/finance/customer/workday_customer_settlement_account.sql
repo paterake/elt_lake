@@ -32,11 +32,11 @@ SELECT
          ELSE 'BACS|EFT|Manual'
        END                                                                 payment_types_accepted
      , CASE
-         WHEN s.nrm_currency_code = 'GBP'
+         WHEN c.nrm_currency_code = 'GBP'
          THEN 'EFT'
-         WHEN s.nrm_currency_code = 'EUR'
+         WHEN c.nrm_currency_code = 'EUR'
          THEN 'SEPA'
-         WHEN s.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
+         WHEN c.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire'
          ELSE 'BACS'
        END                                                                 payment_types
