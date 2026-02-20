@@ -4,6 +4,7 @@ members = [
     "elt_doc_sad_leanix",
     "elt_doc_leanix_overview",
     "elt_doc_vendor_assess",
+    "elt_doc_transcript_audio",
 ]
 
 # Optional: shared dev dependencies for all sub-projects
@@ -13,4 +14,5 @@ dev-dependencies = [
     "black>=24.0.0",
     "ruff>=0.1.0",
     "python-docx>=1.2.0",
+    "openai-whisper>=20250625",
 ]
