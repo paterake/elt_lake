@@ -6,17 +6,21 @@ SELECT
        s.supplier_id                                                    supplier_id
      , s.nrm_vendor_name                                                supplier_name
      , s.nrm_country_name                                               tax_id_country
-     , NULL                                                             tax_id
+     , NULLIF(TRIM(s.tax_id_number), '')                                tax_id
      , CASE
          WHEN s.nrm_country_code = 'GB'
          THEN CASE
-                WHEN NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
-                THEN 'VAT Reg No'
-                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
-                THEN 'Company Number'
-                WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
-                THEN 'UTR - Unique Taxpayer Reference'
-                ELSE 'VAT Reg No'
+                WHEN NULLIF(TRIM(s.tax_id_number), '') IS NOT NULL
+                THEN CASE
+                        WHEN NULLIF(REPLACE(REPLACE(s.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
+                        THEN 'VAT Reg No'
+                        WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
+                        THEN 'Company Number'
+                        WHEN NULLIF(REPLACE(REPLACE(s.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
+                        THEN 'UTR - Unique Taxpayer Reference'
+                        ELSE 'VAT Reg No'
+                     END
+                ELSE NULL
               END
          ELSE COALESCE(dm.tax_id_type_label, 'TIN')
        END                                                              tax_id_type
@@ -39,5 +43,6 @@ SELECT
          ON  dm.country_code           = s.nrm_country_code
          AND dm.is_default             = TRUE
  WHERE 
-       tax_schedule_id                 = 'PS20'
+       tax_schedule_id                    = 'PS20'
+   AND NULLIF(TRIM(s.tax_id_number), '')  IS NOT NULL
 ;

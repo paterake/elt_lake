@@ -15,19 +15,7 @@ SELECT
      , TRIM(c.customer_id) || '_' || COALESCE(TRIM(c.address_code), 'MAIN')   address_id
      , c.nrm_country_name                                                     country
      , c.nrm_country_code                                                     country_code
-     , CASE
-        WHEN r0.county              IS NOT NULL
-        THEN r0.county
-        WHEN r1.instance            IS NOT NULL
-        THEN r1.instance
-        WHEN r2.instance            IS NOT NULL
-        THEN r2.instance
-        WHEN r3.county_state_name   IS NOT NULL
-        THEN r3.county_state_name
-        WHEN r4.county_state_name   IS NOT NULL
-        THEN r4.county_state_name
-        ELSE NULLIF(TRIM(c.county), '')
-       END                                                                    region
+     , rx.instance                                                            region
      , NULL                                                                   subregion
      , CASE
         WHEN r0.city                IS NOT NULL
@@ -75,6 +63,17 @@ SELECT
        ref_country_county_state_town_mapping    r4
          ON r4.country_code                     = c.nrm_country_code
         AND UPPER(TRIM(r4.town_city_name))      = UPPER(TRIM(c.city))       
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         rx
+         ON rx.country                          = c.nrm_country_name
+        AND UPPER(TRIM(rx.instance))            = CASE
+                                                   WHEN r0.county             IS NOT NULL THEN UPPER(TRIM(r0.county))
+                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                   ELSE NULLIF(UPPER(TRIM(s.county)), '')
+                                                  END
  WHERE COALESCE(NULLIF(TRIM(c.address_1), ''), NULLIF(TRIM(c.address_2), ''), NULLIF(TRIM(c.address_3), '')) IS NOT NULL
    AND NULLIF(TRIM(c.address_1), '') NOT IN ('[Not Known]') 
 ;
