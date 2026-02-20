@@ -25,7 +25,7 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_created_date_wnsl    t
 UNION ALL
 SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl t
        )
-     , cte_customer_nrm
+     , cte_customer_time_nrm
     AS (
 SELECT DISTINCT
        TRIM(t.customer_number)                                                                        customer_number
@@ -60,7 +60,7 @@ SELECT t.key_customer_name
      , ARRAY_AGG (DISTINCT t.target_business_unit       ORDER BY t.target_business_unit) array_target_business_unit
      , STRING_AGG(DISTINCT t.business_unit        , '|' ORDER BY t.business_unit       ) pipe_business_unit
      , STRING_AGG(DISTINCT t.target_business_unit , '|' ORDER BY t.target_business_unit) pipe_target_business_unit
-  FROM cte_customer_nrm           t
+  FROM cte_customer_time_nrm           t
  GROUP BY 
        t.key_customer_name
        )
@@ -80,7 +80,7 @@ SELECT
      , COUNT() OVER(PARTITION BY t.key_customer_name)                key_count
      , t.* 
      , bu.array_business_unit
-  FROM cte_customer_distinct           t
+  FROM cte_customer_time_nrm           t
        INNER JOIN
        cte_customer_business_unit      bu
          ON bu.key_customer_name       = t.key_customer_name
@@ -94,4 +94,3 @@ SELECT
      , t.*
   FROM cte_customer                    t
 ;
-
