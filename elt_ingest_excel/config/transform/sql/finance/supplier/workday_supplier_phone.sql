@@ -61,7 +61,7 @@ SELECT DISTINCT
   FROM cte_supplier_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
-     , cte_cleaned
+    , cte_cleaned
     AS (
 SELECT s.*
      , CASE
@@ -72,22 +72,17 @@ SELECT s.*
                   '^' || s.international_phone_code,
                   ''
                 ),
-                '^0+', ''  -- strip any leading zero from the local number
+                '^0+', ''
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
-       END                                                                 phone_number
+       END                                                             phone_number
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
     , cte_phone_parse
    AS (
 SELECT t.*
-     , get_area_code(t.international_phone_code || t.phone_number)         drv_area_code
-     , CASE
-         WHEN t.phone_type = 'fax'
-         THEN 'Fax'
-         ELSE get_phone_type(t.international_phone_code || t.phone_number)
-       END                                                                 drv_phone_device_type
+     , udf_parse_phone(t.international_phone_code, t.phone_number)        parsed_phone
   FROM cte_cleaned   t
       )
 SELECT s.supplier_id                                                       supplier_id
@@ -98,19 +93,15 @@ SELECT s.supplier_id                                                       suppl
        )                                                                   phone_id
      , s.phone_country                                                     phone_country
      , s.country_code                                                      country_code
-     , s.international_phone_code                                          international_phone_code
-     , CASE
-         WHEN s.drv_phone_device_type = 'Mobile'
-         THEN SUBSTR(s.phone_number, 1, 4)
-         ELSE s.drv_area_code
-       END                                                                 area_code
-     , CASE s.drv_phone_device_type
-         WHEN 'Mobile'
-         THEN SUBSTR(s.phone_number, 5)
-         ELSE SUBSTR(s.phone_number, LENGTH(s.drv_area_code) + 1)
-       END                                                                 phone_number
+     , s.parsed_phone.international_phone_code                            international_phone_code
+     , s.parsed_phone.area_code                                           area_code
+     , s.parsed_phone.phone_number                                        phone_number
      , NULL                                                                phone_number_extension
-     , s.drv_phone_device_type                                             phone_device_type
+     , CASE
+         WHEN s.phone_type = 'fax'
+         THEN 'Fax'
+         ELSE s.parsed_phone.device_type
+       END                                                                 phone_device_type
      , 'Yes'                                                               public_flag
      , CASE
          WHEN s.phone_type = 'primary'
