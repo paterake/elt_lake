@@ -19,7 +19,7 @@ SELECT
      , NULL                                              late_fee_rule
   FROM src_fin_customer                                  c
        LEFT OUTER JOIN
-       ref_source_supplier_payment_terms                 m
-         ON  m.source_payment_terms                      = UPPER(TRIM(c.payment_terms_id))
+       ref_source_customer_payment_terms                 m
+         ON  UPPER(m.source_payment_terms)               = UPPER(TRIM(c.payment_terms_id))
 
 ;

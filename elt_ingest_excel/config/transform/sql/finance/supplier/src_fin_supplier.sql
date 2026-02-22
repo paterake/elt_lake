@@ -26,25 +26,27 @@ SELECT
       , NULLIF(TRIM(t.eft_bank_code), '')                nrm_bank_sort_code
       , rbsc.bank_name_primary                           nrm_bank_name
       , t.*
-  FROM cte_supplier_rnk                         t
-       -- First try: match on country name (higher population)
-       LEFT OUTER JOIN
-       ref_source_country_name_mapping          m_name
-          ON  m_name.source_country_name        = NULLIF(UPPER(TRIM(t.country)), '')
-       -- Second try: match on country code (fallback)
-       LEFT OUTER JOIN
-       ref_source_country_code_mapping          m_code
-          ON  m_code.source_country_code        = NULLIF(UPPER(TRIM(t.country_code)), '')
-       -- Join to reference table using: name match > code match > default GB
-       LEFT OUTER JOIN
-       ref_country                              r
+   FROM cte_supplier_rnk                         t
+        -- First try: match on country name (higher population)
+        LEFT OUTER JOIN
+        ref_source_country_name_mapping          m_name
+           ON  m_name.source_country_name        = NULLIF(UPPER(TRIM(t.country)), '')
+        -- Second try: match on country code (fallback)
+        LEFT OUTER JOIN
+        ref_source_country_code_mapping          m_code
+           ON  m_code.source_country_code        = NULLIF(UPPER(TRIM(t.country_code)), '')
+        -- Join to reference table using: name match > code match > default GB
+        LEFT OUTER JOIN
+        ref_country                              r
           ON  r.country_code                    = COALESCE(NULLIF(m_name.country_code, ''), NULLIF(m_code.country_code, ''), 'GB')
-       -- Supplier category normalization
-       LEFT OUTER JOIN
-       ref_supplier_category_mapping            scm
-          ON scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
-       -- Sort Code normalisation
-       LEFT OUTER JOIN
-       ref_bank_sort_code_prefix_mapping        rbsc
+        -- Supplier category normalization
+        LEFT OUTER JOIN
+        ref_supplier_category_mapping            scm
+           ON scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
+        -- Sort Code normalisation
+        LEFT OUTER JOIN
+        ref_bank_sort_code_prefix_mapping        rbsc
           ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
+  WHERE NULLIF(TRIM(t.payment_terms_id), '')  IS NULL
+
 ;

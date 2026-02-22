@@ -15,7 +15,7 @@ SELECT
          ELSE c.credit_limit_amount
        END                                            credit_limit
      , NULL                                           hierarchy_credit_limit
-     , c.created_date                                 credit_verification_date
+     , NULL                                           credit_verification_date
      , NULL                                           commercial_credit_score
      , NULL                                           commercial_credit_score_date
      , NULL                                           commercial_credit_score_note

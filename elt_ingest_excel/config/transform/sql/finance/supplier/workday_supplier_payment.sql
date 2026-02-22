@@ -35,6 +35,6 @@ SELECT
   FROM src_fin_supplier                                  s
        LEFT OUTER JOIN
        ref_source_supplier_payment_terms                 m
-         ON  m.source_payment_terms                      = UPPER(TRIM(s.payment_terms_id))
+         ON  UPPER(m.source_payment_terms)               = UPPER(TRIM(s.payment_terms_id))
  WHERE COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
 ;
