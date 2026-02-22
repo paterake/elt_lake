@@ -1,30 +1,47 @@
 from __future__ import annotations
 
-import json
-import os
 from pathlib import Path
 from typing import Any
 
 import chromadb
 import ollama
 
-from elt_doc_damabok.ingest import (
-    build_index,
-    _expand_path as expand_path,
-    _load_config as load_doc_config,
-    _load_vector_config as load_vector_config,
+from elt_doc_damabok.ingest import build_index
+from elt_doc_damabok.utils import (
+    build_prompt,
+    embed_query,
+    expand_path,
+    load_doc_config,
+    load_ollama_config,
+    load_vector_config,
 )
-from elt_doc_damabok.query import _build_prompt, _embed_query
 
 
-def _load_ollama_config() -> dict[str, Any]:
-    here = Path(__file__).resolve().parent.parent.parent
-    cfg_path = here / "config" / "ollama.json"
-    try:
-        with cfg_path.open() as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Config file not found: {cfg_path}")
+_SUPPORTED_CHUNKING_STRATEGIES = {"page"}
+
+
+def _validate_rag_config(doc_cfg: dict[str, Any], vcfg: dict[str, Any]) -> None:
+    chunk_size = int(doc_cfg["chunk_size"])
+    chunk_overlap = int(doc_cfg["chunk_overlap"])
+    chunking_strategy = str(doc_cfg["chunking_strategy"])
+    top_k = int(vcfg["top_k"])
+    max_prompt_chars = int(vcfg["max_prompt_chars"])
+
+    if chunking_strategy not in _SUPPORTED_CHUNKING_STRATEGIES:
+        raise RuntimeError(
+            f"Unsupported chunking_strategy '{chunking_strategy}'. "
+            f"Supported: {sorted(_SUPPORTED_CHUNKING_STRATEGIES)}"
+        )
+    if chunk_overlap >= chunk_size:
+        raise RuntimeError(
+            f"chunk_overlap ({chunk_overlap}) must be less than chunk_size ({chunk_size})."
+        )
+    if top_k * chunk_size > max_prompt_chars:
+        raise RuntimeError(
+            f"top_k ({top_k}) × chunk_size ({chunk_size}) = {top_k * chunk_size} chars "
+            f"exceeds max_prompt_chars ({max_prompt_chars}). "
+            f"Reduce top_k or chunk_size, or increase max_prompt_chars."
+        )
 
 
 def _ensure_pdf_exists(doc_cfg: dict[str, Any]) -> Path:
@@ -59,7 +76,7 @@ def _ensure_models_installed(ocfg: dict[str, Any]) -> None:
         raise RuntimeError(f"Models not available after pull: {missing}")
 
 
-def _vector_store_params(vcfg: dict[str, Any]) -> tuple[Path, str, int, str, str]:
+def _vector_store_params(vcfg: dict[str, Any]) -> tuple[Path, str, int, int, str, str]:
     chroma_cfg = vcfg.get("chroma", {})
     persist_dir_str = chroma_cfg["persist_dir"]
     persist_dir = expand_path(persist_dir_str)
@@ -69,7 +86,8 @@ def _vector_store_params(vcfg: dict[str, Any]) -> tuple[Path, str, int, str, str
     if not embed_model or not llm_model:
         raise RuntimeError("embedding_model and llm_model must be set in vector_db config.")
     top_k = int(vcfg["top_k"])
-    return persist_dir, collection_name, top_k, embed_model, llm_model
+    max_prompt_chars = int(vcfg["max_prompt_chars"])
+    return persist_dir, collection_name, top_k, max_prompt_chars, embed_model, llm_model
 
 
 def _verify_index(persist_dir: Path, collection_name: str) -> int:
@@ -83,17 +101,18 @@ def _test_rag(
     persist_dir: Path,
     collection_name: str,
     top_k: int,
+    max_prompt_chars: int,
     embed_model: str,
     llm_model: str,
     system_prompt: str,
 ) -> str:
     client = chromadb.PersistentClient(path=str(persist_dir))
     collection = client.get_or_create_collection(collection_name)
-    q_emb = _embed_query(question, model=embed_model)
+    q_emb = embed_query(question, model=embed_model)
     results = collection.query(query_embeddings=[q_emb], n_results=top_k)
     docs = results.get("documents") or [[]]
     contexts = docs[0] if docs else []
-    prompt = _build_prompt(question, contexts, system_prompt)
+    prompt = build_prompt(question, contexts, system_prompt, max_prompt_chars)
     resp = ollama.chat(model=llm_model, messages=[{"role": "user", "content": prompt}])
     return resp.message.content
 
@@ -101,13 +120,14 @@ def _test_rag(
 def initialise() -> None:
     doc_cfg = load_doc_config()
     vcfg = load_vector_config()
-    ocfg = _load_ollama_config()
+    ocfg = load_ollama_config()
 
+    _validate_rag_config(doc_cfg, vcfg)
     pdf_path = _ensure_pdf_exists(doc_cfg)
     _ensure_ollama_server()
     _ensure_models_installed(ocfg)
 
-    persist_dir, collection_name, top_k, embed_model, llm_model = _vector_store_params(vcfg)
+    persist_dir, collection_name, top_k, max_prompt_chars, embed_model, llm_model = _vector_store_params(vcfg)
     persist_dir.mkdir(parents=True, exist_ok=True)
 
     build_index()
@@ -123,6 +143,7 @@ def initialise() -> None:
         persist_dir=persist_dir,
         collection_name=collection_name,
         top_k=top_k,
+        max_prompt_chars=max_prompt_chars,
         embed_model=embed_model,
         llm_model=llm_model,
         system_prompt=system_prompt,

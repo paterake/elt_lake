@@ -52,6 +52,9 @@ Defines the **document-level** configuration:
 - `source_pdf`: path to the DMBOK PDF.
 - `chunk_size`: maximum characters per text chunk.
 - `chunk_overlap`: overlap between consecutive chunks to preserve context.
+- `chunking_strategy`: the chunking approach in use. Currently only `"page"`
+  is supported — each page is chunked independently; chunks do not span page
+  boundaries. Validated at initialisation.
 
 ### `vector_db.json`
 
@@ -63,6 +66,7 @@ Defines the **vector database and retrieval** configuration:
 - `embedding_model`: embedding model name for Ollama (e.g. `nomic-embed-text`).
 - `llm_model`: LLM name for Ollama (e.g. `llama3.1:8b`).
 - `top_k`: number of chunks to retrieve per query.
+- `max_prompt_chars`: soft cap on prompt size in characters.
 
 The ingestion and query pipelines read `doc_damabok.json` for document and
 chunking settings, and `vector_db.json` for vector-store and model settings.
@@ -88,14 +92,14 @@ Code: `elt_doc_damabok/src/elt_doc_damabok/ingest.py`
 Steps:
 
 1. **Config load**
-   - `_load_config()` reads `doc_damabok.json`.
-   - `_load_vector_config()` reads `vector_db.json`.
+   - `load_doc_config()` reads `doc_damabok.json`.
+   - `load_vector_config()` reads `vector_db.json`.
 2. **Paths and parameters**
    - `source_pdf` is expanded and resolved.
    - `chunk_size` and `chunk_overlap` are applied.
-   - `embedding_model` is taken from `vector_db.json` (or fallback).
+   - `embedding_model` is taken from `vector_db.json`.
    - Chroma `persist_dir` and `collection_name` are derived from
-     `vector_db.json` (or fallback).
+     `vector_db.json`.
 3. **Text extraction**
    - `_extract_pages()` uses `pypdf.PdfReader` to extract text per page and
      normalise whitespace.
@@ -122,19 +126,24 @@ Steps:
 
 1. **Config load**
    - Reads `doc_damabok.json`, `vector_db.json`, and `ollama.json`.
-2. **Prerequisite checks**
+2. **RAG config validation**
+   - Asserts `chunking_strategy` is a supported value (`"page"`).
+   - Asserts `chunk_overlap` < `chunk_size` (prevents infinite chunking loop).
+   - Asserts `top_k × chunk_size` ≤ `max_prompt_chars` (ensures retrieved
+     chunks fit within the configured prompt budget without silent truncation).
+3. **Prerequisite checks**
    - Verifies the DMBOK PDF path exists.
    - Verifies connectivity to the Ollama server.
    - Ensures required Ollama models listed in `models` are
      installed, pulling them if needed.
-3. **Vector store parameters**
+4. **Vector store parameters**
    - Resolves Chroma persistence directory, collection name, embedding model,
-     LLM model, and `top_k` from `vector_db.json`.
-4. **Ingestion**
+     LLM model, `top_k`, and `max_prompt_chars` from `vector_db.json`.
+5. **Ingestion**
    - Calls the ingestion pipeline to (re)build the Chroma index.
-5. **Index verification**
+6. **Index verification**
    - Confirms that the Chroma collection contains at least one document.
-6. **RAG smoke test**
+7. **RAG smoke test**
    - Runs a single query using the configured test question.
    - Embeds the question, retrieves the top `top_k` chunks, builds a prompt,
      and calls the LLM to produce an answer printed to the console.
@@ -149,10 +158,10 @@ Code: `elt_doc_damabok/src/elt_doc_damabok/query.py`
 Steps:
 
 1. **Config load**
-   - `_load_vector_config()` reads `vector_db.json`.
-   - `_load_ollama_config()` reads `ollama.json`.
+   - `load_vector_config()` reads `vector_db.json`.
+   - `load_ollama_config()` reads `ollama.json`.
    - Resolves `embedding_model`, `llm_model`, Chroma directory and collection
-     name, `top_k`, and `system_prompt`.
+     name, `top_k`, `max_prompt_chars`, and `system_prompt`.
 2. **Vector store connect**
    - Creates a persistent Chroma client and opens the configured collection.
 3. **Interactive loop**
@@ -162,9 +171,9 @@ Steps:
    - Queries Chroma with the question embedding, requesting `top_k` nearest
      neighbours.
 4. **Prompt construction**
-   - `_build_prompt()` formats the retrieved documents as numbered excerpts.
-   - Appends the user question and an instruction to answer only from the
-     excerpts.
+   - `build_prompt()` formats the retrieved documents as numbered excerpts.
+   - Applies the configured `system_prompt`.
+   - Enforces `max_prompt_chars` to keep the prompt within a safe size.
 5. **LLM call**
    - Sends the prompt to Ollama via `ollama.chat` using `llm_model`.
    - Streams or returns the model’s answer to the console.

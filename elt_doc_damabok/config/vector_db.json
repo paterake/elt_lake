@@ -6,6 +6,6 @@
   },
   "embedding_model": "nomic-embed-text",
   "llm_model": "llama3.1:8b",
-  "top_k": 5
+  "top_k": 5,
+  "max_prompt_chars": 12000
 }
-

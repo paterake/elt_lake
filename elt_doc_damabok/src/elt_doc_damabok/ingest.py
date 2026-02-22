@@ -1,38 +1,12 @@
 from __future__ import annotations
 
-import json
-import os
 from pathlib import Path
-from typing import Any
 
 import chromadb
 from pypdf import PdfReader
 
 import ollama
-
-
-def _load_config() -> dict[str, Any]:
-    here = Path(__file__).resolve().parent.parent.parent
-    cfg_path = here / "config" / "doc_damabok.json"
-    try:
-        with cfg_path.open() as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Config file not found: {cfg_path}")
-
-
-def _expand_path(path_str: str) -> Path:
-    return Path(os.path.expanduser(path_str)).resolve()
-
-
-def _load_vector_config() -> dict[str, Any]:
-    here = Path(__file__).resolve().parent.parent.parent
-    cfg_path = here / "config" / "vector_db.json"
-    try:
-        with cfg_path.open() as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Config file not found: {cfg_path}")
+from elt_doc_damabok.utils import expand_path, load_doc_config, load_vector_config
 
 
 def _extract_pages(pdf_path: Path) -> list[str]:
@@ -69,16 +43,14 @@ def _embed_texts(texts: list[str], model: str) -> list[list[float]]:
 
 
 def build_index() -> None:
-    cfg = _load_config()
-    vcfg = _load_vector_config()
-    pdf_path = _expand_path(cfg["source_pdf"])
+    cfg = load_doc_config()
+    vcfg = load_vector_config()
+    pdf_path = expand_path(cfg["source_pdf"])
     chunk_size = int(cfg["chunk_size"])
     chunk_overlap = int(cfg["chunk_overlap"])
     embed_model = str(vcfg["embedding_model"])
     chroma_cfg = vcfg.get("chroma", {})
-    persist_dir = _expand_path(
-        chroma_cfg["persist_dir"]
-    )
+    persist_dir = expand_path(chroma_cfg["persist_dir"])
     collection_name = str(chroma_cfg["collection_name"])
 
     persist_dir.mkdir(parents=True, exist_ok=True)
