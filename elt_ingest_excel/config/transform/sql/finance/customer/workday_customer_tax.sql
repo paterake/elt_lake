@@ -34,6 +34,13 @@ SELECT
                 ELSE 'EU Company - Not Registered in this country'
               END
          ELSE CASE
+                WHEN UPPER(TRIM(c.nrm_country_code)) = 'GB'
+                 AND (
+                        NULLIF(TRIM(c.tax_registration_number), '') IS NOT NULL
+                     OR UPPER(TRIM(c.nrm_tax_id_type)) LIKE 'VAT%'
+                     )
+                 AND UPPER(TRIM(c.tax_schedule_id)) IN ('SS20')
+                THEN 'VAT Registered in THIS NON EU country- Domestic Scenario'
                 WHEN NULLIF(TRIM(c.tax_registration_number), '') IS NOT NULL
                 THEN 'Non-MAR Company - Non-Resident Taxpayer Registered for VAT'
                 WHEN UPPER(TRIM(c.tax_schedule_id)) IN ('SOS')
