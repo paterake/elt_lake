@@ -99,6 +99,17 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         raw_local = phone_number or ""
         intl_digits = re.sub(r"[^0-9]", "", raw_intl)
         local_digits = re.sub(r"[^0-9]", "", raw_local)
+        if not intl_digits and local_digits:
+            derived = ""
+            if local_digits.startswith("00") and len(local_digits) > 4:
+                derived = local_digits[2:]
+            elif local_digits.startswith("011") and len(local_digits) > 5:
+                derived = local_digits[3:]
+            if derived:
+                intl_from_local = derived[:3]
+                rest = derived[3:]
+                intl_digits = intl_from_local
+                local_digits = rest or ""
         candidates: list[tuple[str, str | None]] = []
         if raw_local.strip().startswith("+"):
             candidates.append((raw_local.strip(), None))
@@ -170,6 +181,8 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         nsn = phonenumbers.national_significant_number(parsed)
         num_type = phonenumbers.number_type(parsed)
         ac_len = length_of_geographical_area_code(parsed)
+        is_gb = country_code_int == 44
+        is_us = country_code_int == 1
         if num_type == phonenumbers.PhoneNumberType.MOBILE:
             if len(nsn) > 4:
                 area = nsn[:4]
@@ -177,18 +190,45 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
             else:
                 area = None
                 local = nsn
+        elif (
+            is_gb
+            and len(nsn) > 3
+            and nsn[0] == "8"
+        ):
+            area = nsn[:3]
+            local = nsn[3:]
+        elif (
+            is_us
+            and len(nsn) > 3
+            and nsn[:3] in ("800", "888", "877", "866", "855", "844", "833")
+        ):
+            area = nsn[:3]
+            local = nsn[3:]
         elif ac_len and ac_len > 0 and ac_len < len(nsn):
             area = nsn[:ac_len]
             local = nsn[ac_len:]
         else:
             area = None
             local = nsn
+        if area is None and local:
+            if len(local) > 3:
+                area = local[:3]
+                local = local[3:]
+            else:
+                area = local
+                local = ""
         if num_type == phonenumbers.PhoneNumberType.MOBILE:
             device = "Mobile"
         elif num_type in (
             phonenumbers.PhoneNumberType.FIXED_LINE,
             phonenumbers.PhoneNumberType.FIXED_LINE_OR_MOBILE,
             phonenumbers.PhoneNumberType.VOIP,
+            phonenumbers.PhoneNumberType.PREMIUM_RATE,
+            phonenumbers.PhoneNumberType.TOLL_FREE,
+            phonenumbers.PhoneNumberType.SHARED_COST,
+            phonenumbers.PhoneNumberType.UAN,
+            phonenumbers.PhoneNumberType.PERSONAL_NUMBER,
+            phonenumbers.PhoneNumberType.VOICEMAIL,
         ):
             device = "Landline"
         else:
