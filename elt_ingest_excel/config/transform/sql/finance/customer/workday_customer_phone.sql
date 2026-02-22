@@ -5,9 +5,9 @@ CREATE TABLE workday_customer_phone AS
     AS (
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , TRIM(c.country)                       phone_country
+     , c.nrm_country_name                    phone_country
      , c.nrm_country_code                    country_code
-     , c.nrm_phone_code                      international_phone_code
+     , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_1                             phone_raw
      , 'primary'                             phone_type
      , '_PH1'                                suffix
@@ -16,9 +16,9 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , TRIM(c.country)                       phone_country
+     , c.nrm_country_name                    phone_country
      , c.nrm_country_code                    country_code
-     , c.nrm_phone_code                      international_phone_code
+     , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_2                             phone_raw
      , 'secondary'                           phone_type
      , '_PH2'                                suffix
@@ -27,9 +27,9 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , TRIM(c.country)                       phone_country
+     , c.nrm_country_name                    phone_country
      , c.nrm_country_code                    country_code
-     , c.nrm_phone_code                      international_phone_code
+     , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_3                             phone_raw
      , 'tertiary'                            phone_type
      , '_PH3'                                suffix
@@ -38,9 +38,9 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , TRIM(c.country)                       phone_country
+     , c.nrm_country_name                    phone_country
      , c.nrm_country_code                    country_code
-     , c.nrm_phone_code                      international_phone_code
+     , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.fax                                 phone_raw
      , 'fax'                                 phone_type
      , '_FAX'                                suffix
@@ -54,8 +54,8 @@ SELECT DISTINCT
      , p.customer_name                                                     customer_name
      , p.phone_country                                                     phone_country
      , p.country_code                                                      country_code
-     , TRIM(REGEXP_REPLACE(p.international_phone_code, '[^0-9]', ''))      international_phone_code
-     , LTRIM(TRIM(REGEXP_REPLACE(u.phone, '[^0-9]', '')), '0')             phone_number_raw
+     , REGEXP_REPLACE(TRIM(p.international_phone_code), '[^0-9]', '', 'g') international_phone_code
+     , REGEXP_REPLACE(TRIM(u.phone), '[^0-9]', '', 'g')                    phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
   FROM cte_customer_phone p

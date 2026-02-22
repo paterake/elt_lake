@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 import phonenumbers
+import re
 from phonenumbers.phonenumberutil import length_of_geographical_area_code
 
 from duckdb.typing import VARCHAR
@@ -33,6 +34,11 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
             return None
         p = _try_parse(phone_str)
         if p is None:
+            digits = re.sub(r"[^0-9]", "", phone_str)
+            if digits.startswith("44") and len(digits) > 5:
+                nsn = digits[2:]
+                if not nsn.startswith("7"):
+                    return nsn[:3]
             return None
         nsn = phonenumbers.national_significant_number(p)
         ac_len = length_of_geographical_area_code(p)
@@ -51,6 +57,12 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
             return None
         p = _try_parse(phone_str)
         if p is None:
+            digits = re.sub(r"[^0-9]", "", phone_str)
+            if digits.startswith("44") and len(digits) > 2:
+                nsn = digits[2:]
+                if nsn.startswith("7"):
+                    return "Mobile"
+                return "Landline"
             return None
         num_type = phonenumbers.number_type(p)
         if num_type == phonenumbers.PhoneNumberType.MOBILE:
