@@ -138,23 +138,51 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
             if parsed is not None:
                 break
         if parsed is None:
+            fallback_digits = local_digits or intl_digits
+            if intl_digits:
+                fallback_intl = "+" + intl_digits
+            else:
+                fallback_intl = "+44"
+            if not fallback_digits:
+                return {
+                    "international_phone_code": fallback_intl,
+                    "area_code": None,
+                    "phone_number": None,
+                    "device_type": "Landline",
+                }
+            if intl_digits == "44" and len(fallback_digits) > 3:
+                area = fallback_digits[:3]
+                local = fallback_digits[3:]
+            elif len(fallback_digits) > 1:
+                area = fallback_digits[0]
+                local = fallback_digits[1:]
+            else:
+                area = fallback_digits
+                local = ""
             return {
-                "international_phone_code": None,
-                "area_code": None,
-                "phone_number": None,
-                "device_type": None,
+                "international_phone_code": fallback_intl,
+                "area_code": area,
+                "phone_number": local,
+                "device_type": "Landline",
             }
         country_code_int = parsed.country_code
         intl_out = f"+{country_code_int}" if country_code_int else None
         nsn = phonenumbers.national_significant_number(parsed)
+        num_type = phonenumbers.number_type(parsed)
         ac_len = length_of_geographical_area_code(parsed)
-        if ac_len and ac_len > 0 and ac_len < len(nsn):
+        if num_type == phonenumbers.PhoneNumberType.MOBILE:
+            if len(nsn) > 4:
+                area = nsn[:4]
+                local = nsn[4:]
+            else:
+                area = None
+                local = nsn
+        elif ac_len and ac_len > 0 and ac_len < len(nsn):
             area = nsn[:ac_len]
             local = nsn[ac_len:]
         else:
             area = None
             local = nsn
-        num_type = phonenumbers.number_type(parsed)
         if num_type == phonenumbers.PhoneNumberType.MOBILE:
             device = "Mobile"
         elif num_type in (
