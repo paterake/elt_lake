@@ -1,0 +1,11 @@
+{
+  "provider": "chroma",
+  "chroma": {
+    "persist_dir": "~/Documents/__data/damabok_chroma",
+    "collection_name": "damabok"
+  },
+  "embedding_model": "nomic-embed-text",
+  "llm_model": "llama3.1:8b",
+  "top_k": 5
+}
+
