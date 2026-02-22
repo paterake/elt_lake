@@ -1,0 +1,147 @@
+{
+  "patterns": {
+    "outbound_eib_sftp": {
+      "id": "outbound_eib_sftp",
+      "name": "Outbound EIB to SFTP",
+      "description": "Workday → EIB → SFTP → Vendor",
+      "diagram": "Workday → [EIB Custom Report] → [CSV/XML] → [PGP Encrypt] → [SFTP] → Vendor",
+      "components": [
+        {"name": "EIB", "role": "Extract", "description": "Enterprise Integration Builder custom report"},
+        {"name": "Document Transformation", "role": "Transform", "description": "Convert XML to CSV or vendor format"},
+        {"name": "PGP Encryption", "role": "Secure", "description": "Encrypt file using vendor public key"},
+        {"name": "SFTP", "role": "Deliver", "description": "Secure file transfer protocol endpoint"}
+      ],
+      "security": [
+        "PGP encryption using vendor public key",
+        "SSH key authentication for SFTP",
+        "TLS 1.2+ for data in transit"
+      ],
+      "typical_use_cases": [
+        "Employee data provisioning to vendors",
+        "Payroll data extracts",
+        "Benefits administration feeds"
+      ],
+      "examples": ["INT002 (Crisis24)", "INT003 (Headspace)", "INT004 (AMEX GBT)"],
+      "config_template": "outbound_eib_sftp.json"
+    },
+    "inbound_sftp": {
+      "id": "inbound_sftp",
+      "name": "Inbound from SFTP",
+      "description": "Vendor → SFTP → Workday EIB",
+      "diagram": "Vendor → [SFTP] → [Workday EIB Inbound] → [Document Transformation] → Workday",
+      "components": [
+        {"name": "Vendor", "role": "Source", "description": "External system providing data"},
+        {"name": "SFTP", "role": "Receive", "description": "FA-managed SFTP endpoint"},
+        {"name": "EIB Inbound", "role": "Ingest", "description": "Workday inbound integration"},
+        {"name": "Document Transformation", "role": "Transform", "description": "Convert vendor format to Workday XML"}
+      ],
+      "security": [
+        "SSH key authentication",
+        "IP whitelisting for vendor",
+        "File validation before import"
+      ],
+      "typical_use_cases": [
+        "Payroll inputs from vendors",
+        "Time tracking data",
+        "Expense data feeds"
+      ],
+      "examples": ["INT008 (4me Payroll Inputs)"],
+      "config_template": "inbound_sftp.json"
+    },
+    "bidirectional_api": {
+      "id": "bidirectional_api",
+      "name": "Bi-directional API",
+      "description": "Workday ↔ REST API ↔ Vendor",
+      "diagram": "Workday ↔ [REST API] ↔ [Vendor API] ↔ Vendor",
+      "components": [
+        {"name": "Workday API", "role": "Source/Target", "description": "Workday REST API endpoints"},
+        {"name": "Vendor API", "role": "Source/Target", "description": "Vendor REST API endpoints"},
+        {"name": "Middleware", "role": "Orchestrate", "description": "Optional integration layer"}
+      ],
+      "security": [
+        "OAuth 2.0 authentication",
+        "API key authentication",
+        "TLS 1.2+ encryption",
+        "IP restrictions where applicable"
+      ],
+      "typical_use_cases": [
+        "Identity provisioning (e.g., Okta)",
+        "Real-time data synchronization",
+        "Bi-directional employee updates"
+      ],
+      "examples": ["INT001 (Okta)"],
+      "config_template": "bidirectional_api.json"
+    },
+    "multi_connector": {
+      "id": "multi_connector",
+      "name": "Multi-connector via FA SFTP",
+      "description": "Workday → EIB → FA SFTP → Vendor SFTP → Vendor",
+      "diagram": "Workday → [EIB] → [FA SFTP] → [Vendor SFTP Connection] → Vendor",
+      "components": [
+        {"name": "EIB", "role": "Extract", "description": "Workday EIB extract"},
+        {"name": "FA SFTP", "role": "Intermediary", "description": "FA-managed SFTP (e.g., Hyve)"},
+        {"name": "Vendor SFTP Connection", "role": "Retrieve", "description": "Vendor retrieves from FA SFTP"}
+      ],
+      "security": [
+        "SSH key authentication (both directions)",
+        "File purge after retrieval",
+        "Comprehensive audit logging",
+        "IP whitelisting"
+      ],
+      "typical_use_cases": [
+        "Integrations requiring FA-managed intermediary",
+        "Multi-vendor distribution",
+        "Centralized file management"
+      ],
+      "examples": ["INT000 (Hyve Hosted SFTP)"],
+      "config_template": "multi_connector.json"
+    },
+    "outbound_fa_sftp": {
+      "id": "outbound_fa_sftp",
+      "name": "Outbound via FA SFTP",
+      "description": "Workday → EIB → FA SFTP → Vendor retrieves",
+      "diagram": "Workday → [EIB] → [FA SFTP] → [Vendor Polling] → Vendor",
+      "components": [
+        {"name": "EIB", "role": "Extract", "description": "Workday EIB with encryption"},
+        {"name": "FA SFTP", "role": "Host", "description": "FA-hosted SFTP endpoint"},
+        {"name": "Vendor Polling", "role": "Retrieve", "description": "Vendor polls and retrieves files"}
+      ],
+      "security": [
+        "PGP encryption",
+        "SSH key authentication",
+        "File auto-purge after retrieval",
+        "Audit logging"
+      ],
+      "typical_use_cases": [
+        "Vendor integrations with FA SFTP standard",
+        "Secure file delivery"
+      ],
+      "examples": ["INT007 (4me Outbound)"],
+      "config_template": "outbound_fa_sftp.json"
+    }
+  },
+  "selection_criteria": {
+    "use_outbound_eib_sftp_when": [
+      "Workday is the source of truth",
+      "Vendor provides SFTP endpoint",
+      "Batch processing is acceptable",
+      "File-based delivery is required"
+    ],
+    "use_inbound_sftp_when": [
+      "Vendor is the source of truth",
+      "Data needs to be loaded into Workday",
+      "File-based ingestion is acceptable"
+    ],
+    "use_bidirectional_api_when": [
+      "Real-time or near-real-time sync required",
+      "Both systems have API capabilities",
+      "Bi-directional data flow needed",
+      "OAuth or modern auth available"
+    ],
+    "use_multi_connector_when": [
+      "FA-managed SFTP is required",
+      "Multiple vendors need access",
+      "Centralized audit trail needed"
+    ]
+  }
+}

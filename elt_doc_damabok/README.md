@@ -61,9 +61,10 @@ Configuration lives in:
 
 - `elt_doc_damabok/config/doc_damabok.json` (document and chunking)
 - `elt_doc_damabok/config/vector_db.json` (vector store and models)
+- `elt_doc_damabok/config/ollama.json` (models, system prompt, test question)
 
 See `ARCHITECTURE.md` for field-level details and how these files are used by
-the ingestion and query pipelines.
+the ingestion, query, and initialisation pipelines.
 
 ## One-time ingestion (build the index)
 

@@ -61,14 +61,14 @@ def _ensure_models_installed(ocfg: dict[str, Any]) -> None:
 
 def _vector_store_params(vcfg: dict[str, Any]) -> tuple[Path, str, int, str, str]:
     chroma_cfg = vcfg.get("chroma", {})
-    persist_dir_str = chroma_cfg.get("persist_dir", "./damabok_chroma")
+    persist_dir_str = chroma_cfg["persist_dir"]
     persist_dir = expand_path(persist_dir_str)
-    collection_name = str(chroma_cfg.get("collection_name", "damabok"))
+    collection_name = str(chroma_cfg["collection_name"])
     embed_model = vcfg.get("embedding_model") or ""
     llm_model = vcfg.get("llm_model") or ""
     if not embed_model or not llm_model:
         raise RuntimeError("embedding_model and llm_model must be set in vector_db config.")
-    top_k = int(vcfg.get("top_k", 5))
+    top_k = int(vcfg["top_k"])
     return persist_dir, collection_name, top_k, embed_model, llm_model
 
 
@@ -85,6 +85,7 @@ def _test_rag(
     top_k: int,
     embed_model: str,
     llm_model: str,
+    system_prompt: str,
 ) -> str:
     client = chromadb.PersistentClient(path=str(persist_dir))
     collection = client.get_or_create_collection(collection_name)
@@ -92,7 +93,7 @@ def _test_rag(
     results = collection.query(query_embeddings=[q_emb], n_results=top_k)
     docs = results.get("documents") or [[]]
     contexts = docs[0] if docs else []
-    prompt = _build_prompt(question, contexts)
+    prompt = _build_prompt(question, contexts, system_prompt)
     resp = ollama.chat(model=llm_model, messages=[{"role": "user", "content": prompt}])
     return resp.message.content
 
@@ -116,6 +117,7 @@ def initialise() -> None:
         raise RuntimeError("Chroma index is empty after ingestion.")
 
     question = str(ocfg["test_question"])
+    system_prompt = str(ocfg["system_prompt"])
     answer = _test_rag(
         question=question,
         persist_dir=persist_dir,
@@ -123,6 +125,7 @@ def initialise() -> None:
         top_k=top_k,
         embed_model=embed_model,
         llm_model=llm_model,
+        system_prompt=system_prompt,
     )
 
     print(f"DMBOK PDF found at: {pdf_path}")

@@ -3,5 +3,6 @@
     "nomic-embed-text:latest",
     "llama3.1:8b"
   ],
+  "system_prompt": "You are an assistant answering questions about the DAMA-DMBOK2R data management body of knowledge.\nUse only the information in the provided excerpts.\nIf the answer is not clearly supported, say you cannot answer from the book.",
   "test_question": "Summarise what the DAMA-DMBOK2R manual is about."
 }

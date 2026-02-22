@@ -73,11 +73,13 @@ Defines the **Ollama-specific** configuration:
 
 - `models`: list of Ollama model names that must be installed (for example
   `nomic-embed-text:latest` and `llama3.1:8b`).
+- `system_prompt`: the LLM instruction text prepended to every RAG prompt,
+  defining the assistant's role and constraints.
 - `test_question`: a single question used by the initialisation process to
   validate that retrieval and generation are functioning correctly.
 
-The initialisation pipeline uses this to ensure the right models are present
-and to drive a smoke-test query.
+The initialisation and query pipelines use this to drive model checks,
+prompt construction, and smoke-test queries.
 
 ## Ingestion flow
 
@@ -147,10 +149,10 @@ Code: `elt_doc_damabok/src/elt_doc_damabok/query.py`
 Steps:
 
 1. **Config load**
-   - `_load_config()` reads `doc_damabok.json`.
    - `_load_vector_config()` reads `vector_db.json`.
+   - `_load_ollama_config()` reads `ollama.json`.
    - Resolves `embedding_model`, `llm_model`, Chroma directory and collection
-     name, and `top_k`.
+     name, `top_k`, and `system_prompt`.
 2. **Vector store connect**
    - Creates a persistent Chroma client and opens the configured collection.
 3. **Interactive loop**

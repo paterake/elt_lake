@@ -1,0 +1,119 @@
+{
+  "version": "2.0",
+  "name": "Solution Architecture Definition Template",
+  "front_matter": [
+    {
+      "name": "Document History",
+      "type": "table",
+      "required": true,
+      "columns": ["Version", "Date", "Author", "Changes"]
+    },
+    {
+      "name": "Document Review",
+      "type": "table",
+      "required": true,
+      "columns": ["Name", "Role", "Date", "Signature"]
+    },
+    {
+      "name": "Approvals",
+      "type": "table",
+      "required": true,
+      "columns": ["Name", "Role", "Date", "Signature"]
+    },
+    {
+      "name": "Reference Documents",
+      "type": "list",
+      "required": true
+    },
+    {
+      "name": "Guidance",
+      "type": "text",
+      "required": false
+    }
+  ],
+  "sections": {
+    "1": {
+      "title": "Introduction",
+      "level": 1,
+      "subsections": {
+        "1.1": {"title": "Objectives", "required": true, "level": 2},
+        "1.2": {"title": "Functionality", "required": true, "level": 2},
+        "1.3": {"title": "Constraints", "required": true, "level": 2},
+        "1.4": {"title": "Dependencies", "required": true, "level": 2},
+        "1.5": {"title": "Legacy", "required": false, "level": 2}
+      }
+    },
+    "2": {
+      "title": "Data",
+      "level": 1,
+      "subsections": {
+        "2.1": {"title": "GDPR", "required": true, "level": 2},
+        "2.2": {"title": "Sources", "required": true, "level": 2},
+        "2.3": {"title": "Integration", "required": true, "level": 2},
+        "2.4": {"title": "Migration", "required": false, "level": 2},
+        "2.5": {"title": "Audit", "required": true, "level": 2},
+        "2.6": {"title": "Backups", "required": true, "level": 2},
+        "2.7": {"title": "Reporting", "required": true, "level": 2}
+      }
+    },
+    "3": {
+      "title": "Non-functional Requirements",
+      "level": 1,
+      "subsections": {
+        "3.1": {"title": "Security", "required": true, "level": 2},
+        "3.2": {"title": "Capacity", "required": true, "level": 2},
+        "3.3": {"title": "Performance", "required": true, "level": 2},
+        "3.4": {"title": "Scalability", "required": true, "level": 2},
+        "3.5": {"title": "Availability", "required": true, "level": 2},
+        "3.6": {"title": "Disaster Recovery", "required": true, "level": 2},
+        "3.7": {"title": "Monitoring", "required": true, "level": 2}
+      }
+    },
+    "4": {
+      "title": "Solution Architecture",
+      "level": 1,
+      "subsections": {
+        "4.1": {"title": "Application Architecture", "required": true, "level": 2},
+        "4.2": {"title": "Infrastructure Architecture", "required": true, "level": 2},
+        "4.3": {"title": "Environments", "required": true, "level": 2},
+        "4.4": {"title": "DevOps", "required": true, "level": 2}
+      }
+    },
+    "5": {
+      "title": "Technology Stack",
+      "level": 1,
+      "subsections": {
+        "5.1": {"title": "Infrastructure", "required": true, "level": 2},
+        "5.2": {"title": "Data", "required": true, "level": 2},
+        "5.3": {"title": "Development", "required": true, "level": 2}
+      }
+    },
+    "6": {
+      "title": "Costs",
+      "level": 1,
+      "subsections": {
+        "6.1": {"title": "Infrastructure", "required": true, "level": 2},
+        "6.2": {"title": "Application", "required": true, "level": 2},
+        "6.3": {"title": "Software", "required": true, "level": 2}
+      }
+    },
+    "7": {
+      "title": "Maintenance",
+      "level": 1,
+      "subsections": {
+        "7.1": {"title": "Support", "required": true, "level": 2},
+        "7.2": {"title": "Roadmap", "required": true, "level": 2},
+        "7.3": {"title": "Life Expectancy", "required": true, "level": 2}
+      }
+    },
+    "8": {
+      "title": "Appendix",
+      "level": 1,
+      "subsections": {
+        "8.1": {"title": "Test Scenarios", "required": false, "level": 2},
+        "8.2": {"title": "Data Mappings", "required": false, "level": 2},
+        "8.3": {"title": "Security Configuration Details", "required": false, "level": 2}
+      }
+    }
+  }
+}

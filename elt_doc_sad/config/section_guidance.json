@@ -1,0 +1,596 @@
+{
+  "Document History": {
+    "description": "Version control and change log for the SAD document",
+    "content_type": "table",
+    "columns": ["Version", "Date", "Author", "Changes"],
+    "guidance": "Record all versions including draft versions. Note significant changes in the Changes column."
+  },
+  "Document Review": {
+    "description": "List of reviewers who have reviewed the SAD",
+    "content_type": "table",
+    "columns": ["Name", "Role", "Date", "Signature"],
+    "guidance": "Include technical reviewers, business stakeholders, and security reviewers."
+  },
+  "Approvals": {
+    "description": "Formal approvals for the SAD",
+    "content_type": "table",
+    "columns": ["Name", "Role", "Date", "Signature"],
+    "guidance": "Include approvers from architecture, security, and business leadership."
+  },
+  "Reference Documents": {
+    "description": "Related documentation and resources",
+    "content_type": "list",
+    "guidance": "Link to design documents, SOWs, vendor documentation, and related SADs."
+  },
+  "1.1 Objectives": {
+    "description": "Primary objectives of implementing the integration",
+    "should_include": [
+      "Business goals the integration addresses",
+      "Technical objectives",
+      "Success criteria",
+      "What is explicitly excluded from scope"
+    ],
+    "example_topics": [
+      "Automated provisioning of data to vendor platform",
+      "Secure data transmission using encryption",
+      "Compliance with GDPR and data protection standards",
+      "Support for employee/customer initiatives",
+      "Alignment with Adopt, Automate, Secure, Simplify principles"
+    ],
+    "typical_length": "5-10 bullet points plus exclusions"
+  },
+  "1.2 Functionality": {
+    "description": "Detailed description of what the solution does",
+    "should_include": [
+      "Component breakdown (typically 2-4 components)",
+      "Data flow description",
+      "Implementation pattern",
+      "Scheduling or triggering mechanism",
+      "File formats and encoding (if applicable)"
+    ],
+    "example_topics": [
+      "EIB custom report configuration",
+      "Document Transformation for format conversion",
+      "File format (CSV, XML) and encoding (UTF-8)",
+      "Delivery mechanism (SFTP, API, email)",
+      "Full vs incremental extracts",
+      "File naming conventions"
+    ],
+    "typical_length": "1-2 paragraphs plus bullet points"
+  },
+  "1.3 Constraints": {
+    "description": "Technical and business limitations",
+    "should_include": [
+      "Compliance requirements",
+      "Technical limitations",
+      "Vendor limitations",
+      "Security requirements"
+    ],
+    "example_topics": [
+      "GDPR and UK data protection requirements",
+      "File format constraints from vendor",
+      "Encryption requirements (PGP, TLS)",
+      "Vendor environment limitations (no test environment)",
+      "File naming conventions"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "1.4 Dependencies": {
+    "description": "Required systems and configurations",
+    "should_include": [
+      "Source system requirements",
+      "Target system requirements",
+      "Network requirements",
+      "Security configurations",
+      "Data prerequisites"
+    ],
+    "example_topics": [
+      "Workday HCM operational with accurate data",
+      "Vendor endpoint accessible and configured",
+      "Network connectivity established",
+      "Integration System User configured",
+      "Security Groups configured",
+      "Encryption keys exchanged"
+    ],
+    "typical_length": "5-8 bullet points"
+  },
+  "1.5 Legacy": {
+    "description": "Previous integration details and decommission plan",
+    "should_include": [
+      "Previous source system",
+      "Previous integration method",
+      "Decommission date",
+      "Transition strategy"
+    ],
+    "example_topics": [
+      "PeopleXD to Workday transition",
+      "Parallel running during cutover",
+      "File naming to distinguish test/production",
+      "Legacy decommission timeline"
+    ],
+    "typical_length": "2-4 bullet points or 'New integration' if none"
+  },
+  "2.1 GDPR": {
+    "description": "Data protection compliance and controls",
+    "should_include": [
+      "Core compliance controls",
+      "Data minimization approach",
+      "Security measures",
+      "Access controls",
+      "Transparency measures"
+    ],
+    "example_topics": [
+      "Data Minimization principles",
+      "Purpose Limitation",
+      "Encryption (in transit and at rest)",
+      "RBAC and security groups",
+      "Audit trail and logging",
+      "Employee transparency and consent",
+      "Data Processing Agreement requirements",
+      "Special category data handling"
+    ],
+    "typical_length": "1-2 paragraphs"
+  },
+  "2.2 Sources": {
+    "description": "Data origin systems and scope",
+    "should_include": [
+      "Primary source system",
+      "Data elements included",
+      "Data scope (which records)",
+      "Data volume expectations"
+    ],
+    "example_topics": [
+      "Workday HCM as system of record",
+      "Employee/worker data elements",
+      "Active employees only vs all workers",
+      "Full file vs incremental",
+      "Expected record counts"
+    ],
+    "typical_length": "1 paragraph plus data element list"
+  },
+  "2.3 Integration": {
+    "description": "Data flow, transformation, and handling",
+    "should_include": [
+      "Extraction method",
+      "Transformation steps",
+      "Delivery mechanism",
+      "Recipient retrieval method",
+      "Error handling"
+    ],
+    "example_topics": [
+      "EIB extract from custom report",
+      "Document Transformation to CSV/XML",
+      "PGP encryption before transmission",
+      "SFTP delivery with SSH authentication",
+      "Vendor polling schedule",
+      "File purge after retrieval",
+      "Error notification process"
+    ],
+    "typical_length": "1-2 paragraphs"
+  },
+  "2.4 Migration": {
+    "description": "Initial load and transition strategy",
+    "should_include": [
+      "Initial load approach",
+      "Cutover strategy",
+      "Data validation approach",
+      "Rollback plan"
+    ],
+    "example_topics": [
+      "Initial full load post go-live",
+      "Parallel running with legacy",
+      "Test file suffix convention",
+      "Validation and reconciliation"
+    ],
+    "typical_length": "2-4 bullet points or 'Not applicable' for new"
+  },
+  "2.5 Audit": {
+    "description": "Logging and compliance tracking",
+    "should_include": [
+      "What is logged",
+      "Where logs are stored",
+      "Retention period",
+      "Audit access"
+    ],
+    "example_topics": [
+      "Integration execution logging",
+      "File operation logs",
+      "Authentication events",
+      "Storage duration (e.g., 180 days)",
+      "Audit trail access for compliance"
+    ],
+    "typical_length": "1 paragraph"
+  },
+  "2.6 Backups": {
+    "description": "Data retention and recovery",
+    "should_include": [
+      "Backup approach",
+      "Retention period",
+      "Recovery process"
+    ],
+    "example_topics": [
+      "Integration outputs stored in Workday",
+      "SFTP optional backup",
+      "File purge policies",
+      "Recovery from source system"
+    ],
+    "typical_length": "2-3 bullet points"
+  },
+  "2.7 Reporting": {
+    "description": "Operational reporting capabilities",
+    "should_include": [
+      "Available reports",
+      "Monitoring capabilities",
+      "Alert mechanisms"
+    ],
+    "example_topics": [
+      "Access logs and audit trails",
+      "File operation history",
+      "Authentication event logging",
+      "Error alerting and notification",
+      "Performance monitoring"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "3.1 Security": {
+    "description": "Authentication, authorization, and encryption",
+    "should_include": [
+      "Integration user/account details",
+      "Security group configuration",
+      "Authentication method",
+      "Encryption standards",
+      "Network security"
+    ],
+    "example_topics": [
+      "Integration System User (ISU)",
+      "Integration System Security Group (ISSG)",
+      "OAuth 2.0, API keys, or SSH keys",
+      "TLS 1.2+ for data in transit",
+      "Encryption at rest",
+      "IP whitelisting",
+      "Least privilege access"
+    ],
+    "typical_length": "1-2 paragraphs"
+  },
+  "3.2 Capacity": {
+    "description": "Volume expectations and growth",
+    "should_include": [
+      "Initial volume",
+      "Expected growth rate",
+      "Peak periods",
+      "Rate limits"
+    ],
+    "example_topics": [
+      "Initial full population count",
+      "Daily/weekly transaction volume",
+      "Peak period handling",
+      "API rate limits",
+      "File size expectations"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "3.3 Performance": {
+    "description": "Response times and throughput",
+    "should_include": [
+      "Expected processing times",
+      "Response time expectations",
+      "Retry mechanisms",
+      "Monitoring thresholds"
+    ],
+    "example_topics": [
+      "Initial sync duration",
+      "Incremental processing time",
+      "API response times",
+      "Exponential backoff for retries",
+      "Alert thresholds for slow processing"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "3.4 Scalability": {
+    "description": "Growth accommodation strategy",
+    "should_include": [
+      "Scaling approach",
+      "Growth capacity",
+      "Future expansion options"
+    ],
+    "example_topics": [
+      "Horizontal scaling capabilities",
+      "API limit headroom",
+      "Future growth support (2-3x)",
+      "Frequency adjustment options",
+      "Attribute expansion capability"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "3.5 Availability": {
+    "description": "SLA and maintenance windows",
+    "should_include": [
+      "Service level expectations",
+      "Maintenance handling",
+      "Failure resilience"
+    ],
+    "example_topics": [
+      "SaaS availability SLAs",
+      "Scheduled maintenance handling",
+      "Automatic retry on failure",
+      "Business impact of delays"
+    ],
+    "typical_length": "2-4 bullet points"
+  },
+  "3.6 Disaster Recovery": {
+    "description": "RTO, RPO, and recovery processes",
+    "should_include": [
+      "DR approach",
+      "Recovery time objectives",
+      "Configuration recovery",
+      "Testing approach"
+    ],
+    "example_topics": [
+      "Reliance on SaaS platform DR",
+      "Workday/Okta/Vendor DR capabilities",
+      "Configuration backup approach",
+      "Rebuild process from documentation",
+      "DR testing coverage"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "3.7 Monitoring": {
+    "description": "Alerting and operational visibility",
+    "should_include": [
+      "What is monitored",
+      "Alert types and thresholds",
+      "Escalation paths",
+      "Reporting tools"
+    ],
+    "example_topics": [
+      "Integration run status",
+      "Record processing counts",
+      "Error tracking",
+      "Performance metrics",
+      "Alert levels (P1-P4)",
+      "Escalation to MSP/vendor",
+      "System log access"
+    ],
+    "typical_length": "1-2 paragraphs"
+  },
+  "4.1 Application Architecture": {
+    "description": "Components and data flow",
+    "should_include": [
+      "Architecture pattern",
+      "Component list",
+      "Data flow steps",
+      "Integration points"
+    ],
+    "example_topics": [
+      "Point-to-point vs middleware",
+      "Source and target systems",
+      "Transformation components",
+      "Delivery mechanisms",
+      "Step-by-step data flow (numbered)"
+    ],
+    "typical_length": "1 paragraph plus numbered steps"
+  },
+  "4.2 Infrastructure Architecture": {
+    "description": "Hosting and network configuration",
+    "should_include": [
+      "Hosting model",
+      "Network configuration",
+      "Firewall requirements",
+      "DNS requirements"
+    ],
+    "example_topics": [
+      "Cloud/SaaS hosting",
+      "HTTPS connectivity",
+      "Port requirements (443, 22)",
+      "IP whitelisting",
+      "VPN requirements (or lack thereof)"
+    ],
+    "typical_length": "1 paragraph"
+  },
+  "4.3 Environments": {
+    "description": "Development, test, and production",
+    "should_include": [
+      "Environment list",
+      "Configuration promotion",
+      "Testing approach",
+      "Cutover plan"
+    ],
+    "example_topics": [
+      "Development/sandbox first",
+      "Manual configuration promotion",
+      "Test data requirements",
+      "Production cutover approach"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "4.4 DevOps": {
+    "description": "CI/CD and change management",
+    "should_include": [
+      "Change management process",
+      "Testing approach",
+      "Deployment process",
+      "Documentation"
+    ],
+    "example_topics": [
+      "Change control process",
+      "Unit/functional/end-to-end testing",
+      "Manual configuration deployment",
+      "Rollback strategy",
+      "Knowledge transfer"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "5.1 Infrastructure": {
+    "description": "Platforms and protocols",
+    "should_include": [
+      "API protocols",
+      "Data formats",
+      "Authentication methods",
+      "Encryption standards"
+    ],
+    "example_topics": [
+      "HTTPS REST, SOAP, or SFTP",
+      "XML, JSON, CSV",
+      "OAuth 2.0, API keys, SSH keys",
+      "TLS version requirements"
+    ],
+    "typical_length": "4-6 bullet points"
+  },
+  "5.2 Data": {
+    "description": "Databases and data handling",
+    "should_include": [
+      "Data storage locations",
+      "Integration framework",
+      "Connectors used"
+    ],
+    "example_topics": [
+      "Source and target databases",
+      "Integration connectors",
+      "Configuration interfaces"
+    ],
+    "typical_length": "2-4 bullet points"
+  },
+  "5.3 Development": {
+    "description": "Tools and frameworks",
+    "should_include": [
+      "Development tools",
+      "Testing tools",
+      "Documentation tools"
+    ],
+    "example_topics": [
+      "Admin consoles",
+      "API testing tools",
+      "Documentation platforms"
+    ],
+    "typical_length": "2-4 bullet points"
+  },
+  "6.1 Infrastructure": {
+    "description": "Hosting and platform costs",
+    "should_include": [
+      "Additional infrastructure costs",
+      "Existing subscriptions utilized"
+    ],
+    "example_topics": [
+      "No additional costs (existing SaaS)",
+      "Utilization of existing subscriptions"
+    ],
+    "typical_length": "1-2 sentences"
+  },
+  "6.2 Application": {
+    "description": "Licensing and implementation costs",
+    "should_include": [
+      "Licensing costs",
+      "Implementation costs",
+      "Payment structure"
+    ],
+    "example_topics": [
+      "Existing license utilization",
+      "Implementation cost breakdown",
+      "Payment milestones"
+    ],
+    "typical_length": "1 paragraph"
+  },
+  "6.3 Software": {
+    "description": "Tools and subscriptions",
+    "should_include": [
+      "Additional software costs",
+      "Existing tools utilized"
+    ],
+    "example_topics": [
+      "No additional software costs",
+      "Existing tool utilization"
+    ],
+    "typical_length": "1-2 sentences"
+  },
+  "7.1 Support": {
+    "description": "Support model and escalation",
+    "should_include": [
+      "Support teams",
+      "Escalation paths",
+      "Priority levels",
+      "Response times"
+    ],
+    "example_topics": [
+      "MSP team responsibilities",
+      "Vendor support",
+      "Internal team escalation",
+      "P1-P4 priority definitions",
+      "Response time targets"
+    ],
+    "typical_length": "1-2 paragraphs"
+  },
+  "7.2 Roadmap": {
+    "description": "Future enhancements",
+    "should_include": [
+      "Planned optimizations",
+      "Future enhancements",
+      "Expansion possibilities"
+    ],
+    "example_topics": [
+      "Frequency optimization",
+      "Error handling enhancements",
+      "Attribute expansion",
+      "Additional integrations"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "7.3 Life Expectancy": {
+    "description": "Solution lifespan",
+    "should_include": [
+      "Expected lifespan",
+      "Maintenance requirements",
+      "Obsolescence risk",
+      "Replacement triggers"
+    ],
+    "example_topics": [
+      "5+ year lifespan",
+      "Minimal maintenance (SaaS)",
+      "Low obsolescence risk",
+      "Platform replacement as trigger"
+    ],
+    "typical_length": "3-5 bullet points"
+  },
+  "8.1 Test Scenarios": {
+    "description": "Testing requirements",
+    "should_include": [
+      "Unit testing",
+      "Functional testing",
+      "End-to-end testing"
+    ],
+    "example_topics": [
+      "Connectivity validation",
+      "CRUD operations",
+      "JML scenarios (Joiner, Mover, Leaver)",
+      "Error handling",
+      "Performance validation"
+    ],
+    "typical_length": "3 sections with bullet points"
+  },
+  "8.2 Data Mappings": {
+    "description": "Field-level specifications",
+    "should_include": [
+      "Attribute mappings",
+      "Reference to detailed mappings"
+    ],
+    "example_topics": [
+      "Source to target field mappings",
+      "Transformation rules",
+      "Reference to Excel mapping document"
+    ],
+    "typical_length": "Reference to external document"
+  },
+  "8.3 Security Configuration Details": {
+    "description": "Technical security setup",
+    "should_include": [
+      "Account configurations",
+      "Security policies",
+      "Business process policies"
+    ],
+    "example_topics": [
+      "Integration System User details",
+      "Security Group configurations",
+      "Business Process Security Policies"
+    ],
+    "typical_length": "Tables with configuration details"
+  }
+}

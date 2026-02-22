@@ -6,6 +6,7 @@ requires-python = ">=3.14"
 members = [
     "elt-doc-damabok",
     "elt-doc-leanix-overview",
+    "elt-doc-sad",
     "elt-doc-sad-leanix",
     "elt-doc-transcript-audio",
     "elt-doc-vendor-assess",
@@ -326,6 +327,29 @@ dev = [
 ]
 
 [package.metadata]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.0.2" }]
+
+[[package]]
+name = "elt-doc-sad"
+version = "0.1.0"
+source = { editable = "elt_doc_sad" }
+dependencies = [
+    { name = "openpyxl" },
+    { name = "python-docx" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "openpyxl", specifier = ">=3.1.5" },
+    { name = "python-docx", specifier = ">=1.1.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.0.2" }]

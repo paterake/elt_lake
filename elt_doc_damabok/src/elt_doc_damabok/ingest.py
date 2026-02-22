@@ -72,17 +72,14 @@ def build_index() -> None:
     cfg = _load_config()
     vcfg = _load_vector_config()
     pdf_path = _expand_path(cfg["source_pdf"])
-    chunk_size = int(cfg.get("chunk_size", 1200))
-    chunk_overlap = int(cfg.get("chunk_overlap", 200))
+    chunk_size = int(cfg["chunk_size"])
+    chunk_overlap = int(cfg["chunk_overlap"])
     embed_model = str(vcfg["embedding_model"])
     chroma_cfg = vcfg.get("chroma", {})
     persist_dir = _expand_path(
-        chroma_cfg.get(
-            "persist_dir",
-            "./damabok_chroma",
-        )
+        chroma_cfg["persist_dir"]
     )
-    collection_name = str(chroma_cfg.get("collection_name", "damabok"))
+    collection_name = str(chroma_cfg["collection_name"])
 
     persist_dir.mkdir(parents=True, exist_ok=True)
 
