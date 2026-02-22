@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS ref_source_supplier_payment_terms
+DROP TABLE IF EXISTS ref_source_payment_terms
 ;
-CREATE TABLE ref_source_supplier_payment_terms
+CREATE TABLE ref_source_payment_terms
     AS
 SELECT
        TRIM(source_payment_terms)           source_payment_terms
