@@ -1,7 +1,7 @@
 {
   "provider": "chroma",
   "chroma": {
-    "persist_dir": "~/Documents/__data/damabok_chroma",
+    "persist_dir": "~/Documents/__data/chroma/damabok_v2",
     "collection_name": "damabok"
   },
   "embedding_model": "nomic-embed-text",
