@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any
 
 import chromadb
-from chromadb.config import Settings
 from pypdf import PdfReader
 
 import ollama
@@ -15,8 +14,11 @@ import ollama
 def _load_config() -> dict[str, Any]:
     here = Path(__file__).resolve().parent.parent.parent
     cfg_path = here / "config" / "doc_damabok.json"
-    with cfg_path.open() as f:
-        return json.load(f)
+    try:
+        with cfg_path.open() as f:
+            return json.load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Config file not found: {cfg_path}")
 
 
 def _expand_path(path_str: str) -> Path:
@@ -26,8 +28,11 @@ def _expand_path(path_str: str) -> Path:
 def _load_vector_config() -> dict[str, Any]:
     here = Path(__file__).resolve().parent.parent.parent
     cfg_path = here / "config" / "vector_db.json"
-    with cfg_path.open() as f:
-        return json.load(f)
+    try:
+        with cfg_path.open() as f:
+            return json.load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Config file not found: {cfg_path}")
 
 
 def _extract_pages(pdf_path: Path) -> list[str]:
@@ -59,7 +64,7 @@ def _embed_texts(texts: list[str], model: str) -> list[list[float]]:
     embeddings: list[list[float]] = []
     for t in texts:
         resp = ollama.embeddings(model=model, prompt=t)
-        embeddings.append(resp["embedding"])
+        embeddings.append(resp.embedding)
     return embeddings
 
 
@@ -69,17 +74,12 @@ def build_index() -> None:
     pdf_path = _expand_path(cfg["source_pdf"])
     chunk_size = int(cfg.get("chunk_size", 1200))
     chunk_overlap = int(cfg.get("chunk_overlap", 200))
-    embed_model = str(
-        vcfg.get(
-            "embedding_model",
-            cfg.get("ollama_embed", "nomic-embed-text"),
-        )
-    )
+    embed_model = str(vcfg["embedding_model"])
     chroma_cfg = vcfg.get("chroma", {})
     persist_dir = _expand_path(
         chroma_cfg.get(
             "persist_dir",
-            cfg.get("chroma_persist_dir", "./damabok_chroma"),
+            "./damabok_chroma",
         )
     )
     collection_name = str(chroma_cfg.get("collection_name", "damabok"))
@@ -89,17 +89,14 @@ def build_index() -> None:
     pages = _extract_pages(pdf_path)
     chunks = _chunk_pages(pages, max_chars=chunk_size, overlap=chunk_overlap)
 
-    client = chromadb.Client(
-        Settings(
-            is_persistent=True,
-            persist_directory=str(persist_dir),
-        )
-    )
-    collection = client.get_or_create_collection(collection_name)
+    client = chromadb.PersistentClient(path=str(persist_dir))
 
-    existing = collection.count()
-    if existing:
-        collection.delete(where={})
+    # Delete and recreate collection to ensure clean index (ignore if not yet created)
+    try:
+        client.delete_collection(collection_name)
+    except Exception:
+        pass
+    collection = client.get_or_create_collection(collection_name)
 
     embeddings = _embed_texts(chunks, model=embed_model)
 

@@ -27,15 +27,18 @@ If your PDF is elsewhere, update:
 
 ## Ollama models to pull
 
-Run these once:
+The models required by this module are listed in:
+
+- `elt_doc_damabok/config/ollama.json` (`models` field)
+
+You can pull them using those names, for example:
 
 ```bash
-ollama pull llama3.1:8b
-ollama pull nomic-embed-text
+cd elt_doc_damabok
+for m in $(jq -r '.models[]' config/ollama.json); do
+  ollama pull "$m"
+done
 ```
-
-- `llama3.1:8b` is used as the answering model.
-- `nomic-embed-text` is used to embed DMBOK text chunks and user questions.
 
 ## Python environment (uv)
 
@@ -47,12 +50,7 @@ uv sync
 ```
 
 This creates and manages an isolated virtual environment for this module and
-installs only the dependencies declared in `pyproject.toml`:
-
-- `pypdf` for PDF text extraction
-- `chromadb` for the local vector database
-- `numpy` for numeric operations
-- `ollama` for talking to the local Ollama server
+installs only the dependencies declared in `pyproject.toml`.
 
 No global `pip` installs are needed; everything stays inside the `uv`-managed
 environment.
@@ -87,9 +85,9 @@ This will:
 - load the DMBOK PDF
 - extract and clean page text
 - chunk it according to `chunk_size` / `chunk_overlap`
-- embed each chunk via `nomic-embed-text`
-- store embeddings and chunks in a persistent Chroma collection called
-  `damabok` at `chroma_persist_dir`
+- embed each chunk via the embedding model configured in `vector_db.json`
+- store embeddings and chunks in a persistent Chroma collection as
+  configured in `vector_db.json`
 
 You only need to re-run this if the PDF or configuration changes.
 
@@ -105,12 +103,33 @@ uv run python -m elt_doc_damabok.query
 This will:
 
 - connect to the existing Chroma index
-- embed your question with `nomic-embed-text`
+- embed your question with the configured embedding model
 - retrieve the most relevant DMBOK chunks
 - build a prompt containing those excerpts and your question
-- call `llama3.1:8b` via Ollama to produce an answer
+- call the configured LLM via Ollama to produce an answer
 
 The answers are grounded in the DMBOK text stored in the index.
+
+## One-shot initialisation
+
+To validate and initialise everything in one step:
+
+```bash
+cd elt_doc_damabok
+uv run python -m elt_doc_damabok.initialise
+```
+
+This will:
+
+- verify the DMBOK PDF path
+- verify connectivity to the Ollama server
+- ensure required Ollama models are present (pulling them if needed)
+- build or rebuild the Chroma index
+- verify that the index contains documents
+- run a single test question against the DMBOK index and print the answer
+
+After this completes successfully, the module is ready for regular use via the
+`ingest` and `query` commands above.
 
 ## Notes and limitations
 

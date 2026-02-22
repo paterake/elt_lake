@@ -3,11 +3,10 @@ name = "elt-doc-damabok"
 version = "0.1.0"
 description = "ELT module for working with the DAMA-DMBOK2R data management body of knowledge"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
     "pypdf>=4.0.0",
     "chromadb>=0.5.0",
-    "numpy>=2.0.0",
     "ollama>=0.3.0",
 ]
 

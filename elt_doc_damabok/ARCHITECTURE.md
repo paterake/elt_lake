@@ -23,6 +23,9 @@ prompting.
     - Vector DB provider and parameters.
     - Embedding model and LLM model names.
     - Retrieval parameters such as `top_k`.
+  - `config/ollama.json`
+     - List of Ollama models that must be available.
+     - A test question used to validate the RAG setup.
 
 - **Ingestion pipeline**
   - `src/elt_doc_damabok/ingest.py`
@@ -64,6 +67,18 @@ Defines the **vector database and retrieval** configuration:
 The ingestion and query pipelines read `doc_damabok.json` for document and
 chunking settings, and `vector_db.json` for vector-store and model settings.
 
+### `ollama.json`
+
+Defines the **Ollama-specific** configuration:
+
+- `models`: list of Ollama model names that must be installed (for example
+  `nomic-embed-text:latest` and `llama3.1:8b`).
+- `test_question`: a single question used by the initialisation process to
+  validate that retrieval and generation are functioning correctly.
+
+The initialisation pipeline uses this to ensure the right models are present
+and to drive a smoke-test query.
+
 ## Ingestion flow
 
 Code: `elt_doc_damabok/src/elt_doc_damabok/ingest.py`
@@ -96,6 +111,34 @@ Steps:
 
 The result is a local, persistent index of DMBOK text chunks keyed by dense
 embeddings.
+
+## Initialisation flow
+
+Code: `elt_doc_damabok/src/elt_doc_damabok/initialise.py`
+
+Steps:
+
+1. **Config load**
+   - Reads `doc_damabok.json`, `vector_db.json`, and `ollama.json`.
+2. **Prerequisite checks**
+   - Verifies the DMBOK PDF path exists.
+   - Verifies connectivity to the Ollama server.
+   - Ensures required Ollama models listed in `models` are
+     installed, pulling them if needed.
+3. **Vector store parameters**
+   - Resolves Chroma persistence directory, collection name, embedding model,
+     LLM model, and `top_k` from `vector_db.json`.
+4. **Ingestion**
+   - Calls the ingestion pipeline to (re)build the Chroma index.
+5. **Index verification**
+   - Confirms that the Chroma collection contains at least one document.
+6. **RAG smoke test**
+   - Runs a single query using the configured test question.
+   - Embeds the question, retrieves the top `top_k` chunks, builds a prompt,
+     and calls the LLM to produce an answer printed to the console.
+
+This flow validates the end-to-end setup so the module is ready for regular
+interactive use.
 
 ## Query flow
 

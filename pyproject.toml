@@ -5,6 +5,7 @@ members = [
     "elt_doc_leanix_overview",
     "elt_doc_vendor_assess",
     "elt_doc_transcript_audio",
+    "elt_doc_damabok",
 ]
 
 # Optional: shared dev dependencies for all sub-projects

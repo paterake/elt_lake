@@ -1,0 +1,7 @@
+{
+  "models": [
+    "nomic-embed-text:latest",
+    "llama3.1:8b"
+  ],
+  "test_question": "Summarise what the DAMA-DMBOK2R manual is about."
+}
