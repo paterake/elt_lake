@@ -7,7 +7,7 @@
 ../../ref/ref_source_country_name_mapping.sql
 ../../ref/ref_source_country_code_mapping.sql
 ../../ref/ref_supplier_category_mapping.sql
-../../ref/ref_source_supplier_payment_terms.sql
+../../ref/ref_source_payment_terms.sql
 
 src_fin_supplier_raw.sql
 src_fin_supplier.sql

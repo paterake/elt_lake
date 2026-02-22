@@ -34,7 +34,7 @@ SELECT
      , NULL                                              exclude_tax_amount_from_supplier_invoice_discount
   FROM src_fin_supplier                                  s
        LEFT OUTER JOIN
-       ref_source_supplier_payment_terms                 m
+       ref_source_payment_terms                          m
          ON  UPPER(m.source_payment_terms)               = UPPER(TRIM(s.payment_terms_id))
  WHERE COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
 ;
