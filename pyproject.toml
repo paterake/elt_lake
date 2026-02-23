@@ -7,15 +7,7 @@ members = [
     "elt_doc_transcript_audio",
     "elt_doc_damabok",
     "elt_doc_sad",
-    "elt_llm_core",
-    "elt_llm_ingest",
-    "elt_llm_query",
 ]
-
-[tool.uv.sources]
-elt-llm-core = { workspace = true }
-elt-llm-ingest = { workspace = true }
-elt-llm-query = { workspace = true }
 
 # Optional: shared dev dependencies for all sub-projects
 [tool.uv]

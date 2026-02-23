@@ -1,6 +1,0 @@
-{
-  "source_pdf": "~/Documents/__data/books/DAMA-DMBOK2R_unlocked.pdf",
-  "chunk_size": 1200,
-  "chunk_overlap": 200,
-  "chunking_strategy": "page"
-}
