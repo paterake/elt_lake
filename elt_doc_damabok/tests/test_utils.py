@@ -6,6 +6,7 @@ def test_load_configs_have_expected_keys() -> None:
     assert "source_pdf" in doc_cfg
     assert "chunk_size" in doc_cfg
     assert "chunk_overlap" in doc_cfg
+    assert "chunking_strategy" in doc_cfg
 
     vcfg = utils.load_vector_config()
     assert "embedding_model" in vcfg
