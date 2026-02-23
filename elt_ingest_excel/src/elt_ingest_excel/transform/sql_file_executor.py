@@ -12,6 +12,10 @@ if TYPE_CHECKING:
 class SqlFileExecutor:
     def __init__(self, transform_path: Path, reporter: "PipelineReporter | None" = None):
         self.transform_path = Path(transform_path).resolve()
+        shared_ref = self.transform_path.parent.parent / "ref"
+        self.allowed_paths: list[Path] = [self.transform_path]
+        if shared_ref.exists():
+            self.allowed_paths.append(shared_ref.resolve())
         self.reporter = reporter
 
     def run(
@@ -23,8 +27,8 @@ class SqlFileExecutor:
         if self.reporter:
             self.reporter.print_sql_file_start(sql_file)
 
-        # Only execute SQL files that live within the configured transform path.
-        if not sql_path.is_relative_to(self.transform_path):
+        # Only execute SQL files that live within the configured transform path or shared ref path.
+        if not any(sql_path.is_relative_to(p) for p in self.allowed_paths):
             error = f"SQL file '{sql_file}' is outside the allowed config path and will not be executed"
             if self.reporter:
                 self.reporter.print_sql_file_error(error)

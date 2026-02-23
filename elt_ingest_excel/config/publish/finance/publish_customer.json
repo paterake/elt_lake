@@ -66,12 +66,6 @@
         "dataRow": "4"
       },
       {
-        "srcTableName": "workday_customer_bank_account_address",
-        "sheetName": "Bank Account Address",
-        "headerRow": "3",
-        "dataRow": "4"
-      },
-      {
         "srcTableName": "workday_customer_credit_card",
         "sheetName": "Customer Credit Card",
         "headerRow": "3",

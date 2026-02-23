@@ -49,5 +49,6 @@ SELECT
               END
        END                                            transaction_tax_status
      , NULL                                           withholding_tax_status
-  FROM src_fin_customer                c
+  FROM src_fin_customer                      c
+ WHERE NULLIF(TRIM(c.tax_schedule_id), '')   = 'SS20'
 ;
