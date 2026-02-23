@@ -1,0 +1,39 @@
+collections:
+  # DAMA-DMBOK2 Data Management Body of Knowledge
+  - name: dama_dmbok
+    display_name: "DAMA-DMBOK2 Data Management"
+    enabled: true
+    file_paths:
+      - "~/Documents/__data/books/DAMA-DMBOK2R_unlocked.pdf"
+    chunk_size: 1024
+    chunk_overlap: 200
+    use_semantic_chunking: false
+    metadata:
+      domain: data_management
+      type: body_of_knowledge
+
+  # FA Handbook (Financial Accounting)
+  - name: fa_handbook
+    display_name: "Financial Accounting Handbook"
+    enabled: true
+    file_paths:
+      - "~/Documents/__data/books/FA_Handbook.pdf"
+    chunk_size: 1024
+    chunk_overlap: 200
+    use_semantic_chunking: false
+    metadata:
+      domain: finance
+      type: handbook
+
+# Global RAG settings
+persist_dir: "./chroma_db"
+embedding_model: "nomic-embed-text"
+llm_model: "llama3.2"
+base_url: "http://localhost:11434"
+similarity_top_k: 5
+
+# Optional: system prompt for all queries
+system_prompt: |
+  You are a helpful assistant that answers questions based on the provided documents.
+  Always ground your answers in the retrieved content. If the information is not
+  available in the documents, say so clearly.

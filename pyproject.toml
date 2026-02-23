@@ -7,7 +7,12 @@ members = [
     "elt_doc_transcript_audio",
     "elt_doc_damabok",
     "elt_doc_sad",
+    "elt_llm_rag",
+    "elt_doc_rag",
 ]
+
+[tool.uv.sources]
+elt-llm-rag = { workspace = true }
 
 # Optional: shared dev dependencies for all sub-projects
 [tool.uv]
