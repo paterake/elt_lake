@@ -5,8 +5,8 @@ CREATE TABLE workday_customer_phone AS
     AS (
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , c.nrm_country_name                    phone_country
-     , c.nrm_country_code                    country_code
+     , c.nrm_country_name                    customer_country_name
+     , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_1                             phone_raw
      , 'primary'                             phone_type
@@ -16,8 +16,8 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , c.nrm_country_name                    phone_country
-     , c.nrm_country_code                    country_code
+     , c.nrm_country_name                    customer_country_name
+     , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_2                             phone_raw
      , 'secondary'                           phone_type
@@ -27,8 +27,8 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , c.nrm_country_name                    phone_country
-     , c.nrm_country_code                    country_code
+     , c.nrm_country_name                    customer_country_name
+     , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.phone_3                             phone_raw
      , 'tertiary'                            phone_type
@@ -38,8 +38,8 @@ SELECT c.customer_id                         customer_id
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
-     , c.nrm_country_name                    phone_country
-     , c.nrm_country_code                    country_code
+     , c.nrm_country_name                    customer_country_name
+     , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
      , c.fax                                 phone_raw
      , 'fax'                                 phone_type
@@ -52,9 +52,10 @@ SELECT c.customer_id                         customer_id
 SELECT DISTINCT
        p.customer_id                                                       customer_id
      , p.customer_name                                                     customer_name
-     , p.phone_country                                                     phone_country
-     , p.country_code                                                      country_code
+     , p.customer_country_name                                             customer_country_name
+     , p.customer_country_code                                             customer_country_code
      , REGEXP_REPLACE(TRIM(p.international_phone_code), '[^0-9]', '', 'g') international_phone_code
+     , TRIM(u.phone)                                                       phone_value
      , REGEXP_REPLACE(TRIM(u.phone), '[^0-9]', '', 'g')                    phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
@@ -75,14 +76,14 @@ SELECT s.*
                 '^0+', ''
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
-       END                                                             phone_number
+       END                                                                 phone_number
   FROM cte_phone_split                 s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
     , cte_phone_parse
    AS (
 SELECT t.*
-     , udf_parse_phone(t.international_phone_code, t.phone_number)        parsed_phone
+     , udf_parse_phone(t.phone_number, t.customer_country_code)            parsed_phone
   FROM cte_cleaned                     t
       )
 SELECT s.customer_id                                                       customer_id
@@ -91,11 +92,11 @@ SELECT s.customer_id                                                       custo
            PARTITION BY s.customer_id, s.suffix
                ORDER BY s.phone_number_raw
        )                                                                   phone_id
-     , s.phone_country                                                     phone_country
-     , s.country_code                                                      country_code
-     , s.parsed_phone.international_phone_code                            international_phone_code
-     , s.parsed_phone.area_code                                           area_code
-     , s.parsed_phone.phone_number                                        phone_number
+     , r.country_name                                                      phone_country
+     , r.country_code                                                      country_code
+     , r.phone_code                                                        international_phone_code
+     , s.parsed_phone.area_code                                            area_code
+     , s.parsed_phone.phone_number                                         phone_number
      , CASE
          WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
          THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
@@ -118,6 +119,9 @@ SELECT s.customer_id                                                       custo
      , NULL                                                                do_not_replace_all
      , NULL                                                                phone_comment
      , NULL                                                                phone
-  FROM cte_phone_parse                 s
+ FROM cte_phone_parse                  s
+      LEFT OUTER JOIN 
+      ref_country                      r
+          ON r.country_code            = s.parsed_phone.phone_country_code
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
 ;

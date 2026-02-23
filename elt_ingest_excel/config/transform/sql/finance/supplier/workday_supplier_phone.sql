@@ -5,8 +5,8 @@ CREATE TABLE workday_supplier_phone AS
     AS (
 SELECT s.supplier_id                         supplier_id
      , s.nrm_vendor_name                     supplier_name
-     , s.nrm_country_name                    phone_country
-     , s.nrm_country_code                    country_code
+     , s.nrm_country_name                    supplier_country_name
+     , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
      , s.phone_number_1                      phone_raw
      , 'primary'                             phone_type
@@ -16,8 +16,8 @@ SELECT s.supplier_id                         supplier_id
 UNION ALL
 SELECT s.supplier_id                         supplier_id
      , s.nrm_vendor_name                     supplier_name
-     , s.nrm_country_name                    phone_country
-     , s.nrm_country_code                    country_code
+     , s.nrm_country_name                    supplier_country_name
+     , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
      , s.phone_number_2                      phone_raw
      , 'secondary'                           phone_type
@@ -27,8 +27,8 @@ SELECT s.supplier_id                         supplier_id
 UNION ALL
 SELECT s.supplier_id                         supplier_id
      , s.nrm_vendor_name                     supplier_name
-     , s.nrm_country_name                    phone_country
-     , s.nrm_country_code                    country_code
+     , s.nrm_country_name                    supplier_country_name
+     , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
      , s.phone_3                             phone_raw
      , 'tertiary'                            phone_type
@@ -38,8 +38,8 @@ SELECT s.supplier_id                         supplier_id
 UNION ALL
 SELECT s.supplier_id                         supplier_id
      , s.nrm_vendor_name                     supplier_name
-     , s.nrm_country_name                    phone_country
-     , s.nrm_country_code                    country_code
+     , s.nrm_country_name                    supplier_country_name
+     , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
      , s.fax_number                          phone_raw
      , 'fax'                                 phone_type
@@ -52,9 +52,10 @@ SELECT s.supplier_id                         supplier_id
 SELECT DISTINCT
        p.supplier_id                                                       supplier_id
      , p.supplier_name                                                     supplier_name
-     , p.phone_country                                                     phone_country
-     , p.country_code                                                      country_code
+     , p.supplier_country_name                                             supplier_country_name
+     , p.supplier_country_code                                             supplier_country_code
      , REGEXP_REPLACE(TRIM(p.international_phone_code), '[^0-9]', '', 'g') international_phone_code
+     , TRIM(u.phone)                                                       phone_value
      , REGEXP_REPLACE(TRIM(u.phone), '[^0-9]', '', 'g')                    phone_number_raw
      , p.phone_type                                                        phone_type
      , p.suffix                                                            suffix
@@ -75,14 +76,14 @@ SELECT s.*
                 '^0+', ''
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
-       END                                                             phone_number
+       END                                                                 phone_number
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
     , cte_phone_parse
    AS (
 SELECT t.*
-     , udf_parse_phone(t.international_phone_code, t.phone_number)        parsed_phone
+     , udf_parse_phone(t.phone_number, t.supplier_country_code)            parsed_phone
   FROM cte_cleaned   t
       )
 SELECT s.supplier_id                                                       supplier_id
@@ -91,11 +92,11 @@ SELECT s.supplier_id                                                       suppl
            PARTITION BY s.supplier_id, s.suffix
                ORDER BY s.phone_number_raw
        )                                                                   phone_id
-     , s.phone_country                                                     phone_country
-     , s.country_code                                                      country_code
-     , s.parsed_phone.international_phone_code                            international_phone_code
-     , s.parsed_phone.area_code                                           area_code
-     , s.parsed_phone.phone_number                                        phone_number
+     , r.country_name                                                      phone_country
+     , r.country_code                                                      country_code
+     , r.phone_code                                                        international_phone_code
+     , s.parsed_phone.area_code                                            area_code
+     , s.parsed_phone.phone_number                                         phone_number
      , NULL                                                                phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
@@ -112,5 +113,8 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                use_for
      , NULL                                                                use_for_tenanted
      , NULL                                                                phone_comments
-  FROM cte_phone_parse s
+ FROM cte_phone_parse                  s
+      LEFT JOIN OUTER 
+      ref_country                      r
+          ON r.country_code            = s.parsed_phone.phone_country_code
 ;

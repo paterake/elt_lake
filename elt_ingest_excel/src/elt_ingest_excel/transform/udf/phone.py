@@ -17,6 +17,14 @@ def _try_parse(phone_str: str, country_code: str | None):
     candidates: list[tuple[str, str | None]] = []
     if digits.startswith("+"):
         candidates.append((digits, None))
+    else:
+        derived = ""
+        if digits.startswith("00") and len(digits) > 4:
+            derived = "+" + digits[2:]
+        elif digits.startswith("011") and len(digits) > 5:
+            derived = "+" + digits[3:]
+        if derived:
+            candidates.append((derived, None))
     if country_code:
         candidates.append((digits, country_code.upper()))
     if not digits.startswith("+"):
@@ -93,91 +101,49 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
     )
 
     def udf_parse_phone(
-        international_phone_code: str | None, phone_number: str | None
+        phone_str: str | None, domicile_country_code: str | None
     ) -> dict[str, str | None]:
-        raw_intl = international_phone_code or ""
-        raw_local = phone_number or ""
-        intl_digits = re.sub(r"[^0-9]", "", raw_intl)
-        local_digits = re.sub(r"[^0-9]", "", raw_local)
-        if not intl_digits and local_digits:
-            derived = ""
-            if local_digits.startswith("00") and len(local_digits) > 4:
-                derived = local_digits[2:]
-            elif local_digits.startswith("011") and len(local_digits) > 5:
-                derived = local_digits[3:]
-            if derived:
-                intl_from_local = derived[:3]
-                rest = derived[3:]
-                intl_digits = intl_from_local
-                local_digits = rest or ""
-        candidates: list[tuple[str, str | None]] = []
-        if raw_local.strip().startswith("+"):
-            candidates.append((raw_local.strip(), None))
-        if intl_digits and local_digits:
-            candidates.append(("+" + intl_digits + local_digits, None))
-        region = None
-        if intl_digits:
-            try:
-                cc = int(intl_digits)
-                region = phonenumbers.region_code_for_country_code(cc)
-            except Exception:
-                region = None
-        if region and local_digits:
-            candidates.append((local_digits, region))
-        if local_digits:
-            if local_digits.startswith("0") or local_digits.startswith("7"):
-                candidates.append((local_digits, "GB"))
-        tried: set[tuple[str, str | None]] = set()
-        parsed = None
-        for number, reg in candidates:
-            key = (number, reg)
-            if key in tried:
-                continue
-            tried.add(key)
-            stripped = number
-            for _ in range(4):
-                try:
-                    p = phonenumbers.parse(stripped, reg)
-                    if phonenumbers.is_valid_number(p):
-                        parsed = p
-                        break
-                except Exception:
-                    pass
-                if not stripped.endswith("0"):
-                    break
-                stripped = stripped[:-1]
-            if parsed is not None:
-                break
+        raw = phone_str or ""
+        domicile = (domicile_country_code or "").upper() or None
+        parsed = _try_parse(raw, domicile)
+        digits = re.sub(r"[^0-9]", "", raw)
         if parsed is None:
-            fallback_digits = local_digits or intl_digits
-            if intl_digits:
-                fallback_intl = "+" + intl_digits
-            else:
-                fallback_intl = "+44"
-            if not fallback_digits:
+            if not digits and not domicile:
                 return {
-                    "international_phone_code": fallback_intl,
+                    "phone_country_code": None,
                     "area_code": None,
                     "phone_number": None,
                     "device_type": "Landline",
                 }
-            if intl_digits == "44" and len(fallback_digits) > 3:
-                area = fallback_digits[:3]
-                local = fallback_digits[3:]
-            elif len(fallback_digits) > 1:
-                area = fallback_digits[0]
-                local = fallback_digits[1:]
+            phone_country_code = domicile
+            if not digits:
+                return {
+                    "phone_country_code": phone_country_code,
+                    "area_code": None,
+                    "phone_number": None,
+                    "device_type": "Landline",
+                }
+            if len(digits) > 3:
+                area = digits[:3]
+                local = digits[3:]
             else:
-                area = fallback_digits
+                area = digits
                 local = ""
             return {
-                "international_phone_code": fallback_intl,
+                "phone_country_code": phone_country_code,
                 "area_code": area,
                 "phone_number": local,
                 "device_type": "Landline",
             }
         country_code_int = parsed.country_code
-        intl_out = f"+{country_code_int}" if country_code_int else None
+        region_from_number = phonenumbers.region_code_for_number(parsed)
+        phone_country_code = region_from_number or (
+            phonenumbers.region_code_for_country_code(country_code_int)
+            if country_code_int
+            else None
+        )
+        if not phone_country_code and domicile:
+            phone_country_code = domicile
         nsn = phonenumbers.national_significant_number(parsed)
         num_type = phonenumbers.number_type(parsed)
         ac_len = length_of_geographical_area_code(parsed)
@@ -234,7 +200,7 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         else:
             device = None
         return {
-            "international_phone_code": intl_out,
+            "phone_country_code": phone_country_code,
             "area_code": area,
             "phone_number": local,
             "device_type": device,
@@ -245,12 +211,7 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         udf_parse_phone,
         [VARCHAR, VARCHAR],
         duckdb.struct_type(
-            {
-                "international_phone_code": "VARCHAR",
-                "area_code": "VARCHAR",
-                "phone_number": "VARCHAR",
-                "device_type": "VARCHAR",
-            }
+            {"phone_country_code": "VARCHAR", "area_code": "VARCHAR", "phone_number": "VARCHAR", "device_type": "VARCHAR"}
         ),
         null_handling="special",
     )
