@@ -36,7 +36,7 @@ SELECT
                                                                               address_line_3
      , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(s.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
                                                                               address_line_4
-     , TRIM(UPPER(s.post_code))                                               postal_code
+     , NULLIF(TRIM(UPPER(s.post_code)), '')                                   postal_code
      , 'Yes'                                                                  public_flag
      , 'Yes'                                                                  primary_flag
      , NULL                                                                   effective_date

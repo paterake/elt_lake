@@ -38,7 +38,7 @@ SELECT
      , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
                                                                               address_line_3
      , NULL                                                                   address_line_4
-     , TRIM(UPPER(c.post_code))                                               postal_code
+     , NULLIF(TRIM(UPPER(c.post_code)), '')                                   postal_code
      , 'Yes'                                                                  is_public
      , 'Yes'                                                                  is_primary
      , NULL                                                                   address_type   
