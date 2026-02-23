@@ -58,6 +58,7 @@ class FileIngestor:
         sheet_filter: str = "*",
         save_mode: SaveMode = SaveMode.RECREATE,
         publisher_type: str = "xlwings",
+        master_workbook_path: Union[str, Path, None] = None,
     ):
         """Initialize the file ingestor.
 
@@ -76,6 +77,9 @@ class FileIngestor:
             publisher_type: Excel publisher to use - "xlwings" (default) or "openpyxl".
                            "xlwings" preserves drawing shapes (requires Excel installed).
                            "openpyxl" works without Excel but may lose shapes in .xlsm files.
+            master_workbook_path: Optional path to a master reference workbook used for
+                                  county/region validation during the transform phase.
+                                  Validation is skipped when None or path does not exist.
         """
         self.config_base_path = Path(config_base_path).expanduser()
         self.cfg_ingest_path = cfg_ingest_path
@@ -89,6 +93,7 @@ class FileIngestor:
         self.database_path = Path(database_path).expanduser()
         self.sheet_filter = sheet_filter
         self.save_mode = save_mode
+        self.master_workbook_path = Path(master_workbook_path).expanduser() if master_workbook_path else None
 
         # Build full config paths
         self.ingest_config_path = self.config_base_path / cfg_ingest_path / cfg_ingest_name
@@ -195,13 +200,14 @@ class FileIngestor:
 
         self.reporter.print_transform_summary(self.transform_results)
 
-        master_path = Path("~/Downloads/FIN Master Supplier Workbook Instructions.xlsx").expanduser()
-        ok, missing, _ = validate_counties_against_master(
-            database_path=self.database_path,
-            master_workbook_path=master_path,
-            sheet_name="Country States-Regions",
-        )
-        if master_path.exists():
+        master_path = self.master_workbook_path
+        if master_path is not None:
+            ok, missing, _ = validate_counties_against_master(
+                database_path=self.database_path,
+                master_workbook_path=master_path,
+                sheet_name="Country States-Regions",
+            )
+        if master_path is not None and master_path.exists():
             print("\n" + "=" * self.reporter.SEPARATOR_WIDTH)
             print("COUNTY VALIDATION")
             print("=" * self.reporter.SEPARATOR_WIDTH)
@@ -219,67 +225,49 @@ class FileIngestor:
         return self.transform_results
 
     def _print_reconciliation_results(self) -> None:
-        """Query and print reconciliation results if tables exist.
+        """Query and print reconciliation results for all matching tables.
 
-        Checks for the reconciliation table matching the current transform path
-        and prints its contents to verify data loaded correctly.
+        Discovers any tables named validation_%_reconciliation in the database
+        and prints their contents to verify data loaded correctly.
         """
-        # Determine which reconciliation table to check based on transform path
-        transform_path_str = str(self.transform_config_path).lower()
-        if "supplier" in transform_path_str:
-            reconciliation_tables = [
-                ("validation_supplier_reconciliation", "src_fin_supplier"),
-            ]
-        elif "customer" in transform_path_str:
-            reconciliation_tables = [
-                ("validation_customer_reconciliation", "src_fin_customer"),
-            ]
-        else:
-            # Fallback: check both if path doesn't indicate which one
-            reconciliation_tables = [
-                ("validation_supplier_reconciliation", "src_fin_supplier"),
-                ("validation_customer_reconciliation", "src_fin_customer"),
-            ]
-
         with duckdb.connect(str(self.database_path)) as conn:
-            for table_name, source_table in reconciliation_tables:
-                # Check if table exists
-                exists = conn.execute(
-                    "SELECT COUNT(*) FROM information_schema.tables "
-                    "WHERE table_name = ?",
-                    [table_name],
-                ).fetchone()[0]
+            table_rows = conn.execute(
+                "SELECT table_name FROM information_schema.tables "
+                "WHERE table_name LIKE 'validation_%_reconciliation' "
+                "ORDER BY table_name",
+            ).fetchall()
+            reconciliation_tables = [row[0] for row in table_rows]
 
-                if exists:
-                    self.reporter.print_reconciliation_header(source_table)
+            for table_name in reconciliation_tables:
+                self.reporter.print_reconciliation_header(table_name)
 
-                    rows = conn.execute(
-                        f"SELECT business_unit, ingested_rows, merged_rows, "
-                        f"deduped_rows, status FROM {table_name} ORDER BY business_unit"
-                    ).fetchall()
+                data_rows = conn.execute(
+                    f"SELECT business_unit, ingested_rows, merged_rows, "
+                    f"deduped_rows, status FROM {table_name} ORDER BY business_unit"
+                ).fetchall()
 
-                    total_ingested = 0
-                    total_merged = 0
-                    total_deduped = 0
+                total_ingested = 0
+                total_merged = 0
+                total_deduped = 0
 
-                    for row in rows:
-                        bu, ingested, merged, deduped, status = row
-                        self.reporter.print_reconciliation_row(
-                            business_unit=bu,
-                            ingested_rows=ingested,
-                            merged_rows=merged,
-                            deduped_rows=deduped,
-                            status=status,
-                        )
-                        total_ingested += ingested
-                        total_merged += merged
-                        total_deduped += deduped
-
-                    self.reporter.print_reconciliation_totals(
-                        total_ingested=total_ingested,
-                        total_merged=total_merged,
-                        total_deduped=total_deduped,
+                for row in data_rows:
+                    bu, ingested, merged, deduped, status = row
+                    self.reporter.print_reconciliation_row(
+                        business_unit=bu,
+                        ingested_rows=ingested,
+                        merged_rows=merged,
+                        deduped_rows=deduped,
+                        status=status,
                     )
+                    total_ingested += ingested
+                    total_merged += merged
+                    total_deduped += deduped
+
+                self.reporter.print_reconciliation_totals(
+                    total_ingested=total_ingested,
+                    total_merged=total_merged,
+                    total_deduped=total_deduped,
+                )
 
     def publish(self) -> list[PublishResult]:
         """Execute Publish phase.

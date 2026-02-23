@@ -242,7 +242,7 @@ def valid_integration_ids() -> list[str]:
     Returns:
         List of valid integration IDs.
     """
-    return ["INT001", "NEB001", "WORK123", "ABC9999", "XY12345"]
+    return ["INT001", "NEB001", "WORK123", "ABC9999", "XY12345", "int001"]
 
 
 @pytest.fixture
@@ -256,12 +256,12 @@ def invalid_integration_ids() -> list[str]:
         "",
         "   ",
         "123",
-        "int001",  # lowercase
-        "INT1",  # too few digits
-        "INT00001",  # too many digits
+        "INT1",  # too few digits (only 1)
+        "INT000001",  # too many digits (6)
         "1INT001",  # starts with number
         "INT-001",  # contains hyphen
-        "Integration_001",  # too long
+        "Integration_001",  # too long, has underscore
+        "A1",  # too short
     ]
 
 
