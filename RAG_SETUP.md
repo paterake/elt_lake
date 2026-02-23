@@ -1,214 +1,297 @@
-# RAG Packages Setup Summary
+# LLM RAG Packages Setup
 
-## Created Packages
+## Overview
 
-Two new workspace packages have been created for scalable multi-document RAG:
+This document describes the LLM RAG package structure for document ingestion and querying using LlamaIndex, ChromaDB, and Ollama.
 
-### 1. `elt_llm_rag` - Core RAG Infrastructure
+## Package Structure
 
-**Purpose:** LlamaIndex + Chroma + Ollama integration
-
-**Features:**
-- Multi-format document loading (PDF, DOCX, TXT, HTML, etc.)
-- Sentence-aware and semantic chunking strategies
-- ChromaDB vector storage with named collections
-- Ollama-based embeddings and LLM inference
-
-**Location:** `elt_llm_rag/`
-
-**CLI Commands:**
-```bash
-uv run python -m elt_llm_rag.ingest --config config.json
-uv run python -m elt_llm_rag.query --config config.json
+```
+elt_lake/
+├── elt_llm_core/           # Core RAG infrastructure
+│   ├── vector_store.py     # ChromaDB tenant/database/collection setup
+│   ├── models.py           # Ollama embedding and LLM models
+│   ├── query_engine.py     # Query interface
+│   └── config.py           # Configuration management
+│
+├── elt_llm_ingest/         # Generic document ingestion
+│   ├── ingest.py           # Ingestion pipeline
+│   └── cli.py              # CLI entry point
+│
+├── elt_llm_query/          # Query interface
+│   ├── query.py            # Query functions
+│   └── cli.py              # CLI entry point
+│
+└── elt_llm_<name>/         # Document-specific modules (examples)
+    ├── elt_llm_dama/       # DAMA-DMBOK
+    ├── elt_llm_sad/        # SAD (future)
+    ├── elt_llm_leanix/     # LeanIX (future)
+    └── elt_llm_supplier/   # Supplier docs (future)
 ```
 
-### 2. `elt_doc_rag` - Document Collection Management
+## Package Responsibilities
 
-**Purpose:** Configuration-driven multi-collection management
+| Package | Purpose | Dependencies |
+|---------|---------|--------------|
+| `elt_llm_core` | Shared RAG infrastructure | `chromadb`, `llama-index`, `ollama` |
+| `elt_llm_ingest` | Generic document ingestion | `elt_llm_core` |
+| `elt_llm_query` | Query interface | `elt_llm_core` |
+| `elt_llm_dama` | DAMA-DMBOK specific | `elt_llm_core`, `elt_llm_ingest`, `elt_llm_query` |
 
-**Features:**
-- YAML configuration for multiple document collections
-- Per-collection chunking and metadata settings
-- Status diagnostics for all collections
-- Collection-scoped ingestion and querying
+## Configuration Pattern
 
-**Location:** `elt_doc_rag/`
+Each document-specific module has two config files:
 
-**CLI Commands:**
-```bash
-uv run python -m elt_doc_rag.status --config config/documents.yaml
-uv run python -m elt_doc_rag.ingest --config config/documents.yaml
-uv run python -m elt_doc_rag.query --config config/documents.yaml --collection dama_dmbok
-```
-
-## Configuration Example
-
-**File:** `elt_doc_rag/config/documents.yaml`
+### `config/rag_config.yaml` - Shared RAG Settings
 
 ```yaml
-collections:
-  - name: dama_dmbok
-    display_name: "DAMA-DMBOK2 Data Management"
-    file_paths:
-      - "~/Documents/__data/books/DAMA-DMBOK2R_unlocked.pdf"
-    chunk_size: 1024
-    chunk_overlap: 200
+# ChromaDB settings
+chroma:
+  persist_dir: "./chroma_db"
+  tenant: "rag_tenants"
+  database: "knowledge_base"
 
-  - name: fa_handbook
-    display_name: "Financial Accounting Handbook"
-    file_paths:
-      - "~/Documents/__data/books/FA_Handbook.pdf"
-    chunk_size: 1024
-    chunk_overlap: 200
+# Ollama settings
+ollama:
+  base_url: "http://localhost:11434"
+  embedding_model: "nomic-embed-text"
+  llm_model: "llama3.2"
 
-persist_dir: "./chroma_db"
-embedding_model: "nomic-embed-text"
-llm_model: "llama3.2"
+# Chunking settings
+chunking:
+  strategy: "sentence"
+  chunk_size: 1024
+  chunk_overlap: 200
+
+# Query settings
+query:
+  similarity_top_k: 5
+  system_prompt: |
+    You are a helpful assistant...
+```
+
+### `config/ingest_config.yaml` - Document-Specific Settings
+
+```yaml
+collection_name: "dama_dmbok"
+
+file_paths:
+  - "~/Documents/__data/books/DAMA-DMBOK2R_unlocked.pdf"
+
+metadata:
+  domain: "data_management"
+  type: "body_of_knowledge"
+
+rebuild: true
+```
+
+## Usage
+
+### elt_llm_dama (Example)
+
+#### Ingest DAMA-DMBOK
+
+```bash
+cd elt_llm_dama
+uv sync
+
+# Ingest documents
+elt-llm-dama-ingest
+
+# Or
+uv run python -m elt_llm_dama.ingest
+```
+
+#### Query DAMA-DMBOK
+
+```bash
+# Interactive mode
+elt-llm-dama-query
+
+# Single query
+elt-llm-dama-query --query "What is data governance?"
+```
+
+### Using Generic Modules Directly
+
+#### Ingest with `elt_llm_ingest`
+
+```bash
+elt-llm-ingest --config path/to/ingest_config.yaml
+```
+
+#### Query with `elt_llm_query`
+
+```bash
+elt-llm-query --config path/to/rag_config.yaml --collection dama_dmbok
+```
+
+## Creating a New Document Module
+
+To add a new document type (e.g., `elt_llm_sad`):
+
+### 1. Create Directory Structure
+
+```bash
+mkdir -p elt_llm_sad/src/elt_llm_sad
+mkdir -p elt_llm_sad/config
+mkdir -p elt_llm_sad/tests
+```
+
+### 2. Create `pyproject.toml`
+
+```toml
+[project]
+name = "elt-llm-sad"
+version = "0.1.0"
+description = "SAD RAG module"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "elt-llm-core>=0.1.0",
+    "elt-llm-ingest>=0.1.0",
+    "elt-llm-query>=0.1.0",
+]
+```
+
+### 3. Create Config Files
+
+**`config/rag_config.yaml`:**
+```yaml
+chroma:
+  persist_dir: "./chroma_db"
+  tenant: "rag_tenants"
+  database: "knowledge_base"
+
+ollama:
+  base_url: "http://localhost:11434"
+  embedding_model: "nomic-embed-text"
+  llm_model: "llama3.2"
+
+chunking:
+  strategy: "sentence"
+  chunk_size: 1024
+  chunk_overlap: 200
+```
+
+**`config/ingest_config.yaml`:**
+```yaml
+collection_name: "sad"
+
+file_paths:
+  - "~/Documents/__data/books/SAD.pdf"
+
+metadata:
+  domain: "architecture"
+  type: "handbook"
+
+rebuild: true
+```
+
+### 4. Create CLI Wrapper
+
+**`src/elt_llm_sad/cli.py`:**
+```python
+from elt_llm_dama.cli import ingest_main, query_main
+
+# Reuse the same pattern
+ingest_main = ingest_main
+query_main = query_main
+```
+
+Or copy the pattern from `elt_llm_dama`.
+
+### 5. Update Root `pyproject.toml`
+
+Add to `[tool.uv.workspace]`:
+```toml
+"elt_llm_sad",
+```
+
+Add to `[tool.uv.sources]`:
+```toml
+elt-llm-sad = { workspace = true }
+```
+
+### 6. Sync and Ingest
+
+```bash
+cd elt_lake
+uv sync
+
+cd elt_llm_sad
+uv sync
+elt-llm-sad-ingest
 ```
 
 ## Python Version Constraint
 
-**Important:** ChromaDB is not yet compatible with Python 3.14 due to pydantic v1 issues.
+**Important:** ChromaDB is not yet compatible with Python 3.14.
 
-The new packages require: `Python >=3.11, <3.14`
+All LLM RAG packages require: `Python >=3.11, <3.14`
+
+### Workspace Conflict
 
 Your workspace has mixed Python version requirements:
-- Some packages require `>=3.14`
-- RAG packages require `>=3.11, <3.14`
+- LLM RAG packages: `>=3.11, <3.14`
+- Some other packages: `>=3.14`
 
 **Solutions:**
 
 1. **Use Python 3.12 or 3.13** for the entire workspace (recommended)
-2. **Use separate virtual environments** for RAG vs other packages
-3. **Wait for ChromaDB Python 3.14 support** (track at: https://github.com/chroma-core/chroma/issues)
+   - Update packages with `>=3.14` to `>=3.11,<3.14`
 
-## Quick Start
+2. **Use separate virtual environments**
+   - One for LLM RAG packages (Python 3.12/3.13)
+   - One for other packages (Python 3.14)
 
-### 1. Ensure Python 3.11-3.13
+3. **Wait for ChromaDB Python 3.14 support**
+   - Track at: https://github.com/chroma-core/chroma/issues
 
-```bash
-python --version  # Should be 3.11, 3.12, or 3.13
-```
+## Prerequisites
 
-### 2. Install Ollama Models
-
-```bash
-ollama pull nomic-embed-text
-ollama pull llama3.2
-```
-
-### 3. Update Configuration
-
-Edit `elt_doc_rag/config/documents.yaml` with your actual file paths.
-
-### 4. Check Status
-
-```bash
-cd elt_doc_rag
-uv run python -m elt_doc_rag.status --config config/documents.yaml
-```
-
-### 5. Ingest Collections
-
-```bash
-uv run python -m elt_doc_rag.ingest --config config/documents.yaml
-```
-
-### 6. Query Collections
-
-```bash
-# Interactive mode
-uv run python -m elt_doc_rag.query \
-  --config config/documents.yaml \
-  --collection dama_dmbok
-
-# Single query
-uv run python -m elt_doc_rag.query \
-  --config config/documents.yaml \
-  --collection dama_dmbok \
-  --query "What is data governance?"
-```
+- Python 3.11, 3.12, or 3.13
+- Ollama running locally: `ollama serve`
+- Required models:
+  ```bash
+  ollama pull nomic-embed-text
+  ollama pull llama3.2
+  ```
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────┐
-│     documents.yaml (config)         │
-│  - Multiple collections defined     │
-└─────────────────────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────┐
-│         elt_doc_rag                 │
-│  - config.py  (YAML parsing)        │
-│  - ingest.py (multi-collection)     │
-│  - query.py  (collection-scoped)    │
-│  - status.py (diagnostics)          │
-└─────────────────────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────┐
-│         elt_llm_rag                 │
-│  - LlamaIndex core                  │
-│  - ChromaDB integration             │
-│  - Ollama embeddings/LLM            │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│  config/rag_config.yaml                 │
+│  config/ingest_config.yaml              │
+└─────────────────────────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│         elt_llm_dama                    │
+│  (or elt_llm_sad, elt_llm_leanix...)    │
+│  - CLI wrappers                         │
+│  - Document-specific config             │
+└─────────────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        ▼           ▼           ▼
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│ elt_llm_core │ │elt_llm_ingest│ │ elt_llm_query│
+│ - ChromaDB   │ │ - Loading    │ │ - Retrieval  │
+│ - Ollama     │ │ - Chunking   │ │ - Querying   │
+│ - Config     │ │ - Indexing   │ │ - Response   │
+└──────────────┘ └──────────────┘ └──────────────┘
 ```
 
 ## Migration from elt_doc_damabok
 
-The original `elt_doc_damabok` module uses simple character-based chunking with `pypdf`.
+The original `elt_doc_damabok` module can be:
 
-**To migrate:**
+1. **Kept as-is** for simple character-based chunking
+2. **Migrated** to use `elt_llm_dama` for LlamaIndex-based chunking
+3. **Deprecated** in favor of the new modular structure
 
-1. Keep using `elt_doc_damabok` for simple PDF-only use cases
-2. Use `elt_doc_rag` for:
-   - Multiple documents/books
-   - Multi-format support (DOCX, HTML, etc.)
-   - Better chunking (sentence-aware)
-   - Collection management
-
-3. Point `elt_doc_rag/config/documents.yaml` to your existing PDF paths
-4. Re-run ingestion to build new indices with LlamaIndex
-
-## Adding New Collections
-
-1. Add to `documents.yaml`:
-   ```yaml
-   collections:
-     - name: my_new_book
-       display_name: "My Book"
-       file_paths:
-         - "~/path/to/book.pdf"
-   ```
-
-2. Ingest:
-   ```bash
-   uv run python -m elt_doc_rag.ingest \
-     --config config/documents.yaml \
-     --collection my_new_book
-   ```
-
-3. Query:
-   ```bash
-   uv run python -m elt_doc_rag.query \
-     --config config/documents.yaml \
-     --collection my_new_book
-   ```
-
-## Tests
-
-Run tests for the configuration module:
-
-```bash
-cd elt_doc_rag
-uv run pytest tests/ -v
-```
-
-## Next Steps
-
-1. **Update file paths** in `elt_doc_rag/config/documents.yaml`
-2. **Ensure Ollama is running**: `ollama serve`
-3. **Pull required models** if not already done
-4. **Run ingestion** for your collections
-5. **Test querying** with sample questions
+To migrate:
+1. Update file paths in `elt_llm_dama/config/ingest_config.yaml`
+2. Run `elt-llm-dama-ingest` to build the new index
+3. Use `elt-llm-dama-query` for querying
