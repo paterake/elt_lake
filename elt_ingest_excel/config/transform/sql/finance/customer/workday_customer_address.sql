@@ -27,10 +27,16 @@ SELECT
         ELSE NULLIF(TRIM(c.city), '')
        END                                                                    city
      , NULL                                                                   submunicipality
-     , COALESCE(NULLIF(TRIM(c.address_1), ''), NULLIF(TRIM(c.address_2), ''), NULLIF(TRIM(c.address_3), ''))
+     , COALESCE(
+         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), ''),
+         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), ''),
+         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+       )
                                                                               address_line_1
-     , NULLIF(TRIM(c.address_2), '')                                          address_line_2
-     , NULLIF(TRIM(c.address_3), '')                                          address_line_3
+     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+                                                                              address_line_2
+     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+                                                                              address_line_3
      , NULL                                                                   address_line_4
      , TRIM(UPPER(c.post_code))                                               postal_code
      , 'Yes'                                                                  is_public

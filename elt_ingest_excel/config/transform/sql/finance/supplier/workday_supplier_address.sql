@@ -28,10 +28,14 @@ SELECT
         ELSE NULLIF(TRIM(s.city), '')
        END                                                                    city
      , NULL                                                                   submunicipality
-     , TRIM(s.address_1)                                                      address_line_1
-     , NULLIF(TRIM(s.address_2), '')                                          address_line_2
-     , NULLIF(TRIM(s.address_3), '')                                          address_line_3
-     , NULLIF(TRIM(s.addressline_4), '')                                      address_line_4
+     , TRIM(REGEXP_REPLACE(REGEXP_REPLACE(s.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'))
+                                                                              address_line_1
+     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(s.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+                                                                              address_line_2
+     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(s.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+                                                                              address_line_3
+     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(s.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
+                                                                              address_line_4
      , TRIM(UPPER(s.post_code))                                               postal_code
      , 'Yes'                                                                  public_flag
      , 'Yes'                                                                  primary_flag

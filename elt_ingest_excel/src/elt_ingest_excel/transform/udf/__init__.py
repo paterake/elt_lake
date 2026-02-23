@@ -6,7 +6,5 @@ if TYPE_CHECKING:
 
 def register_all(conn: "duckdb.DuckDBPyConnection") -> None:
     from . import phone
-    from . import address
 
     phone.register(conn)
-    address.register(conn)
