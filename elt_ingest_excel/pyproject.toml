@@ -10,6 +10,7 @@ dependencies = [
     "duckdb>=1.4.4",
     "xlwings>=0.33.20",
     "phonenumbers>=8.13.0",
+    "requests>=2.32.0",
 ]
 
 [build-system]
