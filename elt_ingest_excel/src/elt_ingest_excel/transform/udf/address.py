@@ -15,7 +15,7 @@ _PAT_US = re.compile(r"\b\d{5}(?:-\d{4})?\b")
 _PAT_DE = re.compile(r"\b\d{5}\b")
 _PAT_FR = re.compile(r"\b\d{5}\b")
 _PAT_NL = re.compile(r"\b\d{4}\s?[A-Z]{2}\b", re.IGNORECASE)
-_PAT_IE = re.compile(r"\b[A-Z0-9]{7}\b", re.IGNORECASE)
+_PAT_IE = re.compile(r"\b[A-Z][0-9][A-Z0-9]\s?[A-Z0-9]{4}\b", re.IGNORECASE)
 
 _CACHE_POSTCODES: dict[str, dict] = {}
 _CACHE_ZIP: dict[str, dict] = {}
@@ -157,10 +157,14 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         norm_region = r0
         norm_cc = cc
         norm_postcode = p
-        if p and (cc or "").upper() == "GB":
-            gb = _lookup_gb(p)
+        if (cc or "").upper() == "GB":
+            gb = None
+            if p:
+                gb = _lookup_gb(p)
+            if gb is None and p1 and p1 != p:
+                gb = _lookup_gb(p1)
             if gb:
-                norm_postcode = gb.get("postcode") or p
+                norm_postcode = gb.get("postcode") or p or p1
                 post_town = gb.get("post_town")
                 admin_county = gb.get("admin_county")
                 region_name = gb.get("region")
@@ -168,14 +172,18 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
                 norm_city = _clean(_first(post_town, norm_city))
                 norm_region = _clean(_first(admin_county, region_name, norm_region))
                 norm_cc = "GB"
-        elif p and (cc or "").upper() == "US":
-            us = _lookup_us(p)
+        elif (cc or "").upper() == "US":
+            us = None
+            if p:
+                us = _lookup_us(p)
+            if us is None and p1 and p1 != p:
+                us = _lookup_us(p1)
             if us and "places" in us and us["places"]:
                 place = us["places"][0]
                 norm_city = _clean(_first(place.get("place name"), norm_city))
                 norm_region = _clean(_first(place.get("state"), norm_region))
                 norm_cc = "US"
-                norm_postcode = p
+                norm_postcode = p or p1
         if not norm_city or not norm_region or not norm_postcode or not norm_cc:
             q = " ".join([x for x in [a1, a2, a3, a4, c0, r0] if x])
             lp = _libpostal_parse(q)
