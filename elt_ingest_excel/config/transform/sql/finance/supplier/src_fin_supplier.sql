@@ -48,5 +48,4 @@ SELECT
         ref_bank_sort_code_prefix_mapping        rbsc
           ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
   WHERE NULLIF(TRIM(t.payment_terms_id), '')    IS NOT NULL
-
 ;
