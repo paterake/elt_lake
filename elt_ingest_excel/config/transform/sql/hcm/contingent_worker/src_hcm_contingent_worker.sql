@@ -29,17 +29,18 @@ SELECT *
  WHERE data_rnk = 1
        )
 SELECT
-        'CW-' || LPAD(rnk::VARCHAR, 6, '0')                                contingent_worker_id
-      , t.*
-      , NULLIF(LOWER(TRIM(t.first_name             )), '')                 nrm_first_name
-      , NULLIF(LOWER(TRIM(t.last_name              )), '')                 nrm_last_name
-      , NULLIF(LOWER(TRIM(t.primary_email          )), '')                 nrm_primary_email
-      , NULLIF(LOWER(TRIM(t.secondary_email        )), '')                 nrm_secondary_email
-      , NULLIF(LOWER(TRIM(t.manager_name           )), '')                 nrm_manager_name
-      , NULLIF(LOWER(TRIM(t.manager_email_address  )), '')                 nrm_manager_email_address
-      , NULLIF(LOWER(TRIM(t.manager_email          )), '')                 nrm_manager_email
-      , l.target_value                                                     nrm_location
-     , COALESCE(w1.target_value, w2.target_value, 'Sole Trader Staff')     nrm_worker_type
+       'CW-' || LPAD(rnk::VARCHAR, 6, '0')                                 contingent_worker_id
+     , t.*
+     , NULLIF(LOWER(TRIM(t.first_name             )), '')                  nrm_first_name
+     , NULLIF(LOWER(TRIM(t.last_name              )), '')                  nrm_last_name
+     , NULLIF(LOWER(TRIM(t.primary_email          )), '')                  nrm_primary_email
+     , NULLIF(LOWER(TRIM(t.secondary_email        )), '')                  nrm_secondary_email
+     , NULLIF(LOWER(TRIM(t.manager_name           )), '')                  nrm_manager_name
+     , NULLIF(LOWER(TRIM(t.manager_email_address  )), '')                  nrm_manager_email_address
+     , NULLIF(LOWER(TRIM(t.manager_email          )), '')                  nrm_manager_email
+     , l.target_value                                                      nrm_location
+     , NULLIF(TRIM(REGEXP_REPLACE(t.title, '[^a-zA-Z0-9 ]', '', 'g')), '') nrm_title
+     , COALESCE(rw.mapped_value, 'Sole Trader Staff')                      nrm_worker_type
      , 'Full Time'                                                         nrm_time_type
      , '40'                                                                nrm_hours_per_week                
      , strftime(
@@ -54,17 +55,15 @@ SELECT
        cte_contingent_worker              t
        LEFT OUTER JOIN 
        ref_location_mapping               l
-          ON l.source_column             = 'location'
-         AND l.source_value              = NULLIF(TRIM(t.location), '')
+          ON l.source_column              = 'location'
+         AND UPPER(l.source_value)        = UPPER(COALESCE(NULLIF(TRIM(t.location), ''), 'Wembley Stadium'))
        LEFT OUTER JOIN
-       ref_worker_type_mapping            w1
-          ON w1.source_column             = 'user_type'
-         AND w1.source_value              = NULLIF(TRIM(t.user_type), '')
-       LEFT OUTER JOIN
-       ref_worker_type_mapping            w2
-          ON w2.source_column             = 'department_1'
-         AND w2.source_value              = NULLIF(TRIM(t.department_1), '')
+       ref_worker_type_mapping            rw
+          ON UPPER(rw.user_type)          = UPPER(COALESCE(NULLIF(TRIM(t.user_type)   , ''), 'NULL'))
+         AND UPPER(rw.department_1)       = UPPER(COALESCE(NULLIF(TRIM(t.department_1), ''), 'NULL'))
  WHERE 
-       l.target_value                             IS NOT NULL
-   AND COALESCE(w1.target_value, w2.target_value) != 'EXCLUDE'
+       1 = 1
+   AND COALESCE(NULLIF(UPPER(TRIM(t.location))    , ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND COALESCE(NULLIF(UPPER(TRIM(t.department_1)), ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND COALESCE(NULLIF(UPPER(TRIM(t.user_type))   , ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
 ;

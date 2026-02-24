@@ -1,48 +1,13 @@
 [
 	{
 		"source_column" : "location",
-		"source_value" : "County",
-		"target_value" : null
+		"source_value" : "Homebased - SGP",
+		"target_value" : "Homebased - SGP"
 	},
 	{
 		"source_column" : "location",
-		"source_value" : "Country",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Amateur Football Alliance",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Cornwall FA",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Essex FA",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Football Conference",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Football365",
-		"target_value" : null
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Cognizant",
-		"target_value" : "Wembley Stadium"
+		"source_value" : "SGP",
+		"target_value" : "St George's Park"
 	},
 	{
 		"source_column" : "location",
@@ -51,23 +16,18 @@
 	},
 	{
 		"source_column" : "location",
-		"source_value" : "Homebased - SGP",
-		"target_value" : "Homebased - SGP"
-	},
-	{
-		"source_column" : "location",
-		"source_value" : "Homebased",
-		"target_value" : "Homebased - Wembley"
-	},
-	{
-		"source_column" : "location",
 		"source_value" : "Homebased - Wembley",
 		"target_value" : "Homebased - Wembley"
 	},
 	{
 		"source_column" : "location",
-		"source_value" : "SGP",
-		"target_value" : "St George's Park"
+		"source_value" : "Wembley Stadium",
+		"target_value" : "Wembley Stadium"
+	},
+	{
+		"source_column" : "location",
+		"source_value" : "Cognizant",
+		"target_value" : "Wembley Stadium"
 	},
 	{
 		"source_column" : "location",
@@ -81,7 +41,7 @@
 	},
 	{
 		"source_column" : "location",
-		"source_value" : "Wembley Stadium",
-		"target_value" : "Wembley Stadium"
+		"source_value" : "Homebased",
+		"target_value" : "Homebased - Wembley"
 	}
 ]

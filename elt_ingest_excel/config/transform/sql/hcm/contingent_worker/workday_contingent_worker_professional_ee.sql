@@ -14,7 +14,11 @@ SELECT
      , NULL                                                                probation_end_date
      , NULL                                                                continuous_service_date
      , NULL                                                                seniority_date
-     , COALESCE(NULLIF(UPPER(TRIM(t.user_type)), ''), t.department_1)      employee_contingent_worker_type
+     , CASE NULLIF(UPPER(TRIM(t.department_1)), '')
+        WHEN UPPER('Consultant')
+        THEN 'Sole Trader Staff'
+        ELSE 'Supplier Staff'
+       END                                                                 employee_contingent_worker_type
      , t.nrm_deactivation_date                                             employment_contract_end_date_fixed_term
      , t.nrm_time_type                                                     time_type
      , NULL                                                                pay_rate_type
@@ -22,9 +26,9 @@ SELECT
      , NULL                                                                job_code
      , NULL                                                                position_id
      , TRIM(t.location)                                                    primary_position
-     , COALESCE(NULLIF(TRIM(t.title), ''), 'Contingent Worker')            position_name
+     , COALESCE(nrm_title, 'Contingent Worker')                            position_name
      , t.activated_date                                                    position_start_date
-     , TRIM(t.title)                                                       business_title
+     , nrm_title                                                           business_title
      , t.nrm_location                                                      location_name
      , NULL                                                                work_space
      , t.nrm_hours_per_week                                                scheduled_weekly_hours

@@ -36,9 +36,9 @@ uv run python examples/hcm_contingent_worker.py [--run-to-phase INGEST|TRANSFORM
 ```bash
 cd elt_ingest_excel
 uv sync
+uv run python examples/hcm_contingent_worker.py --run-to-phase PUBLISH
 uv run python examples/fin_customer_debtor.py   --run-to-phase PUBLISH
 uv run python examples/fin_supplier_creditor.py --run-to-phase PUBLISH
-uv run python examples/hcm_contingent_worker.py --run-to-phase PUBLISH
 
 ```
 
