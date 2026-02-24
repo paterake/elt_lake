@@ -43,6 +43,6 @@ SELECT
          ON  dm.country_code           = s.nrm_country_code
          AND dm.is_default             = TRUE
  WHERE 
-       tax_schedule_id                    = 'PS20'
+       s.tax_schedule_id                  = 'PS20'
    AND NULLIF(TRIM(s.tax_id_number), '')  IS NOT NULL
 ;
