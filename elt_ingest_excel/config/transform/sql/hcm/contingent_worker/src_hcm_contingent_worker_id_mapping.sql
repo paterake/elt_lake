@@ -19,10 +19,12 @@ SELECT DISTINCT
     AS (
 SELECT t.*
   FROM cte_worker_id_mapping_raw t
+ WHERE t.email_address_raw IS NOT NULL
        )
 SELECT t.*
      , NULLIF(TRIM(SPLIT_PART(t.email_address_raw, ' (', 1)), '')                      email_address
      , NULLIF(TRIM(REPLACE(SPLIT_PART(t.email_address_raw, ' (', 2), ')', '')), '')    email_full_name
      , t.first_name || ' ' || t.last_name                                              manager_name
   FROM cte_worker_id_mapping t
+ WHERE email_address NOT IN ('test@test.com', 'xx@xx.com')
 ;
