@@ -4,11 +4,11 @@ CREATE TABLE src_hcm_contingent_worker
     AS
 SELECT
        t.*
-     , NULLIF(INITCAP(TRIM(t.first_name            )), '')                 nrm_first_name
-     , NULLIF(INITCAP(TRIM(t.last_name             )), '')                 nrm_last_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.first_name            )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_first_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.last_name             )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_last_name
      , NULLIF(LOWER(TRIM(t.primary_email           )), '')                 nrm_primary_email
      , NULLIF(LOWER(TRIM(t.secondary_email         )), '')                 nrm_secondary_email
-     , NULLIF(INITCAP(TRIM(t.manager_name          )), '')                 nrm_manager_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.manager_name          )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_manager_name
      , NULLIF(LOWER(TRIM(t.manager_email_address   )), '')                 nrm_manager_email_address
      , NULLIF(LOWER(TRIM(t.manager_email           )), '')                 nrm_manager_email
      , l.target_value                                                      nrm_location
