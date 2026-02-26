@@ -11,7 +11,7 @@ SELECT
      , 'United Kingdom'                                  legal_name_country
      , 'United Kingdom'                                  payroll_country
      , NULL                                              gender
-     , NULLIF(LOWER(TRIM(t.title)), '')                  title
+     , t.nrm_title                                       title
      , NULL                                              family_name_prefix
      , NULL                                              suffix
      , NULL                                              initials

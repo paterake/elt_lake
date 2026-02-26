@@ -12,7 +12,7 @@ SELECT
      , NULLIF(LOWER(TRIM(t.manager_email_address   )), '')                 nrm_manager_email_address
      , NULLIF(LOWER(TRIM(t.manager_email           )), '')                 nrm_manager_email
      , l.target_value                                                      nrm_location
-     , NULLIF(TRIM(REGEXP_REPLACE(t.title, '[^a-zA-Z0-9 ]', '', 'g')), '') nrm_title
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(REGEXP_REPLACE(t.title, '[^a-zA-Z0-9 ]', '', 'g'))), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_title
      , COALESCE(rw.mapped_value, 'Sole Trader Staff')                      nrm_worker_type
      , 'Full Time'                                                         nrm_time_type
      , '40'                                                                nrm_hours_per_week                
