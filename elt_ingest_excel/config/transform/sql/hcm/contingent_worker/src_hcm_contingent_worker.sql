@@ -16,14 +16,6 @@ SELECT
      , COALESCE(rw.mapped_value, 'Sole Trader Staff')                      nrm_worker_type
      , 'Full Time'                                                         nrm_time_type
      , '40'                                                                nrm_hours_per_week                
-     , strftime(
-         COALESCE(
-           TRY_STRPTIME(NULLIF(TRIM(t.deactivation_date), ''), '%Y-%m-%d %H:%M:%S')
-         , TRY_STRPTIME(NULLIF(TRIM(t.deactivation_date), ''), '%Y-%m-%d')
-         , TRY_STRPTIME(NULLIF(TRIM(t.deactivation_date), ''), '%d-%m-%Y')
-         , CURRENT_DATE + INTERVAL '6 MONTH'
-         ), '%Y-%m-%d 00:00:00'
-       )                                                                   nrm_deactivation_date
   FROM 
        src_hcm_contingent_worker_raw      t
        LEFT OUTER JOIN 

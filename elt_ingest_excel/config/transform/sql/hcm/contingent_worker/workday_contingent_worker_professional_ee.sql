@@ -9,8 +9,8 @@ SELECT
      , 'Contingent Worker'                                                 worker_type
      , NULLIF(UPPER(TRIM(t.department_1)), '')                             applicant_source_category
      , COALESCE(NULLIF(UPPER(TRIM(t.department)), ''), t.department_1)     applicant_source_name
-     , t.activated_date                                                    hire_date_contract_start_date
-     , NULL                                                                original_hire_date
+     , t.nrm_activated_date                                                hire_date_contract_start_date
+     , t.nrm_created_date                                                  original_hire_date
      , NULL                                                                probation_end_date
      , NULL                                                                continuous_service_date
      , NULL                                                                seniority_date
