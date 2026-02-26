@@ -8,8 +8,8 @@ SELECT m.employee_id                            employee_id
      , m.first_name                             first_name
      , m.last_name                              last_name
   FROM src_hcm_contingent_worker_id_mapping     m
- WHERE LOWER(m.first_name)                      = 'samuel'
-   AND LOWER(m.last_name)                       = 'vickers'
+ WHERE LOWER(m.first_name)                      = LOWER('samuel')
+   AND LOWER(m.last_name)                       = LOWER('vickers')
        )
      , cte_match
     AS (
@@ -28,17 +28,17 @@ SELECT
      , NULL                                     supervisory_id
      , NULL                                     staffing_model
      , CASE 
-        WHEN m.email_address                    = t.nrm_manager_email_address
-         AND m.manager_name                     = t.nrm_manager_name
+        WHEN LOWER(m.email_address)             = LOWER(t.nrm_manager_email_address)
+         AND LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
         THEN 1
-        WHEN m.email_address                    = t.nrm_manager_email
-         AND m.manager_name                     = t.nrm_manager_name
+        WHEN LOWER(m.email_address)             = LOWER(t.nrm_manager_email)
+         AND LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
         THEN 2
-        WHEN m.email_address                    = t.nrm_manager_email_address
+        WHEN LOWER(m.email_address)             = LOWER(t.nrm_manager_email_address)
         THEN 3
-        WHEN m.email_address                    = t.nrm_manager_email
+        WHEN LOWER(m.email_address)             = LOWER(t.nrm_manager_email)
         THEN 4
-        WHEN m.manager_name                     = t.nrm_manager_name
+        WHEN LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
         THEN 5
         ELSE 999
        END                                      match_priority
@@ -47,9 +47,9 @@ SELECT
        cte_manager_default                      md
        LEFT OUTER JOIN 
        src_hcm_contingent_worker_id_mapping     m
-          ON m.manager_name                     = t.nrm_manager_name
-          OR m.email_address                    = t.nrm_manager_email_address
-          OR m.email_address                    = t.nrm_manager_email
+          ON LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
+          OR LOWER(m.email_address)             = LOWER(t.nrm_manager_email_address)
+          OR LOWER(m.email_address)             = LOWER(t.nrm_manager_email)
        )
      , cte_match_rnk
     AS (
