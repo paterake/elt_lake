@@ -1,9 +1,9 @@
 INSTALL splink_udfs FROM community;
 LOAD splink_udfs;
 
-DROP TABLE IF EXISTS src_fin_supplier;
+DROP TABLE IF EXISTS src_fin_supplier_dedup;
 
-CREATE TABLE src_fin_supplier AS
+CREATE TABLE src_fin_supplier_dedup AS
 WITH raw_data AS (
     SELECT t.*
          , UPPER(TRIM(t.nrm_vendor_name)) as orig_name
