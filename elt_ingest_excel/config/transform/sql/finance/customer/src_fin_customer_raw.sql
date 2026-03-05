@@ -1,5 +1,9 @@
-DROP TABLE IF EXISTS src_fin_customer_raw
-;
+
+INSTALL splink_udfs FROM community;
+LOAD splink_udfs;
+
+DROP TABLE IF EXISTS src_fin_customer_raw;
+
 CREATE TABLE src_fin_customer_raw
     AS
   WITH cte_customer_src
@@ -36,8 +40,23 @@ SELECT DISTINCT
      , cte_customer_nrm
     AS (
 SELECT DISTINCT
-       UPPER(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(t.nrm_customer_name, '.', ''), '[^a-zA-Z0-9\s]', '', 'g'), '(\s|\b)(LTD|LIMITED|PLC|GROUP|HOLDINGS|FC|FOOTBALL|CLUB|ASSOCIATION)\b', '', 'gi')) 
-       clean_name
+       -- Clean Name: Remove dots, Normalize 'FOOTBALL CLUB' -> 'FC', then strip trailing suffixes (Limited, etc.)
+       TRIM(REGEXP_REPLACE(
+           REGEXP_REPLACE(
+               REPLACE(
+                    REPLACE(
+                        REPLACE(UPPER(t.nrm_customer_name), '.', ''),
+                        'WOMEN''S', 'WOMEN'
+                    ),
+                    'WOMENS', 'WOMEN'
+                ),
+                'FOOTBALL CLUB', 'FC'
+            ),
+               '(\s+|^)(LIMITED|LTD|COMPANY|PLC|LLP|INC)\s*$', ''
+           ),
+           '(\s+|^)(LIMITED|LTD|COMPANY|PLC|LLP|INC)\s*$', ''
+       )
+       AS clean_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d')
@@ -60,6 +79,14 @@ SELECT DISTINCT
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        ) 
+     , cte_customer_name_soundex
+    AS (
+SELECT 
+       SOUNDEX(t.clean_name)                                                                          nrm_clean_name_soundex
+       DOUBLE_METAPHONE(t.clean_name)                                                                 nrm_clean_name_metaphone
+     , t.*
+  FROM cte_customer_nrm               t
+       )
      , cte_customer_name_agg
     AS (
 SELECT t.nrm_customer_name
@@ -86,7 +113,7 @@ SELECT
      , t.* 
      , agg.array_nrm_business_unit
      , agg.pipe_nrm_business_unit
-  FROM cte_customer_nrm                t
+  FROM cte_customer_name_soundex       t
        INNER JOIN
        cte_customer_name_agg           agg
          ON agg.nrm_customer_name      = t.nrm_customer_name
