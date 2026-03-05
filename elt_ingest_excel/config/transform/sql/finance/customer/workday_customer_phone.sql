@@ -62,6 +62,15 @@ SELECT DISTINCT
   FROM cte_customer_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
+     , cte_phone_split_rnk
+    AS (
+SELECT ROW_NUMBER() OVER (
+           PARTITION BY p.customer_id, p.phone_type
+               ORDER BY p.phone_number_raw
+       )                                                                   rnk_phone_number
+     , p.*
+  FROM cte_phone_split p
+       )
     , cte_cleaned
     AS (
 SELECT s.*
@@ -77,7 +86,7 @@ SELECT s.*
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
        END                                                                 phone_number
-  FROM cte_phone_split                 s
+  FROM cte_phone_split_rnk                 s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
     , cte_phone_parse
@@ -109,7 +118,10 @@ SELECT s.customer_id                                                       custo
          ELSE s.parsed_phone.device_type
        END                                                                 phone_device_type
      , 'Yes'                                                               is_public
-     , CASE WHEN s.phone_type = 'primary' THEN 'Yes' ELSE 'No' END         is_primary
+     , CASE WHEN s.phone_type = 'primary' AND s.rnk_phone_number = 1
+         THEN 'Yes' 
+         ELSE 'No' 
+       END                                                                 is_primary
      , s.phone_type                                                        phone_type
      , NULL                                                                use_for
      , NULL                                                                use_for_tenanted

@@ -10,8 +10,8 @@
 ../../ref/ref_supplier_category_mapping.sql
 
 src_fin_customer_raw.sql
-src_fin_customer.sql
 src_fin_customer_dedup.sql
+src_fin_customer.sql
 workday_customer_name.sql
 workday_customer_groups.sql
 workday_customer_related_worktags.sql
