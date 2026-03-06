@@ -37,7 +37,7 @@ SELECT DISTINCT
         WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%'
         THEN NULL 
         ELSE COALESCE(
-             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR')
+             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR' 'AL5, 2LG')
              -- Handles comma separators by replacing them with space first
              -- Normalizes multiple spaces to single space
              NULLIF(
@@ -50,15 +50,22 @@ SELECT DISTINCT
              -- Fallback: Just take the first part (e.g. 'AL5' from 'AL5, Herts') if regex failed
              NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '')
         )
-       END                                                                                            nrm_postal_code
+       END                                                                                            nrm_postal_code_clean
      , t.*
   FROM cte_customer_src                      t
        )
      , cte_customer_nrm
     AS (
-SELECT DISTINCT
+SELECT 
+       CASE
+         -- Full postcodes are always 5, 6, or 7 characters (cleaned)
+         WHEN LENGTH(REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g')) IN (5, 6, 7)
+         THEN REGEXP_REPLACE(REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g'), '(.+)(.{3})$', '\1 \2')
+         -- Partials (2-4 chars) or Garbage (8+ chars) remain unchanged (cleaned)
+         ELSE REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g')
+       END                                                                                            nrm_postal_code
        -- Clean Name: Remove dots, Normalize 'FOOTBALL CLUB' -> 'FC', then strip trailing suffixes (Limited, etc.)
-       TRIM(REGEXP_REPLACE(
+     , TRIM(REGEXP_REPLACE(
            REPLACE(
                 REPLACE(
                     REPLACE(
