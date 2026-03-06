@@ -34,9 +34,22 @@ SELECT DISTINCT
        TRIM(t.customer_number)                                                                        nrm_customer_number
      , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))) nrm_customer_name_base
      , CASE 
-        WHEN UPPER(TRIM(t.post_code)) LIKE '%NOT KNOWN%'
+        WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%'
         THEN NULL 
-        ELSE NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '') 
+        ELSE COALESCE(
+             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR')
+             -- Handles comma separators by replacing them with space first
+             -- Normalizes multiple spaces to single space
+             NULLIF(
+                 REGEXP_REPLACE(
+                     REGEXP_EXTRACT(UPPER(REPLACE(t.post_code, ',', ' ')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
+                     '\s+', ' ', 'g'
+                 ),
+                 ''
+             ),
+             -- Fallback: Just take the first part (e.g. 'AL5' from 'AL5, Herts') if regex failed
+             NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '')
+        )
        END                                                                                            nrm_postal_code
      , t.*
   FROM cte_customer_src                      t
