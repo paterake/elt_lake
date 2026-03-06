@@ -3,29 +3,29 @@ DROP TABLE IF EXISTS workday_customer_email
 CREATE TABLE workday_customer_email AS
   WITH cte_customer_email
     AS (
-SELECT c.customer_id                                  customer_id
-     , c.nrm_customer_name                            customer_name
-     , c.email_to_address                             email_raw
-     , 'to'                                           email_type
-     , '_EM1'                                         suffix
+SELECT c.customer_id                                           customer_id
+     , c.nrm_customer_name                                     customer_name
+     , c.nrm_agg_email_to_address                              email_raw
+     , 'to'                                                    email_type
+     , '_EM1'                                                  suffix
   FROM src_fin_customer c
- WHERE NULLIF(UPPER(TRIM(c.email_to_address)), '')    IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_email_to_address)), '')     IS NOT NULL
 UNION ALL
-SELECT c.customer_id                                  customer_id
-     , c.nrm_customer_name                            customer_name
-     , c.email_cc_address                             email_raw
-     , 'cc'                                           email_type
-     , '_EM2'                                         suffix
+SELECT c.customer_id                                           customer_id
+     , c.nrm_customer_name                                     customer_name
+     , c.nrm_agg_email_cc_address                              email_raw
+     , 'cc'                                                    email_type
+     , '_EM2'                                                  suffix
   FROM src_fin_customer c
- WHERE NULLIF(UPPER(TRIM(c.email_cc_address)), '')   IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_email_cc_address)), '')     IS NOT NULL
 UNION ALL
-SELECT c.customer_id                                  customer_id
-     , c.nrm_customer_name                            customer_name
-     , c.email_bcc_address                            email_raw
-     , 'bcc'                                          email_type
-     , '_EM3'                                         suffix
+SELECT c.customer_id                                           customer_id
+     , c.nrm_customer_name                                     customer_name
+     , c.nrm_agg_email_bcc_address                             email_raw
+     , 'bcc'                                                   email_type
+     , '_EM3'                                                  suffix
   FROM src_fin_customer c
- WHERE NULLIF(UPPER(TRIM(c.email_bcc_address)), '')   IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_email_bcc_address)), '')    IS NOT NULL
        )
      , cte_email_split
     AS (
@@ -49,6 +49,7 @@ SELECT s.customer_id                          customer_id
                ORDER BY s.email_address
        )                                      email_rank
   FROM cte_email_split s
+ WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
        )
 SELECT s.customer_id                                                     customer_id
      , s.customer_name                                                   customer_name

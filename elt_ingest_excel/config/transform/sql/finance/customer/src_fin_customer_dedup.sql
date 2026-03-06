@@ -1,7 +1,3 @@
-
-INSTALL splink_udfs FROM community;
-LOAD splink_udfs;
-
 DROP TABLE IF EXISTS src_fin_customer_dedup;
 
 CREATE TABLE src_fin_customer_dedup AS
@@ -26,24 +22,28 @@ SELECT
      , cte_agg
     AS (
 SELECT t.nrm_customer_name
-     , ARRAY_AGG(DISTINCT(ARRAY_VALUE( t.nrm_address_line_1
-                                     , t.nrm_address_line_2
-                                     , t.nrm_address_line_3
-                                     , t.nrm_address_line_4
-                                     , t.nrm_region
-                                     , t.nrm_city
-                                     , t.nrm_country_name
-                                     , t.nrm_country_code
-                                     , t.nrm_postal_code
-                                     , t.address_code
-                                     )))                             nrm_array_customer_address
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.phone_1)), ';')             nrm_agg_phone_1
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.phone_2)), ';')             nrm_agg_phone_2
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.phone_3)), ';')             nrm_agg_phone_3
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.fax    )), ';')             nrm_agg_fax
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.email_to_address )), ';')   nrm_agg_email_to_address
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.email_cc_address )), ';')   nrm_agg_email_cc_address
-     , STRING_AGG(DISTINCT(ARRAY_VALUE(t.email_bcc_address)), ';')   nrm_agg_email_bcc_address
+     , ARRAY_AGG(DISTINCT STRUCT_PACK(
+           nrm_address_line_1   := t.nrm_address_line_1
+         , nrm_address_line_2   := t.nrm_address_line_2
+         , nrm_address_line_3   := t.nrm_address_line_3
+         , nrm_address_line_4   := t.nrm_address_line_4
+         , nrm_region           := t.nrm_region
+         , nrm_city             := t.nrm_city
+         , nrm_country_name     := t.nrm_country_name
+         , nrm_country_code     := t.nrm_country_code
+         , nrm_postal_code      := t.nrm_postal_code
+         , nrm_address_code     := t.nrm_address_code
+       ))                                                                              nrm_array_customer_address
+     , STRING_AGG(DISTINCT t.nrm_customer_number, '|' ORDER BY t.nrm_customer_number)  nrm_agg_customer_number
+     , STRING_AGG(DISTINCT t.phone_1            , ';' ORDER BY t.phone_1)              nrm_agg_phone_1
+     , STRING_AGG(DISTINCT t.phone_2            , ';' ORDER BY t.phone_2)              nrm_agg_phone_2
+     , STRING_AGG(DISTINCT t.phone_3            , ';' ORDER BY t.phone_3)              nrm_agg_phone_3
+     , STRING_AGG(DISTINCT t.fax                , ';' ORDER BY t.fax)                  nrm_agg_fax
+     , STRING_AGG(DISTINCT t.email_to_address   , ';' ORDER BY t.email_to_address)     nrm_agg_email_to_address
+     , STRING_AGG(DISTINCT t.email_cc_address   , ';' ORDER BY t.email_cc_address)     nrm_agg_email_cc_address
+     , STRING_AGG(DISTINCT t.email_bcc_address  , ';' ORDER BY t.email_bcc_address)    nrm_agg_email_bcc_address
+     , ARRAY_AGG (DISTINCT t.nrm_business_unit        ORDER BY t.nrm_business_unit)    nrm_array_business_unit
+     , STRING_AGG(DISTINCT t.nrm_business_unit  , '|' ORDER BY t.nrm_business_unit)    nrm_agg_business_unit
   FROM cte_customer_score              t
  GROUP BY t.nrm_customer_name
        )
@@ -51,6 +51,7 @@ SELECT
        ROW_NUMBER() OVER(PARTITION BY t.nrm_customer_name ORDER BY t.score DESC) rnk_score
      , COUNT()      OVER(PARTITION BY t.nrm_customer_name)                       cnt_customer_name
      , a.nrm_array_customer_address
+     , a.nrm_agg_customer_number
      , a.nrm_agg_phone_1
      , a.nrm_agg_phone_2
      , a.nrm_agg_phone_3
@@ -58,6 +59,8 @@ SELECT
      , a.nrm_agg_email_to_address
      , a.nrm_agg_email_cc_address
      , a.nrm_agg_email_bcc_address
+     , a.nrm_array_business_unit
+     , a.nrm_agg_business_unit
      , t.*
   FROM cte_customer_score              t
        INNER JOIN 

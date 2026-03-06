@@ -5,7 +5,7 @@ CREATE TABLE workday_customer_name
 SELECT
        c.customer_id                                                             customer_id
      , c.nrm_customer_name                                                       customer_name
-     , c.nrm_customer_number                                                     reference_id
+     , c.nrm_agg_customer_number                                                 reference_id
      , COALESCE(NULLIF(UPPER(TRIM(c.customer_class)), ''), 'Customer Category')  customer_category
      , NULL                                                                      business_entity_name
      , NULL                                                                      external_entity_id

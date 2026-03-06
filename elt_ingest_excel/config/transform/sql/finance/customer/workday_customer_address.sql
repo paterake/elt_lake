@@ -12,18 +12,28 @@ SELECT
      , NULL                                                                   do_not_replace_all
      , NULL                                                                   last_modified
      , NULL                                                                   descriptor
-     , TRIM(c.customer_id) || '_' || COALESCE(TRIM(c.address_code), 'MAIN')   address_id
-     , c.nrm_country_name                                                     country
-     , c.nrm_country_code                                                     country_code
-     , c.nrm_region                                                           region
+     , TRIM(c.customer_id) || '_' || u.address.nrm_address_code || '_' || ROW_NUMBER() OVER (
+           PARTITION BY c.customer_id, u.address.nrm_address_code
+               ORDER BY u.address.nrm_address_line_1
+                      , u.address.nrm_address_line_2
+                      , u.address.nrm_address_line_3
+                      , u.address.nrm_address_line_4
+                      , u.address.nrm_city
+                      , u.address.nrm_region
+                      , u.address.nrm_postal_code
+                      , u.address.nrm_country_name
+       )                                                                      address_id
+     , u.address.nrm_country_name                                             country
+     , u.address.nrm_country_code                                             country_code
+     , u.address.nrm_region                                                   region
      , NULL                                                                   subregion
-     , c.nrm_city                                                             city
+     , u.address.nrm_city                                                     city
      , NULL                                                                   submunicipality
-     , c.nrm_address_line_1                                                   address_line_1
-     , c.nrm_address_line_2                                                   address_line_2
-     , c.nrm_address_line_3                                                   address_line_3
-     , c.nrm_address_line_4                                                   address_line_4
-     , c.nrm_postal_code                                                      postal_code
+     , u.address.nrm_address_line_1                                           address_line_1
+     , u.address.nrm_address_line_2                                           address_line_2
+     , u.address.nrm_address_line_3                                           address_line_3
+     , u.address.nrm_address_line_4                                           address_line_4
+     , u.address.nrm_postal_code                                              postal_code
      , 'Yes'                                                                  is_public
      , 'Yes'                                                                  is_primary
      , NULL                                                                   address_type   
@@ -35,6 +45,9 @@ SELECT
      , NULL                                                                   municipality_local
      , NULL                                                                   optional_address
   FROM src_fin_customer                         c
- WHERE COALESCE(NULLIF(TRIM(c.nrm_address_line_1), ''), NULLIF(TRIM(c.nrm_address_line_2), ''), NULLIF(TRIM(c.nrm_address_line_3), '')) IS NOT NULL
-   AND NULLIF(TRIM(c.nrm_address_line_1), '') NOT IN ('[Not Known]') 
+     , UNNEST(nrm_array_customer_address) u(address)
+ WHERE COALESCE( NULLIF(TRIM(u.address.nrm_address_line_1), '')
+               , NULLIF(TRIM(u.address.nrm_address_line_2), '')
+               , NULLIF(TRIM(u.address.nrm_address_line_3), '')) IS NOT NULL
+   AND NULLIF(TRIM(u.address.nrm_address_line_1), '') NOT IN ('[Not Known]') 
 ;

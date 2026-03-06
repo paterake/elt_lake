@@ -1,4 +1,3 @@
-
 INSTALL splink_udfs FROM community;
 LOAD splink_udfs;
 
@@ -76,25 +75,6 @@ SELECT DISTINCT
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        ) 
-     , cte_customer_name_soundex
-    AS (
-SELECT 
-       SOUNDEX(t.nrm_customer_name)                                                                   nrm_name_soundex
-     , ARRAY_TO_STRING(DOUBLE_METAPHONE(t.nrm_customer_name), '|')                                    nrm_name_metaphone
-   --, ARRAY_TO_STRING(ngrams(str_split(t.nrm_customer_name, ''), 2), '|')                            nrm_name_ngrams
-   --, ARRAY_TO_STRING(LIST_SORT(STR_SPLIT(t.nrm_customer_name, ' ')), ' ')                           nrm_name_sorted
-     , t.*
-  FROM cte_customer_nrm               t
-       )
-     , cte_customer_name_agg
-    AS (
-SELECT t.nrm_customer_name
-     , ARRAY_AGG (DISTINCT t.nrm_business_unit      ORDER BY t.nrm_business_unit) array_nrm_business_unit
-     , STRING_AGG(DISTINCT t.nrm_business_unit, '|' ORDER BY t.nrm_business_unit) pipe_nrm_business_unit
-  FROM cte_customer_nrm                      t
- GROUP BY 
-       t.nrm_customer_name
-       )
      , cte_customer_rank
     AS (
 SELECT 
@@ -109,13 +89,18 @@ SELECT
                  , t.nrm_last_transaction_date  DESC NULLS LAST
        )                                                           data_rnk
      , t.* 
-     , agg.array_nrm_business_unit
-     , agg.pipe_nrm_business_unit
-  FROM cte_customer_name_soundex          t
-       INNER JOIN
-       cte_customer_name_agg              agg
-         ON agg.nrm_customer_name         = t.nrm_customer_name
+  FROM cte_customer_nrm                t
        )
+     , cte_customer_addr_clean 
+    AS (
+SELECT t.*
+       , LIST_DISTINCT(LIST_FILTER([
+             NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+         ], x -> x IS NOT NULL))                                  addr_unique_list
+    FROM cte_customer_rank             t
+       )       
 SELECT 
        r.country_code                                             nrm_country_code
      , r.language_code                                            nrm_language_code
@@ -133,22 +118,17 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(c.city), '')
        END                                                        nrm_city
-     , COALESCE(
-         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), ''),
-         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), ''),
-         NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
-       )                                                          nrm_address_line_1
-     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
-                                                                  nrm_address_line_2
-     , NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(c.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g')), '')
-                                                                  nrm_address_line_3
-     , NULL                                                       nrm_address_line_4
+     , c.addr_unique_list[1]                                      nrm_address_line_1
+     , c.addr_unique_list[2]                                      nrm_address_line_2
+     , c.addr_unique_list[3]                                      nrm_address_line_3
+     , CAST(NULL AS STRING)                                       nrm_address_line_4       
      , NULLIF(TRIM(UPPER(c.post_code)), '')                       nrm_postal_code
      , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                nrm_payment_terms_id
      , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                 nrm_tax_schedule_id
      , NULLIF(TRIM(UPPER(c.tax_registration_number)), '')         nrm_tax_registration_number
+     , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')  nrm_address_code
      , c.*
- FROM cte_customer_rank                         c
+ FROM cte_customer_addr_clean                   c
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_source_country_name_mapping          m_name

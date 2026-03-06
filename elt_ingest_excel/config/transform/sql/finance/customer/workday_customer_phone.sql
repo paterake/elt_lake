@@ -8,44 +8,44 @@ SELECT c.customer_id                         customer_id
      , c.nrm_country_name                    customer_country_name
      , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
-     , c.phone_1                             phone_raw
+     , c.nrm_agg_phone_1                     phone_raw
      , 'primary'                             phone_type
      , '_PH1'                                suffix
   FROM src_fin_customer                      c
- WHERE NULLIF(UPPER(TRIM(c.phone_1)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_phone_1)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
      , c.nrm_country_name                    customer_country_name
      , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
-     , c.phone_2                             phone_raw
+     , c.nrm_agg_phone_2                     phone_raw
      , 'secondary'                           phone_type
      , '_PH2'                                suffix
   FROM src_fin_customer                      c
- WHERE NULLIF(UPPER(TRIM(c.phone_2)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_phone_2)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
      , c.nrm_country_name                    customer_country_name
      , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
-     , c.phone_3                             phone_raw
+     , c.nrm_agg_phone_3                     phone_raw
      , 'tertiary'                            phone_type
      , '_PH3'                                suffix
   FROM src_fin_customer                      c
- WHERE NULLIF(UPPER(TRIM(c.phone_3)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_phone_3)), '') IS NOT NULL
 UNION ALL
 SELECT c.customer_id                         customer_id
      , c.nrm_customer_name                   customer_name
      , c.nrm_country_name                    customer_country_name
      , c.nrm_country_code                    customer_country_code
      , COALESCE(c.nrm_phone_code, '+44')     international_phone_code
-     , c.fax                                 phone_raw
+     , c.nrm_agg_fax                         phone_raw
      , 'fax'                                 phone_type
      , '_FAX'                                suffix
-  FROM src_fin_customer c
- WHERE NULLIF(UPPER(TRIM(c.fax)), '') IS NOT NULL
+  FROM src_fin_customer                      c
+ WHERE NULLIF(UPPER(TRIM(c.nrm_agg_fax)), '') IS NOT NULL
        )
      , cte_phone_split
     AS (
@@ -70,6 +70,7 @@ SELECT ROW_NUMBER() OVER (
        )                                                                   rnk_phone_number
      , p.*
   FROM cte_phone_split p
+ WHERE NULLIF(TRIM(p.phone_number_raw), '') IS NOT NULL
        )
     , cte_cleaned
     AS (
