@@ -148,7 +148,7 @@ SELECT
        -- Address handling
        LEFT OUTER JOIN
        ref_post_code_county                     r0
-          ON UPPER(TRIM(c.post_code))           LIKE r0.postcode || ' %' 
+          ON UPPER(TRIM(c.nrm_postal_code))     LIKE r0.postcode || ' %' 
        LEFT OUTER JOIN 
        ref_workday_country_state_region         r1
          ON r1.country                          = r.country_name
