@@ -104,5 +104,4 @@ Thumbs.db
 # DuckDB
 *.duckdb
 *.duckdb.wal
-elt_ingest_excel/config/transform/sql/ref/postcodes/data/*.csv
 elt_ingest_excel/config/transform/sql/ref/postcodes/

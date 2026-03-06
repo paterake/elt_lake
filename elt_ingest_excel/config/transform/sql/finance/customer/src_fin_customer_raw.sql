@@ -33,6 +33,11 @@ SELECT 'WNSL' business_unit, t.* FROM fin_customer_debtor_last_payment_date_wnsl
 SELECT DISTINCT
        TRIM(t.customer_number)                                                                        nrm_customer_number
      , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.customer_name)), ''), NULLIF(TRIM(t.customer_number), ''))) nrm_customer_name_base
+     , CASE 
+        WHEN UPPER(TRIM(t.post_code)) LIKE '%NOT KNOWN%'
+        THEN NULL 
+        ELSE NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '') 
+       END                                                                                            nrm_postal_code
      , t.*
   FROM cte_customer_src                      t
        )
@@ -122,7 +127,6 @@ SELECT
      , c.addr_unique_list[2]                                      nrm_address_line_2
      , c.addr_unique_list[3]                                      nrm_address_line_3
      , CAST(NULL AS STRING)                                       nrm_address_line_4       
-     , NULLIF(TRIM(UPPER(c.post_code)), '')                       nrm_postal_code
      , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                nrm_payment_terms_id
      , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                 nrm_tax_schedule_id
      , NULLIF(TRIM(UPPER(c.tax_registration_number)), '')         nrm_tax_registration_number
