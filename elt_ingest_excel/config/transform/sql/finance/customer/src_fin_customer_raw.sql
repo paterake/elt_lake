@@ -135,8 +135,8 @@ SELECT
      , r.country_name                                             nrm_country_name
      , rx.instance                                                nrm_region
      , CASE
-        WHEN r0.city                IS NOT NULL
-        THEN r0.city
+        WHEN r0.post_town           IS NOT NULL
+        THEN r0.post_town
         WHEN r3.town_city_name      IS NOT NULL
         THEN r3.town_city_name
         WHEN r4.town_city_name      IS NOT NULL
@@ -167,8 +167,11 @@ SELECT
           ON r.country_code                     = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
        -- Address handling
        LEFT OUTER JOIN
-       ref_post_code_county                     r0
+       ref_post_code_district                   r0
           ON UPPER(TRIM(c.nrm_postal_code))     LIKE r0.postcode || ' %' 
+       LEFT OUTER JOIN
+       ref_post_code_workday_region             r01
+          ON UPPER(TRIM(r01.post_code_region))  = UPPER(TRIM(r0.region))
        LEFT OUTER JOIN 
        ref_workday_country_state_region         r1
          ON r1.country                          = r.country_name
@@ -189,7 +192,7 @@ SELECT
        ref_workday_country_state_region         rx
          ON rx.country                          = r.country_name
         AND UPPER(TRIM(rx.instance))            = CASE
-                                                   WHEN r0.county             IS NOT NULL THEN UPPER(TRIM(r0.county))
+                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
                                                    WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
                                                    WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
                                                    WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
