@@ -133,8 +133,9 @@ SELECT
      , r.phone_code                                               nrm_phone_code
      , r.tax_id_type                                              nrm_tax_id_type
      , r.country_name                                             nrm_country_name
-     , rx.instance                                                nrm_region
-     , CASE
+     , COALESCE(rx.instance, rxo.instance)                        nrm_region
+     , SPLIT_PART(
+       CASE
         WHEN r0.post_town           IS NOT NULL
         THEN r0.post_town
         WHEN r3.town_city_name      IS NOT NULL
@@ -142,7 +143,8 @@ SELECT
         WHEN r4.town_city_name      IS NOT NULL
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(c.city), '')
-       END                                                        nrm_city
+       END
+       , ',', 1)                                                  nrm_city
      , c.addr_unique_list[1]                                      nrm_address_line_1
      , c.addr_unique_list[2]                                      nrm_address_line_2
      , c.addr_unique_list[3]                                      nrm_address_line_3
@@ -191,12 +193,25 @@ SELECT
        LEFT OUTER JOIN 
        ref_workday_country_state_region         rx
          ON rx.country                          = r.country_name
-        AND UPPER(TRIM(rx.instance))            = CASE
+        AND UPPER(TRIM(rx.instance))            = UPPER(TRIM(
+                                                  CASE
                                                    WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
                                                    WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
                                                    WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
                                                    WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
                                                    WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
                                                    ELSE NULLIF(UPPER(TRIM(c.county)), '')
-                                                  END
+                                                  END))
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         rxo
+         ON rxo.country                         = r.country_name
+        AND UPPER(TRIM(rxo.instance))           = UPPER(TRIM(
+                                                  CASE
+                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
+                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                   ELSE NULLIF(UPPER(TRIM(c.county)), '')
+                                                  END || '(obsolete)'))
 ;
