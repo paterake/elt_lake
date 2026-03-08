@@ -1,3 +1,8 @@
+INSTALL splink_udfs FROM community
+;
+LOAD splink_udfs
+;
+
 DROP TABLE IF EXISTS src_fin_supplier_raw
 ;
 CREATE TABLE src_fin_supplier_raw
@@ -96,11 +101,11 @@ SELECT
        INNER JOIN
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
-       ) 
+       )
      , cte_supplier_rank
     AS (
 SELECT 
-     , ROW_NUMBER() OVER
+       ROW_NUMBER() OVER
        (
          PARTITION BY
                    t.nrm_vendor_name

@@ -1,5 +1,7 @@
-INSTALL splink_udfs FROM community;
-LOAD splink_udfs;
+INSTALL splink_udfs FROM community
+;
+LOAD splink_udfs
+;
 
 DROP TABLE IF EXISTS src_fin_customer_raw;
 
