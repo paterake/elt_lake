@@ -102,8 +102,17 @@ SELECT
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
        )
-     , cte_supplier_rank
+     , cte_supplier_addr_clean 
     AS (
+SELECT t.*
+     , LIST_DISTINCT(LIST_FILTER([
+         NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+       , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+       , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+       , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+       ], x -> x IS NOT NULL))                                           addr_unique_list
+  FROM cte_supplier_nrm                      t
+       )
 SELECT 
        ROW_NUMBER() OVER
        (
@@ -126,22 +135,7 @@ SELECT
                  , t.nrm_last_payment_date      DESC NULLS LAST
                  , t.nrm_last_purchase_date     DESC NULLS LAST
        )                                                                   data_rnk
-     , t.* 
-  FROM cte_supplier_nrm                t
-       )
-     , cte_supplier_addr_clean 
-    AS (
-SELECT t.*
-       , LIST_DISTINCT(LIST_FILTER([
-             NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-         ], x -> x IS NOT NULL))                                           addr_unique_list
-  FROM cte_supplier_rank             t
-       )
-SELECT 
-       r.country_code                                                               nrm_country_code
+     , r.country_code                                                               nrm_country_code
      , r.language_code                                                              nrm_language_code
      , r.currency_code                                                              nrm_currency_code
      , r.phone_code                                                                 nrm_phone_code
@@ -173,9 +167,9 @@ SELECT
      , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)         nrm_bank_account_name
      , NULLIF(TRIM(REPLACE(t.eft_bank_account, ' ', '')), '')                       nrm_bank_account_number
      , CASE
-         WHEN t.nrm_country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
+         WHEN r.country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
          THEN TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
-         WHEN t.nrm_country_code = 'US'
+         WHEN r.country_code = 'US'
          THEN TRIM(REPLACE(REPLACE(t.eft_transit_routing_no, ' ', ''), '-', ''))
          ELSE TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
        END                                                                          nrm_bank_code_routing_number

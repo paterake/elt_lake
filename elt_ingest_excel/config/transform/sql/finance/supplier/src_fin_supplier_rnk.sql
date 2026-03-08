@@ -52,10 +52,10 @@ SELECT t.nrm_supplier_name
          , nrm_bank_transfer_method       := t.nrm_bank_transfer_method
        ))                                                                              nrm_array_bank
      , STRING_AGG(DISTINCT t.nrm_supplier_number, '|' ORDER BY t.nrm_supplier_number)  nrm_agg_supplier_number
-     , STRING_AGG(DISTINCT t.phone_1            , ';' ORDER BY t.phone_1)              nrm_agg_phone_1
-     , STRING_AGG(DISTINCT t.phone_2            , ';' ORDER BY t.phone_2)              nrm_agg_phone_2
+     , STRING_AGG(DISTINCT t.phone_number_1     , ';' ORDER BY t.phone_number_1)       nrm_agg_phone_1
+     , STRING_AGG(DISTINCT t.phone_number_2     , ';' ORDER BY t.phone_number_2)       nrm_agg_phone_2
      , STRING_AGG(DISTINCT t.phone_3            , ';' ORDER BY t.phone_3)              nrm_agg_phone_3
-     , STRING_AGG(DISTINCT t.fax                , ';' ORDER BY t.fax)                  nrm_agg_fax
+     , STRING_AGG(DISTINCT t.fax_number         , ';' ORDER BY t.fax_number)           nrm_agg_fax
      , STRING_AGG(DISTINCT t.email_to_address   , ';' ORDER BY t.email_to_address)     nrm_agg_email_to_address
      , STRING_AGG(DISTINCT t.email_cc_address   , ';' ORDER BY t.email_cc_address)     nrm_agg_email_cc_address
      , STRING_AGG(DISTINCT t.email_bcc_address  , ';' ORDER BY t.email_bcc_address)    nrm_agg_email_bcc_address
@@ -67,7 +67,8 @@ SELECT t.nrm_supplier_name
 SELECT
        ROW_NUMBER() OVER(PARTITION BY t.nrm_supplier_name ORDER BY t.score DESC) rnk_score
      , COUNT()      OVER(PARTITION BY t.nrm_supplier_name)                       cnt_supplier_name
-     , a.nrm_array_supplier_address
+     , a.nrm_array_address
+     , a.nrm_array_bank
      , a.nrm_agg_supplier_number
      , a.nrm_agg_phone_1
      , a.nrm_agg_phone_2
