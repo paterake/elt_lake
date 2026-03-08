@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS workday_customer_address
 ;
 CREATE TABLE workday_customer_address
     AS
+  WITH cte_address
+    AS (
 SELECT
        c.customer_id                                                          customer_id
      , c.nrm_customer_name                                                    customer_name
@@ -12,9 +14,10 @@ SELECT
      , NULL                                                                   do_not_replace_all
      , NULL                                                                   last_modified
      , NULL                                                                   descriptor
-     , TRIM(c.customer_id) || '_' || u.address.nrm_address_code || '_' || ROW_NUMBER() OVER (
-           PARTITION BY c.customer_id, u.address.nrm_address_code
-               ORDER BY u.address.nrm_address_line_1
+     , ROW_NUMBER() OVER (
+           PARTITION BY c.customer_id
+               ORDER BY u.address.nrm_address_code
+                      , u.address.nrm_address_line_1
                       , u.address.nrm_address_line_2
                       , u.address.nrm_address_line_3
                       , u.address.nrm_address_line_4
@@ -22,7 +25,8 @@ SELECT
                       , u.address.nrm_region
                       , u.address.nrm_postal_code
                       , u.address.nrm_country_name
-       )                                                                      address_id
+       )                                                                      address_id_rnk
+     , u.address.nrm_address_code                                             address_id_code
      , u.address.nrm_country_name                                             country
      , u.address.nrm_country_code                                             country_code
      , u.address.nrm_region                                                   region
@@ -52,4 +56,37 @@ SELECT
    AND NULLIF(TRIM(u.address.nrm_address_line_1), '') NOT IN ('[Not Known]') 
    AND NULLIF(TRIM(u.address.nrm_postal_code)   , '') IS NOT NULL
    AND NULLIF(TRIM(u.address.nrm_region)        , '') IS NOT NULL
+       )
+SELECT t.customer_id
+     , t.customer_name
+     , t.formatted_address
+     , t.address_format_type
+     , t.defaulted_business_site_address
+     , t.delete_flag
+     , t.do_not_replace_all
+     , t.last_modified
+     , t.descriptor
+     , TRIM(t.customer_id) || '_' || u.address.nrm_address_code || '_' || t.address_id_rnk   address_id
+     , t.country
+     , t.country_code
+     , t.region
+     , t.subregion
+     , t.city
+     , t.submunicipality
+     , t.address_line_1
+     , t.address_line_2
+     , t.address_line_3
+     , t.address_line_4
+     , t.postal_code
+     , t.is_public
+     , CASE t.address_id_rnk WHEN 1 THEN 'Yes' ELSE 'No' END                                 is_primary
+     , t.address_type   
+     , t.effective_date
+     , t.use_for
+     , t.use_for_tenanted
+     , t.customer_comment
+     , t.number_of_days
+     , t.municipality_local
+     , t.optional_address
+  FROM cte_address                     t
 ;
