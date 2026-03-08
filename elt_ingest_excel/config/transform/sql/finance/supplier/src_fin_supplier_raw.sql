@@ -133,21 +133,21 @@ SELECT
     AS (
 SELECT t.*
        , LIST_DISTINCT(LIST_FILTER([
-             NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+             NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
          ], x -> x IS NOT NULL))                                           addr_unique_list
     FROM cte_supplier_rank             t
        )
 SELECT 
-       r.country_code                                             nrm_country_code
-     , r.language_code                                            nrm_language_code
-     , r.currency_code                                            nrm_currency_code
-     , r.phone_code                                               nrm_phone_code
-     , r.tax_id_type                                              nrm_tax_id_type
-     , r.country_name                                             nrm_country_name
-     , COALESCE(rx.instance, rxo.instance)                        nrm_region
+       r.country_code                                                            nrm_country_code
+     , r.language_code                                                           nrm_language_code
+     , r.currency_code                                                           nrm_currency_code
+     , r.phone_code                                                              nrm_phone_code
+     , r.tax_id_type                                                             nrm_tax_id_type
+     , r.country_name                                                            nrm_country_name
+     , COALESCE(rx.instance, rxo.instance)                                       nrm_region
      , SPLIT_PART(
        CASE
         WHEN r0.post_town           IS NOT NULL
@@ -158,12 +158,12 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(t.city), '')
        END
-       , ',', 1)                                                  nrm_city
-     , t.addr_unique_list[1]                                      nrm_address_line_1
-     , t.addr_unique_list[2]                                      nrm_address_line_2
-     , t.addr_unique_list[3]                                      nrm_address_line_3
-     , t.addr_unique_list[4]                                      nrm_address_line_4
-     , COALESCE(NULLIF(TRIM(UPPER(t.address_code)), ''), 'MAIN')  nrm_address_code
+       , ',', 1)                                                                 nrm_city
+     , t.addr_unique_list[1]                                                     nrm_address_line_1
+     , t.addr_unique_list[2]                                                     nrm_address_line_2
+     , t.addr_unique_list[3]                                                     nrm_address_line_3
+     , t.addr_unique_list[4]                                                     nrm_address_line_4
+     , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')  nrm_address_code
      , t.*
  FROM cte_supplier_addr_clean                   t
        -- First try: match on country name (higher population)
