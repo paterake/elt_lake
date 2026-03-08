@@ -4,7 +4,7 @@ CREATE TABLE workday_supplier_phone AS
   WITH cte_supplier_phone
     AS (
 SELECT s.supplier_id                         supplier_id
-     , s.nrm_vendor_name                     supplier_name
+     , s.nrm_supplier_name                   supplier_name
      , s.nrm_country_name                    supplier_country_name
      , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
@@ -15,7 +15,7 @@ SELECT s.supplier_id                         supplier_id
  WHERE NULLIF(UPPER(TRIM(s.phone_number_1)), '') IS NOT NULL
 UNION ALL
 SELECT s.supplier_id                         supplier_id
-     , s.nrm_vendor_name                     supplier_name
+     , s.nrm_supplier_name                   supplier_name
      , s.nrm_country_name                    supplier_country_name
      , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
@@ -26,7 +26,7 @@ SELECT s.supplier_id                         supplier_id
  WHERE NULLIF(UPPER(TRIM(s.phone_number_2)), '') IS NOT NULL
 UNION ALL
 SELECT s.supplier_id                         supplier_id
-     , s.nrm_vendor_name                     supplier_name
+     , s.nrm_supplier_name                   supplier_name
      , s.nrm_country_name                    supplier_country_name
      , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code
@@ -37,7 +37,7 @@ SELECT s.supplier_id                         supplier_id
  WHERE NULLIF(UPPER(TRIM(s.phone_3)), '') IS NOT NULL
 UNION ALL
 SELECT s.supplier_id                         supplier_id
-     , s.nrm_vendor_name                     supplier_name
+     , s.nrm_supplier_name                   supplier_name
      , s.nrm_country_name                    supplier_country_name
      , s.nrm_country_code                    supplier_country_code
      , COALESCE(s.nrm_phone_code, '+44')     international_phone_code

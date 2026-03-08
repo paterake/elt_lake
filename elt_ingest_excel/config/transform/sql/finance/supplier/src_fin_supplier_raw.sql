@@ -113,29 +113,10 @@ SELECT t.*
        ], x -> x IS NOT NULL))                                           addr_unique_list
   FROM cte_supplier_nrm                      t
        )
+     , cte_supplier_clean
+    AS (
 SELECT 
-       ROW_NUMBER() OVER
-       (
-         PARTITION BY
-                   t.nrm_supplier_name
-                 , t.nrm_supplier_number
-           ORDER BY
-                   CASE
-                    WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
-                     AND NULLIF(UPPER(TRIM(t.bank_name)), '') <> 'BANK NAME'
-                   THEN 0
-                   ELSE 1
-                   END ASC NULLS LAST
-                 , CASE
-                    WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
-                    THEN 0
-                    ELSE 1
-                   END ASC NULLS LAST
-                 , t.nrm_created_date           ASC  NULLS LAST
-                 , t.nrm_last_payment_date      DESC NULLS LAST
-                 , t.nrm_last_purchase_date     DESC NULLS LAST
-       )                                                                   data_rnk
-     , r.country_code                                                               nrm_country_code
+       r.country_code                                                               nrm_country_code
      , r.language_code                                                              nrm_language_code
      , r.currency_code                                                              nrm_currency_code
      , r.phone_code                                                                 nrm_phone_code
@@ -253,4 +234,28 @@ SELECT
                                                    WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
                                                    ELSE NULLIF(UPPER(TRIM(t.county)), '')
                                                   END || '(obsolete)'))
+       )
+SELECT 
+       ROW_NUMBER() OVER
+       (
+         PARTITION BY
+                   t.nrm_supplier_name
+                 , t.nrm_supplier_number
+           ORDER BY
+                   CASE
+                     WHEN t.nrm_bank_name IS NOT NULL
+                     THEN 0
+                     ELSE 1
+                   END ASC NULLS LAST
+                 , CASE
+                     WHEN t.nrm_bank_account_number IS NOT NULL
+                     THEN 0
+                     ELSE 1
+                   END ASC NULLS LAST
+                 , t.nrm_created_date           ASC  NULLS LAST
+                 , t.nrm_last_payment_date      DESC NULLS LAST
+                 , t.nrm_last_purchase_date     DESC NULLS LAST
+       )                                                                   data_rnk
+     , t.*
+  FROM cte_supplier_clean              t
 ;

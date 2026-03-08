@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS workday_supplier_company_restrictions
 CREATE TABLE workday_supplier_company_restrictions
     AS
 SELECT
-       s.supplier_id                                    supplier_id
-     , s.nrm_vendor_name                                supplier_name
-     , s.pipe_target_business_unit                      restricted_to_companies
+       t.supplier_id                   supplier_id
+     , t.nrm_supplier_name             supplier_name
+     , t.nrm_agg_business_unit         restricted_to_companies
   FROM 
-       src_fin_supplier                                  s
+       src_fin_supplier                t
 ;

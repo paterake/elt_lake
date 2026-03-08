@@ -4,7 +4,7 @@ CREATE TABLE workday_supplier_intermediary_account
     AS
 SELECT
        s.supplier_id || '_BANK'                                   settlement_bank_account_id
-     , s.nrm_vendor_name                                          supplier_name
+     , s.nrm_supplier_name                                        supplier_name
      , s.supplier_id                                              supplier_id
      , s.supplier_id || '_INTBANK'                                intermediary_bank_account_id
      , NULL                                                       bank_country

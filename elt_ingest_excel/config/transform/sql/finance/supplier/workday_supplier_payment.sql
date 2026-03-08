@@ -3,26 +3,26 @@ DROP TABLE IF EXISTS workday_supplier_payment
 CREATE TABLE workday_supplier_payment 
     AS
 SELECT
-       s.supplier_id                                     supplier_id
-     , s.nrm_vendor_name                                 supplier_name
-     , s.nrm_payment_terms_id                            payment_terms
+       t.supplier_id                                     supplier_id
+     , t.nrm_supplier_name                               supplier_name
+     , t.nrm_payment_terms_id                            payment_terms
      , CASE
-         WHEN s.nrm_currency_code = 'GBP'
+         WHEN t.nrm_currency_code = 'GBP'
          THEN 'BACS|EFT|Manual'
-         WHEN s.nrm_currency_code = 'EUR'
+         WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA|Wire|Manual'
-         WHEN s.nrm_currency_code = 'USD'
+         WHEN t.nrm_currency_code = 'USD'
          THEN 'Wire|EFT|Manual'
-         WHEN s.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
+         WHEN t.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire|Manual'
          ELSE 'BACS|EFT|Manual'
        END                                              payment_types_accepted
      , CASE
-         WHEN s.nrm_currency_code = 'GBP'
+         WHEN t.nrm_currency_code = 'GBP'
          THEN 'EFT'
-         WHEN s.nrm_currency_code = 'EUR'
+         WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA'
-         WHEN s.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
+         WHEN t.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire'
          ELSE 'BACS'
        END                                               default_payment_type
@@ -32,7 +32,7 @@ SELECT
      , NULL                                              exclude_freight_amount_from_supplier_invoice_discount
      , NULL                                              exclude_other_charge_from_supplier_invoice_discount
      , NULL                                              exclude_tax_amount_from_supplier_invoice_discount
-  FROM src_fin_supplier                                  s
- WHERE s.nrm_payment_terms             IS NOT NULL
-   AND COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
+  FROM src_fin_supplier                t
+ WHERE t.nrm_payment_terms_id          IS NOT NULL
+   AND COALESCE(NULLIF(TRIM(t.eft_bank_account), ''), NULLIF(TRIM(t.iban), '')) IS NOT NULL
 ;

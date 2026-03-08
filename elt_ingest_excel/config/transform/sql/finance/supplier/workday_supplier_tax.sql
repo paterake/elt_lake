@@ -4,19 +4,19 @@ CREATE TABLE workday_supplier_tax
     AS
 SELECT
        t.supplier_id                                                    supplier_id
-     , t.nrm_vendor_name                                                supplier_name
+     , t.nrm_supplier_name                                              supplier_name
      , t.nrm_country_name                                               tax_id_country
-     , NULLIF(TRIM(t.tax_id_number), '')                                tax_id
+     , t.nrm_tax_id_number                                              tax_id
      , CASE
          WHEN t.nrm_country_code = 'GB'
          THEN CASE
-                WHEN NULLIF(TRIM(t.tax_id_number), '') IS NOT NULL
+                WHEN nrm_tax_id_number IS NOT NULL
                 THEN CASE
                         WHEN NULLIF(REPLACE(REPLACE(t.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
                         THEN 'VAT Reg No'
-                        WHEN NULLIF(REPLACE(REPLACE(t.tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
+                        WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
                         THEN 'Company Number'
-                        WHEN NULLIF(REPLACE(REPLACE(t.tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
+                        WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
                         THEN 'UTR - Unique Taxpayer Reference'
                         ELSE 'VAT Reg No'
                      END
@@ -28,7 +28,7 @@ SELECT
      , NULL                                                             transaction_tax_id
      , t.nrm_country_name                                               tax_status_country
      , NULL                                                             tax_status
-     , t.tax_schedule_id                                                transaction_tax_status
+     , t.nrm_tax_schedule_id                                            transaction_tax_status
      , NULL                                                             withholding_tax_status
      , NULL                                                             tax_authority_form_type
      , NULL                                                             irs_1099_supplier
@@ -43,6 +43,6 @@ SELECT
          ON  dm.country_code           = t.nrm_country_code
          AND dm.is_default             = TRUE
  WHERE 
-       t.tax_schedule_id                  = 'PS20'
-   AND NULLIF(TRIM(t.tax_id_number), '')  IS NOT NULL
+       t.nrm_tax_schedule_id           = 'PS20'
+   AND nrm_tax_id_number               IS NOT NULL
 ;
