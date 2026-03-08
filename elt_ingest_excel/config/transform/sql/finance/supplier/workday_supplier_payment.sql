@@ -5,7 +5,7 @@ CREATE TABLE workday_supplier_payment
 SELECT
        s.supplier_id                                     supplier_id
      , s.nrm_vendor_name                                 supplier_name
-     , m.workday_payment_terms                           payment_terms
+     , s.nrm_payment_terms_id                            payment_terms
      , CASE
          WHEN s.nrm_currency_code = 'GBP'
          THEN 'BACS|EFT|Manual'
@@ -33,8 +33,6 @@ SELECT
      , NULL                                              exclude_other_charge_from_supplier_invoice_discount
      , NULL                                              exclude_tax_amount_from_supplier_invoice_discount
   FROM src_fin_supplier                                  s
-       LEFT OUTER JOIN
-       ref_source_payment_terms                          m
-         ON  UPPER(m.source_payment_terms)               = UPPER(TRIM(s.payment_terms_id))
- WHERE COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
+ WHERE s.nrm_payment_terms             IS NOT NULL
+   AND COALESCE(NULLIF(TRIM(s.eft_bank_account), ''), NULLIF(TRIM(s.iban), '')) IS NOT NULL
 ;

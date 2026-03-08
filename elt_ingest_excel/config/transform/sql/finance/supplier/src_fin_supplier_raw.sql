@@ -138,7 +138,7 @@ SELECT t.*
            , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
            , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
          ], x -> x IS NOT NULL))                                           addr_unique_list
-    FROM cte_supplier_rank             t
+  FROM cte_supplier_rank             t
        )
 SELECT 
        r.country_code                                                               nrm_country_code
@@ -170,27 +170,32 @@ SELECT
      , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                   nrm_tax_schedule_id
      , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                   nrm_tax_id_number
      , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)         nrm_bank_account_name
+     , pt.workday_payment_terms                                                     nrm_payment_terms_id
      , t.*
- FROM cte_supplier_addr_clean                   t
+  FROM cte_supplier_addr_clean                  t
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_source_country_name_mapping          m_name
-          ON  m_name.source_country_name        = UPPER(TRIM(t.country))
+         ON  m_name.source_country_name         = UPPER(TRIM(t.country))
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
        ref_source_country_code_mapping          m_code
-          ON  m_code.source_country_code        = NULLIF(UPPER(TRIM(t.country_code)), '')
+         ON  m_code.source_country_code         = NULLIF(UPPER(TRIM(t.country_code)), '')
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
        ref_country                              r
-          ON r.country_code                     = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
-        -- Supplier category normalization
-        LEFT OUTER JOIN
-        ref_supplier_category_mapping            scm
-           ON scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
-        -- Sort Code normalisation
-        LEFT OUTER JOIN
-        ref_bank_sort_code_prefix_mapping        rbsc
+         ON r.country_code                      = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
+       -- Supplier category normalization
+       LEFT OUTER JOIN
+       ref_supplier_category_mapping            scm
+         ON scm.source_supplier_category        = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
+       -- Payment Terms normalization
+       LEFT OUTER JOIN
+       ref_source_payment_terms                 pt
+         ON  UPPER(pt.source_payment_terms)     = UPPER(TRIM(t.payment_terms_id))
+       -- Sort Code normalisation
+       LEFT OUTER JOIN
+        ref_bank_sort_code_prefix_mapping       rbsc
           ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
        -- Address handling
        LEFT OUTER JOIN
