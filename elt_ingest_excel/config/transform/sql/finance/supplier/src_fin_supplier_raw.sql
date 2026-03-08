@@ -25,89 +25,199 @@ SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_payment_date_wn
 UNION ALL
 SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_wnsl    t
        )
+     , cte_supplier_base
+    AS (
+SELECT DISTINCT
+       TRIM(t.vendor_id)                                                                              nrm_vendor_id
+     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_id)), ''), NULLIF(TRIM(t.vendor_name), '')))         nrm_vendor_name_base
+     , CASE 
+        WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%'
+        THEN NULL 
+        ELSE COALESCE(
+             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR' 'AL5, 2LG')
+             -- Handles comma separators by replacing them with space first
+             -- Normalizes multiple spaces to single space
+             NULLIF(
+                 REGEXP_REPLACE(
+                     REGEXP_EXTRACT(UPPER(REPLACE(t.post_code, ',', ' ')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
+                     '\s+', ' ', 'g'
+                 ),
+                 ''
+             ),
+             -- Fallback: Just take the first part (e.g. 'AL5' from 'AL5, Herts') if regex failed
+             NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '')
+        )
+       END                                                                                            nrm_postal_code_clean
+     , t.*
+  FROM cte_supplier_src                t
+       )
      , cte_supplier_nrm
     AS (
 SELECT 
-       TRIM(t.vendor_id)                                          vendor_id
-     , TRIM(t.vendor_name)                                        nrm_vendor_name
-     , UPPER(TRIM(t.vendor_name))                                 key_vendor_name
+       CASE
+         -- Full postcodes are always 5, 6, or 7 characters (cleaned)
+         WHEN LENGTH(REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g')) IN (5, 6, 7)
+         THEN REGEXP_REPLACE(REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g'), '(.+)(.{3})$', '\1 \2')
+         -- Partials (2-4 chars) or Garbage (8+ chars) remain unchanged (cleaned)
+         ELSE REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g')
+       END                                                                                            nrm_postal_code
+       -- Clean Name: Remove dots, Normalize 'FOOTBALL CLUB' -> 'FC', then strip trailing suffixes (Limited, etc)
+     , TRIM(REGEXP_REPLACE(
+           REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(UPPER(unaccent(t.nrm_vendor_name_base)), '.', ''),
+                        'WOMEN''S', 'WOMEN'
+                    ),
+                    'WOMENS', 'WOMEN'
+                ),
+                'FOOTBALL CLUB', 'FC'
+            ),
+           '(\s+|^)((LIMITED|LTD|COMPANY|PLC|LLP|INC)\s*)+$', ''
+       ))                                                                                             nrm_vendor_name
      , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.created_date        ), ''), '%d-%m-%Y')
-       )                                                          created_ts
+          TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d %H:%M:%S')
+        , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d')
+        , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%d-%m-%Y')
+       )                                                                                              nrm_created_date
      , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date   ), ''), '%d-%m-%Y')
-       )                                                          last_payment_ts
+          TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%Y-%m-%d %H:%M:%S')
+        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%Y-%m-%d')
+        , TRY_STRPTIME(NULLIF(TRIM(t.last_payment_date     ), ''), '%d-%m-%Y')
+       )                                                                                              nrm_last_payment_date
      , COALESCE(
-          TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d %H:%M:%S')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%Y-%m-%d')
-        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date  ), ''), '%d-%m-%Y')
-       )                                                          last_purchase_ts
+          TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date    ), ''), '%Y-%m-%d %H:%M:%S')
+        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date    ), ''), '%Y-%m-%d')
+        , TRY_STRPTIME(NULLIF(TRIM(t.last_purchase_date    ), ''), '%d-%m-%Y')
+       )                                                                                              nrm_last_purchase_date
+     , mbu.target_value                                                                               nrm_business_unit
      , t.*
-  FROM cte_supplier_src                      t
-       ) 
-     , cte_supplier_distinct
-    AS (
-SELECT DISTINCT 
-       t.*
-     , mbu.target_value                      target_business_unit
-  FROM cte_supplier_nrm                      t
+  FROM cte_supplier_base                     t
        INNER JOIN
        ref_source_business_unit_mapping      mbu
           ON UPPER(mbu.source_value)         = UPPER(TRIM(t.business_unit))
-       )
-     , cte_supplier_business_unit
-    AS (
-SELECT t.key_vendor_name
-     , ARRAY_AGG (DISTINCT t.business_unit              ORDER BY t.business_unit       ) array_business_unit
-     , ARRAY_AGG (DISTINCT t.target_business_unit       ORDER BY t.target_business_unit) array_target_business_unit
-     , STRING_AGG(DISTINCT t.business_unit        , '|' ORDER BY t.business_unit       ) pipe_business_unit
-     , STRING_AGG(DISTINCT t.target_business_unit , '|' ORDER BY t.target_business_unit) pipe_target_business_unit
-  FROM cte_supplier_distinct           t
- GROUP BY 
-       t.key_vendor_name
-       )
-     , cte_supplier
+       ) 
+     , cte_supplier_rank
     AS (
 SELECT 
-       COUNT() OVER (PARTITION BY t.vendor_id)                             vendor_id_count
-     , RANK() OVER (PARTITION BY t.vendor_id ORDER BY t.nrm_vendor_name)   vendor_id_rnk
      , ROW_NUMBER() OVER
        (
-         PARTITION BY t.key_vendor_name
+         PARTITION BY
+                   t.nrm_vendor_name
+                 , t.nrm_vendor_id
            ORDER BY
-              CASE
-                 WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
-                  AND NULLIF(UPPER(TRIM(t.bank_name)), '') <> 'BANK NAME'
-                 THEN 0
-                 ELSE 1
-              END ASC NULLS LAST
-            , CASE
-                 WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
-                 THEN 0
-                 ELSE 1
-              END ASC NULLS LAST
-            , t.created_ts DESC  NULLS LAST
+                   CASE
+                    WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
+                     AND NULLIF(UPPER(TRIM(t.bank_name)), '') <> 'BANK NAME'
+                   THEN 0
+                   ELSE 1
+                   END ASC NULLS LAST
+                 , CASE
+                    WHEN NULLIF(UPPER(TRIM(t.eft_bank_account)), '') IS NOT NULL
+                    THEN 0
+                    ELSE 1
+                   END ASC NULLS LAST
+                 , t.nrm_created_date           ASC  NULLS LAST
+                 , t.nrm_last_payment_date      DESC NULLS LAST
+                 , t.nrm_last_purchase_date     DESC NULLS LAST
        )                                                                   data_rnk
-     , COUNT() OVER(PARTITION BY t.key_vendor_name)                        key_count
      , t.* 
-     , bu.array_business_unit
-     , bu.pipe_business_unit
-     , bu.pipe_target_business_unit
-  FROM cte_supplier_distinct      t
-       INNER JOIN
-       cte_supplier_business_unit bu
-         ON bu.key_vendor_name    = t.key_vendor_name
+  FROM cte_supplier_nrm                t
+       )
+     , cte_supplier_addr_clean 
+    AS (
+SELECT t.*
+       , LIST_DISTINCT(LIST_FILTER([
+             NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_1, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+           , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
+         ], x -> x IS NOT NULL))                                           addr_unique_list
+    FROM cte_supplier_rank             t
        )
 SELECT 
-       CASE 
-         WHEN t.vendor_id_count > 1 
-         THEN t.vendor_id || '_' || t.vendor_id_rnk::VARCHAR
-         ELSE t.vendor_id
-       END                                                                 nrm_vendor_id
+       r.country_code                                             nrm_country_code
+     , r.language_code                                            nrm_language_code
+     , r.currency_code                                            nrm_currency_code
+     , r.phone_code                                               nrm_phone_code
+     , r.tax_id_type                                              nrm_tax_id_type
+     , r.country_name                                             nrm_country_name
+     , COALESCE(rx.instance, rxo.instance)                        nrm_region
+     , SPLIT_PART(
+       CASE
+        WHEN r0.post_town           IS NOT NULL
+        THEN r0.post_town
+        WHEN r3.town_city_name      IS NOT NULL
+        THEN r3.town_city_name
+        WHEN r4.town_city_name      IS NOT NULL
+        THEN r4.town_city_name
+        ELSE NULLIF(TRIM(t.city), '')
+       END
+       , ',', 1)                                                  nrm_city
+     , t.addr_unique_list[1]                                      nrm_address_line_1
+     , t.addr_unique_list[2]                                      nrm_address_line_2
+     , t.addr_unique_list[3]                                      nrm_address_line_3
+     , t.addr_unique_list[4]                                      nrm_address_line_4
+     , COALESCE(NULLIF(TRIM(UPPER(t.address_code)), ''), 'MAIN')  nrm_address_code
      , t.*
-  FROM cte_supplier              t
- WHERE t.data_rnk = 1
+ FROM cte_supplier_addr_clean                   t
+       -- First try: match on country name (higher population)
+       LEFT OUTER JOIN
+       ref_source_country_name_mapping          m_name
+          ON  m_name.source_country_name        = UPPER(TRIM(t.country))
+       -- Second try: match on country code (fallback)
+       LEFT OUTER JOIN
+       ref_source_country_code_mapping          m_code
+          ON  m_code.source_country_code        = NULLIF(UPPER(TRIM(t.country_code)), '')
+       -- Join to reference table using: name match > code match > default GB
+       LEFT OUTER JOIN
+       ref_country                              r
+          ON r.country_code                     = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
+       -- Address handling
+       LEFT OUTER JOIN
+       ref_post_code_district                   r0
+          ON UPPER(TRIM(t.nrm_postal_code))     LIKE r0.postcode || ' %' 
+       LEFT OUTER JOIN
+       ref_post_code_workday_region             r01
+          ON UPPER(TRIM(r01.post_code_region))  = UPPER(TRIM(r0.region))
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         r1
+         ON r1.country                          = r.country_name
+        AND UPPER(TRIM(r1.instance))            = UPPER(TRIM(t.county))
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         r2
+         ON r2.country                          = r.country_name
+        AND UPPER(TRIM(r2.instance))            = UPPER(TRIM(t.city))   
+       LEFT OUTER JOIN
+       ref_country_county_state_town_mapping    r3
+         ON r3.country_code                     = r.country_code
+        AND UPPER(TRIM(r3.town_city_name))      = UPPER(TRIM(t.county))
+       LEFT OUTER JOIN
+       ref_country_county_state_town_mapping    r4
+         ON r4.country_code                     = r.country_code
+        AND UPPER(TRIM(r4.town_city_name))      = UPPER(TRIM(t.city))       
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         rx
+         ON rx.country                          = r.country_name
+        AND UPPER(TRIM(rx.instance))            = UPPER(TRIM(
+                                                  CASE
+                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
+                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                   ELSE NULLIF(UPPER(TRIM(t.county)), '')
+                                                  END))
+       LEFT OUTER JOIN 
+       ref_workday_country_state_region         rxo
+         ON rxo.country                         = r.country_name
+        AND UPPER(TRIM(rxo.instance))           = UPPER(TRIM(
+                                                  CASE
+                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
+                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                   ELSE NULLIF(UPPER(TRIM(t.county)), '')
+                                                  END || '(obsolete)'))
+;

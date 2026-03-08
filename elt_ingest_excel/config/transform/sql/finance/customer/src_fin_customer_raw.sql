@@ -64,7 +64,7 @@ SELECT
          -- Partials (2-4 chars) or Garbage (8+ chars) remain unchanged (cleaned)
          ELSE REGEXP_REPLACE(UPPER(TRIM(t.nrm_postal_code_clean)), '\s', '', 'g')
        END                                                                                            nrm_postal_code
-       -- Clean Name: Remove dots, Normalize 'FOOTBALL CLUB' -> 'FC', then strip trailing suffixes (Limited, etc.)
+       -- Clean Name: Remove dots, Normalize 'FOOTBALL CLUB' -> 'FC', then strip trailing suffixes (Limited, etc)
      , TRIM(REGEXP_REPLACE(
            REPLACE(
                 REPLACE(
@@ -125,7 +125,7 @@ SELECT t.*
            , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
          ], x -> x IS NOT NULL))                                  addr_unique_list
     FROM cte_customer_rank             t
-       )       
+       )
 SELECT 
        r.country_code                                             nrm_country_code
      , r.language_code                                            nrm_language_code
@@ -148,7 +148,7 @@ SELECT
      , c.addr_unique_list[1]                                      nrm_address_line_1
      , c.addr_unique_list[2]                                      nrm_address_line_2
      , c.addr_unique_list[3]                                      nrm_address_line_3
-     , CAST(NULL AS STRING)                                       nrm_address_line_4       
+     , CAST(NULL AS STRING)                                       nrm_address_line_4
      , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                nrm_payment_terms_id
      , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                 nrm_tax_schedule_id
      , NULLIF(TRIM(UPPER(c.tax_registration_number)), '')         nrm_tax_registration_number
