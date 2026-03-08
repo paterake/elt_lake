@@ -30,4 +30,5 @@ SELECT
   FROM src_fin_supplier s
  WHERE s.central_bank_code IS NOT NULL
    AND TRIM(s.central_bank_code) != ''
+   AND 1 = 2
 ;

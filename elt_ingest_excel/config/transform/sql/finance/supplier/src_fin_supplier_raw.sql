@@ -141,13 +141,16 @@ SELECT t.*
     FROM cte_supplier_rank             t
        )
 SELECT 
-       r.country_code                                                            nrm_country_code
-     , r.language_code                                                           nrm_language_code
-     , r.currency_code                                                           nrm_currency_code
-     , r.phone_code                                                              nrm_phone_code
-     , r.tax_id_type                                                             nrm_tax_id_type
-     , r.country_name                                                            nrm_country_name
-     , COALESCE(rx.instance, rxo.instance)                                       nrm_region
+       r.country_code                                                               nrm_country_code
+     , r.language_code                                                              nrm_language_code
+     , r.currency_code                                                              nrm_currency_code
+     , r.phone_code                                                                 nrm_phone_code
+     , r.tax_id_type                                                                nrm_tax_id_type
+     , r.country_name                                                               nrm_country_name
+     , COALESCE(scm.supplier_category, 'Consulting Services and Professional Fees') nrm_supplier_category
+     , NULLIF(TRIM(t.eft_bank_code), '')                                            nrm_bank_sort_code
+     , rbsc.bank_name_primary                                                       nrm_bank_name
+     , COALESCE(rx.instance, rxo.instance)                                          nrm_region
      , SPLIT_PART(
        CASE
         WHEN r0.post_town           IS NOT NULL
@@ -158,12 +161,12 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(t.city), '')
        END
-       , ',', 1)                                                                 nrm_city
-     , t.addr_unique_list[1]                                                     nrm_address_line_1
-     , t.addr_unique_list[2]                                                     nrm_address_line_2
-     , t.addr_unique_list[3]                                                     nrm_address_line_3
-     , t.addr_unique_list[4]                                                     nrm_address_line_4
-     , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')  nrm_address_code
+       , ',', 1)                                                                    nrm_city
+     , t.addr_unique_list[1]                                                        nrm_address_line_1
+     , t.addr_unique_list[2]                                                        nrm_address_line_2
+     , t.addr_unique_list[3]                                                        nrm_address_line_3
+     , t.addr_unique_list[4]                                                        nrm_address_line_4
+     , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')     nrm_address_code
      , t.*
  FROM cte_supplier_addr_clean                   t
        -- First try: match on country name (higher population)
@@ -178,6 +181,14 @@ SELECT
        LEFT OUTER JOIN
        ref_country                              r
           ON r.country_code                     = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
+        -- Supplier category normalization
+        LEFT OUTER JOIN
+        ref_supplier_category_mapping            scm
+           ON scm.source_supplier_category      = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
+        -- Sort Code normalisation
+        LEFT OUTER JOIN
+        ref_bank_sort_code_prefix_mapping        rbsc
+          ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
        -- Address handling
        LEFT OUTER JOIN
        ref_post_code_district                   r0
