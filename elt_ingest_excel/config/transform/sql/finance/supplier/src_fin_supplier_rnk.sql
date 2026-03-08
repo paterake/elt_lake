@@ -34,15 +34,23 @@ SELECT t.nrm_supplier_name
          , nrm_country_code      := t.nrm_country_code
          , nrm_postal_code       := t.nrm_postal_code
          , nrm_address_code      := t.nrm_address_code
-       ))                                                                              nrm_array_supplier_address
+       ))                                                                              nrm_array_address
      , ARRAY_AGG(DISTINCT STRUCT_PACK(
-           nrm_bank_account_type := 'Checking'
-         , nrm_bank_name         := t.nrm_bank_name
-         , nrm_bank_account_name := t.nrm_bank_account_name
-         , nrm_bank_name         := t.nrm_bank_name
-         , nrm_bank_name         := t.nrm_bank_name
-         , nrm_bank_name         := t.nrm_bank_name
-       ))                                                                              nrm_array_supplier_bank
+           nrm_bank_account_type          := 'Checking'
+         , nrm_bank_name                  := t.nrm_bank_name
+         , nrm_bank_sort_code             := t.nrm_bank_sort_code
+         , nrm_bank_account_name          := t.nrm_bank_account_name
+         , nrm_bank_account_nickname      := t.nrm_bank_account_name
+         , nrm_bank_account_number        := t.nrm_bank_account_number
+         , nrm_bank_code_routing_number   := t.nrm_bank_code_routing_number
+         , nrm_bank_iban                  := t.nrm_bank_iban
+         , nrm_bank_swift_code            := t.nrm_bank_swift_code
+         , nrm_bank_roll_number           := t.nrm_bank_roll_number
+         , nrm_bank_check_digit           := t.nrm_bank_check_digit
+         , nrm_bank_branch_id             := t.nrm_bank_branch_id
+         , nrm_bank_branch_name           := t.nrm_bank_branch_name
+         , nrm_bank_transfer_method       := t.nrm_bank_transfer_method
+       ))                                                                              nrm_array_bank
      , STRING_AGG(DISTINCT t.nrm_supplier_number, '|' ORDER BY t.nrm_supplier_number)  nrm_agg_supplier_number
      , STRING_AGG(DISTINCT t.phone_1            , ';' ORDER BY t.phone_1)              nrm_agg_phone_1
      , STRING_AGG(DISTINCT t.phone_2            , ';' ORDER BY t.phone_2)              nrm_agg_phone_2

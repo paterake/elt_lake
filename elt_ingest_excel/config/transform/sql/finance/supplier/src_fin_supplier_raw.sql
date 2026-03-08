@@ -148,8 +148,6 @@ SELECT
      , r.tax_id_type                                                                nrm_tax_id_type
      , r.country_name                                                               nrm_country_name
      , COALESCE(scm.supplier_category, 'Consulting Services and Professional Fees') nrm_supplier_category
-     , NULLIF(TRIM(t.eft_bank_code), '')                                            nrm_bank_sort_code
-     , rbsc.bank_name_primary                                                       nrm_bank_name
      , COALESCE(rx.instance, rxo.instance)                                          nrm_region
      , SPLIT_PART(
        CASE
@@ -169,8 +167,25 @@ SELECT
      , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')     nrm_address_code
      , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                   nrm_tax_schedule_id
      , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                   nrm_tax_id_number
-     , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)         nrm_bank_account_name
      , pt.workday_payment_terms                                                     nrm_payment_terms_id
+     , rbsc.bank_name_primary                                                       nrm_bank_name
+     , NULLIF(TRIM(t.eft_bank_code), '')                                            nrm_bank_sort_code
+     , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)         nrm_bank_account_name
+     , NULLIF(TRIM(REPLACE(t.eft_bank_account, ' ', '')), '')                       nrm_bank_account_number
+     , CASE
+         WHEN t.nrm_country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
+         THEN TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
+         WHEN t.nrm_country_code = 'US'
+         THEN TRIM(REPLACE(REPLACE(t.eft_transit_routing_no, ' ', ''), '-', ''))
+         ELSE TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
+       END                                                                          nrm_bank_code_routing_number
+     , NULLIF(TRIM(REPLACE(REPLACE(UPPER(t.iban), ' ', ''), '-', '')), '')          nrm_bank_iban
+     , NULLIF(TRIM(UPPER(t.swift_address)), '')                                     nrm_bank_swift_code
+     , NULLIF(TRIM(t.building_society_roll_no), '')                                 nrm_bank_roll_number
+     , NULLIF(TRIM(t.eft_bank_check_digit), '')                                     nrm_bank_check_digit
+     , NULLIF(TRIM(t.eft_bank_branch_code), '')                                     nrm_bank_branch_id
+     , NULLIF(TRIM(t.eft_bank_branch), '')                                          nrm_bank_branch_name
+     , NULLIF(TRIM(t.eft_transfer_method), '')                                      nrm_bank_transfer_method
      , t.*
   FROM cte_supplier_addr_clean                  t
        -- First try: match on country name (higher population)

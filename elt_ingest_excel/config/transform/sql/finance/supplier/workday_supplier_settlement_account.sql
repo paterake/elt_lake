@@ -11,7 +11,7 @@ SELECT
      , 'Checking'                                                                bank_account_type
      , s.nrm_bank_name                                                           bank_name
      , COALESCE(NULLIF(TRIM(s.vendor_check_name), ''), s.nrm_vendor_name)        name_on_account
-     , NULLIF(TRIM(REPLACE(s.eft_bank_account, ' ', '')), '')                    bank_account_number -- format Bank Account number - use the tab called Bank Account Formatting for guidance. Make sure there are NO spaces after the number
+     , NULLIF(TRIM(REPLACE(s.eft_bank_account, ' ', '')), '')                    bank_account_number
      , COALESCE(NULLIF(TRIM(s.vendor_check_name), ''), s.nrm_vendor_name)        bank_account_nickname
      , CASE
          WHEN s.nrm_country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
