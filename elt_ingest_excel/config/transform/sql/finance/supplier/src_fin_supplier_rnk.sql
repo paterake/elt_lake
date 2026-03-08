@@ -1,21 +1,21 @@
-DROP TABLE IF EXISTS src_fin_supplier_dedup;
+DROP TABLE IF EXISTS src_fin_supplier_rnk;
 
-CREATE TABLE src_fin_supplier_dedup AS
+CREATE TABLE src_fin_supplier_rnk AS
   WITH cte_supplier_score
     AS (
-SELECT 
+SELECT
        (
-         (CASE WHEN t.nrm_payment_terms_id         IS NOT NULL THEN 100 ELSE 0 END) 
-       + (CASE WHEN t.nrm_tax_schedule_id          IS NOT NULL AND t.nrm_tax_schedule_id = 'SS20'  THEN 90 ELSE 0 END) 
-       + (CASE WHEN t.nrm_tax_schedule_id          IS NOT NULL AND t.nrm_tax_schedule_id <> 'SS20' THEN 80 ELSE 0 END) 
-       + (CASE WHEN t.nrm_tax_registration_number  IS NOT NULL THEN 70 ELSE 0 END) 
-       + (CASE WHEN t.nrm_region                   IS NOT NULL THEN 60 ELSE 0 END)
-       + (CASE WHEN t.nrm_postal_code              IS NOT NULL THEN 50 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_1           IS NOT NULL THEN 40 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_2           IS NOT NULL THEN 30 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_3           IS NOT NULL THEN 20 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_4           IS NOT NULL THEN 15 ELSE 0 END) 
-       + (CASE WHEN t.nrm_city                     IS NOT NULL THEN 10 ELSE 0 END) 
+         (CASE WHEN t.nrm_payment_terms_id         IS NOT NULL THEN 100 ELSE 0 END)
+       + (CASE WHEN t.nrm_bank_name                IS NOT NULL THEN  90 ELSE 0 END)
+       + (CASE WHEN t.nrm_tax_schedule_id          IS NOT NULL AND t.nrm_tax_schedule_id = 'PS20'  THEN 80 ELSE 0 END)
+       + (CASE WHEN t.nrm_tax_id_number            IS NOT NULL THEN  70 ELSE 0 END)
+       + (CASE WHEN t.nrm_region                   IS NOT NULL THEN  60 ELSE 0 END)
+       + (CASE WHEN t.nrm_postal_code              IS NOT NULL THEN  50 ELSE 0 END)
+       + (CASE WHEN t.nrm_address_line_1           IS NOT NULL THEN  40 ELSE 0 END)
+       + (CASE WHEN t.nrm_address_line_2           IS NOT NULL THEN  30 ELSE 0 END)
+       + (CASE WHEN t.nrm_address_line_3           IS NOT NULL THEN  20 ELSE 0 END)
+       + (CASE WHEN t.nrm_address_line_4           IS NOT NULL THEN  15 ELSE 0 END)
+       + (CASE WHEN t.nrm_city                     IS NOT NULL THEN  10 ELSE 0 END)
        )                               score
      , t.*
   FROM src_fin_supplier_raw            t
@@ -24,17 +24,25 @@ SELECT
     AS (
 SELECT t.nrm_supplier_name
      , ARRAY_AGG(DISTINCT STRUCT_PACK(
-           nrm_address_line_1   := t.nrm_address_line_1
-         , nrm_address_line_2   := t.nrm_address_line_2
-         , nrm_address_line_3   := t.nrm_address_line_3
-         , nrm_address_line_4   := t.nrm_address_line_4
-         , nrm_region           := t.nrm_region
-         , nrm_city             := t.nrm_city
-         , nrm_country_name     := t.nrm_country_name
-         , nrm_country_code     := t.nrm_country_code
-         , nrm_postal_code      := t.nrm_postal_code
-         , nrm_address_code     := t.nrm_address_code
+           nrm_address_line_1    := t.nrm_address_line_1
+         , nrm_address_line_2    := t.nrm_address_line_2
+         , nrm_address_line_3    := t.nrm_address_line_3
+         , nrm_address_line_4    := t.nrm_address_line_4
+         , nrm_region            := t.nrm_region
+         , nrm_city              := t.nrm_city
+         , nrm_country_name      := t.nrm_country_name
+         , nrm_country_code      := t.nrm_country_code
+         , nrm_postal_code       := t.nrm_postal_code
+         , nrm_address_code      := t.nrm_address_code
        ))                                                                              nrm_array_supplier_address
+     , ARRAY_AGG(DISTINCT STRUCT_PACK(
+           nrm_bank_account_type := 'Checking'
+         , nrm_bank_name         := t.nrm_bank_name
+         , nrm_bank_account_name := t.nrm_bank_account_name
+         , nrm_bank_name         := t.nrm_bank_name
+         , nrm_bank_name         := t.nrm_bank_name
+         , nrm_bank_name         := t.nrm_bank_name
+       ))                                                                              nrm_array_supplier_bank
      , STRING_AGG(DISTINCT t.nrm_supplier_number, '|' ORDER BY t.nrm_supplier_number)  nrm_agg_supplier_number
      , STRING_AGG(DISTINCT t.phone_1            , ';' ORDER BY t.phone_1)              nrm_agg_phone_1
      , STRING_AGG(DISTINCT t.phone_2            , ';' ORDER BY t.phone_2)              nrm_agg_phone_2
@@ -48,7 +56,7 @@ SELECT t.nrm_supplier_name
   FROM cte_supplier_score              t
  GROUP BY t.nrm_supplier_name
        )
-SELECT 
+SELECT
        ROW_NUMBER() OVER(PARTITION BY t.nrm_supplier_name ORDER BY t.score DESC) rnk_score
      , COUNT()      OVER(PARTITION BY t.nrm_supplier_name)                       cnt_supplier_name
      , a.nrm_array_supplier_address
@@ -64,7 +72,7 @@ SELECT
      , a.nrm_agg_business_unit
      , t.*
   FROM cte_supplier_score              t
-       INNER JOIN 
+       INNER JOIN
        cte_agg                         a
           ON a.nrm_supplier_name       = t.nrm_supplier_name
 ;

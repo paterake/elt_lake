@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS src_fin_customer_dedup;
+DROP TABLE IF EXISTS src_fin_customer_rnk;
 
-CREATE TABLE src_fin_customer_dedup AS
+CREATE TABLE src_fin_customer_rnk AS
   WITH cte_customer_score
     AS (
 SELECT 
@@ -8,13 +8,13 @@ SELECT
          (CASE WHEN t.nrm_payment_terms_id         IS NOT NULL THEN 100 ELSE 0 END) 
        + (CASE WHEN t.nrm_tax_schedule_id          IS NOT NULL AND t.nrm_tax_schedule_id = 'SS20'  THEN 90 ELSE 0 END) 
        + (CASE WHEN t.nrm_tax_schedule_id          IS NOT NULL AND t.nrm_tax_schedule_id <> 'SS20' THEN 80 ELSE 0 END) 
-       + (CASE WHEN t.nrm_tax_registration_number  IS NOT NULL THEN 70 ELSE 0 END) 
-       + (CASE WHEN t.nrm_region                   IS NOT NULL THEN 60 ELSE 0 END)
-       + (CASE WHEN t.nrm_postal_code              IS NOT NULL THEN 50 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_1           IS NOT NULL THEN 40 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_2           IS NOT NULL THEN 30 ELSE 0 END) 
-       + (CASE WHEN t.nrm_address_line_3           IS NOT NULL THEN 20 ELSE 0 END) 
-       + (CASE WHEN t.nrm_city                     IS NOT NULL THEN 10 ELSE 0 END) 
+       + (CASE WHEN t.nrm_tax_registration_number  IS NOT NULL THEN  70 ELSE 0 END) 
+       + (CASE WHEN t.nrm_region                   IS NOT NULL THEN  60 ELSE 0 END)
+       + (CASE WHEN t.nrm_postal_code              IS NOT NULL THEN  50 ELSE 0 END) 
+       + (CASE WHEN t.nrm_address_line_1           IS NOT NULL THEN  40 ELSE 0 END) 
+       + (CASE WHEN t.nrm_address_line_2           IS NOT NULL THEN  30 ELSE 0 END) 
+       + (CASE WHEN t.nrm_address_line_3           IS NOT NULL THEN  20 ELSE 0 END) 
+       + (CASE WHEN t.nrm_city                     IS NOT NULL THEN  10 ELSE 0 END) 
        )                               score
      , t.*
   FROM src_fin_customer_raw            t

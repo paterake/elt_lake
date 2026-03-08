@@ -33,8 +33,8 @@ SELECT 'WNSL' business_unit, t.* FROM fin_supplier_creditor_last_purchase_date_w
      , cte_supplier_base
     AS (
 SELECT DISTINCT
-       TRIM(t.vendor_id)                                                                              nrm_vendor_id
-     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_id)), ''), NULLIF(TRIM(t.vendor_name), '')))         nrm_vendor_name_base
+       TRIM(t.vendor_id)                                                                              nrm_supplier_number
+     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_id)), ''), NULLIF(TRIM(t.vendor_name), '')))         nrm_supplier_name_base
      , CASE 
         WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%'
         THEN NULL 
@@ -71,7 +71,7 @@ SELECT
            REPLACE(
                 REPLACE(
                     REPLACE(
-                        REPLACE(UPPER(unaccent(t.nrm_vendor_name_base)), '.', ''),
+                        REPLACE(UPPER(unaccent(t.nrm_supplier_name_base)), '.', ''),
                         'WOMEN''S', 'WOMEN'
                     ),
                     'WOMENS', 'WOMEN'
@@ -79,7 +79,7 @@ SELECT
                 'FOOTBALL CLUB', 'FC'
             ),
            '(\s+|^)((LIMITED|LTD|COMPANY|PLC|LLP|INC)\s*)+$', ''
-       ))                                                                                             nrm_vendor_name
+       ))                                                                                             nrm_supplier_name
      , COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d %H:%M:%S')
         , TRY_STRPTIME(NULLIF(TRIM(t.created_date          ), ''), '%Y-%m-%d')
@@ -108,8 +108,8 @@ SELECT
        ROW_NUMBER() OVER
        (
          PARTITION BY
-                   t.nrm_vendor_name
-                 , t.nrm_vendor_id
+                   t.nrm_supplier_name
+                 , t.nrm_supplier_number
            ORDER BY
                    CASE
                     WHEN NULLIF(UPPER(TRIM(t.bank_name)), '') IS NOT NULL
@@ -167,6 +167,9 @@ SELECT
      , t.addr_unique_list[3]                                                        nrm_address_line_3
      , t.addr_unique_list[4]                                                        nrm_address_line_4
      , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')     nrm_address_code
+     , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                   nrm_tax_schedule_id
+     , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                   nrm_tax_id_number
+     , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)         nrm_bank_account_name
      , t.*
  FROM cte_supplier_addr_clean                   t
        -- First try: match on country name (higher population)

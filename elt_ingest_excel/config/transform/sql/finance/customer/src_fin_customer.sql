@@ -5,7 +5,7 @@ CREATE TABLE src_fin_customer
   WITH cte_customer
     AS (
 SELECT t.*
-  FROM src_fin_customer_dedup                            t
+  FROM src_fin_customer_rnk                              t
  WHERE rnk_score = 1
        )
      , cte_customer_rnk
