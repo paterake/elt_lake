@@ -191,7 +191,10 @@ SELECT
        -- Address handling
        LEFT OUTER JOIN
        ref_post_code_district                   r0
-          ON UPPER(TRIM(t.nrm_postal_code))     LIKE r0.postcode || ' %' 
+          ON (
+               UPPER(TRIM(t.nrm_postal_code))   LIKE r0.postcode || ' %'  -- Matches 'MK19 5AH' to 'MK19'
+            OR UPPER(TRIM(t.nrm_postal_code))   =    r0.postcode          -- Matches 'MK19'     to 'MK19'
+             ) 
        LEFT OUTER JOIN
        ref_post_code_workday_region             r01
           ON UPPER(TRIM(r01.post_code_region))  = UPPER(TRIM(r0.region))
