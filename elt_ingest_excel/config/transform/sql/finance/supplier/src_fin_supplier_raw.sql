@@ -36,21 +36,22 @@ SELECT DISTINCT
        TRIM(t.vendor_id)                                                                              nrm_supplier_number
      , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_id)), ''), NULLIF(TRIM(t.vendor_name), '')))         nrm_supplier_name_base
      , CASE 
-        WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%'
+        WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%' OR TRIM(t.post_code) = '-'
         THEN NULL 
         ELSE COALESCE(
-             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR' 'AL5, 2LG')
-             -- Handles comma separators by replacing them with space first
+             -- Try to extract a full valid UK postcode (e.g. 'AL5 2LG', 'W1B 5TR', 'IM3-1AD')
+             -- Handles comma and hyphen separators by replacing them with space first
              -- Normalizes multiple spaces to single space
              NULLIF(
                  REGEXP_REPLACE(
-                     REGEXP_EXTRACT(UPPER(REPLACE(t.post_code, ',', ' ')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
+                     REGEXP_EXTRACT(UPPER(REGEXP_REPLACE(t.post_code, '[, -]', ' ', 'g')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
                      '\s+', ' ', 'g'
                  ),
                  ''
              ),
              -- Fallback: Just take the first part (e.g. 'AL5' from 'AL5, Herts') if regex failed
-             NULLIF(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '')
+             -- Also replace hyphen with space in the fallback to handle 'IM2- 1AD' if regex fails (though regex should catch it)
+             NULLIF(TRIM(REPLACE(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '-', ' ')), '')
         )
        END                                                                                            nrm_postal_code_clean
      , t.*
