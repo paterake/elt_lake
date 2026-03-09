@@ -4,7 +4,7 @@
     "srcWorkbookPathName": ".",
     "srcWorkbookFileName": "dummy_template.xlsx",
     "tgtWorkbookPathName": "~/Documents",
-    "tgtWorkbookFileName": "Workday_Reference_Data",
+    "tgtWorkbookFileName": "workday_reference_data_mapping",
     "sheets": [
       {
         "sheetName": "ref_bank_sort_code_prefix",
