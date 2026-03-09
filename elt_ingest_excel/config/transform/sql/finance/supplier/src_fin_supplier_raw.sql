@@ -17,7 +17,7 @@ SELECT t.company business_unit, t.* FROM fin_supplier_creditor_activity_2_years 
     AS (
 SELECT DISTINCT
        TRIM(t.vendor_id)                                                                              nrm_supplier_number
-     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_id)), ''), NULLIF(TRIM(t.vendor_name), '')))         nrm_supplier_name_base
+     , UPPER(COALESCE(NULLIF(UPPER(TRIM(t.vendor_name)), ''), NULLIF(TRIM(t.vendor_id), '')))         nrm_supplier_name_base
      , CASE 
         WHEN UPPER(TRIM(t.post_code)) LIKE '%KNOWN%' OR TRIM(t.post_code) = '-'
         THEN NULL 

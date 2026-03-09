@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS ref_country
+DROP TABLE IF EXISTS ref_customer_class
 ;
-CREATE TABLE ref_country
+CREATE TABLE ref_customer_class
     AS
 SELECT
        TRIM(source_value)              source_value
