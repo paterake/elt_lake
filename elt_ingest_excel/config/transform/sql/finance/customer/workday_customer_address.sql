@@ -5,8 +5,8 @@ CREATE TABLE workday_customer_address
   WITH cte_address
     AS (
 SELECT
-       c.customer_id                                                          customer_id
-     , c.nrm_customer_name                                                    customer_name
+       t.customer_id                                                          customer_id
+     , t.nrm_customer_name                                                    customer_name
      , NULL                                                                   formatted_address
      , NULL                                                                   address_format_type
      , NULL                                                                   defaulted_business_site_address
@@ -15,7 +15,7 @@ SELECT
      , NULL                                                                   last_modified
      , NULL                                                                   descriptor
      , ROW_NUMBER() OVER (
-           PARTITION BY c.customer_id
+           PARTITION BY t.customer_id
                ORDER BY u.address.nrm_address_code
                       , u.address.nrm_address_line_1
                       , u.address.nrm_address_line_2
@@ -48,7 +48,7 @@ SELECT
      , NULL                                                                   number_of_days
      , NULL                                                                   municipality_local
      , NULL                                                                   optional_address
-  FROM src_fin_customer                         c
+  FROM src_fin_customer                         t
      , UNNEST(nrm_array_customer_address) u(address)
  WHERE COALESCE( NULLIF(TRIM(u.address.nrm_address_line_1), '')
                , NULLIF(TRIM(u.address.nrm_address_line_2), '')
@@ -66,7 +66,7 @@ SELECT t.customer_id
      , t.do_not_replace_all
      , t.last_modified
      , t.descriptor
-     , TRIM(t.customer_id) || '_' || u.address.nrm_address_code || '_' || t.address_id_rnk   address_id
+     , TRIM(t.customer_id) || '_' || t.address_id_code || '_' || t.address_id_rnk   address_id
      , t.country
      , t.country_code
      , t.region
