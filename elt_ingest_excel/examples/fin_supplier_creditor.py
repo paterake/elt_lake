@@ -9,9 +9,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run_pipeline(
-        data_path="~/Documents/__data/excel/finance_ref",
+        data_path="~/Documents/__data/excel/finance_ref/20260319",
         cfg_ingest_path="ingest/finance",
-        cfg_ingest_name="supplier.json",
+        cfg_ingest_name="active_supplier_creditor.json",
         cfg_transform_path="transform/sql/finance/supplier",
         cfg_publish_path="publish/finance",
         cfg_publish_name="publish_supplier.json",
