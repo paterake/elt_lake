@@ -1,0 +1,11 @@
+
+rag:
+  model: "qwen3.5:9b"
+  system_prompt: |
+    You are an expert at extracting structured data from documents.
+    You must output valid JSON only. Do not output any thinking or reasoning process.
+    /no_think
+  chunk_size: 1024
+  chunk_overlap: 128
+  embeddings_model: "nomic-embed-text:latest"
+  rerank: true

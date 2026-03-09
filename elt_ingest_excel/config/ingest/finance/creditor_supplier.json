@@ -1,0 +1,19 @@
+[
+  {
+    "workbookFileName": "Multicompany Creditors No Activity 1 Year & Activity 2 Years Ex CW & Blank Addresses.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Creditors No Activity 1 Year ",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_no_activity_1_year"
+      },
+      {
+        "sheetName": "Creditors Activity 2 Years",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_supplier_creditor_activity_2_years"
+      }
+    ]
+  }
+]

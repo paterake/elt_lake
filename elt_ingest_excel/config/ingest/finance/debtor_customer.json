@@ -1,0 +1,19 @@
+[
+  {
+    "workbookFileName": "Multicompany Debtors No Activity 1 Year & Activity 2 Years and Referenced Parent Debtors Excluding 55 Debtors.xlsx",
+    "sheets": [
+      {
+        "sheetName": "Debtors No Activity 1 Year",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_no_activity_1_year"
+      },
+      {
+        "sheetName": "Debtors With Activity 2 Years",
+        "headerRow": "1",
+        "dataRow": "2",
+        "targetTableName": "fin_customer_debtor_activity_2_years"
+      }
+    ]
+  }
+]
