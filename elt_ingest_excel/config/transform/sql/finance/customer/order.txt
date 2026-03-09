@@ -2,6 +2,7 @@
 ../../ref/ref_country_county_state_town_mapping.sql
 ../../ref/ref_country_tax_id_type_mapping.sql
 ../../ref/ref_country.sql
+../../ref/ref_customer_class.sql
 ../../ref/ref_post_code_county.sql
 ../../ref/ref_post_code_district.sql
 ../../ref/ref_post_code_workday_region.sql
