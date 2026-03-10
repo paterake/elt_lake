@@ -3,6 +3,10 @@
 Modular Architecture:
 - models/: Data classes (IngestConfig, PaginationConfig, PaginationType)
 - parsers/: JSON configuration parser
+- templating/: Runtime template resolution (e.g., date templates)
+- http/: HTTP session construction (retries, auth, headers)
+- response_parsers/: Response format parsing (json/csv/xml)
+- writers/: Output writers (currently JSON)
 - strategies/: Pagination strategy implementations
 - ingester.py: Main orchestration class
 

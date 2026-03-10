@@ -7,15 +7,13 @@ This module contains the RestApiIngester class which:
 4. Saves results to disk
 """
 
-import json
 import logging
 from datetime import datetime
 from pathlib import Path
 
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
+from .http import create_session
 from .models import IngestConfig, PaginationType
 from .strategies import (
     NoPaginationStrategy,
@@ -25,6 +23,7 @@ from .strategies import (
     NextUrlStrategy,
     LinkHeaderStrategy,
 )
+from .writers import save_json_batches, save_json_single
 
 logger = logging.getLogger(__name__)
 
@@ -90,31 +89,7 @@ class RestApiIngester:
         Returns:
             Configured requests.Session
         """
-        session = requests.Session()
-
-        # Configure retry strategy
-        retry_strategy = Retry(
-            total=self.config.max_retries,
-            backoff_factor=self.config.backoff_factor,
-            status_forcelist=self.config.retry_status_codes,
-            allowed_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-        )
-
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        session.mount("http://", adapter)
-        session.mount("https://", adapter)
-
-        # Set authentication
-        if self.config.auth:
-            session.auth = self.config.auth
-
-        # Set headers
-        session.headers.update(self.config.headers)
-
-        # SSL verification
-        session.verify = self.config.verify_ssl
-
-        return session
+        return create_session(self.config)
 
     def _select_strategy(self):
         """Select pagination strategy based on configuration.
@@ -198,9 +173,7 @@ class RestApiIngester:
         filepath = self.config.output_dir / filename
 
         logger.info(f"Saving {len(data)} records to {filepath}")
-
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        save_json_single(filepath=filepath, data=data)
 
         logger.info(f"Successfully saved data to {filepath}")
         return filepath
@@ -216,28 +189,29 @@ class RestApiIngester:
         Returns:
             Path to output directory
         """
-        base_filename = self._get_output_filename().replace(".json", "")
+        base_filename = self._get_output_filename()
         batch_size = self.config.batch_size
 
         num_batches = (len(data) + batch_size - 1) // batch_size
 
         for i in range(0, len(data), batch_size):
-            batch = data[i : i + batch_size]
             batch_num = i // batch_size + 1
-            filename = f"{base_filename}_batch_{batch_num:04d}.json"
-            filepath = self.config.output_dir / filename
-
             logger.info(
-                f"Saving batch {batch_num}/{num_batches} ({len(batch)} records) to {filepath}"
+                f"Saving batch {batch_num}/{num_batches} "
+                f"({min(batch_size, len(data) - i)} records) to {self.config.output_dir}"
             )
 
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(batch, f, indent=2, ensure_ascii=False)
+        output_dir = save_json_batches(
+            output_dir=self.config.output_dir,
+            base_filename=base_filename,
+            data=data,
+            batch_size=batch_size,
+        )
 
         logger.info(
-            f"Successfully saved {len(data)} records in {num_batches} batches to {self.config.output_dir}"
+            f"Successfully saved {len(data)} records in {num_batches} batches to {output_dir}"
         )
-        return self.config.output_dir
+        return output_dir
 
     def _get_output_filename(self) -> str:
         """Generate output filename.

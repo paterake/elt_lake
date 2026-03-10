@@ -86,7 +86,7 @@ class TestJsonConfigLoading:
     def test_from_json_file(self):
         """Test creating config from JSON file."""
         # Use existing example file
-        config_file = Path("examples/github_repos.json")
+        config_file = Path("config/ingest/github_repos.json")
 
         if not config_file.exists():
             pytest.skip("Example config file not found")
@@ -287,7 +287,7 @@ class TestJsonConfigIntegration:
         """Test loading from example JSON file and running ingestion."""
         import shutil
 
-        config_file = Path("examples/jsonplaceholder_posts.json")
+        config_file = Path("config/ingest/jsonplaceholder_posts.json")
 
         if not config_file.exists():
             pytest.skip("Example config file not found")

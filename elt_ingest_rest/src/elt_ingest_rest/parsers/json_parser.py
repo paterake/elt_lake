@@ -9,12 +9,17 @@ This module handles:
 
 import json
 import logging
-import re
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 from typing import Optional
 
 from ..models import IngestConfig, PaginationConfig, PaginationType
+from ..templating.date_templates import (
+    format_date,
+    resolve_date_template,
+    resolve_templates,
+    resolve_templates_in_string,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -216,125 +221,23 @@ class JsonConfigParser:
     def _resolve_templates_inplace(
         data: dict, base_date: Optional[date] = None
     ) -> None:
-        resolved = JsonConfigParser._resolve_templates(
-            obj=data, base_date=base_date or date.today()
-        )
+        resolved = resolve_templates(data, base_date=base_date or date.today())
         if isinstance(resolved, dict):
             data.clear()
             data.update(resolved)
 
     @staticmethod
     def _resolve_templates(obj: object, base_date: date) -> object:
-        if isinstance(obj, dict):
-            return {
-                key: JsonConfigParser._resolve_templates(value, base_date)
-                for key, value in obj.items()
-            }
-
-        if isinstance(obj, list):
-            return [
-                JsonConfigParser._resolve_templates(item, base_date) for item in obj
-            ]
-
-        if isinstance(obj, str):
-            return JsonConfigParser._resolve_templates_in_string(obj, base_date)
-
-        return obj
+        return resolve_templates(obj, base_date=base_date)
 
     @staticmethod
     def _resolve_templates_in_string(value: str, base_date: date) -> str:
-        pattern = re.compile(r"\{date(?P<spec>[^{}]*)\}")
-
-        def replacer(match: re.Match) -> str:
-            spec = (match.group("spec") or "").strip()
-            if spec.startswith(";"):
-                spec = spec[1:]
-            return JsonConfigParser._resolve_date_template(spec, base_date)
-
-        return pattern.sub(replacer, value)
+        return resolve_templates_in_string(value, base_date=base_date)
 
     @staticmethod
     def _resolve_date_template(spec: str, base_date: date) -> str:
-        fmt = "yyyy-mm-dd"
-        add_days = 0
-
-        if spec:
-            parts = [part.strip() for part in spec.split(";") if part.strip()]
-            for part in parts:
-                if "=" not in part:
-                    continue
-                key, raw_value = part.split("=", 1)
-                key = key.strip().lower()
-                raw_value = raw_value.strip()
-
-                if key == "format":
-                    fmt = raw_value
-                elif key == "add":
-                    add_days = int(raw_value)
-
-        resolved_date = base_date + timedelta(days=add_days)
-        return JsonConfigParser._format_date(resolved_date, fmt)
+        return resolve_date_template(spec, base_date=base_date)
 
     @staticmethod
     def _format_date(value: date, fmt: str) -> str:
-        month_abbr = [
-            "",
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ]
-
-        out: list[str] = []
-        i = 0
-        while i < len(fmt):
-            remaining = fmt[i:]
-            remaining_lower = remaining.lower()
-
-            if remaining_lower.startswith("yyyy"):
-                out.append(f"{value.year:04d}")
-                i += 4
-                continue
-
-            if remaining_lower.startswith("yy"):
-                out.append(f"{value.year % 100:02d}")
-                i += 2
-                continue
-
-            if remaining_lower.startswith("mmm"):
-                out.append(month_abbr[value.month])
-                i += 3
-                continue
-
-            if remaining_lower.startswith("mm"):
-                out.append(f"{value.month:02d}")
-                i += 2
-                continue
-
-            if remaining_lower.startswith("m"):
-                out.append(str(value.month))
-                i += 1
-                continue
-
-            if remaining_lower.startswith("dd"):
-                out.append(f"{value.day:02d}")
-                i += 2
-                continue
-
-            if remaining_lower.startswith("d"):
-                out.append(str(value.day))
-                i += 1
-                continue
-
-            out.append(fmt[i])
-            i += 1
-
-        return "".join(out)
+        return format_date(value, fmt)

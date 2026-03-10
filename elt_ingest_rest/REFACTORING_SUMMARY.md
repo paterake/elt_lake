@@ -299,7 +299,7 @@ from elt_ingest_rest.ingester import RestApiIngester
 
 **Example CLI test:**
 ```bash
-$ python examples/run_from_json.py examples/pokeapi_offset.json
+$ python examples/run_from_json.py config/ingest/pokeapi_offset.json
 
 ✓ Success!
   - Fetched 100 records

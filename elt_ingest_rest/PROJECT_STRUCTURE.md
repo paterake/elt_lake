@@ -87,13 +87,14 @@ elt_ingest_rest/
 
 ---
 
-### Example Files (4 files)
+### Config Templates + Runner
 
 | File | Type | Purpose |
 |------|------|---------|
-| `examples/github_repos.json` | Config | GitHub API pagination |
-| `examples/pokeapi_offset.json` | Config | PokeAPI offset/limit |
-| `examples/jsonplaceholder_posts.json` | Config | Batch save mode |
+| `config/ingest/github_repos.json` | Config | GitHub API pagination |
+| `config/ingest/pokeapi_offset.json` | Config | PokeAPI offset/limit |
+| `config/ingest/jsonplaceholder_posts.json` | Config | Batch save mode |
+| `config/ingest/bank_of_england_fx_rates.json` | Config | BoE FX rates (XML) |
 | `examples/run_from_json.py` | Script | CLI tool |
 
 ---
@@ -331,7 +332,7 @@ from elt_ingest_rest import IngestConfig, RestApiIngester
 
 ### 4. Use CLI
 ```bash
-python examples/run_from_json.py examples/github_repos.json
+python examples/run_from_json.py config/ingest/github_repos.json
 ```
 
 ---

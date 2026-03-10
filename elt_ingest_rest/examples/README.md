@@ -1,6 +1,6 @@
-# JSON Configuration Examples
+# JSON Configuration
 
-This directory contains example JSON configuration files for the REST API Ingester.
+The JSON configs live in `config/ingest/`. This `examples/` folder only contains runnable scripts.
 
 ## Benefits of JSON Configuration
 
@@ -21,7 +21,7 @@ from pathlib import Path
 from elt_ingest_rest import IngestConfigJson, RestApiIngester
 
 # Load configuration from JSON file
-config = IngestConfigJson.from_json(Path("examples/github_repos.json"))
+config = IngestConfigJson.from_json(Path("config/ingest/github_repos.json"))
 
 # Run ingestion
 ingester = RestApiIngester(config)
@@ -34,17 +34,17 @@ print(f"Fetched {len(data)} records, saved to {output_path}")
 
 ```bash
 # Run ingestion from JSON config
-python examples/run_from_json.py examples/github_repos.json
+python examples/run_from_json.py config/ingest/github_repos.json
 
 # With verbose logging
-python examples/run_from_json.py examples/pokeapi_offset.json --verbose
+python examples/run_from_json.py config/ingest/pokeapi_offset.json --verbose
 ```
 
 ---
 
 ## Example Configuration Files
 
-### 1. [github_repos.json](github_repos.json) - Page Number Pagination
+### 1. [github_repos.json](../config/ingest/github_repos.json) - Page Number Pagination
 
 Fetches GitHub user repositories using page-based pagination.
 
@@ -63,12 +63,12 @@ Fetches GitHub user repositories using page-based pagination.
 
 **Run it:**
 ```bash
-python examples/run_from_json.py examples/github_repos.json
+python examples/run_from_json.py config/ingest/github_repos.json
 ```
 
 ---
 
-### 2. [pokeapi_offset.json](pokeapi_offset.json) - Offset/Limit Pagination
+### 2. [pokeapi_offset.json](../config/ingest/pokeapi_offset.json) - Offset/Limit Pagination
 
 Fetches Pokemon data using offset/limit pagination, limited to 5 pages.
 
@@ -89,12 +89,12 @@ Fetches Pokemon data using offset/limit pagination, limited to 5 pages.
 
 **Run it:**
 ```bash
-python examples/run_from_json.py examples/pokeapi_offset.json
+python examples/run_from_json.py config/ingest/pokeapi_offset.json
 ```
 
 ---
 
-### 3. [jsonplaceholder_posts.json](jsonplaceholder_posts.json) - Batch Save Mode
+### 3. [jsonplaceholder_posts.json](../config/ingest/jsonplaceholder_posts.json) - Batch Save Mode
 
 Fetches posts with batch saving (multiple output files).
 
@@ -115,7 +115,7 @@ Fetches posts with batch saving (multiple output files).
 
 **Run it:**
 ```bash
-python examples/run_from_json.py examples/jsonplaceholder_posts.json
+python examples/run_from_json.py config/ingest/jsonplaceholder_posts.json
 ```
 
 ---
@@ -302,7 +302,7 @@ python examples/run_from_json.py examples/jsonplaceholder_posts.json
 
 Copy an existing example:
 ```bash
-cp examples/github_repos.json my_api_config.json
+cp config/ingest/github_repos.json my_api_config.json
 ```
 
 ### 2. Modify for Your API

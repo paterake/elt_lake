@@ -63,17 +63,18 @@ config.to_json(Path("my_config.json"))
 
 ### Example JSON Configs
 
-2. **[examples/github_repos.json](examples/github_repos.json)** - GitHub API with page pagination
-3. **[examples/pokeapi_offset.json](examples/pokeapi_offset.json)** - PokeAPI with offset/limit
-4. **[examples/jsonplaceholder_posts.json](examples/jsonplaceholder_posts.json)** - Batch save mode
+2. **[config/ingest/github_repos.json](config/ingest/github_repos.json)** - GitHub API with page pagination
+3. **[config/ingest/pokeapi_offset.json](config/ingest/pokeapi_offset.json)** - PokeAPI with offset/limit
+4. **[config/ingest/jsonplaceholder_posts.json](config/ingest/jsonplaceholder_posts.json)** - Batch save mode
+5. **[config/ingest/bank_of_england_fx_rates.json](config/ingest/bank_of_england_fx_rates.json)** - BoE FX rates (XML)
 
 ### CLI Script
 
-5. **[examples/run_from_json.py](examples/run_from_json.py)** - Command-line tool to run ingestion from JSON files
+6. **[examples/run_from_json.py](examples/run_from_json.py)** - Command-line tool to run ingestion from JSON files
 
 ### Documentation
 
-6. **[examples/README.md](examples/README.md)** - Comprehensive JSON configuration guide (400+ lines)
+7. **[examples/README.md](examples/README.md)** - Comprehensive JSON configuration guide (400+ lines)
    - Complete field reference
    - All pagination type examples
    - Best practices
@@ -81,7 +82,7 @@ config.to_json(Path("my_config.json"))
 
 ### Tests
 
-7. **[test/test_json_config.py](test/test_json_config.py)** - Full test suite (300+ lines):
+8. **[test/test_json_config.py](test/test_json_config.py)** - Full test suite (300+ lines):
    - 14 test methods
    - 4 test classes
    - 100% passing rate
@@ -124,7 +125,7 @@ from pathlib import Path
 from elt_ingest_rest import IngestConfig, RestApiIngester
 
 # Load config
-config = IngestConfig.from_json(Path("examples/github_repos.json"))
+config = IngestConfig.from_json(Path("config/ingest/github_repos.json"))
 
 # Run ingestion
 ingester = RestApiIngester(config)
@@ -137,13 +138,13 @@ print(f"Fetched {len(data)} records")
 
 ```bash
 # Run from JSON config
-python examples/run_from_json.py examples/github_repos.json
+python examples/run_from_json.py config/ingest/github_repos.json
 
 # With verbose logging
-python examples/run_from_json.py examples/pokeapi_offset.json --verbose
+python examples/run_from_json.py config/ingest/pokeapi_offset.json --verbose
 
 # Output:
-# Loading configuration from: examples/pokeapi_offset.json
+# Loading configuration from: config/ingest/pokeapi_offset.json
 # Starting ingestion from: https://pokeapi.co/api/v2/pokemon
 # ✓ Success!
 #   - Fetched 100 records

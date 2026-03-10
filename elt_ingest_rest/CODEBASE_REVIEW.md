@@ -343,9 +343,10 @@ test/
 
 | File | Valid | Purpose |
 |------|-------|---------|
-| `examples/github_repos.json` | ✅ | GitHub page pagination |
-| `examples/pokeapi_offset.json` | ✅ | PokeAPI offset/limit |
-| `examples/jsonplaceholder_posts.json` | ✅ | Batch mode example |
+| `config/ingest/github_repos.json` | ✅ | GitHub page pagination |
+| `config/ingest/pokeapi_offset.json` | ✅ | PokeAPI offset/limit |
+| `config/ingest/jsonplaceholder_posts.json` | ✅ | Batch mode example |
+| `config/ingest/bank_of_england_fx_rates.json` | ✅ | BoE FX rates (XML) |
 
 #### Configuration Validation
 

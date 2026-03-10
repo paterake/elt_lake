@@ -111,7 +111,7 @@ Total: 15 Python files, ~1,200 lines (clean modular code)
 ## CLI Verification
 
 ```bash
-$ python examples/run_from_json.py examples/pokeapi_offset.json
+$ python examples/run_from_json.py config/ingest/pokeapi_offset.json
 
 ✓ Success!
   - Fetched 100 records
