@@ -2,6 +2,11 @@
 
 A flexible Python library for ingesting data from REST APIs with support for various pagination strategies and automatic saving to disk.
 
+See:
+
+- [ARCHITECTURE.md](file:///Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_rest/ARCHITECTURE.md)
+- [SOLUTION_OVERVIEW.md](file:///Users/rpatel/Documents/__code/git/emailrak/elt_lake/elt_ingest_rest/SOLUTION_OVERVIEW.md)
+
 ## Features
 
 - **Multiple Pagination Types Supported:**
@@ -38,11 +43,18 @@ A flexible Python library for ingesting data from REST APIs with support for var
 ## Installation
 
 ```bash
-# Install dependencies
 uv pip install -e .
 ```
 
 ## Quick Start
+
+### Run From Config (Recommended)
+
+Configs live under `config/ingest/`.
+
+```bash
+uv run --project . python examples/run_from_json.py config/ingest/pokeapi_offset.json -v
+```
 
 ### Non-Paginated API
 
@@ -259,53 +271,6 @@ config = IngestConfig(
 ingester = RestApiIngester(config)
 data, output_path = ingester.ingest()
 ```
-
-## Configuration Reference
-
-### IngestConfig
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `base_url` | str | Required | Base URL of the API |
-| `endpoint` | str | `""` | API endpoint path |
-| `method` | str | `"GET"` | HTTP method |
-| `headers` | dict | `{}` | Request headers |
-| `params` | dict | `{}` | Query parameters |
-| `body` | dict | `None` | Request body (for POST/PUT) |
-| `auth` | tuple | `None` | Basic auth credentials |
-| `timeout` | int | `30` | Request timeout in seconds |
-| `verify_ssl` | bool | `True` | Verify SSL certificates |
-| `pagination` | PaginationConfig | `PaginationConfig()` | Pagination settings |
-| `output_dir` | Path | `./output` | Output directory |
-| `output_filename` | str | `None` | Custom output filename |
-| `save_mode` | str | `"single"` | Save mode: "single" or "batch" |
-| `batch_size` | int | `1000` | Records per batch file |
-| `max_retries` | int | `3` | Maximum retry attempts |
-| `backoff_factor` | float | `0.3` | Retry backoff factor |
-| `retry_status_codes` | list | `[429, 500, 502, 503, 504]` | Status codes to retry |
-
-### PaginationConfig
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `type` | PaginationType | `NONE` | Pagination type |
-| `page_size` | int | `100` | Records per page |
-| `offset_param` | str | `"offset"` | Offset parameter name |
-| `limit_param` | str | `"limit"` | Limit parameter name |
-| `page_param` | str | `"page"` | Page number parameter |
-| `page_size_param` | str | `"per_page"` | Page size parameter |
-| `cursor_param` | str | `"cursor"` | Cursor parameter name |
-| `cursor_path` | str | `"next_cursor"` | Path to cursor in response |
-| `next_url_path` | str | `"next"` | Path to next URL in response |
-| `link_header_name` | str | `"Link"` | Link header name |
-| `data_path` | str | `"data"` | Path to data array in response |
-| `max_pages` | int | `0` | Maximum pages (0 = unlimited) |
-| `max_records` | int | `0` | Maximum records (0 = unlimited) |
-| `stop_condition` | Callable | `None` | Custom stop condition function |
-
-## Examples
-
-See [examples/usage_examples.py](examples/usage_examples.py) for comprehensive examples.
 
 ## License
 
