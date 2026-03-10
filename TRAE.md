@@ -18,3 +18,8 @@ This file captures the core conventions and rules for the `elt_lake` project.
   - `--column <col>`
   - `--cell <cell_ref>` (preferred for cell-level validation)
 - When you only care about what appears in the data (not the drop-down definition), use `--mode distinct` without a cell target.
+
+## Python Module Structure
+
+- All Python modules must follow the house rules in `TRAE_PYTHON_MODULE_STRUCTURE.md`.
+- Use the `python-module-structure-uv` skill when starting or refactoring a Python module.
