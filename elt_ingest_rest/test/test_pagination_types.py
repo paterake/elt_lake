@@ -151,7 +151,17 @@ class TestPageNumberPagination:
         )
 
         ingester = RestApiIngester(config)
-        data, output_path = ingester.ingest()
+        try:
+            data, output_path = ingester.ingest()
+        except Exception as e:
+            import requests
+
+            if isinstance(e, requests.exceptions.HTTPError) and e.response is not None:
+                if e.response.status_code in {403, 429}:
+                    pytest.skip(
+                        f"Upstream API rejected request ({e.response.status_code})"
+                    )
+            raise
 
         assert len(data) >= 8  # octocat has at least 8 repos
         assert "name" in data[0]
@@ -180,7 +190,17 @@ class TestPageNumberPagination:
         )
 
         ingester = RestApiIngester(config)
-        data, output_path = ingester.ingest()
+        try:
+            data, output_path = ingester.ingest()
+        except Exception as e:
+            import requests
+
+            if isinstance(e, requests.exceptions.HTTPError) and e.response is not None:
+                if e.response.status_code in {403, 429}:
+                    pytest.skip(
+                        f"Upstream API rejected request ({e.response.status_code})"
+                    )
+            raise
 
         assert len(data) == 20  # 2 pages × 10 items
         assert "name" in data[0]
@@ -234,7 +254,17 @@ class TestLinkHeaderPagination:
         )
 
         ingester = RestApiIngester(config)
-        data, output_path = ingester.ingest()
+        try:
+            data, output_path = ingester.ingest()
+        except Exception as e:
+            import requests
+
+            if isinstance(e, requests.exceptions.HTTPError) and e.response is not None:
+                if e.response.status_code in {403, 429}:
+                    pytest.skip(
+                        f"Upstream API rejected request ({e.response.status_code})"
+                    )
+            raise
 
         assert len(data) >= 9  # torvalds has 9 repos
         assert "name" in data[0]
@@ -265,7 +295,9 @@ class TestCursorPagination:
         )
 
         # This test is skipped because most cursor APIs need auth
-        pytest.skip("Cursor pagination APIs typically require authentication")
+        pytest.skip(
+            f"Cursor pagination ({config.pagination.type.value}) APIs typically require authentication"
+        )
 
 
 class TestNextUrlPagination:
@@ -421,7 +453,17 @@ class TestDataExtraction:
         )
 
         ingester = RestApiIngester(config)
-        data, output_path = ingester.ingest()
+        try:
+            data, output_path = ingester.ingest()
+        except Exception as e:
+            import requests
+
+            if isinstance(e, requests.exceptions.HTTPError) and e.response is not None:
+                if e.response.status_code in {403, 429}:
+                    pytest.skip(
+                        f"Upstream API rejected request ({e.response.status_code})"
+                    )
+            raise
 
         assert len(data) == 5
         assert "name" in data[0]

@@ -34,6 +34,12 @@ class IngestConfig:
     # Pagination strategy
     pagination: PaginationConfig = field(default_factory=PaginationConfig)
 
+    # Response parsing
+    response_format: str = "json"  # "json", "csv", or "xml"
+    csv_delimiter: str = ","
+    csv_skip_rows: int = 0
+    xml_record_tag: str = ""
+
     # Output configuration
     output_dir: Path = field(default_factory=lambda: Path("./output"))
     output_filename: Optional[str] = None

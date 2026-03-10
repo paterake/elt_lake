@@ -52,8 +52,8 @@ class LinkHeaderStrategy(BasePaginationStrategy):
             )
 
             response.raise_for_status()
-            data_json = response.json()
-            data = self._extract_data(data_json)
+            parsed = self._parse_response(response)
+            data = self._extract_data(parsed)
 
             # No more data - stop
             if not data:
@@ -63,7 +63,9 @@ class LinkHeaderStrategy(BasePaginationStrategy):
             page_count += 1
 
             # Check stop conditions
-            if self._should_stop(data_json, page_count, len(all_data)):
+            if isinstance(parsed, dict) and self._should_stop(
+                parsed, page_count, len(all_data)
+            ):
                 break
 
             # Parse Link header for next URL

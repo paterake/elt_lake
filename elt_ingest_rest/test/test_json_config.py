@@ -1,6 +1,7 @@
 """Tests for JSON configuration loading and saving."""
 
 import json
+from datetime import date, timedelta
 import pytest
 from pathlib import Path
 from elt_ingest_rest import (
@@ -57,7 +58,7 @@ class TestJsonConfigLoading:
 
     def test_from_json_string(self):
         """Test creating config from JSON string."""
-        json_str = '''
+        json_str = """
         {
             "base_url": "https://jsonplaceholder.typicode.com",
             "endpoint": "/posts",
@@ -71,7 +72,7 @@ class TestJsonConfigLoading:
             },
             "output_dir": "./output/posts"
         }
-        '''
+        """
 
         config = IngestConfigJson.from_json(json_str)
 
@@ -103,9 +104,7 @@ class TestJsonConfigLoading:
             "base_url": "https://api.example.com",
             "endpoint": "/protected",
             "auth": ["username", "password"],
-            "pagination": {
-                "type": "none"
-            }
+            "pagination": {"type": "none"},
         }
 
         config = IngestConfigJson.from_json(config_dict)
@@ -114,9 +113,7 @@ class TestJsonConfigLoading:
 
     def test_from_json_minimal(self):
         """Test loading minimal config (only required fields)."""
-        config_dict = {
-            "base_url": "https://api.example.com"
-        }
+        config_dict = {"base_url": "https://api.example.com"}
 
         config = IngestConfigJson.from_json(config_dict)
 
@@ -124,6 +121,41 @@ class TestJsonConfigLoading:
         assert config.endpoint == ""
         assert config.method == "GET"
         assert config.pagination.type == PaginationType.NONE
+
+
+class TestTemplateResolution:
+    def test_date_format_tokens(self):
+        assert (
+            IngestConfigJson._format_date(date(2026, 3, 10), "dd/mmm/yyyy")
+            == "10/Mar/2026"
+        )
+        assert (
+            IngestConfigJson._format_date(date(2026, 3, 10), "yyyy-mm-dd")
+            == "2026-03-10"
+        )
+
+    def test_from_json_resolves_date_templates(self):
+        template = "{date;format=dd/mmm/yyyy;add=-1}"
+        expected = IngestConfigJson._format_date(
+            date.today() + timedelta(days=-1), "dd/mmm/yyyy"
+        )
+
+        config_dict = {
+            "base_url": "https://api.example.com",
+            "params": {
+                "Datefrom": template,
+                "Dateto": template,
+            },
+            "pagination": {"type": "none"},
+        }
+
+        config = IngestConfigJson.from_json(config_dict)
+        print("template:", template)
+        print("expected:", expected)
+        print("actual Datefrom:", config.params["Datefrom"])
+        print("actual Dateto:", config.params["Dateto"])
+        assert config.params["Datefrom"] == expected
+        assert config.params["Dateto"] == expected
 
 
 class TestJsonConfigSaving:
@@ -143,7 +175,9 @@ class TestJsonConfigSaving:
             output_dir=Path("./output/test"),
         )
 
-        json_str = IngestConfigJson.to_json(config,)
+        json_str = IngestConfigJson.to_json(
+            config,
+        )
         data = json.loads(json_str)
 
         assert data["base_url"] == "https://api.example.com"
@@ -168,7 +202,7 @@ class TestJsonConfigSaving:
         )
 
         output_file = tmp_path / "config.json"
-        json_str = IngestConfigJson.to_json(config,filepath=output_file)
+        IngestConfigJson.to_json(config, filepath=output_file)
 
         # Verify file was created
         assert output_file.exists()
@@ -214,9 +248,15 @@ class TestJsonConfigSaving:
         assert loaded_config.params == original_config.params
         assert loaded_config.headers == original_config.headers
         assert loaded_config.pagination.type == original_config.pagination.type
-        assert loaded_config.pagination.page_size == original_config.pagination.page_size
-        assert loaded_config.pagination.data_path == original_config.pagination.data_path
-        assert loaded_config.pagination.max_pages == original_config.pagination.max_pages
+        assert (
+            loaded_config.pagination.page_size == original_config.pagination.page_size
+        )
+        assert (
+            loaded_config.pagination.data_path == original_config.pagination.data_path
+        )
+        assert (
+            loaded_config.pagination.max_pages == original_config.pagination.max_pages
+        )
         assert str(loaded_config.output_dir) == str(original_config.output_dir)
         assert loaded_config.save_mode == original_config.save_mode
         assert loaded_config.batch_size == original_config.batch_size
@@ -230,11 +270,8 @@ class TestJsonConfigIntegration:
         config_dict = {
             "base_url": "https://jsonplaceholder.typicode.com",
             "endpoint": "/posts/1",
-            "pagination": {
-                "type": "none",
-                "data_path": ""
-            },
-            "output_dir": "./output/test/json_config"
+            "pagination": {"type": "none", "data_path": ""},
+            "output_dir": "./output/test/json_config",
         }
 
         config = IngestConfigJson.from_json(config_dict)
@@ -272,6 +309,106 @@ class TestJsonConfigIntegration:
         assert len(batch_files) == 2  # 30 records / 15 per batch = 2 files
 
 
+class TestCsvResponseHandling:
+    """Test CSV response parsing."""
+
+    def test_ingest_csv_response(self, tmp_path):
+        config_dict = {
+            "base_url": "https://example.com",
+            "endpoint": "/data.csv",
+            "headers": {"User-Agent": "Mozilla/5.0"},
+            "response_format": "csv",
+            "csv_delimiter": ",",
+            "csv_skip_rows": 0,
+            "pagination": {"type": "none", "data_path": ""},
+            "output_dir": str(tmp_path),
+            "output_filename": "out.json",
+        }
+
+        config = IngestConfigJson.from_json(config_dict)
+        ingester = RestApiIngester(config)
+
+        class FakeResponse:
+            def __init__(self, text: str):
+                self.text = text
+
+            def raise_for_status(self):
+                return None
+
+        csv_text = "DATE,XUDLUSS\n01 Jan 2026,1.2345\n"
+
+        def fake_request(*, method, url, params=None, json=None, timeout=None):
+            return FakeResponse(csv_text)
+
+        ingester.session.request = fake_request
+
+        data, output_path = ingester.ingest()
+
+        assert data == [{"DATE": "01 Jan 2026", "XUDLUSS": "1.2345"}]
+        assert output_path.exists()
+
+
+class TestXmlResponseHandling:
+    """Test XML response parsing."""
+
+    def test_ingest_boe_xml_response(self, tmp_path):
+        config_dict = {
+            "base_url": "https://example.com",
+            "endpoint": "/data.xml",
+            "headers": {"User-Agent": "Mozilla/5.0"},
+            "response_format": "xml",
+            "pagination": {"type": "none", "data_path": ""},
+            "output_dir": str(tmp_path),
+            "output_filename": "out.json",
+        }
+
+        config = IngestConfigJson.from_json(config_dict)
+        ingester = RestApiIngester(config)
+
+        class FakeResponse:
+            def __init__(self, text: str):
+                self.text = text
+
+            def raise_for_status(self):
+                return None
+
+        xml_text = """<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://www.gesmes.org/xml/2002-08-01">
+  <Cube xmlns="https://www.bankofengland.co.uk/website/agg_series" SCODE="XUDLERS" DESC="Euro into Sterling">
+    <Cube TIME="2026-03-02" OBS_VALUE="1.1448" OBS_CONF="N" LAST_UPDATED="2026-03-03 09:30:00"></Cube>
+    <Cube TIME="2026-03-03" OBS_VALUE="1.1494" OBS_CONF="N" LAST_UPDATED="2026-03-04 09:30:00"></Cube>
+  </Cube>
+</Envelope>
+"""
+
+        def fake_request(*, method, url, params=None, json=None, timeout=None):
+            return FakeResponse(xml_text)
+
+        ingester.session.request = fake_request
+
+        data, output_path = ingester.ingest()
+
+        assert data == [
+            {
+                "series_code": "XUDLERS",
+                "series_description": "Euro into Sterling",
+                "time": "2026-03-02",
+                "value": "1.1448",
+                "obs_conf": "N",
+                "last_updated": "2026-03-03 09:30:00",
+            },
+            {
+                "series_code": "XUDLERS",
+                "series_description": "Euro into Sterling",
+                "time": "2026-03-03",
+                "value": "1.1494",
+                "obs_conf": "N",
+                "last_updated": "2026-03-04 09:30:00",
+            },
+        ]
+        assert output_path.exists()
+
+
 class TestJsonConfigErrors:
     """Test error handling in JSON configuration."""
 
@@ -284,9 +421,7 @@ class TestJsonConfigErrors:
         """Test error on invalid pagination type."""
         config_dict = {
             "base_url": "https://api.example.com",
-            "pagination": {
-                "type": "invalid_type"
-            }
+            "pagination": {"type": "invalid_type"},
         }
 
         with pytest.raises(ValueError):

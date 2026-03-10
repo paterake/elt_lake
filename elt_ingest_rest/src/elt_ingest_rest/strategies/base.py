@@ -4,10 +4,13 @@ All pagination strategies inherit from this base class and implement
 the fetch() method with their specific pagination logic.
 """
 
+import csv
 import logging
 from abc import ABC, abstractmethod
+from io import StringIO
 from typing import Any, Optional
 from urllib.parse import urljoin
+from xml.etree import ElementTree
 
 import requests
 
@@ -50,7 +53,7 @@ class BasePaginationStrategy(ABC):
 
     # --- Helper Methods ---
 
-    def _make_request(self, url: str, params: Optional[dict] = None) -> dict:
+    def _make_request(self, url: str, params: Optional[dict] = None) -> Any:
         """Make HTTP request to the API.
 
         Args:
@@ -58,7 +61,7 @@ class BasePaginationStrategy(ABC):
             params: Query parameters (merged with config.params)
 
         Returns:
-            Response JSON data
+            Parsed response content
 
         Raises:
             requests.HTTPError: If request fails
@@ -77,9 +80,112 @@ class BasePaginationStrategy(ABC):
         )
 
         response.raise_for_status()
-        return response.json()
+        return self._parse_response(response)
 
-    def _extract_data(self, response: dict) -> list[dict]:
+    def _parse_response(self, response: requests.Response) -> Any:
+        response_format = self.config.response_format.lower().strip()
+
+        if response_format == "json":
+            return response.json()
+
+        if response_format == "csv":
+            lines = response.text.splitlines()
+            if self.config.csv_skip_rows:
+                lines = lines[self.config.csv_skip_rows :]
+
+            lines = [line for line in lines if line.strip()]
+            if not lines:
+                return []
+
+            reader = csv.DictReader(
+                StringIO("\n".join(lines)),
+                delimiter=self.config.csv_delimiter,
+            )
+            return [dict(row) for row in reader]
+
+        if response_format == "xml":
+            return self._parse_xml(response.text)
+
+        raise ValueError(f"Unsupported response_format: {self.config.response_format}")
+
+    def _parse_xml(self, xml_text: str) -> list[dict]:
+        def local_name(tag: str) -> str:
+            if "}" in tag:
+                return tag.split("}", 1)[1]
+            return tag
+
+        def element_to_record(element: ElementTree.Element) -> dict:
+            record: dict[str, Any] = dict(element.attrib)
+
+            for child in list(element):
+                child_key = local_name(child.tag)
+                child_text = (child.text or "").strip()
+
+                if child_text:
+                    if child_key in record:
+                        existing = record[child_key]
+                        if isinstance(existing, list):
+                            existing.append(child_text)
+                        else:
+                            record[child_key] = [existing, child_text]
+                    else:
+                        record[child_key] = child_text
+                elif child.attrib:
+                    for attr_key, attr_value in child.attrib.items():
+                        record[f"{child_key}.{attr_key}"] = attr_value
+
+            return record
+
+        root = ElementTree.fromstring(xml_text)
+
+        boe_series = [
+            element
+            for element in root.iter()
+            if local_name(element.tag) == "Cube" and "SCODE" in element.attrib
+        ]
+        if boe_series:
+            records: list[dict] = []
+            for series_element in boe_series:
+                series_code = series_element.attrib.get("SCODE")
+                series_description = series_element.attrib.get("DESC")
+
+                for cube in series_element:
+                    if local_name(cube.tag) != "Cube":
+                        continue
+                    if "TIME" not in cube.attrib or "OBS_VALUE" not in cube.attrib:
+                        continue
+
+                    record: dict[str, Any] = {
+                        "series_code": series_code,
+                        "series_description": series_description,
+                        "time": cube.attrib.get("TIME"),
+                        "value": cube.attrib.get("OBS_VALUE"),
+                    }
+                    if "OBS_CONF" in cube.attrib:
+                        record["obs_conf"] = cube.attrib.get("OBS_CONF")
+                    if "LAST_UPDATED" in cube.attrib:
+                        record["last_updated"] = cube.attrib.get("LAST_UPDATED")
+
+                    records.append(record)
+
+            return records
+
+        record_tag = self.config.xml_record_tag.strip()
+        if record_tag:
+            elements = [
+                element
+                for element in root.iter()
+                if local_name(element.tag) == record_tag
+            ]
+            return [element_to_record(element) for element in elements]
+
+        children = list(root)
+        if not children:
+            return [element_to_record(root)]
+
+        return [element_to_record(child) for child in children]
+
+    def _extract_data(self, response: Any) -> list[dict]:
         """Extract data array from API response.
 
         Handles both:
@@ -99,10 +205,16 @@ class BasePaginationStrategy(ABC):
             # Data is at root level
             if isinstance(response, list):
                 return response
-            else:
-                return [response]  # Wrap single object
+            if response is None:
+                return []
+            if isinstance(response, dict):
+                return [response]
+            return [{"value": response}]
 
         # Extract nested data
+        if not isinstance(response, dict):
+            return []
+
         data = self._get_nested_value(response, data_path)
 
         if data is None:
@@ -140,9 +252,7 @@ class BasePaginationStrategy(ABC):
 
         return value
 
-    def _should_stop(
-        self, response: dict, page_count: int, total_records: int
-    ) -> bool:
+    def _should_stop(self, response: Any, page_count: int, total_records: int) -> bool:
         """Check if pagination should stop.
 
         Checks:
@@ -171,7 +281,11 @@ class BasePaginationStrategy(ABC):
             return True
 
         # Check custom stop condition
-        if config.stop_condition and config.stop_condition(response):
+        if (
+            config.stop_condition
+            and isinstance(response, dict)
+            and config.stop_condition(response)
+        ):
             logger.info("Custom stop condition met")
             return True
 

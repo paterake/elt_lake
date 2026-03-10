@@ -252,9 +252,7 @@ class RestApiIngester:
             return self.config.output_filename
 
         # Generate filename from endpoint and timestamp
-        endpoint_name = (
-            self.config.endpoint.strip("/").replace("/", "_") or "api_data"
-        )
+        endpoint_name = self.config.endpoint.strip("/").replace("/", "_") or "api_data"
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"{endpoint_name}_{timestamp}.json"
 

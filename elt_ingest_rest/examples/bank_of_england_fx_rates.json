@@ -1,0 +1,26 @@
+{
+  "base_url": "https://www.bankofengland.co.uk",
+  "endpoint": "/boeapps/database/_iadb-fromshowcolumns.asp",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "application/xml,text/xml"
+  },
+  "params": {
+    "xml.x": "yes",
+    "Datefrom": "{date;format=dd/mmm/yyyy;add=-1}",
+    "Dateto": "{date;format=dd/mmm/yyyy;add=-1}",
+    "SeriesCodes": "XUDLADS,XUDLCDS,XUDLDKS,XUDLERS,XUDLHDS,XUDLJYS,XUDLNDS,XUDLNKS,XUDLSFS,XUDLSGS,XUDLSKS,XUDLSRS,XUDLTWS,XUDLUSS,XUDLZRS,XUDLBK25,XUDLBK33,XUDLBK47,XUDLBK78,XUDLBK83,XUDLBK87,XUDLBK89,XUDLBK93,XUDLBK95,XUDLBK97,XUDLZOS3,XUDLZOS4",
+    "UsingCodes": "Y",
+    "VPD": "Y",
+    "VFD": "N"
+  },
+  "response_format": "xml",
+  "pagination": {
+    "type": "none",
+    "data_path": ""
+  },
+  "output_dir": "./output/boe_fx",
+  "output_filename": "boe_fx_rates.json",
+  "save_mode": "single"
+}
