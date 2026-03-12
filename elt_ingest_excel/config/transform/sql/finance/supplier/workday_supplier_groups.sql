@@ -22,5 +22,5 @@ SELECT
        INNER JOIN
        ref_workday_group_additional                   r
           ON r.source_type                            = 'supplier'
-         AND UPPER(TRIM(r.source_value))              = c.vendor_class_id
+         AND UPPER(TRIM(r.source_value))              = t.vendor_class_id
 ;
