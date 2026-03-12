@@ -60,12 +60,6 @@
         "dataRow": "4"
       },
       {
-        "srcTableName": "workday_customer_credit_card",
-        "sheetName": "Customer Credit Card",
-        "headerRow": "3",
-        "dataRow": "4"
-      },
-      {
         "srcTableName": "workday_customer_tax",
         "sheetName": "Customer Tax",
         "headerRow": "3",
