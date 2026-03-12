@@ -13,4 +13,14 @@ SELECT
            ELSE 'Suppliers 0 - 9'
        END                                            supplier_group
   FROM src_fin_supplier                t
+UNION ALL
+SELECT
+       t.supplier_id                                  supplier_id
+     , t.nrm_supplier_name                            supplier_name
+     , r.target_value                                 supplier_group
+  FROM src_fin_supplier                t
+       INNER JOIN
+       ref_workday_group_additional                   r
+          ON r.source_type                            = 'supplier'
+         AND UPPER(TRIM(r.source_value))              = c.vendor_class_id
 ;
