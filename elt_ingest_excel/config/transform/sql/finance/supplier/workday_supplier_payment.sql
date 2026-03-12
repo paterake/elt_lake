@@ -8,18 +8,18 @@ SELECT
      , t.nrm_payment_terms_id                            payment_terms
      , CASE
          WHEN t.nrm_currency_code = 'GBP'
-         THEN 'BACS|EFT|Manual'
+         THEN 'BACS|Manual'
          WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA|Wire|Manual'
          WHEN t.nrm_currency_code = 'USD'
-         THEN 'Wire|EFT|Manual'
+         THEN 'Wire|Manual'
          WHEN t.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire|Manual'
-         ELSE 'BACS|EFT|Manual'
+         ELSE 'BACS|Manual'
        END                                              payment_types_accepted
      , CASE
          WHEN t.nrm_currency_code = 'GBP'
-         THEN 'EFT'
+         THEN 'BACS'
          WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA'
          WHEN t.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')

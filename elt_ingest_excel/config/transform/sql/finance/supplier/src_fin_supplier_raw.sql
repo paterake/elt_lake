@@ -106,7 +106,7 @@ SELECT
      , r.phone_code                                                                 nrm_phone_code
      , r.tax_id_type                                                                nrm_tax_id_type
      , r.country_name                                                               nrm_country_name
-     , COALESCE(scm.supplier_category, 'Consulting Services and Professional Fees') nrm_supplier_category
+     , COALESCE(scm.supplier_category, 'Miscellaneous')                             nrm_supplier_category
      , COALESCE(rx.instance, rxo.instance)                                          nrm_region
      , SPLIT_PART(
        CASE
@@ -149,78 +149,78 @@ SELECT
   FROM cte_supplier_addr_clean                  t
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
-       ref_source_country_name_mapping          m_name
-         ON  m_name.source_country_name         = UPPER(TRIM(t.country))
+       ref_source_country_name_mapping                m_name
+         ON  UPPER(TRIM(m_name.source_country_name))  = UPPER(TRIM(t.country))
        -- Second try: match on country code (fallback)
        LEFT OUTER JOIN
-       ref_source_country_code_mapping          m_code
-         ON  m_code.source_country_code         = NULLIF(UPPER(TRIM(t.country_code)), '')
+       ref_source_country_code_mapping                m_code
+         ON  UPPER(TRIM(m_code.source_country_code))  = NULLIF(UPPER(TRIM(t.country_code)), '')
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
-       ref_country                              r
-         ON r.country_code                      = COALESCE(m_name.country_code, m_code.country_code, 'GB')          
+       ref_country                                    r
+         ON UPPER(TRIM(r.country_code))               = UPPER(TRIM(COALESCE(m_name.country_code, m_code.country_code, 'GB')))
        -- Supplier category normalization
        LEFT OUTER JOIN
-       ref_supplier_category_mapping            scm
-         ON scm.source_supplier_category        = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
+       ref_supplier_category_mapping                  scm
+         ON UPPER(TRIM(scm.source_supplier_category)) = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
        -- Payment Terms normalization
        LEFT OUTER JOIN
-       ref_source_payment_terms                 pt
-         ON  UPPER(pt.source_payment_terms)     = UPPER(TRIM(t.payment_terms_id))
+       ref_source_payment_terms                       pt
+         ON  UPPER(TRIM(pt.source_payment_terms))     = UPPER(TRIM(t.payment_terms_id))
        -- Sort Code normalisation
        LEFT OUTER JOIN
-        ref_bank_sort_code_prefix_mapping       rbsc
-          ON rbsc.sort_code_prefix              = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
+        ref_bank_sort_code_prefix_mapping             rbsc
+          ON rbsc.sort_code_prefix                    = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
        -- Address handling
        LEFT OUTER JOIN
-       ref_post_code_district                   r0
+       ref_post_code_district                         r0
           ON (
-               UPPER(TRIM(t.nrm_postal_code))   LIKE r0.postcode || ' %'  -- Matches 'MK19 5AH' to 'MK19'
-            OR UPPER(TRIM(t.nrm_postal_code))   =    r0.postcode          -- Matches 'MK19'     to 'MK19'
+               UPPER(TRIM(t.nrm_postal_code))         LIKE UPPER(r0.postcode || ' %')  -- Matches 'MK19 5AH' to 'MK19'
+            OR UPPER(TRIM(t.nrm_postal_code))         =    UPPER(r0.postcode)          -- Matches 'MK19'     to 'MK19'
              ) 
        LEFT OUTER JOIN
-       ref_post_code_workday_region             r01
-          ON UPPER(TRIM(r01.post_code_region))  = UPPER(TRIM(r0.region))
+       ref_post_code_workday_region                   r01
+          ON UPPER(TRIM(r01.post_code_region))        = UPPER(TRIM(r0.region))
        LEFT OUTER JOIN 
-       ref_workday_country_state_region         r1
-         ON r1.country                          = r.country_name
-        AND UPPER(TRIM(r1.instance))            = UPPER(TRIM(t.county))
+       ref_workday_country_state_region               r1
+         ON UPPER(TRIM(r1.country))                   = UPPER(TRIM(r.country_name))
+        AND UPPER(TRIM(r1.instance))                  = UPPER(TRIM(t.county))
        LEFT OUTER JOIN 
-       ref_workday_country_state_region         r2
-         ON r2.country                          = r.country_name
-        AND UPPER(TRIM(r2.instance))            = UPPER(TRIM(t.city))   
+       ref_workday_country_state_region               r2
+         ON UPPER(TRIM(r2.country))                   = UPPER(TRIM(r.country_name))
+        AND UPPER(TRIM(r2.instance))                  = UPPER(TRIM(t.city))   
        LEFT OUTER JOIN
-       ref_country_county_state_town_mapping    r3
-         ON r3.country_code                     = r.country_code
-        AND UPPER(TRIM(r3.town_city_name))      = UPPER(TRIM(t.county))
+       ref_country_county_state_town_mapping          r3
+         ON UPPER(TRIM(r3.country_code))              = UPPER(TRIM(r.country_code))
+        AND UPPER(TRIM(r3.town_city_name))            = UPPER(TRIM(t.county))
        LEFT OUTER JOIN
-       ref_country_county_state_town_mapping    r4
-         ON r4.country_code                     = r.country_code
-        AND UPPER(TRIM(r4.town_city_name))      = UPPER(TRIM(t.city))       
+       ref_country_county_state_town_mapping          r4
+         ON UPPER(TRIM(r4.country_code))              = UPPER(TRIM(r.country_code))
+        AND UPPER(TRIM(r4.town_city_name))            = UPPER(TRIM(t.city))       
        LEFT OUTER JOIN 
-       ref_workday_country_state_region         rx
-         ON rx.country                          = r.country_name
-        AND UPPER(TRIM(rx.instance))            = UPPER(TRIM(
-                                                  CASE
-                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
-                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
-                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
-                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
-                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
-                                                   ELSE NULLIF(UPPER(TRIM(t.county)), '')
-                                                  END))
+       ref_workday_country_state_region               rx
+         ON UPPER(TRIM(rx.country))                   = UPPER(TRIM(r.country_name))
+        AND UPPER(TRIM(rx.instance))                  = UPPER(TRIM(
+                                                        CASE
+                                                         WHEN r0.region             IS NOT NULL THEN UPPER(TRIM(COALESCE(r01.workday_region, r0.region)))
+                                                         WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                         WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                         WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                         WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                         ELSE NULLIF(UPPER(TRIM(t.county)), '')
+                                                        END))
        LEFT OUTER JOIN 
-       ref_workday_country_state_region         rxo
-         ON rxo.country                         = r.country_name
-        AND UPPER(TRIM(rxo.instance))           = UPPER(TRIM(
-                                                  CASE
-                                                   WHEN r0.region             IS NOT NULL THEN COALESCE(UPPER(TRIM(r01.workday_region)), UPPER(TRIM(r0.region)))
-                                                   WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
-                                                   WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
-                                                   WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
-                                                   WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
-                                                   ELSE NULLIF(UPPER(TRIM(t.county)), '')
-                                                  END || '(obsolete)'))
+       ref_workday_country_state_region               rxo
+         ON UPPER(TRIM(rxo.country))                  = UPPER(TRIM(r.country_name))
+        AND UPPER(TRIM(rxo.instance))                 = UPPER(TRIM(
+                                                        CASE
+                                                         WHEN r0.region             IS NOT NULL THEN UPPER(TRIM(COALESCE(r01.workday_region, r0.region)))
+                                                         WHEN r1.instance           IS NOT NULL THEN UPPER(TRIM(r1.instance))
+                                                         WHEN r2.instance           IS NOT NULL THEN UPPER(TRIM(r2.instance)) 
+                                                         WHEN r3.county_state_name  IS NOT NULL THEN UPPER(TRIM(r3.county_state_name))
+                                                         WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
+                                                         ELSE NULLIF(UPPER(TRIM(t.county)), '')
+                                                        END || '(obsolete)'))
        )
 SELECT 
        ROW_NUMBER() OVER

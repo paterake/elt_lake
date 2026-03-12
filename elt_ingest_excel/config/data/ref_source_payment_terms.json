@@ -1,50 +1,13 @@
 [
-	{
-		"source_payment_terms" : "7 DAYS",
-		"workday_payment_terms" : "NET_7"
-	},
-	{
-		"source_payment_terms" : "14 DAYS",
-		"workday_payment_terms" : "NET_14"
-	},
-	{
-		"source_payment_terms" : "15 DAYS",
-		"workday_payment_terms" : "NET_21"
-	},
-	{
-		"source_payment_terms" : "21 DAYS",
-		"workday_payment_terms" : "NET_21"
-	},
-	{
-		"source_payment_terms" : "30 DAYS",
-		"workday_payment_terms" : "Net 30"
-	},
-	{
-		"source_payment_terms" : "15TH MONTH",
-		"workday_payment_terms" : "Net 30"
-	},
-	{
-		"source_payment_terms" : "45 DAYS",
-		"workday_payment_terms" : "Net 45"
-	},
-	{
-		"source_payment_terms" : "60 DAYS",
-		"workday_payment_terms" : "NET_60"
-	},
-	{
-		"source_payment_terms" : "90 DAYS",
-		"workday_payment_terms" : "NET_60"
-	},
-	{
-		"source_payment_terms" : "120 DAYS",
-		"workday_payment_terms" : "NET_60"
-	},
-   {
-		"source_payment_terms" : "30 EOM",
-		"workday_payment_terms" : "EOM + 30 D"
-	},
-	{
-		"source_payment_terms" : "DUE IMMEDIATELY",
-		"workday_payment_terms" : "Immediate"
-	}
+  { "source_payment_terms": "14 Days", "workday_payment_terms": "NET 14" },
+  { "source_payment_terms": "15 Days", "workday_payment_terms": "NET 21" },
+  { "source_payment_terms": "21 Days", "workday_payment_terms": "NET 21" },
+  { "source_payment_terms": "30 Days", "workday_payment_terms": "Net 30" },
+  { "source_payment_terms": "30 EOM", "workday_payment_terms": "EOM + 30 D" },
+  { "source_payment_terms": "30 days", "workday_payment_terms": "Net 30" },
+  { "source_payment_terms": "7 Days", "workday_payment_terms": "Net 7" },
+  { "source_payment_terms": "Due Immediately", "workday_payment_terms": "Immediate" },
+  { "source_payment_terms": "60 Days", "workday_payment_terms": "Net 60" },
+  { "source_payment_terms": "90 Days", "workday_payment_terms": "Net 90" },
+  { "source_payment_terms": "120 Days", "workday_payment_terms": "Net 120" }
 ]
