@@ -172,16 +172,16 @@ SELECT
          ON UPPER(TRIM(r2.country))                         = UPPER(TRIM(r.country_name))
         AND UPPER(TRIM(r2.instance))                        = UPPER(TRIM(c.city))   
        LEFT OUTER JOIN
-       ref_country_county_state_town_mapping    r3
+       ref_country_county_state_town_mapping                r3
          ON UPPER(TRIM(r3.country_code))                    = UPPER(TRIM(r.country_code))
         AND UPPER(TRIM(r3.town_city_name))                  = UPPER(TRIM(c.county))
        LEFT OUTER JOIN
-       ref_country_county_state_town_mapping    r4
+       ref_country_county_state_town_mapping                r4
          ON UPPER(TRIM(r4.country_code))                    = UPPER(TRIM(r.country_code))
         AND UPPER(TRIM(r4.town_city_name))                  = UPPER(TRIM(c.city))       
        LEFT OUTER JOIN 
        ref_workday_country_state_region                     rx
-         ON UPPER(TRIM(rx.country))                         = r.country_name
+         ON UPPER(TRIM(rx.country))                         = UPPER(TRIM(r.country_name))
         AND UPPER(TRIM(rx.instance))                        = UPPER(TRIM(
                                                               CASE
                                                                WHEN r0.region             IS NOT NULL THEN UPPER(TRIM(COALESCE(r01.workday_region, r0.region)))
@@ -193,7 +193,7 @@ SELECT
                                                               END))
        LEFT OUTER JOIN 
        ref_workday_country_state_region                     rxo
-         ON UPPER(TRIM(rxo.country))                        = r.country_name
+         ON UPPER(TRIM(rxo.country))                        = UPPER(TRIM(r.country_name))
         AND UPPER(TRIM(rxo.instance))                       = UPPER(TRIM(
                                                               CASE
                                                                WHEN r0.region             IS NOT NULL THEN UPPER(TRIM(COALESCE(r01.workday_region, r0.region)))
