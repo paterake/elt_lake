@@ -12,5 +12,15 @@ SELECT
                THEN 'Customers M - Z'
            ELSE 'Customers 0 - 9'
        END                                            customer_group
-  FROM src_fin_customer                c
+  FROM src_fin_customer                               c
+UNION
+SELECT
+       TRIM(c.customer_id)                            customer_id
+     , c.nrm_customer_name                            customer_name
+     , r.target_value                                 customer_group
+  FROM src_fin_customer                               c
+       INNER JOIN
+       ref_workday_group_additional                   r
+          ON r.source_type                            = 'customer'
+         AND UPPER(TRIM(r.source_value))              = c.customer_class
 ;
