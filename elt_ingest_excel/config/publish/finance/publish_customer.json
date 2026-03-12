@@ -1,7 +1,7 @@
 [
   {
-    "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/Supplier and Customer Master Record workbooks & Instructions Guide",
-    "srcWorkbookFileName": "FIN Customer Workbook (Blank).xlsm",
+    "srcWorkbookPathName": "/Users/rpatel/Documents/__data/excel/threeplus/CCS",
+    "srcWorkbookFileName": "FA Customer Master data.xlsm",
     "tgtWorkbookPathName": "/Users/rpatel/Documents",
     "tgtWorkbookFileName": "workday_fin_debtor_customer_active_v1",
     "sheets": [
@@ -14,12 +14,6 @@
       {
         "srcTableName": "workday_customer_groups",
         "sheetName": "Customer Groups",
-        "headerRow": "3",
-        "dataRow": "4"
-      },
-      {
-        "srcTableName": "workday_customer_related_worktags",
-        "sheetName": "Customer Related Worktags",
         "headerRow": "3",
         "dataRow": "4"
       },
