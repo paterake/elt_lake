@@ -1,4 +1,4 @@
-CREATE OR REPLACE MACRO initcap(s) AS (
+CREATE OR REPLACE MACRO fn_initcap(s) AS (
     CASE
         WHEN s IS NULL OR NULLIF(TRIM(s), '') IS NULL
         THEN NULL

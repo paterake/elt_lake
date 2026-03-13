@@ -17,7 +17,7 @@
 ../../ref/ref_workday_group_additional.sql
 ../../ref/ref_worker_type_mapping.sql
 
-../../marco/fn_initcap.sql
+../../macro/fn_initcap.sql
 
 src_fin_customer_raw.sql
 src_fin_customer_rnk.sql

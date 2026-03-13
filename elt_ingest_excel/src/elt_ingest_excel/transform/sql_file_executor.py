@@ -13,9 +13,12 @@ class SqlFileExecutor:
     def __init__(self, transform_path: Path, reporter: "PipelineReporter | None" = None):
         self.transform_path = Path(transform_path).resolve()
         shared_ref = self.transform_path.parent.parent / "ref"
+        shared_macro = self.transform_path.parent.parent / "macro"
         self.allowed_paths: list[Path] = [self.transform_path]
         if shared_ref.exists():
             self.allowed_paths.append(shared_ref.resolve())
+        if shared_macro.exists():
+            self.allowed_paths.append(shared_macro.resolve())
         self.reporter = reporter
 
     def run(
