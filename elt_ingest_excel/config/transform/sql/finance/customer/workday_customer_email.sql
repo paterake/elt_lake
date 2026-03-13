@@ -33,14 +33,29 @@ SELECT DISTINCT
      , cte_email_split
     AS (
 SELECT DISTINCT
-       e.customer_id                          customer_id
-     , e.customer_name                        customer_name
-     , TRIM(u.email)                          email_address
-     , e.email_type                           email_type
-     , e.suffix                               suffix
-  FROM cte_customer_email e
+       e.customer_id                            customer_id
+     , e.customer_name                          customer_name
+     , TRIM(u.email)                            email_address
+     , e.email_type                             email_type
+     , e.suffix                                 suffix
+  FROM cte_customer_email                       e
      , UNNEST(STRING_SPLIT(e.email_raw, ';')) u(email)
        )
+     , cte_email_unique
+    AS (
+SELECT 
+       t.customer_id                            customer_id
+     , t.customer_name                          customer_name
+     , t.email_address                          email_address
+     , t.email_type                             email_type
+     , t.suffix                                 suffix
+     , RANK() OVER (PARTITION BY email_address
+                        ORDER BY customer_id
+                               , suffix                           
+                   )                            unique_email_rnk
+  FROM cte_email_split                          t
+ WHERE NULLIF(TRIM(t.email_address), '')        IS NOT NULL
+       )  
      , cte_email_rnk
     AS (
 SELECT s.customer_id                          customer_id
@@ -49,11 +64,12 @@ SELECT s.customer_id                          customer_id
      , s.email_type                           email_type
      , s.suffix                               suffix
      , ROW_NUMBER() OVER (
-           PARTITION BY s.customer_id, s.email_type
+           PARTITION BY s.customer_id
+                      , s.email_type
                ORDER BY s.email_address
        )                                      email_rank
-  FROM cte_email_split s
- WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
+  FROM cte_email_unique s
+ WHERE s.unique_email_rnk                     = 1
        )
 SELECT s.customer_id                                                     customer_id
      , s.customer_name                                                   customer_name

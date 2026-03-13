@@ -33,20 +33,28 @@ SELECT DISTINCT
      , cte_email_split
     AS (
 SELECT DISTINCT
-       e.supplier_id                          supplier_id
-     , e.supplier_name                        supplier_name
-     , CASE
-         -- Display name format 'Name <email@domain.com>': extract from inside < >
-         WHEN TRIM(u.email) ~ '<[^>]+>'
-         THEN REGEXP_EXTRACT(TRIM(u.email), '<([^>]+)>', 1)
-         ELSE TRIM(u.email)
-       END                                    email_address
-     , e.email_type                           email_type
-     , e.suffix                               suffix
-  FROM cte_supplier_email e
-       -- Normalise space-delimited multi-emails to semicolons before splitting,
-       -- then split on semicolons
-     , UNNEST(STRING_SPLIT(REGEXP_REPLACE(e.email_raw, '\s+', ';'),';')) u(email)
+       e.supplier_id                            supplier_id
+     , e.supplier_name                          supplier_name
+     , TRIM(u.email)                            email_address
+     , e.email_type                             email_type
+     , e.suffix                                 suffix
+  FROM cte_supplier_email                       e
+     , UNNEST(STRING_SPLIT(e.email_raw, ';')) u(email)
+       )
+     , cte_email_unique
+    AS (
+SELECT 
+       t.supplier_id                            supplier_id
+     , t.supplier_name                          supplier_name
+     , t.email_address                          email_address
+     , t.email_type                             email_type
+     , t.suffix                                 suffix
+     , RANK() OVER (PARTITION BY email_address
+                        ORDER BY supplier_id
+                               , suffix                           
+                   )                            unique_email_rnk
+  FROM cte_email_split                          t
+ WHERE NULLIF(TRIM(t.email_address), '')        IS NOT NULL
        )
      , cte_email_rnk
     AS (
@@ -59,7 +67,8 @@ SELECT s.supplier_id                          supplier_id
            PARTITION BY s.supplier_id, s.email_type
                ORDER BY s.email_address
        )                                      email_rank
-  FROM cte_email_split s
+  FROM cte_email_unique s
+ WHERE s.unique_email_rnk                     = 1
        )
 SELECT s.supplier_id                                                       supplier_id
      , s.supplier_name                                                     supplier_name
