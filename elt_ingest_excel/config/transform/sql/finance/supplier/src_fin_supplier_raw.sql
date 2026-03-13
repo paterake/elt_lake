@@ -107,7 +107,7 @@ SELECT
      , r.tax_id_type                                                                nrm_tax_id_type
      , r.country_name                                                               nrm_country_name
      , COALESCE(scm.supplier_category, 'Miscellaneous')                             nrm_supplier_category
-     , COALESCE(rx.instance, rxo.instance)                                          nrm_region
+     , COALESCE(rco.target_value, rx.instance, rxo.instance)                        nrm_region
      , SPLIT_PART(
        CASE
         WHEN r0.post_town           IS NOT NULL
@@ -221,6 +221,9 @@ SELECT
                                                          WHEN r4.county_state_name  IS NOT NULL THEN UPPER(TRIM(r4.county_state_name))
                                                          ELSE NULLIF(UPPER(TRIM(t.county)), '')
                                                         END || '(obsolete)'))
+       LEFT OUTER JOIN 
+       ref_workday_county_obsolete                          rco
+         ON UPPER(TRIM(rco.source_value))                   = UPPER(TRIM(COALESCE(rx.instance, rxo.instance)))
        )
 SELECT 
        ROW_NUMBER() OVER
