@@ -8,4 +8,5 @@ SELECT
      , t.nrm_agg_business_unit         restricted_to_companies
   FROM 
        src_fin_supplier                t
+ WHERE 1 = 2
 ;
