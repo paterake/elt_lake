@@ -8,12 +8,12 @@ SELECT
      , m.workday_payment_terms                           payment_terms
      , CASE
          WHEN c.nrm_currency_code = 'GBP'
-         THEN 'BACS|Manual'
+         THEN 'Manual'
          WHEN c.nrm_currency_code = 'EUR'
-         THEN 'SEPA|Manual'
+         THEN 'Manual'
          WHEN c.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
-         THEN 'Wire|Manual'
-         ELSE 'BACS|Manual'
+         THEN 'Manual'
+         ELSE 'Manual'
        END                                               default_payment_type
      , NULL                                              interest_rule
      , NULL                                              late_fee_rule

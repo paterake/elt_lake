@@ -13,6 +13,7 @@
 ../../ref/ref_source_payment_terms.sql
 ../../ref/ref_supplier_category_mapping.sql
 ../../ref/ref_workday_country_state_region.sql
+../../ref/ref_workday_county_obsolete.sql
 ../../ref/ref_workday_group_additional.sql
 ../../ref/ref_worker_type_mapping.sql
 

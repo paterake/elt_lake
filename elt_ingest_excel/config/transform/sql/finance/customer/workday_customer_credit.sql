@@ -26,4 +26,5 @@ SELECT
      , NULL                                           customer_satisfaction_date
      , NULL                                           customer_satisfaction_note
   FROM src_fin_customer                c
+ WHERE 1 = 2
 ;
