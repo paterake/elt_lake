@@ -15,7 +15,7 @@ SELECT
      , t.nrm_created_date                                                     last_modified
      , NULL                                                                   descriptor
      , ROW_NUMBER() OVER (
-           PARTITION BY t.customer_id
+           PARTITION BY t.supplier_id
                ORDER BY u.address.nrm_address_code
                       , u.address.nrm_address_line_1
                       , u.address.nrm_address_line_2

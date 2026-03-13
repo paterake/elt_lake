@@ -8,7 +8,7 @@ SELECT
        t.supplier_id                                     supplier_id
      , t.nrm_supplier_name                               supplier_name
      , CASE
-         WHEN ISNULL(TRIM(t.nrm_agg_email_to_address), '') IS NOT NULL
+         WHEN NULLIF(TRIM(t.nrm_agg_email_to_address), '') IS NOT NULL
          THEN 'Email'
          ELSE 'Paper'
        END                                               purchase_order_issue_option
