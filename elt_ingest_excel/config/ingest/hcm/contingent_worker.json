@@ -1,9 +1,9 @@
 [
   {
-    "workbookFileName": "Employment type update.xlsx",
+    "workbookFileName": "Okta user list.xlsx",
     "sheets": [
       {
-        "sheetName": "non-pxd",
+        "sheetName": "Okta user list",
         "headerRow": "1",
         "dataRow": "2",
         "targetTableName": "hcm_contingent_worker"

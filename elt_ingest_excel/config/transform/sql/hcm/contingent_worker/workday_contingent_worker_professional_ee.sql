@@ -34,10 +34,10 @@ SELECT
      , t.nrm_hours_per_week                                                scheduled_weekly_hours
      , t.nrm_hours_per_week                                                default_weekly_hours
      , NULL                                                                fte
-     , COALESCE(NULLIF(UPPER(TRIM(t.organization)), ''), t.department_1)   company_org_name
+     , COALESCE(NULLIF(UPPER(TRIM(t.division)), ''), t.department_1)       company_org_name
      , NULL                                                                company_code
      , NULL                                                                establishment
-     , TRIM(t.cost_center)                                                 cost_center_code
+     , NULL                                                                cost_center_code
      , NULL                                                                fund
      , NULL                                                                work_shift_country
      , NULL                                                                work_shift
