@@ -23,12 +23,12 @@ SELECT
     AS (
 SELECT t.nrm_customer_name
      , ARRAY_AGG(DISTINCT STRUCT_PACK(
-           nrm_address_line_1   := t.nrm_address_line_1
-         , nrm_address_line_2   := t.nrm_address_line_2
-         , nrm_address_line_3   := t.nrm_address_line_3
-         , nrm_address_line_4   := t.nrm_address_line_4
+           nrm_address_line_1   := fn_initcap(t.nrm_address_line_1)
+         , nrm_address_line_2   := fn_initcap(t.nrm_address_line_2)
+         , nrm_address_line_3   := fn_initcap(t.nrm_address_line_3)
+         , nrm_address_line_4   := fn_initcap(t.nrm_address_line_4)
+         , nrm_city             := fn_initcap(t.nrm_city)
          , nrm_region           := t.nrm_region
-         , nrm_city             := t.nrm_city
          , nrm_country_name     := t.nrm_country_name
          , nrm_country_code     := t.nrm_country_code
          , nrm_postal_code      := t.nrm_postal_code

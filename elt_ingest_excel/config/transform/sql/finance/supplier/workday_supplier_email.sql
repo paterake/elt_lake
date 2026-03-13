@@ -3,29 +3,32 @@ DROP TABLE IF EXISTS workday_supplier_email
 CREATE TABLE workday_supplier_email AS
   WITH cte_supplier_email
     AS (
-SELECT s.supplier_id                         supplier_id
-     , s.nrm_supplier_name                   supplier_name
-     , s.email_to_address                    email_raw
-     , 'to'                                  email_type
-     , '_EM1'                                suffix
+SELECT DISTINCT
+       s.supplier_id                                        supplier_id
+     , s.nrm_supplier_name                                  supplier_name
+     , LOWER(s.nrm_agg_email_to_address)                    email_raw
+     , 'to'                                                 email_type
+     , '_EM1'                                               suffix
   FROM src_fin_supplier s
- WHERE NULLIF(UPPER(TRIM(s.email_to_address)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(s.nrm_agg_email_to_address)), '')  IS NOT NULL
 UNION ALL
-SELECT s.supplier_id                         supplier_id
-     , s.nrm_supplier_name                   supplier_name
-     , s.email_cc_address                    email_raw
-     , 'cc'                                  email_type
-     , '_EM2'                                suffix
+SELECT DISTINCT
+       s.supplier_id                                        supplier_id
+     , s.nrm_supplier_name                                  supplier_name
+     , LOWER(s.nrm_agg_email_cc_address)                    email_raw
+     , 'cc'                                                 email_type
+     , '_EM2'                                               suffix
   FROM src_fin_supplier s
- WHERE NULLIF(UPPER(TRIM(s.email_cc_address)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(s.nrm_agg_email_cc_address)), '')  IS NOT NULL
 UNION ALL
-SELECT s.supplier_id                         supplier_id
-     , s.nrm_supplier_name                   supplier_name
-     , s.email_bcc_address                   email_raw
-     , 'bcc'                                 email_type
-     , '_EM3'                                suffix
+SELECT DISTINCT
+       s.supplier_id                                        supplier_id
+     , s.nrm_supplier_name                                  supplier_name
+     , LOWER(s.nrm_agg_email_bcc_address)                   email_raw
+     , 'bcc'                                                email_type
+     , '_EM3'                                               suffix
   FROM src_fin_supplier s
- WHERE NULLIF(UPPER(TRIM(s.email_bcc_address)), '') IS NOT NULL
+ WHERE NULLIF(UPPER(TRIM(s.nrm_agg_email_bcc_address)), '') IS NOT NULL
        )
      , cte_email_split
     AS (
