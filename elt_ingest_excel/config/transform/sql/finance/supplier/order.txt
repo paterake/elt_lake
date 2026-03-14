@@ -18,6 +18,7 @@
 ../../ref/ref_worker_type_mapping.sql
 
 ../../macro/fn_initcap.sql
+../../macro/fn_nvl2.sql
 
 src_fin_supplier_raw.sql
 src_fin_supplier_rnk.sql
