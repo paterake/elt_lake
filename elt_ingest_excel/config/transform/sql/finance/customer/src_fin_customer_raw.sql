@@ -130,15 +130,15 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(c.city), '')
        END
-       , ',', 1)                                                  nrm_city
-     , c.addr_unique_list[1]                                      nrm_address_line_1
-     , c.addr_unique_list[2]                                      nrm_address_line_2
-     , c.addr_unique_list[3]                                      nrm_address_line_3
-     , CAST(NULL AS STRING)                                       nrm_address_line_4
-     , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                nrm_payment_terms_id
-     , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                 nrm_tax_schedule_id
-     , NULLIF(TRIM(UPPER(c.tax_registration_number)), '')         nrm_tax_registration_number
-     , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')  nrm_address_code
+       , ',', 1)                                                                       nrm_city
+     , c.addr_unique_list[1]                                                           nrm_address_line_1
+     , c.addr_unique_list[2]                                                           nrm_address_line_2
+     , c.addr_unique_list[3]                                                           nrm_address_line_3
+     , CAST(NULL AS STRING)                                                            nrm_address_line_4
+     , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                                     nrm_payment_terms_id
+     , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                                      nrm_tax_schedule_id
+     , NULLIF(TRIM(REPLACE(REPLACE(c.tax_registration_number, ' ', ''), '-', '')), '') nrm_tax_registration_number
+     , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                       nrm_address_code
      , c.*
  FROM cte_customer_addr_clean                   c
        -- First try: match on country name (higher population)
