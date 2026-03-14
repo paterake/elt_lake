@@ -5,30 +5,32 @@ CREATE TABLE workday_supplier_tax
 SELECT
        t.supplier_id                                                    supplier_id
      , t.nrm_supplier_name                                              supplier_name
-     , t.nrm_country_name                                               tax_id_country
+     , fn_nvl2(t.nrm_tax_id_number, NULL, t.nrm_country_name)           tax_id_country
      , t.nrm_tax_id_number                                              tax_id
-     , CASE
-         WHEN t.nrm_country_code = 'GB'
-         THEN CASE
-                WHEN nrm_tax_id_number IS NOT NULL
-                THEN CASE
-                        WHEN NULLIF(REPLACE(REPLACE(t.tax_registration_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
-                        THEN 'VAT Reg No'
-                        WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
-                        THEN 'Company Number'
-                        WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
-                        THEN 'UTR - Unique Taxpayer Reference'
-                        ELSE 'VAT Reg No'
-                     END
-                ELSE NULL
-              END
-         ELSE COALESCE(dm.tax_id_type_label, 'TIN')
-       END                                                              tax_id_type
-     , 'Yes'                                                            primary_tax_id
-     , NULL                                                             transaction_tax_id
+     , fn_nvl2(t.nrm_tax_id_number, NULL,
+         CASE
+           WHEN t.nrm_country_code = 'GB'
+           THEN CASE
+                  WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{9}$'
+                  THEN 'VAT Reg No'
+                  WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[A-Za-z0-9]{8}$'
+                  THEN 'Company Number'
+                  WHEN NULLIF(REPLACE(REPLACE(t.nrm_tax_id_number, ' ', ''), '-', ''), '') ~ '^[0-9]{10}$'
+                  THEN 'UTR - Unique Taxpayer Reference'
+                  ELSE 'VAT Reg No'
+                END
+           ELSE COALESCE(dm.tax_id_type_label, 'TIN')
+         END
+       )                                                                tax_id_type
+     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                       primary_tax_id
+     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                       transaction_tax_id
      , t.nrm_country_name                                               tax_status_country
      , NULL                                                             tax_status
-     , t.nrm_tax_schedule_id                                            transaction_tax_status
+     , CASE
+         WHEN t.nrm_tax_id_number IS NOT NULL
+         THEN 'Supplier of Goods - VAT/GST Registered in this Country'
+         ELSE 'Supplier of Goods - Not VAT/GST Registered in this Country'
+       END                                                              transaction_tax_status
      , NULL                                                             withholding_tax_status
      , NULL                                                             tax_authority_form_type
      , NULL                                                             irs_1099_supplier

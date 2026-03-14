@@ -20,13 +20,13 @@ SELECT
               )
          THEN CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'EU Company is VAT Registered in this EU Country'
-                ELSE 'EU Company is not VAT Registered in this EU Country'
+                THEN 'VAT Registered in THIS EU country- Domestic Scenario'
+                ELSE 'EU Company - Not Registered in this country'
               END
          ELSE CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'Company is VAT/GST Registered in this Country'
-                ELSE 'Company is not VAT/GST Registered in this Country'
+                THEN 'VAT Registered in THIS NON EU country- Domestic Scenario'
+                ELSE 'Non EU Company Not VAT registered in this country'
               END
        END                                                                      transaction_tax_status
      , NULL                                                                     withholding_tax_status
