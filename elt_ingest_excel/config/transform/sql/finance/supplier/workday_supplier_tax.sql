@@ -46,5 +46,4 @@ SELECT
          AND dm.is_default             = TRUE
  WHERE 
        t.nrm_tax_schedule_id           = 'PS20'
-   AND nrm_tax_id_number               IS NOT NULL
 ;
