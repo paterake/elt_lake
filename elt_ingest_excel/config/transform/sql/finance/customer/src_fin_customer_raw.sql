@@ -157,7 +157,7 @@ SELECT
        -- Customer category normalization
        LEFT OUTER JOIN
        ref_customer_category                                cc
-         ON UPPER(TRIM(cc.source_value))                    = NULLIF(UPPER(TRIM(t.customer_class)), '')
+         ON UPPER(TRIM(cc.source_value))                    = NULLIF(UPPER(TRIM(c.customer_class)), '')
        -- Address handling
        LEFT OUTER JOIN
        ref_post_code_district                               r0
