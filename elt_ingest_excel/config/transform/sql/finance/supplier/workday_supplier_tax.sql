@@ -22,8 +22,8 @@ SELECT
            ELSE COALESCE(dm.tax_id_type_label, 'TIN')
          END
        )                                                                tax_id_type
-     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                       primary_tax_id
-     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                       transaction_tax_id
+     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                        primary_tax_id
+     , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                        transaction_tax_id
      , t.nrm_country_name                                               tax_status_country
      , NULL                                                             tax_status
      , CASE
