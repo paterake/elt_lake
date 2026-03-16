@@ -24,7 +24,7 @@
       },
       {
         "sheetName": "ref_customer_class",
-        "srcTableName": "ref_customer_class"
+        "srcTableName": "ref_customer_category"
       },
       {
         "sheetName": "ref_location",
@@ -60,7 +60,7 @@
       },
       {
         "sheetName": "ref_supplier_category",
-        "srcTableName": "ref_supplier_category_mapping"
+        "srcTableName": "ref_supplier_category"
       },
       {
         "sheetName": "ref_workday_country_state_reg",
