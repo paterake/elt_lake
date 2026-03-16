@@ -13,6 +13,12 @@ SELECT
      , fn_nvl2(c.nrm_tax_registration_number, NULL, 'Yes')                     transaction_tax_id
      , c.nrm_country_name                                                       tax_status_country
      , CASE
+         WHEN UPPER(c.nrm_country_code) = 'GBR'
+         THEN CASE
+                WHEN c.nrm_tax_schedule_id = 'SOS'
+                THEN 'Customer_or_Services'
+                ELSE 'Customer_of_Goods'
+              END
          WHEN UPPER(c.nrm_country_code) IN (
                 'AT','BE','BG','HR','CY','CZ','DE','DK','EE','ES','FI','FR'
               , 'GR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO'
@@ -20,13 +26,15 @@ SELECT
               )
          THEN CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'VAT Registered in THIS EU country- Domestic Scenario'
-                ELSE 'EU Company - Not Registered in this country'
+                THEN 'EU_Company_VAT_Registered'
+                WHEN c.nrm_tax_schedule_id = 'SZ'
+                THEN 'EU_Company_Exempt'
+                ELSE 'EU_Company_NOT_VAT_Registered_in_this_country'
               END
          ELSE CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'VAT Registered in THIS NON EU country- Domestic Scenario'
-                ELSE 'Non EU Company Not VAT registered in this country'
+                THEN 'NON_EU_Company_VAT_Registered'
+                ELSE 'Non_EU_Company_Not_VAT_registered_in_this_country'
               END
        END                                                                      transaction_tax_status
      , NULL                                                                     withholding_tax_status
