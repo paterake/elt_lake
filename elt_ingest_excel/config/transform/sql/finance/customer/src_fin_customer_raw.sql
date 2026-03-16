@@ -139,6 +139,7 @@ SELECT
      , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                                      nrm_tax_schedule_id
      , NULLIF(TRIM(REPLACE(REPLACE(c.tax_registration_number, ' ', ''), '-', '')), '') nrm_tax_registration_number
      , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                       nrm_address_code
+     , COALESCE(cc.target_value, 'Miscellaneous')                                      nrm_customer_category
      , c.*
  FROM cte_customer_addr_clean                   c
        -- First try: match on country name (higher population)
@@ -153,6 +154,10 @@ SELECT
        LEFT OUTER JOIN
        ref_country                                          r
           ON UPPER(TRIM(r.country_code))                    = UPPER(TRIM(COALESCE(m_name.country_code, m_code.country_code, 'GB')))
+       -- Customer category normalization
+       LEFT OUTER JOIN
+       ref_customer_category                                cc
+         ON UPPER(TRIM(cc.source_value))                    = NULLIF(UPPER(TRIM(t.customer_class)), '')
        -- Address handling
        LEFT OUTER JOIN
        ref_post_code_district                               r0

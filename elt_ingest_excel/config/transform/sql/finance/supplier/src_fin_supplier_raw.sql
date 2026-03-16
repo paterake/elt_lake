@@ -161,7 +161,7 @@ SELECT
          ON UPPER(TRIM(r.country_code))               = UPPER(TRIM(COALESCE(m_name.country_code, m_code.country_code, 'GB')))
        -- Supplier category normalization
        LEFT OUTER JOIN
-       ref_supplier_category_mapping                  scm
+       ref_supplier_category                          scm
          ON UPPER(TRIM(scm.source_supplier_category)) = NULLIF(UPPER(TRIM(t.vendor_class_id)), '')
        -- Payment Terms normalization
        LEFT OUTER JOIN
