@@ -27,9 +27,41 @@ SELECT
      , t.nrm_country_name                                               tax_status_country
      , NULL                                                             tax_status
      , CASE
-         WHEN t.nrm_tax_id_number IS NOT NULL
-         THEN 'Supplier of Goods - VAT/GST Registered in this Country'
-         ELSE 'Supplier of Goods - Not VAT/GST Registered in this Country'
+         WHEN UPPER(t.nrm_country_code) = 'GB'
+         THEN CASE
+                WHEN t.nrm_tax_schedule_id = 'POS'
+                THEN CASE
+                       WHEN t.nrm_tax_id_number IS NOT NULL
+                       THEN 'Supplier of Services - VAT/GST Registered in this Country'
+                       ELSE 'Supplier of Services - Not VAT/GST Registered in this Country'
+                     END
+                WHEN t.nrm_tax_schedule_id IN ('PZ','PX')
+                THEN 'Supplier of VAT/GST Exempt Goods'
+                WHEN t.nrm_tax_id_number IS NOT NULL
+                THEN 'Supplier of Goods - VAT/GST Registered in this Country'
+                ELSE 'Supplier of Goods - Not VAT/GST Registered in this Country'
+              END
+         WHEN UPPER(t.nrm_country_code) IN (
+                'AT','BE','BG','HR','CY','CZ','DE','DK','EE','ES','FI','FR'
+              , 'GR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO'
+              , 'SE','SI','SK'
+              )
+         THEN CASE
+                WHEN t.nrm_tax_schedule_id = 'POS'
+                THEN 'EU Supplier of Services - Not VAT Registered in this Country'
+                ELSE 'EU Supplier of Goods - Not VAT Registered in this Country'
+              END
+         ELSE CASE
+                WHEN t.nrm_tax_schedule_id = 'POS'
+                THEN CASE
+                       WHEN t.nrm_tax_id_number IS NOT NULL
+                       THEN 'Supplier of Services - VAT/GST Registered in this Country'
+                       ELSE 'Supplier of Services - Not VAT/GST Registered in this Country'
+                     END
+                WHEN t.nrm_tax_id_number IS NOT NULL
+                THEN 'Supplier of Goods - VAT/GST Registered in this Country'
+                ELSE 'Supplier of Goods - Not VAT/GST Registered in this Country'
+              END
        END                                                              transaction_tax_status
      , NULL                                                             withholding_tax_status
      , NULL                                                             tax_authority_form_type

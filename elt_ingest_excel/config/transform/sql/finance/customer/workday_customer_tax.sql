@@ -16,8 +16,8 @@ SELECT
          WHEN UPPER(c.nrm_country_code) = 'GBR'
          THEN CASE
                 WHEN c.nrm_tax_schedule_id = 'SOS'
-                THEN 'Customer_or_Services'
-                ELSE 'Customer_of_Goods'
+                THEN 'Customer of Services'
+                ELSE 'Customer of Goods'
               END
          WHEN UPPER(c.nrm_country_code) IN (
                 'AT','BE','BG','HR','CY','CZ','DE','DK','EE','ES','FI','FR'
@@ -26,15 +26,15 @@ SELECT
               )
          THEN CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'EU_Company_VAT_Registered'
+                THEN 'VAT Registered in THIS EU country- Domestic Scenario'
                 WHEN c.nrm_tax_schedule_id = 'SZ'
-                THEN 'EU_Company_Exempt'
-                ELSE 'EU_Company_NOT_VAT_Registered_in_this_country'
+                THEN 'EU Company - Exempt in THIS country'
+                ELSE 'EU Company - Not Registered in this country'
               END
          ELSE CASE
                 WHEN c.nrm_tax_registration_number IS NOT NULL
-                THEN 'NON_EU_Company_VAT_Registered'
-                ELSE 'Non_EU_Company_Not_VAT_registered_in_this_country'
+                THEN 'VAT Registered in THIS NON EU country- Domestic Scenario'
+                ELSE 'Non EU Company Not VAT registered in this country'
               END
        END                                                                      transaction_tax_status
      , NULL                                                                     withholding_tax_status
