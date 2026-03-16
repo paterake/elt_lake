@@ -13,7 +13,7 @@ SELECT
      , fn_nvl2(c.nrm_tax_registration_number, NULL, 'Yes')                     transaction_tax_id
      , c.nrm_country_name                                                       tax_status_country
      , CASE
-         WHEN UPPER(c.nrm_country_code) = 'GBR'
+         WHEN UPPER(c.nrm_country_code) = 'GB'
          THEN CASE
                 WHEN c.nrm_tax_schedule_id = 'SOS'
                 THEN 'Customer of Services'
