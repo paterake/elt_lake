@@ -8,6 +8,7 @@ SELECT
      , t.nrm_payment_terms_id                            payment_terms
      , CASE
          WHEN t.nrm_currency_code = 'GBP'
+          AND t.nrm_bank_account_number IS NOT NULL
          THEN 'BACS|Manual'
          WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA|Wire|Manual'
@@ -15,16 +16,17 @@ SELECT
          THEN 'Wire|Manual'
          WHEN t.nrm_currency_code IN ('CHF','AUD','PLN','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire|Manual'
-         ELSE 'BACS|Manual'
+         ELSE 'Manual'
        END                                              payment_types_accepted
      , CASE
          WHEN t.nrm_currency_code = 'GBP'
+          AND t.nrm_bank_account_number IS NOT NULL
          THEN 'BACS'
          WHEN t.nrm_currency_code = 'EUR'
          THEN 'SEPA'
          WHEN t.nrm_currency_code IN ('USD','CHF','AUD','SEK','AED','QAR','DKK','NOK')
          THEN 'Wire'
-         ELSE 'BACS'
+         ELSE 'Manual'
        END                                               default_payment_type
      , NULL                                              shipping_terms
      , NULL                                              always_separate_payments
@@ -34,5 +36,5 @@ SELECT
      , NULL                                              exclude_tax_amount_from_supplier_invoice_discount
   FROM src_fin_supplier                t
  WHERE t.nrm_payment_terms_id          IS NOT NULL
-   AND COALESCE(NULLIF(TRIM(t.eft_bank_account), ''), NULLIF(TRIM(t.iban), '')) IS NOT NULL
+   AND COALESCE(t.nrm_bank_account_number, t.nrm_bank_iban) IS NOT NULL
 ;
