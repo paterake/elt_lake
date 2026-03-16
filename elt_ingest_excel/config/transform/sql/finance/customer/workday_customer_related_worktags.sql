@@ -16,4 +16,5 @@ SELECT
      , NULL                                           delete_allowed_values
      , NULL                                           allowed_worktag_id_value
   FROM src_fin_customer                c
+ WHERE 1 = 2
 ;
