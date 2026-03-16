@@ -22,5 +22,5 @@ SELECT
        INNER JOIN
        ref_workday_group_additional                   r
           ON r.source_type                            = 'customer'
-         AND UPPER(TRIM(r.source_value))              = c.customer_class
+         AND UPPER(TRIM(r.source_value))              = UPPER(TRIM(c.customer_class))
 ;
