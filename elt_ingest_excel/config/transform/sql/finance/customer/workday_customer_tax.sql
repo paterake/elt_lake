@@ -39,5 +39,4 @@ SELECT
        END                                                                      transaction_tax_status
      , NULL                                                                     withholding_tax_status
   FROM src_fin_customer                                                         c
- WHERE c.nrm_tax_schedule_id                                                   = 'SS20'
 ;

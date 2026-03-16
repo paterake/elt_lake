@@ -137,7 +137,10 @@ SELECT
      , CAST(NULL AS STRING)                                                            nrm_address_line_4
      , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                                     nrm_payment_terms_id
      , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                                      nrm_tax_schedule_id
-     , NULLIF(TRIM(REPLACE(REPLACE(c.tax_registration_number, ' ', ''), '-', '')), '') nrm_tax_registration_number
+     , CASE
+         WHEN REGEXP_REPLACE(TRIM(COALESCE(c.tax_registration_number, '')), '[^0-9A-Za-z]', '') ~ '^\d+$'
+         THEN NULLIF(REGEXP_REPLACE(TRIM(COALESCE(c.tax_registration_number, '')), '[^0-9A-Za-z]', ''), '')
+       END                                                                             nrm_tax_registration_number
      , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                       nrm_address_code
      , COALESCE(cc.target_value, 'Miscellaneous')                                      nrm_customer_category
      , c.*

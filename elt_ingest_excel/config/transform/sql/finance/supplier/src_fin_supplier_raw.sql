@@ -126,7 +126,10 @@ SELECT
      , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')        nrm_address_code
      , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                      nrm_tax_schedule_id
      , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                      nrm_tax_id_number
-     , NULLIF(TRIM(REPLACE(REPLACE(t.tax_registration_number, ' ', ''), '-', '')), '') nrm_tax_registration_number
+     , CASE
+         WHEN REGEXP_REPLACE(TRIM(COALESCE(t.tax_registration_number, '')), '[^0-9A-Za-z]', '') ~ '^\d+$'
+         THEN NULLIF(REGEXP_REPLACE(TRIM(COALESCE(t.tax_registration_number, '')), '[^0-9A-Za-z]', ''), '')
+       END                                                                             nrm_tax_registration_number
      , pt.workday_payment_terms                                                        nrm_payment_terms_id
      , rbsc.bank_name_primary                                                          nrm_bank_name
      , NULLIF(TRIM(t.eft_bank_code), '')                                               nrm_bank_sort_code
