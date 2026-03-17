@@ -11,6 +11,11 @@
 	},
 	{
 		"source_column" : "location",
+		"source_value" : "Football Conference",
+		"target_value" : "Wembley Stadium"
+	},
+	{
+		"source_column" : "location",
 		"source_value" : "The FA Group",
 		"target_value" : "Wembley Stadium"
 	},

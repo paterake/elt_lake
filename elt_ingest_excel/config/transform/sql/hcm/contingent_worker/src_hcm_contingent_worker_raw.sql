@@ -31,6 +31,9 @@ SELECT
      , NULLIF(LOWER(TRIM(t.secondary_email         )), '')                 nrm_secondary_email
      , NULLIF(LOWER(TRIM(t.manager_email_address   )), '')                 nrm_manager_email_address
      , NULLIF(LOWER(TRIM(t.manager_email           )), '')                 nrm_manager_email
+     , NULLIF(LOWER(TRIM(t.department              )), '')                 nrm_department
+     , NULLIF(LOWER(TRIM(t.department_1            )), '')                 nrm_department_1
+     , NULLIF(LOWER(TRIM(t.division                )), '')                 nrm_division
      , strftime(
           COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date ), ''), '%Y-%m-%dT%H:%M:%S.%fZ')

@@ -7,14 +7,14 @@ SELECT
      , t.nrm_first_name                                                    first_name
      , t.nrm_last_name                                                     last_name
      , 'Contingent Worker'                                                 worker_type
-     , NULLIF(UPPER(TRIM(t.department_1)), '')                             applicant_source_category
-     , COALESCE(NULLIF(UPPER(TRIM(t.department)), ''), t.department_1)     applicant_source_name
+     , t.nrm_department_1                                                  applicant_source_category
+     , COALESCE(t.nrm_department, t.nrm_department_1)                      applicant_source_name
      , t.nrm_activated_date                                                hire_date_contract_start_date
      , t.nrm_created_date                                                  original_hire_date
      , NULL                                                                probation_end_date
      , NULL                                                                continuous_service_date
      , NULL                                                                seniority_date
-     , CASE NULLIF(UPPER(TRIM(t.department_1)), '')
+     , CASE t.nrm_department_1
         WHEN UPPER('Consultant')
         THEN 'Sole Trader Staff'
         ELSE 'Supplier Staff'
@@ -34,7 +34,7 @@ SELECT
      , t.nrm_hours_per_week                                                scheduled_weekly_hours
      , t.nrm_hours_per_week                                                default_weekly_hours
      , NULL                                                                fte
-     , COALESCE(NULLIF(UPPER(TRIM(t.division)), ''), t.department_1)       company_org_name
+     , COALESCE(t.nrm_division, t.nrm_department_1, t.nrm_location)        company_org_name
      , NULL                                                                company_code
      , NULL                                                                establishment
      , NULL                                                                cost_center_code
@@ -43,7 +43,7 @@ SELECT
      , NULL                                                                work_shift
      , NULL                                                                work_shift_id
      , NULL                                                                distance_home_work
-     , TRIM(t.department_1)                                                contingent_worker_agency
+     , COALESCE(t.nrm_department_1, t.nrm_division)                        contingent_worker_agency
      , NULL                                                                remote_ee
      , NULL                                                                custom_org_1
      , NULL                                                                custom_org_2

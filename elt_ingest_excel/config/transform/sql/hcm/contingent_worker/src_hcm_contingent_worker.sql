@@ -11,7 +11,7 @@ SELECT *
        )
 SELECT
        'CW-' || LPAD(row_id::VARCHAR, 6, '0')                              contingent_worker_id
-     , l.target_value                                                      nrm_location
+     , COALESCE(l.target_value, 'Wembley Stadium')                         nrm_location
      , COALESCE(rw.mapped_value, 'Sole Trader Staff')                      nrm_worker_type
      , t.*
   FROM 
