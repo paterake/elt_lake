@@ -69,6 +69,57 @@ def test_push_and_pull():
     print("\nConnectivity test PASSED: push, list, pull all succeeded.")
 
 
+def test_push_empty_file():
+    config = SftpConfigParser.from_json(CONFIG_PATH)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    test_file_name = f"elt_sftp_empty_{timestamp}.txt"
+    remote_file = f"{config.remote_path.rstrip('/')}/{test_file_name}"
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        local_pull_dir = os.path.join(tmp_dir, "pull")
+        os.makedirs(local_pull_dir)
+        test_file_path = os.path.join(tmp_dir, test_file_name)
+        Path(test_file_path).touch()
+
+        with SftpClient(config) as client:
+            push_results = client.push(
+                local_path=tmp_dir,
+                remote_path=config.remote_path,
+                file_name=test_file_name,
+            )
+            assert len(push_results) == 1
+            assert push_results[0].success, f"Push failed: {push_results[0].error}"
+            assert push_results[0].size_bytes == 0
+
+            remote_files = client.list_remote(config.remote_path)
+            assert test_file_name in remote_files, (
+                f"{test_file_name} not found in remote listing: {remote_files}"
+            )
+
+            pull_results = client.pull(
+                remote_path=config.remote_path,
+                local_path=local_pull_dir,
+                file_name=test_file_name,
+            )
+            assert len(pull_results) == 1
+            assert pull_results[0].success, f"Pull failed: {pull_results[0].error}"
+            assert pull_results[0].size_bytes == 0
+
+            pulled_file_path = os.path.join(local_pull_dir, test_file_name)
+            assert os.path.exists(pulled_file_path)
+            assert os.path.getsize(pulled_file_path) == 0
+            with open(pulled_file_path) as f:
+                assert f.read() == ""
+
+            try:
+                client._sftp.remove(remote_file)
+                print(f"\n  Cleanup: removed {remote_file}")
+            except PermissionError:
+                print(f"\n  Cleanup: delete not permitted - {remote_file} left on server")
+
+    print(f"\nEmpty-file push test PASSED. Remote destination was: {remote_file}")
+
+
 def test_directory_create_and_delete():
     config = SftpConfigParser.from_json(CONFIG_PATH)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
