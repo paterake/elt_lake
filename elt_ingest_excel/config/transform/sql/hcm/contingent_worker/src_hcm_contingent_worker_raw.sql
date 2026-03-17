@@ -16,21 +16,21 @@ SELECT DISTINCT *
 SELECT t.*
      , ROW_NUMBER() OVER
        (PARTITION BY username
-            ORDER BY
-              created_date          DESC NULLS LAST
+            ORDER BY created_date      DESC NULLS LAST
        ) data_rnk
-  FROM cte_contingent_worker_distinct t
-       )
-     , cte_contingent_worker
-    AS (
-SELECT *
-     , ROW_NUMBER() OVER (ORDER BY username, user_id) + 100000  rnk
-  FROM cte_contingent_worker_rnk
- WHERE data_rnk = 1
+  FROM cte_contingent_worker_distinct  t
        )
 SELECT
-       'CW-' || LPAD(rnk::VARCHAR, 6, '0')                                 contingent_worker_id
-     , t.*
+       NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.first_name            )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_first_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.last_name             )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_last_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.manager_name          )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_manager_name
+     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(REGEXP_REPLACE(t.title, '[^a-zA-Z0-9 ]', '', 'g'))), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_title
+     , 'Full Time'                                                         nrm_time_type
+     , '40'                                                                nrm_hours_per_week                
+     , NULLIF(LOWER(TRIM(t.primary_email           )), '')                 nrm_primary_email
+     , NULLIF(LOWER(TRIM(t.secondary_email         )), '')                 nrm_secondary_email
+     , NULLIF(LOWER(TRIM(t.manager_email_address   )), '')                 nrm_manager_email_address
+     , NULLIF(LOWER(TRIM(t.manager_email           )), '')                 nrm_manager_email
      , strftime(
           COALESCE(
           TRY_STRPTIME(NULLIF(TRIM(t.created_date ), ''), '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -72,6 +72,7 @@ SELECT
          , CURRENT_DATE + INTERVAL '6 MONTH'
          ), '%Y-%m-%d 00:00:00'
        )                                                                   nrm_deactivation_date
+     , t.*
   FROM 
-       cte_contingent_worker              t
+       cte_contingent_worker_rnk       t
 ;

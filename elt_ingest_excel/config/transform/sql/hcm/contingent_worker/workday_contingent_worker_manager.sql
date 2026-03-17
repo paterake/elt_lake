@@ -5,8 +5,8 @@ CREATE TABLE workday_contingent_worker_manager
   WITH cte_manager_default
     AS (
 SELECT m.employee_id                            employee_id
-     , m.first_name                             first_name
-     , m.last_name                              last_name
+     , NULLIF(TRIM(m.first_name), '')           first_name
+     , NULLIF(TRIM(m.last_name ), '')           last_name
   FROM src_hcm_contingent_worker_id_mapping     m
  WHERE LOWER(m.first_name)                      = LOWER('samuel')
    AND LOWER(m.last_name)                       = LOWER('vickers')

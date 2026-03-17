@@ -2,22 +2,20 @@ DROP TABLE IF EXISTS src_hcm_contingent_worker
 ;
 CREATE TABLE src_hcm_contingent_worker
     AS
+  WITH cte_contingent_worker_dedup
+    AS (
+SELECT *
+     , ROW_NUMBER() OVER (ORDER BY username, user_id) + 100000  row_id
+  FROM src_hcm_contingent_worker_raw
+ WHERE data_rnk = 1
+       )
 SELECT
-       t.*
-     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.first_name            )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_first_name
-     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.last_name             )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_last_name
-     , NULLIF(LOWER(TRIM(t.primary_email           )), '')                 nrm_primary_email
-     , NULLIF(LOWER(TRIM(t.secondary_email         )), '')                 nrm_secondary_email
-     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(t.manager_name          )), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_manager_name
-     , NULLIF(LOWER(TRIM(t.manager_email_address   )), '')                 nrm_manager_email_address
-     , NULLIF(LOWER(TRIM(t.manager_email           )), '')                 nrm_manager_email
+       'CW-' || LPAD(row_id::VARCHAR, 6, '0')                              contingent_worker_id
      , l.target_value                                                      nrm_location
-     , NULLIF(list_aggregate(list_transform(split(lower(TRIM(REGEXP_REPLACE(t.title, '[^a-zA-Z0-9 ]', '', 'g'))), ' '), x -> upper(x[1]) || substr(x, 2)), 'string_agg', ' '), '') nrm_title
      , COALESCE(rw.mapped_value, 'Sole Trader Staff')                      nrm_worker_type
-     , 'Full Time'                                                         nrm_time_type
-     , '40'                                                                nrm_hours_per_week                
+     , t.*
   FROM 
-       src_hcm_contingent_worker_raw      t
+       cte_contingent_worker_dedup        t
        LEFT OUTER JOIN 
        ref_location_mapping               l
           ON l.source_column              = 'location'
@@ -28,7 +26,15 @@ SELECT
          AND UPPER(rw.department_1)       = UPPER(COALESCE(NULLIF(TRIM(t.department_1), ''), 'NULL'))
  WHERE 
        1 = 1
-   AND COALESCE(NULLIF(UPPER(TRIM(t.location))    , ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
-   AND COALESCE(NULLIF(UPPER(TRIM(t.department_1)), ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
-   AND COALESCE(NULLIF(UPPER(TRIM(t.user_type))   , ''), 'NULL') NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND COALESCE(NULLIF(UPPER(TRIM(t.location))    , ''), 'NULL')  NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND COALESCE(NULLIF(UPPER(TRIM(t.department_1)), ''), 'NULL')  NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND COALESCE(NULLIF(UPPER(TRIM(t.user_type))   , ''), 'NULL')  NOT IN ('COUNTY', 'SERVICE_ACCOUNT', 'SERVICE ACCOUNT')
+   AND NOT (
+       UPPER(TRIM(nrm_first_name))                                LIKE '%ROOM%'
+    OR UPPER(TRIM(nrm_last_name ))                                LIKE '%ROOM%'
+       )
+   AND NOT (
+       UPPER(TRIM(nrm_first_name))                                LIKE '%APP%'
+   AND UPPER(TRIM(nrm_last_name ))                                LIKE '%DEV%'
+       )
 ;

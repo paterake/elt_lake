@@ -25,10 +25,10 @@ SELECT
      , NULL                                                                job_profile
      , NULL                                                                job_code
      , NULL                                                                position_id
-     , TRIM(t.location)                                                    primary_position
+     , t.nrm_location                                                      primary_position
      , COALESCE(nrm_title, 'Contingent Worker')                            position_name
-     , t.activated_date                                                    position_start_date
-     , nrm_title                                                           business_title
+     , t.nrm_activated_date                                                position_start_date
+     , t.nrm_title                                                         business_title
      , t.nrm_location                                                      location_name
      , NULL                                                                work_space
      , t.nrm_hours_per_week                                                scheduled_weekly_hours
