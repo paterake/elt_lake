@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS workday_supplier_email
 ;
-CREATE TABLE workday_supplier_email AS
+CREATE TABLE workday_supplier_email 
+    AS
   WITH cte_supplier_email
     AS (
 SELECT DISTINCT
