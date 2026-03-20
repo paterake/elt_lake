@@ -9,28 +9,31 @@ urls:
   # Add URLs to assess here
   - url: "https://cnltd.co.uk/"
     name: "Website to assess"
-    category: "website"
+    category: "assess"
 
   - url: "https://insuranceit.co.uk/"
     name: "Website to assess"
-    category: "website"
+    category: "assess"
 
   - url: "https://cnltd.co.uk/wp-admin/index.php"
     name: "Additional information"
-    category: "website"
+    category: "information"
 
   - url: "https://analytics.google.com/analytics/web/#/a24875658p485376789/reports/intelligenthome"
     name: "Additional information"
-    category: "website"
+    category: "information"
 
 Documents:
-  # Add URLs to assess here
   - folder: "~/Downloads"
     name: "website_optimisation_part1.jpeg"
     description: "Specification Part 1"
-    category: "specification"
+    sequence: "1"
+    category: "requirement"
 
   - folder: "~/Downloads"
     name: "website_optimisation_part2.jpeg"
     description: "Specification Part 2"
-    category: "specification"
+    sequence: "2"
+    category: "requirement"
+
+credentials: "../../.credentials/website_optimisation.yaml"
