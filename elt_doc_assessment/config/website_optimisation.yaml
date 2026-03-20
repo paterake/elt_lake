@@ -1,0 +1,36 @@
+# ELT Ingest Assessment Configuration
+# Add URLs to assess against the assessment criteria
+
+assessment:
+  name: "Placement Website Optimisation"
+  description: "Assess websites and how they work on both laptop and phone and make suggestions on how they can be improved"
+  
+urls:
+  # Add URLs to assess here
+  - url: "https://cnltd.co.uk/"
+    name: "Website to assess"
+    category: "website"
+
+  - url: "https://insuranceit.co.uk/"
+    name: "Website to assess"
+    category: "website"
+
+  - url: "https://cnltd.co.uk/wp-admin/index.php"
+    name: "Additional information"
+    category: "website"
+
+  - url: "https://analytics.google.com/analytics/web/#/a24875658p485376789/reports/intelligenthome"
+    name: "Additional information"
+    category: "website"
+
+Documents:
+  # Add URLs to assess here
+  - folder: "~/Downloads"
+    name: "website_optimisation_part1.jpeg"
+    description: "Specification Part 1"
+    category: "specification"
+
+  - folder: "~/Downloads"
+    name: "website_optimisation_part2.jpeg"
+    description: "Specification Part 2"
+    category: "specification"
