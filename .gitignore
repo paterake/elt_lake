@@ -6,6 +6,8 @@ __pycache__/
 # tmp
 .tmp/
 .credentials/
+.output/
+
 
 # C extensions
 *.so

@@ -1,3 +1,3 @@
-"""ELT Doc Assessment - Assessment tool for ETL/ELT document URLs."""
+"""ELT Doc Assessment - Website optimisation assessment tool."""
 
 __version__ = "0.1.0"
