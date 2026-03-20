@@ -46,15 +46,21 @@ def load_config(config_path: Path) -> AssessmentConfig:
             # Parse description to extract section/subsection
             description_text = doc.get("description", "")
             section, subsection = _parse_requirement_description(description_text)
-            
+
+            # Handle folder and name fields
+            folder = doc.get("folder", "~/Downloads")
+            doc_name = doc.get("name", "")
+
             requirements.append(Requirement(
                 section=section,
                 subsection=subsection,
                 description=description_text,
                 sequence=int(doc.get("sequence", 99)),
                 category=doc.get("category", "requirement"),
+                folder=Path(folder).expanduser(),
+                name=doc_name,
             ))
-    
+
     # Sort by sequence
     requirements.sort(key=lambda r: r.sequence)
 
@@ -74,9 +80,16 @@ def load_config(config_path: Path) -> AssessmentConfig:
                         password=cred.get("password", ""),
                     )
 
-    # Parse output path
-    output_path_str = data.get("output", "assessment_report.docx")
-    output_path = _resolve_output_path(config_path, output_path_str)
+    # Parse output path (new format with folder and name)
+    output_data = data.get("output", {})
+    if isinstance(output_data, str):
+        # Legacy format: just a path string
+        output_path = _resolve_output_path(config_path, output_data)
+    else:
+        # New format: dict with folder and name
+        output_folder = output_data.get("folder", "~/Downloads")
+        output_name = output_data.get("name", "assessment_report.docx")
+        output_path = Path(output_folder).expanduser() / output_name
 
     return AssessmentConfig(
         name=name,

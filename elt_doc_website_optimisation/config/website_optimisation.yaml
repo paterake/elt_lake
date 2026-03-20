@@ -24,16 +24,20 @@ urls:
     category: "information"
 
 Documents:
-  - name: "~/Downloads/website_optimisation_part1.jpeg"
+  - name: "website_optimisation_part1.jpeg"
+    folder: "~/Downloads"
     description: "Specification Part 1"
     sequence: "1"
     category: "requirement"
 
-  - name: "~/Downloads/website_optimisation_part2.jpeg"
+  - name: "website_optimisation_part2.jpeg"
+    folder: "~/Downloads"
     description: "Specification Part 2"
     sequence: "2"
     category: "requirement"
 
 credentials: "../../.credentials/website_optimisation.yaml"
 
-output: "~Downloads/website_optimisation_assessment.docx"
+output:
+  folder: "~/Downloads"
+  name: "website_optimisation_assessment.docx"

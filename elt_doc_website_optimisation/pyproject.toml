@@ -1,7 +1,7 @@
 [project]
-name = "elt-doc-assessment"
+name = "elt-doc-website-optimisation"
 version = "0.1.0"
-description = "Assessment tool for ETL/ELT document URLs"
+description = "Website optimisation assessment tool"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-elt-doc-assessment = "elt_doc_assessment.cli:cli"
+elt-doc-website-optimisation = "elt_doc_website_optimisation.cli:cli"
 
 [build-system]
 requires = ["uv_build>=0.9.15,<0.10.0"]

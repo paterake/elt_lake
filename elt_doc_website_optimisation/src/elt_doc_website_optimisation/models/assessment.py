@@ -37,6 +37,13 @@ class Requirement:
     description: str
     sequence: int
     category: str = "requirement"
+    folder: Path = field(default_factory=lambda: Path("~/Downloads").expanduser())
+    name: str = ""
+    
+    @property
+    def full_path(self) -> Path:
+        """Get full path to the requirement document."""
+        return self.folder / self.name
 
 
 @dataclass

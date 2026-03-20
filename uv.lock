@@ -4,12 +4,12 @@ requires-python = ">=3.14"
 
 [manifest]
 members = [
-    "elt-doc-assessment",
     "elt-doc-leanix-overview",
     "elt-doc-sad",
     "elt-doc-sad-leanix",
     "elt-doc-transcript-audio",
     "elt-doc-vendor-assess",
+    "elt-doc-website-optimisation",
     "elt-ingest-rest",
 ]
 
@@ -193,51 +193,6 @@ wheels = [
 ]
 
 [[package]]
-name = "elt-doc-assessment"
-version = "0.1.0"
-source = { editable = "elt_doc_assessment" }
-dependencies = [
-    { name = "beautifulsoup4" },
-    { name = "click" },
-    { name = "httpx" },
-    { name = "lxml" },
-    { name = "openpyxl" },
-    { name = "pillow" },
-    { name = "playwright" },
-    { name = "python-docx" },
-    { name = "python-pptx" },
-    { name = "pyyaml" },
-    { name = "requests" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "pytest-cov" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "beautifulsoup4", specifier = ">=4.12.0" },
-    { name = "click", specifier = ">=8.0.0" },
-    { name = "httpx", specifier = ">=0.25.0" },
-    { name = "lxml", specifier = ">=5.0.0" },
-    { name = "openpyxl", specifier = ">=3.1.0" },
-    { name = "pillow", specifier = ">=10.0.0" },
-    { name = "playwright", specifier = ">=1.40.0" },
-    { name = "python-docx", specifier = ">=1.2.0" },
-    { name = "python-pptx", specifier = ">=1.0.2" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "requests", specifier = ">=2.31.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-cov", specifier = ">=4.0.0" },
-]
-
-[[package]]
 name = "elt-doc-leanix-overview"
 version = "0.1.0"
 source = { editable = "elt_doc_leanix_overview" }
@@ -346,6 +301,51 @@ requires-dist = [{ name = "python-docx", specifier = ">=1.1.0" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.0.2" }]
+
+[[package]]
+name = "elt-doc-website-optimisation"
+version = "0.1.0"
+source = { editable = "elt_doc_website_optimisation" }
+dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "click" },
+    { name = "httpx" },
+    { name = "lxml" },
+    { name = "openpyxl" },
+    { name = "pillow" },
+    { name = "playwright" },
+    { name = "python-docx" },
+    { name = "python-pptx" },
+    { name = "pyyaml" },
+    { name = "requests" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-cov" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "beautifulsoup4", specifier = ">=4.12.0" },
+    { name = "click", specifier = ">=8.0.0" },
+    { name = "httpx", specifier = ">=0.25.0" },
+    { name = "lxml", specifier = ">=5.0.0" },
+    { name = "openpyxl", specifier = ">=3.1.0" },
+    { name = "pillow", specifier = ">=10.0.0" },
+    { name = "playwright", specifier = ">=1.40.0" },
+    { name = "python-docx", specifier = ">=1.2.0" },
+    { name = "python-pptx", specifier = ">=1.0.2" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "requests", specifier = ">=2.31.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "pytest-cov", specifier = ">=4.0.0" },
+]
 
 [[package]]
 name = "elt-ingest-rest"

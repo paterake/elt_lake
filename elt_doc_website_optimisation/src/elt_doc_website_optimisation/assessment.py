@@ -3,8 +3,8 @@
 import tempfile
 from pathlib import Path
 
-from elt_doc_assessment.config_loader import load_config
-from elt_doc_assessment.models.assessment import (
+from elt_doc_website_optimisation.config_loader import load_config
+from elt_doc_website_optimisation.models.assessment import (
     AssessmentConfig,
     AssessmentResult,
     Finding,
@@ -13,14 +13,14 @@ from elt_doc_assessment.models.assessment import (
     Severity,
     Status,
 )
-from elt_doc_assessment.screenshot import ScreenshotCapture
-from elt_doc_assessment.analyzers.analytics import AnalyticsAnalyzer
-from elt_doc_assessment.analyzers.content import ContentAnalyzer
-from elt_doc_assessment.analyzers.seo import SEOAnalyzer
-from elt_doc_assessment.analyzers.technical import TechnicalAnalyzer
-from elt_doc_assessment.analyzers.ux_navigation import UXNavigationAnalyzer
-from elt_doc_assessment.analyzers.wordpress import WordPressAnalyzer
-from elt_doc_assessment.report.generator import ReportGenerator
+from elt_doc_website_optimisation.screenshot import ScreenshotCapture
+from elt_doc_website_optimisation.analyzers.analytics import AnalyticsAnalyzer
+from elt_doc_website_optimisation.analyzers.content import ContentAnalyzer
+from elt_doc_website_optimisation.analyzers.seo import SEOAnalyzer
+from elt_doc_website_optimisation.analyzers.technical import TechnicalAnalyzer
+from elt_doc_website_optimisation.analyzers.ux_navigation import UXNavigationAnalyzer
+from elt_doc_website_optimisation.analyzers.wordpress import WordPressAnalyzer
+from elt_doc_website_optimisation.report.generator import ReportGenerator
 
 
 class AssessmentOrchestrator:

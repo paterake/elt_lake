@@ -7,7 +7,7 @@ members = [
     "elt_doc_transcript_audio",
     "elt_doc_damabok",
     "elt_doc_sad",
-    "elt_doc_assessment",
+    "elt_doc_website_optimisation",
 ]
 
 # Optional: shared dev dependencies for all sub-projects
