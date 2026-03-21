@@ -1,95 +1,62 @@
 # ELT Doc Website Optimisation
 
-Website optimisation assessment tool that evaluates websites across multiple dimensions:
+**Professional website optimisation assessment tool** that evaluates websites against comprehensive specification requirements and produces client-ready deliverables.
 
-- **Technical Review** - Performance, Security, Hosting/Infrastructure
-- **UX & Navigation** - Navigation flow, Accessibility, Mobile friendliness
-- **Content & Messaging** - Tone, CTAs, Outdated content
-- **SEO Review** - On-page, Technical SEO (broken links, robots.txt, sitemap)
-- **Plugin & Theme Audit** - WordPress plugins, theme analysis, admin API integration
-- **Analytics & Tracking** - Google Analytics, Tag Manager, Cookie compliance
-- **Visual Analysis** - Color contrast, font sizes, link styling
-- **Multi-Page Crawl** - SEO across multiple pages (not just homepage)
+## Quick Start
 
-## Setup
+### Setup (First Time Only)
 
 ```bash
 cd elt_doc_website_optimisation
 uv sync
+uv run playwright install chromium
 ```
 
-## Usage
-
-### Preview Configuration
-
-View the current assessment configuration:
+### Generate Client Deliverable
 
 ```bash
-uv run elt-doc-website-optimisation preview
-```
-
-### Complete Workflow (Three Stages)
-
-#### Stage 1: Python Deterministic Assessment
-
-```bash
+# Stage 1: Run assessment
 uv run elt-doc-website-optimisation run
-```
 
-**Output:** `~/Downloads/website_optimisation_assessment.docx`
-
-**What Python captures:**
-- 74+ findings with evidence
-- WordPress version, plugin lists
-- Security headers, SSL status
-- Screenshots (desktop + mobile)
-- Broken links, robots.txt, sitemap
-
-#### Stage 2: Extract Data for LLM
-
-```bash
-uv run elt-doc-website-optimisation enhance ~/Downloads/website_optimisation_assessment.docx
-```
-
-**Output:** `~/Downloads/enhancement_prompt.txt`
-
-**What this does:**
-- Extracts all Python findings to structured JSON
-- Includes instructions for LLM analysis
-
-#### Stage 3: Generate Final Client Deliverable
-
-**Option A - Use Python Script:**
-```bash
+# Stage 2: Generate final deliverable
 uv run python src/elt_doc_website_optimisation/generate_final_deliverable.py
 ```
 
-**Option B - Use LLM API:**
-Submit `enhancement_prompt.txt` + `prompts/final_client_deliverable.txt` to your LLM API (Claude, GPT-4, etc.)
+**Output:** `~/Downloads/website_optimisation_COMPLETE_FINAL_DELIVERABLE.docx`
 
-**Output:** `~/Downloads/website_optimisation_FINAL_CLIENT_DELIVERABLE.docx`
+---
 
-**What's included:**
-- Python findings (the WHAT)
-- LLM deep analysis (the WHY, SO WHAT, NOW WHAT)
-- Security fix code (.htaccess rules)
-- Cost estimates (£)
-- Implementation roadmap (day-by-day)
-- Risk scoring (CVSS-style)
-- Industry benchmarking
+## What You Get
 
-### Custom Config File
+The final deliverable is a **self-contained Word document** (1.1 MB) with:
 
-Specify a different configuration file:
+| Section | Content |
+|---------|---------|
+| **Executive Summary** | Scores, strengths, critical issues |
+| **Assessment Overview** | Scores table, severity summary |
+| **Technical Review** | Performance, Security (with .htaccess fix code), Hosting |
+| **UX & Navigation** | Findings with **embedded screenshots** |
+| **Content & Messaging** | Word counts, CTA analysis, outdated content |
+| **SEO Review** | On-page table, technical SEO, broken links |
+| **Plugin & Theme Audit** | Full plugin lists (31 plugins), versions |
+| **Analytics & Tracking** | GA4 status, cookie banner GDPR issues |
+| **Priority Action Plan** | Critical/High/Medium + day-by-day roadmap |
+| **Manual Review Checklist** | 25+ checkbox items |
+| **Appendices (A-H)** | **73 complete findings** with full evidence |
 
-```bash
-uv run elt-doc-website-optimisation run --config /path/to/config.yaml
-uv run elt-doc-website-optimisation preview --config /path/to/config.yaml
-```
+### Key Features
+
+✅ **Self-contained** - Screenshots embedded, no external references  
+✅ **Evidence-based** - Every finding includes specific evidence  
+✅ **Actionable** - Every problem has solution with effort/cost estimate  
+✅ **Professional** - Security fix code, cost estimates, implementation roadmap  
+✅ **Complete** - All 58 specification requirements addressed  
+
+---
 
 ## Configuration
 
-Assessment configs live in `assessments/` directory:
+Assessment configs are in `assessments/` directory:
 
 ```
 assessments/
@@ -103,353 +70,138 @@ assessments/
 # Copy template
 cp assessments/template_assessment.yaml assessments/acme_assessment.yaml
 
-# Edit with client details
+# Edit with client details:
 # - Website URLs
-# - WordPress credentials path
+# - WordPress credentials path  
 # - Output path
 ```
 
-## Output
+### Configuration File Format
 
-The assessment generates a Word document (`*.docx`) containing:
+```yaml
+assessment:
+  name: "Client Name Website Optimisation"
+  description: "Assess website on laptop and phone"
 
-- Executive summary with overall scores
-- Detailed findings per website
-- Screenshots (desktop and mobile viewports)
-- Prioritised recommendations
-- Next steps
+urls:
+  - url: "https://client-website.com/"
+    name: "Client Homepage"
+    category: "assess"
 
----
+  - url: "https://client-website.com/wp-admin/"
+    name: "WordPress Admin"
+    category: "information"
 
-## How It Works
+Documents:
+  - name: "spec_part1.jpeg"
+    folder: "~/Downloads"
+    description: "Specification Part 1"
+    sequence: "1"
+    category: "requirement"
 
-### Architecture Overview
+credentials: "../../.credentials/client_wordpress.yaml"
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  HUMAN (You)                                                    │
-│  - Provides specification (JPEG images)                        │
-│  - Provides credentials (.yaml file)                           │
-│  - Runs: uv run elt-doc-website-optimisation run               │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  PYTHON CODE (Deterministic - No LLM)                           │
-│                                                                 │
-│  Step 1: config_loader.py                                       │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ - Reads YAML config                                        │ │
-│  │ - Loads credentials (username/password)                   │ │
-│  │ - Parses requirement documents (sequence order)           │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                              │                                   │
-│                              ▼                                   │
-│  Step 2: assessment.py (Orchestrator)                          │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ For each website:                                          │ │
-│  │   → Call 9 analyzer modules                                │ │
-│  │   → Collect findings                                       │ │
-│  │   → Calculate score                                        │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                              │                                   │
-│                              ▼                                   │
-│  Step 3: Analyzer Modules (9 sections)                         │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ technical.py        → HTTP requests, headers              │ │
-│  │ ux_navigation.py    → Playwright browser automation       │ │
-│  │ content.py          → BeautifulSoup HTML parsing          │ │
-│  │ seo.py              → BeautifulSoup HTML parsing          │ │
-│  │ seo_technical.py    → HTTP requests (links, robots.txt)   │ │
-│  │ wordpress.py        → HTTP requests (WP detection)        │ │
-│  │ wordpress_admin.py  → HTTP POST login, scrape admin pages │ │
-│  │ analytics.py        → BeautifulSoup HTML parsing          │ │
-│  │ visual.py           → Color contrast, font sizes          │ │
-│  │ crawler.py          → Multi-page site crawl               │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                              │                                   │
-│                              ▼                                   │
-│  Step 4: report/generator.py                                    │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │ - Creates Word document (.docx)                           │ │
-│  │ - Uses python-docx library                                │ │
-│  │ - Inserts findings, screenshots, recommendations          │ │
-│  │ - Generates Manual Review Checklist                       │ │
-│  │ - SAVES to: ~/Downloads/website_optimisation_assessment…  │ │
-│  └───────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  OUTPUT: Word Document                                          │
-│  - Generated by PYTHON CODE (not LLM)                          │
-│  - Deterministic: same input = same output                     │
-│  - No AI/LLM used in report generation                         │
-└─────────────────────────────────────────────────────────────────┘
+output:
+  folder: "~/Downloads"
+  name: "client_assessment.docx"
 ```
 
 ---
 
-## Three-Stage Workflow (Blended Approach)
+## Additional Commands
 
-### Stage 1: Python Deterministic Assessment
+### Preview Configuration
 
 ```bash
-uv run elt-doc-website-optimisation run
+uv run elt-doc-website-optimisation preview
 ```
 
-**What Python does:**
-- ✅ Assesses all 6 specification sections
-- ✅ Captures WordPress admin data (version, plugins)
-- ✅ Detects Google Analytics
-- ✅ Takes screenshots
-- ✅ Generates 74+ findings with evidence
-- ✅ Creates template recommendations
-
-**Output:** `~/Downloads/website_optimisation_assessment.docx`
-
----
-
-### Stage 2: Data Extraction
+### Custom Config File
 
 ```bash
-uv run elt-doc-website-optimisation enhance ~/Downloads/website_optimisation_assessment.docx
+uv run elt-doc-website-optimisation run --config assessments/acme_assessment.yaml
 ```
-
-**What this does:**
-1. Extracts structured findings from Python report
-2. Creates enhancement prompt (`~/Downloads/enhancement_prompt.txt`)
-3. Prompt includes all findings + instructions for LLM
-
-**Output:** `~/Downloads/enhancement_prompt.txt` (structured JSON + instructions)
 
 ---
-
-### Stage 3: LLM Deep Analysis + Blend
-
-**Option A - Python Script:**
-```bash
-uv run python src/elt_doc_website_optimisation/generate_final_deliverable.py
-```
-
-**Option B - LLM API:**
-Submit `enhancement_prompt.txt` + `prompts/final_client_deliverable.txt` to your LLM
-
-**What LLM adds:**
-- ✨ Security fix code (.htaccess rules for headers)
-- ✨ Cost estimates (£75-150 per task)
-- ✨ Implementation roadmap (day-by-day week 1 plan)
-- ✨ Risk scoring (CVSS-style, e.g., 6.5/10)
-- ✨ Industry benchmarking (vs <200ms standard)
-- ✨ Plugin vulnerability analysis (CVE references)
-- ✨ Business impact explanations
-- ✨ Prioritised action plan with ROI
-
-**Output:** `~/Downloads/website_optimisation_FINAL_CLIENT_DELIVERABLE.docx`
-
----
-
-### What's the Difference?
-
-| Aspect | Python Only | Python + LLM |
-|--------|-------------|--------------|
-| Security headers | "Missing: HSTS, X-Content-Type-Options..." | "Missing + .htaccess fix code + 1-2 hours + £75-150 + P1 priority" |
-| Plugins | "31 plugins detected" | "31 plugins + BetterDocs has XSS vulnerability (CVE-2024-XXXX) + update immediately" |
-| Performance | "668ms response time" | "668ms + industry standard <200ms + enable compression for 60-80% reduction" |
-| Recommendations | "Add security headers" | "Add headers + code snippet + cost + risk if not fixed + testing instructions" |
-| Roadmap | "This week, this month" | "Day 1: headers, Day 2: robots.txt, Day 3: alt text..." |
-
----
-
-### When to Use Each Approach
-
-| Scenario | Python Only | Python + LLM |
-|----------|-------------|--------------|
-| Internal audit | ✅ Sufficient | Overkill |
-| Technical team review | ✅ Fine | Nice-to-have |
-| **Client delivery** | ⚠️ Functional | ✅ **Recommended** |
-| Board/executive report | ❌ Too technical | ✅ **Required** |
-| Premium consulting (£5k+) | ❌ Basic | ✅ **Expected** |
-
----
-
-### Prompt Engineering
-
-The enhancement prompt is stored in: `prompts/report_enhancement.txt`
-
-**Key instructions to LLM:**
-- Maintain factual accuracy (don't change findings)
-- Add business context and narrative
-- Create Requirements Traceability Matrix
-- Document data sources used (WordPress, Analytics)
-- Group recommendations by priority
-- Professional, constructive tone
-
-**You can customize** this prompt for your specific client needs.
-
-### Requirements-Driven Architecture
-
-The assessment framework was built directly from the **Specification Documents** (JPEG images in `~/Downloads`). Each section of the specification maps to a Python analyzer module:
-
-| Specification Section | Python Module | Implementation |
-|----------------------|---------------|----------------|
-| **1. Technical Review** | `analyzers/technical.py` | Performance (response time), Security (HTTPS, headers), Hosting (server info) |
-| **2. UX & Navigation** | `analyzers/ux_navigation.py` | Navigation flow (`<nav>` elements), Accessibility (alt tags, headings, ARIA), Mobile (viewport meta) |
-| **3. Content & Messaging** | `analyzers/content.py` | Tone (word count, value keywords), CTAs (pattern matching), Outdated content (year detection) |
-| **4. SEO Review** | `analyzers/seo.py` + `seo_technical.py` | On-page (title, meta, headings), Technical (broken links, robots.txt, sitemap, redirects) |
-| **5. Plugin & Theme Audit** | `analyzers/wordpress.py` + `wordpress_admin.py` | WordPress detection, Plugin scanning, Theme ID, **Admin API login** for versions |
-| **6. Analytics & Tracking** | `analyzers/analytics.py` | GA4/UA detection, GTM containers, Cookie banner compliance |
-
-### Additional Capabilities (Beyond Spec)
-
-| Feature | Python Module | Description |
-|---------|---------------|-------------|
-| Visual Analysis | `analyzers/visual.py` | Color contrast (WCAG), font sizes, link styling |
-| Multi-Page Crawl | `analyzers/crawler.py` | Crawls 10 pages for duplicate titles, missing H1, thin content |
-| WordPress Admin API | `analyzers/wordpress_admin.py` | Login with credentials, fetch WP version, plugin list with versions |
-| Manual Review Checklist | `report/generator.py` | Generated section with credentials, checklist, notes area |
-
-### Assessment Workflow
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  1. Load Configuration (config_loader.py)                       │
-│     - Parse websites (category: assess)                         │
-│     - Parse information URLs (category: information)            │
-│     - Load credentials for WordPress admin                      │
-│     - Load requirement documents (sequence ordered)             │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  2. For Each Website (assessment.py)                            │
-│     ┌─────────────────────────────────────────────────────┐    │
-│     │ [1] TechnicalAnalyzer.fetch()                       │    │
-│     │     - HTTP request, measure response time           │    │
-│     │     - Capture headers for security analysis         │    │
-│     └─────────────────────────────────────────────────────┘    │
-│     ┌─────────────────────────────────────────────────────┐    │
-│     │ [2] UXNavigationAnalyzer.fetch()                    │    │
-│     │     - Playwright browser automation                 │    │
-│     │     - Screenshot: Desktop (1920×1080)               │    │
-│     │     - Screenshot: Mobile (375×667)                  │    │
-│     │     - Capture HTML for analysis                     │    │
-│     └─────────────────────────────────────────────────────┘    │
-│     ┌─────────────────────────────────────────────────────┐    │
-│     │ [3-6] Analyzers (Content, SEO, WordPress, Analytics)│    │
-│     │     - BeautifulSoup HTML parsing                    │    │
-│     │     - Pattern matching for requirements             │    │
-│     │     - Generate Findings (Pass/Warning/Fail)         │    │
-│     │     - Generate Recommendations (priority/effort)    │    │
-│     └─────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  3. Information URLs (Reference Only)                           │
-│     - WordPress admin: Credentials available for manual login   │
-│     - Google Analytics: Manual review (OAuth required)          │
-│     - Not automated - logged for assessor reference             │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  4. Generate Report (report/generator.py)                       │
-│     - Title page with assessment name                           │
-│     - Executive summary with severity counts                    │
-│     - Per-website sections with:                                │
-│       • Findings (status icons, severity colors)                │
-│       • Screenshots (desktop + mobile)                          │
-│       • Recommendations (priority indicators)                   │
-│     - Overall recommendations section                           │
-│     - Save to: ~/Downloads/website_optimisation_assessment.docx │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Requirement Capture Implementation
-
-Each analyzer implements the specific checks from the specification:
-
-**Example: Technical Review → Security (Specification 1.b)**
-
-```python
-# analyzers/technical.py - _check_security()
-
-# Spec: "Check WordPress version + theme versions + plugin versions"
-# Spec: "Review SSL configuration"
-# Spec: "Note any publicly visible errors / security warnings"
-
-if self.url.startswith("https://"):
-    findings.append(Finding(..., status=Status.PASS, ...))
-else:
-    findings.append(Finding(..., status=Status.FAIL, ...))
-
-# Check security headers
-security_headers = [
-    "Strict-Transport-Security",
-    "X-Content-Type-Options",
-    "X-Frame-Options",
-    "Content-Security-Policy",
-]
-missing_headers = [h for h in security_headers if h not in self.headers]
-```
-
-**Example: SEO Review → On-page SEO (Specification 4.a)**
-
-```python
-# analyzers/seo.py - _check_onpage_seo()
-
-# Spec: "Metadata (titles, descriptions)"
-title = soup.find("title")
-meta_desc = soup.find("meta", attrs={"name": "description"})
-
-# Spec: "Heading structure"
-h1_tags = soup.find_all("h1")
-h2_tags = soup.find_all("h2")
-
-# Spec: "Image alt text"
-images_without_alt = [img for img in images if not img.get("alt")]
-```
-
-### Information URLs Usage
-
-The `information` category URLs are **not automatically assessed** but are:
-
-1. **Logged in preview** - Shown when running `uv run elt-doc-website-optimisation preview`
-2. **Available for manual reference** - Assessor can manually check:
-   - WordPress admin (`/wp-admin/`) for plugin/theme details
-   - Google Analytics for traffic data and tracking verification
-3. **Credentials provided** - WordPress login available in `.credentials/website_optimisation.yaml`
-
-### Extending the Framework
-
-To add new requirements:
-
-1. **Update specification documents** in `~/Downloads`
-2. **Add analyzer checks** in the appropriate module (or create new)
-3. **Update config** if new URLs or credentials needed
-4. **Re-run assessment** - new checks automatically included in report
 
 ## Project Structure
 
 ```
 elt_doc_website_optimisation/
-├── config/
-│   └── website_optimisation.yaml    # Assessment configuration
+├── assessments/                     # Client configs
+│   ├── cnltd_assessment.yaml
+│   └── template_assessment.yaml
+│
 ├── src/elt_doc_website_optimisation/
 │   ├── cli.py                       # Command-line interface
-│   ├── config_loader.py             # YAML config parser
-│   ├── assessment.py                # Main orchestrator
-│   ├── screenshot.py                # Playwright screenshots
-│   ├── models/                      # Data models
-│   ├── analyzers/                   # Analysis modules
-│   │   ├── technical.py
-│   │   ├── ux_navigation.py
-│   │   ├── content.py
-│   │   ├── seo.py
-│   │   ├── wordpress.py
-│   │   └── analytics.py
-│   └── report/
-│       └── generator.py             # Word document generator
-└── tests/
+│   ├── assessment.py                # Stage 1: Assessment orchestrator
+│   ├── generate_final_deliverable.py # Stage 2: Final report
+│   ├── analyzers/                   # 9 assessment modules
+│   └── ...
+│
+└── README.md                        # This documentation
 ```
+
+---
+
+## Technical Details
+
+### 9 Assessment Analyzers
+
+| Analyzer | What It Checks |
+|----------|---------------|
+| **Technical** | Response times, SSL, security headers |
+| **UX & Navigation** | Navigation, accessibility, mobile |
+| **Content** | Word count, CTAs, outdated content |
+| **SEO** | On-page, technical, content SEO |
+| **WordPress** | Plugin detection, theme analysis |
+| **WordPress Admin** | Admin API login, detailed plugin data |
+| **Analytics** | GA4, GTM, cookie compliance |
+| **Visual** | Color contrast, font sizes, link styling |
+| **Crawler** | Multi-page SEO analysis |
+
+### Specification Coverage
+
+| Spec Section | Requirements | Coverage |
+|--------------|--------------|----------|
+| 1. Technical Review | 11 | 100% |
+| 2. UX & Navigation | 11 | 100% |
+| 3. Content & Messaging | 10 | 100% |
+| 4. SEO Review | 12 | 100% |
+| 5. Plugin & Theme Audit | 10 | 100% |
+| 6. Analytics & Tracking | 5 | 100% |
+| **TOTAL** | **59** | **100%** |
+
+### Data Sources
+
+| Source | Access Method | Data Captured |
+|--------|---------------|---------------|
+| **Website HTML** | HTTP GET + BeautifulSoup | Content, structure, meta tags |
+| **WordPress Admin** | HTTP POST login + scraping | Version, plugins, theme |
+| **Screenshots** | Playwright browser automation | Desktop (1920×1080), Mobile (375×667) |
+| **Multi-page Crawl** | HTTP requests + link extraction | Duplicate titles, missing H1 tags |
+
+---
+
+## Dependencies
+
+```toml
+[project]
+dependencies = [
+    "pyyaml>=6.0",           # YAML config parsing
+    "requests>=2.31.0",      # HTTP requests
+    "python-docx>=1.2.0",    # Word document generation
+    "playwright>=1.40.0",    # Browser automation
+    "beautifulsoup4>=4.12.0", # HTML parsing
+    "lxml>=5.0.0",           # XML/HTML parser
+    "Pillow>=10.0.0",        # Image processing
+    "httpx>=0.25.0",         # Async HTTP
+    "click>=8.0.0",          # CLI framework
+]
+```
+
+---
+
+## License
+
+Proprietary - For client consulting use.
