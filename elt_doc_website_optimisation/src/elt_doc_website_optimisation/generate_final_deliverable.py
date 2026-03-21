@@ -538,32 +538,225 @@ Day 5: Add CTAs to insuranceit.co.uk"""
     for _ in range(10):
         doc.add_paragraph("_", style="No Spacing")
     
-    # === 11. APPENDICES ===
+    # === 11. APPENDICES WITH COMPLETE FINDINGS ===
     doc.add_page_break()
     doc.add_heading("Appendices", level=1)
     doc.add_paragraph("The appendices contain complete findings from all automated assessments. Each appendix corresponds to a specification section and includes all evidence collected during testing.")
     
+    # Appendix A: Technical Review - ALL findings
     doc.add_heading("Appendix A: Technical Review Findings", level=2)
     doc.add_paragraph("Complete technical assessment findings including performance metrics, security configuration, and hosting infrastructure analysis.")
     
+    doc.add_heading("A.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    tech_cnltd = [
+        ("✓", "Good server response time: 668ms", "Response time: 668ms"),
+        ("✓", "HTTPS is enabled", "URL uses HTTPS"),
+        ("⚠", "Missing security headers: Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options, Content-Security-Policy", "Missing: ['Strict-Transport-Security', 'X-Content-Type-Options', 'X-Frame-Options', 'Content-Security-Policy']"),
+    ]
+    for symbol, finding, evidence in tech_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("A.2 Insurance IT (insuranceit.co.uk)", level=3)
+    tech_ins = [
+        ("✓", "Good server response time: 132ms", "Response time: 132ms"),
+        ("✓", "HTTPS is enabled", "URL uses HTTPS"),
+        ("⚠", "Missing security headers: Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options, Content-Security-Policy", "Missing: ['Strict-Transport-Security', 'X-Content-Type-Options', 'X-Frame-Options', 'Content-Security-Policy']"),
+    ]
+    for symbol, finding, evidence in tech_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix B: UX & Navigation - ALL findings
     doc.add_heading("Appendix B: UX & Navigation Findings", level=2)
     doc.add_paragraph("Complete UX assessment findings including navigation structure, accessibility compliance, and mobile responsiveness analysis.")
     
+    doc.add_heading("B.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    ux_cnltd = [
+        ("✓", "Semantic <nav> element present", "Found 2 <nav> element(s)"),
+        ("✗", "1 image(s) missing alt tags", "Missing alt tags on 1 images"),
+        ("✓", "Single H1 heading present", "One H1 tag found"),
+        ("✓", "Viewport meta tag present", "Viewport meta tag found"),
+        ("✓", "Responsive viewport configured", "width=device-width in viewport"),
+    ]
+    for symbol, finding, evidence in ux_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("B.2 Insurance IT (insuranceit.co.uk)", level=3)
+    ux_ins = [
+        ("✓", "Semantic <nav> element present", "Found 1 <nav> element(s)"),
+        ("✗", "9 image(s) missing alt tags", "Missing alt tags on 9 images"),
+        ("✓", "Single H1 heading present", "One H1 tag found"),
+        ("✓", "Viewport meta tag present", "Viewport meta tag found"),
+        ("✓", "Responsive viewport configured", "width=device-width in viewport"),
+    ]
+    for symbol, finding, evidence in ux_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix C: Content & Messaging - ALL findings
     doc.add_heading("Appendix C: Content & Messaging Findings", level=2)
     doc.add_paragraph("Complete content assessment findings including word count analysis, CTA detection, and content freshness evaluation.")
     
+    doc.add_heading("C.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    content_cnltd = [
+        ("⚠", "High word count: 5,374 words - may be too text-heavy", "Word count: 5374"),
+        ("✓", "Good variety of CTAs: 3", "CTAs: ['contact\\s*us', 'book\\s*(now|a|an)', 'call\\s*(us|now)']"),
+        ("⚠", "Some content references old dates (from 2021)", "Years found: {2021, 2023, 2024, 2025, 2026}"),
+    ]
+    for symbol, finding, evidence in content_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("C.2 Insurance IT (insuranceit.co.uk)", level=3)
+    content_ins = [
+        ("⚠", "High word count: 3,621 words - may be too text-heavy", "Word count: 3621"),
+        ("✗", "No clear calls to action found", "No CTAs detected"),
+        ("✓", "Content appears current", "Most recent year: 2026"),
+    ]
+    for symbol, finding, evidence in content_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix D: SEO Review - ALL findings
     doc.add_heading("Appendix D: SEO Review Findings", level=2)
     doc.add_paragraph("Complete SEO assessment findings including on-page elements, technical SEO, and content optimization analysis.")
     
+    doc.add_heading("D.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    seo_cnltd = [
+        ("✓", "Good title length: 48 chars", "Title: Business IT Support UK | Commercial Networks LTD"),
+        ("✓", "Good meta description length: 145 chars", "Description: Commercial Networks LTD offers trusted business IT"),
+        ("✓", "Single H1 heading present", "One H1 tag"),
+        ("⚠", "1 image(s) missing alt text", "Missing alt on 1 images"),
+        ("✓", "Canonical URL present", "Canonical: https://cnltd.co.uk/"),
+        ("⚠", "No sitemap link in page", "No sitemap link"),
+        ("✓", "Structured data present: 1 schema(s)", "1 JSON-LD scripts"),
+        ("✓", "No broken links found (checked 25 internal links)", "Checked 25 links"),
+        ("✓", "No redirects detected", "Direct response"),
+        ("✓", "robots.txt file found", "URL: https://cnltd.co.uk/robots.txt"),
+        ("✗", "robots.txt may block all crawlers", "Disallow: / found"),
+        ("✓", "sitemap.xml found at alternative location", "URL: https://cnltd.co.uk/sitemap_index.xml"),
+        ("✗", "1 duplicate title(s) found across 10 pages", "Duplicates: ['Business IT Support UK | Commercial Networks LTD']"),
+        ("✓", "All 10 pages have H1 tags", "All pages have H1"),
+        ("✓", "All pages have adequate content (300+ words)", "Avg word count: 1141"),
+    ]
+    for symbol, finding, evidence in seo_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("D.2 Insurance IT (insuranceit.co.uk)", level=3)
+    seo_ins = [
+        ("⚠", "Title too long: 87 chars (recommended: 50-60)", "Title: IT Support for Insurance Brokers Who Need More Tha..."),
+        ("✓", "Good meta description length: 135 chars", "Description: Specialist IT support for insurance brokers. Stay"),
+        ("✓", "Single H1 heading present", "One H1 tag"),
+        ("⚠", "9 image(s) missing alt text", "Missing alt on 9 images"),
+        ("✓", "Canonical URL present", "Canonical: https://insuranceit.co.uk/"),
+        ("⚠", "No sitemap link in page", "No sitemap link"),
+        ("✓", "Structured data present: 1 schema(s)", "1 JSON-LD scripts"),
+        ("✓", "No broken links found (checked 19 internal links)", "Checked 19 links"),
+        ("✓", "No redirects detected", "Direct response"),
+        ("✓", "robots.txt file found", "URL: https://insuranceit.co.uk/robots.txt"),
+        ("✓", "sitemap.xml found at alternative location", "URL: https://insuranceit.co.uk/sitemap_index.xml"),
+        ("✓", "All 10 page titles are unique", "Crawled 10 pages"),
+        ("✗", "6 page(s) missing H1 tag", "Missing H1: ['https://insuranceit.co.uk/it-services-for-brokers/', ...]"),
+        ("✓", "All pages have adequate content (300+ words)", "Avg word count: 889"),
+    ]
+    for symbol, finding, evidence in seo_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix E: Plugin & Theme Audit - ALL findings
     doc.add_heading("Appendix E: Plugin & Theme Audit Findings", level=2)
     doc.add_paragraph("Complete WordPress plugin and theme assessment findings including version information and security analysis.")
     
+    doc.add_heading("E.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    wp_cnltd = [
+        ("✓", "Detected 8 plugin(s): contact-form-7, ghostkit, getwid, betterdocs, responsive-accordion-and-collapse, breeze, *\",\", betterdocs-pro", "Plugins: ['contact-form-7', 'ghostkit', 'getwid', 'betterdocs', 'responsive-accordion-and-collapse', 'breeze', '*\",\"', 'betterdocs-pro']"),
+        ("✓", "WordPress version: 6.9.4", "Version: 6.9.4"),
+        ("✓", "Total plugins: 31 (Active: 31, Inactive: 0)", "Plugins: ['3CX Live Chat', 'Advanced Custom Fields', 'BetterDocs', 'BetterDocs Pro', 'Breeze', 'Contact Form 7', 'Contact Form 7 Captcha', 'Easy Testimonials', ...]"),
+        ("⚠", "3 plugin(s) without version info", "No version: ['', '', '']"),
+        ("✓", "Theme detected: barefoot", "Theme: barefoot"),
+    ]
+    for symbol, finding, evidence in wp_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("E.2 Insurance IT (insuranceit.co.uk)", level=3)
+    wp_ins = [
+        ("✓", "Detected 10 plugin(s): wp-rss-aggregator, contact-form-7, ghostkit, getwid, breeze, categories-images, optimole-wp, betterdocs, google-site-kit, *\",\"", "Plugins: ['wp-rss-aggregator', 'contact-form-7', 'ghostkit', 'getwid', 'breeze', 'categories-images', 'optimole-wp', 'betterdocs', 'google-site-kit', '*\",\"']"),
+        ("✓", "Theme detected: barefoot", "Theme: barefoot"),
+        ("✗", "WordPress login failed - check credentials", "Admin URL: https://b'insuranceit.co.uk'/wp-admin/"),
+    ]
+    for symbol, finding, evidence in wp_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix F: Analytics & Tracking - ALL findings
     doc.add_heading("Appendix F: Analytics & Tracking Findings", level=2)
     doc.add_paragraph("Complete analytics and tracking assessment findings including GA4, GTM, and cookie compliance verification.")
     
+    doc.add_heading("F.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    analytics_cnltd = [
+        ("✓", "Google Analytics 4 (GA4) detected", "GA4 gtag detected"),
+        ("✓", "Google Tag Manager not detected", "No GTM container found"),
+        ("✓", "Cookie consent banner detected", "Indicators: ['cookie', 'privacy', 'cookie policy']"),
+        ("⚠", "Cookie banner may not have easy reject option (GDPR concern)", "No reject/decline button found"),
+    ]
+    for symbol, finding, evidence in analytics_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("F.2 Insurance IT (insuranceit.co.uk)", level=3)
+    analytics_ins = [
+        ("✓", "Google Analytics 4 (GA4) detected", "GA4 gtag detected"),
+        ("✓", "Google Tag Manager not detected", "No GTM container found"),
+        ("✓", "Cookie consent banner detected", "Indicators: ['cookie', 'privacy', 'gdpr', 'cookie policy']"),
+        ("⚠", "Cookie banner may not have easy reject option (GDPR concern)", "No reject/decline button found"),
+    ]
+    for symbol, finding, evidence in analytics_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix G: Visual Analysis - ALL findings
     doc.add_heading("Appendix G: Visual Analysis Findings", level=2)
     doc.add_paragraph("Complete visual analysis findings including color contrast, font sizing, and link styling assessment.")
     
+    doc.add_heading("G.1 Commercial Networks LTD (cnltd.co.uk)", level=3)
+    visual_cnltd = [
+        ("✓", "No inline color styles found (colors likely in CSS)", "Colors defined in external stylesheets"),
+        ("✓", "No small font sizes detected in inline styles", "Font sizes appear adequate"),
+        ("⚠", "Links may not be visually distinguishable (no inline underline/color)", "Check CSS for link styling"),
+    ]
+    for symbol, finding, evidence in visual_cnltd:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    doc.add_heading("G.2 Insurance IT (insuranceit.co.uk)", level=3)
+    visual_ins = [
+        ("✓", "No inline color styles found (colors likely in CSS)", "Colors defined in external stylesheets"),
+        ("✓", "No small font sizes detected in inline styles", "Font sizes appear adequate"),
+        ("⚠", "Links may not be visually distinguishable (no inline underline/color)", "Check CSS for link styling"),
+    ]
+    for symbol, finding, evidence in visual_ins:
+        p = doc.add_paragraph(style="List Bullet")
+        p.add_run(f"{symbol} {finding}\n").bold = True
+        p.add_run(f"    Evidence: {evidence}")
+    
+    # Appendix H: Embedded Screenshots
     doc.add_heading("Appendix H: Embedded Screenshots", level=2)
     doc.add_paragraph("Screenshots are embedded in Section 4 (UX & Navigation) of this document:")
     doc.add_paragraph("• Figure 1: Desktop View (1920×1080) - Shows layout at desktop resolution")
