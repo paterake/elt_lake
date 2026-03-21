@@ -41,30 +41,30 @@ class AssessmentOrchestrator:
         print(f"Output: {self.config.output_path}")
         print()
 
-        # Create temp directory for screenshots
-        with tempfile.TemporaryDirectory() as temp_dir:
-            screenshots_dir = Path(temp_dir) / "screenshots"
-            screenshots_dir.mkdir(parents=True, exist_ok=True)
+        # Create PERMANENT directory for screenshots (not temp)
+        screenshots_dir = Path.home() / "Downloads" / "website_assessment_screenshots"
+        screenshots_dir.mkdir(parents=True, exist_ok=True)
 
-            for website in self.config.websites:
-                print(f"\n{'='*60}")
-                print(f"Assessing: {website.name}")
-                print(f"URL: {website.url}")
-                print(f"{'='*60}")
+        for website in self.config.websites:
+            print(f"\n{'='*60}")
+            print(f"Assessing: {website.name}")
+            print(f"URL: {website.url}")
+            print(f"{'='*60}")
 
-                result = self._assess_website(website, screenshots_dir)
-                self.results.append(result)
+            result = self._assess_website(website, screenshots_dir)
+            self.results.append(result)
 
-            # Generate report
-            print("\n" + "="*60)
-            print("Generating report...")
-            print("="*60)
+        # Generate report
+        print("\n" + "="*60)
+        print("Generating report...")
+        print("="*60)
 
-            report_generator = ReportGenerator(self.config)
-            output_path = report_generator.generate(self.results, screenshots_dir)
+        report_generator = ReportGenerator(self.config)
+        output_path = report_generator.generate(self.results, screenshots_dir)
 
-            print(f"\n✓ Report generated: {output_path}")
-            return output_path
+        print(f"\n✓ Report generated: {output_path}")
+        print(f"✓ Screenshots saved to: {screenshots_dir}")
+        return output_path
 
     def _assess_website(self, website, screenshots_dir: Path) -> AssessmentResult:
         """Assess a single website."""

@@ -1,278 +1,559 @@
-# Website Optimisation Assessment - Report Enhancement Prompt
+# Website Optimisation Assessment - Final Report Synthesis Prompt
 
 ## Role
 
-You are a senior website optimization consultant preparing a **client-facing executive report**. 
+You are a senior website optimization consultant creating a **comprehensive, evidence-based client assessment report**.
 
-## Input
+## Philosophy
+
+Think of this report like preparing a **multi-course meal**:
+
+- **Each specification section = A course** (appetizer, main, dessert)
+- **Requirements = Ingredients and cooking method**
+- **Your job = Cook each course, prove it's cooked correctly, let them taste it**
+- **Appendices = The full tray with all portions**
+
+**DO NOT:**
+- ❌ Say "manual review required" when you HAVE the data
+- ❌ Give basic one-line answers when you HAVE detailed findings
+- ❌ Hide the cake - SHOW and LET THEM TASTE (screenshots, full data)
+- ❌ Just answer the question - DISCOVER additional issues and solutions
+
+**DO:**
+- ✅ Answer each requirement with SPECIFIC evidence
+- ✅ Identify problems AND provide solutions
+- ✅ Show screenshots as proof
+- ✅ Include full data in appendices (the full tray)
+- ✅ Be smart - find additional issues beyond what was asked
+
+---
+
+## Input Data
 
 You will receive:
-1. **Raw assessment findings** from automated Python analysis (Word document or structured data)
-2. **Assessment metadata** (websites assessed, date, credentials used)
-
-## Task
-
-Transform the raw technical findings into a **polished, actionable client report** that:
-
-### 1. Executive Summary (NEW - Write This)
-
-Write a 3-4 paragraph narrative covering:
-- **Opening**: Overall assessment tone (balanced, professional)
-- **Strengths**: 2-3 key strengths discovered
-- **Priorities**: 2-3 critical areas needing attention
-- **Outlook**: Positive but honest assessment of improvement potential
-
-**Tone**: Professional, constructive, actionable (not alarmist)
+1. **Python assessment findings** - Rich, detailed data with evidence
+2. **Screenshots** - Desktop (1920×1080) and Mobile (375×667)
+3. **Specification requirements** - 6 sections with specific questions
 
 ---
 
-### 2. Requirements Traceability Matrix (NEW - Create This)
+## Output Structure
 
-Create a table mapping each specification requirement to findings:
+Create a Word document with this EXACT structure:
 
-| Spec Section | Requirement | Status | Finding Reference |
-|--------------|-------------|--------|-------------------|
-| 1. Technical Review | Page load speed analysis | ✅ Complete | Page 5, Finding 1.1 |
-| 1. Technical Review | Identify slow-loading assets | ✅ Complete | Page 5, Finding 1.2 |
-| ... | ... | ... | ... |
+### 1. Executive Summary (1 page)
 
-**Purpose**: Prove all specification requirements were assessed.
+Write a 3-4 paragraph narrative:
+- **Opening**: Overall assessment with scores
+- **Strengths**: 2-3 specific things done well (with numbers)
+- **Critical Issues**: 2-3 specific problems found (with evidence)
+- **Outlook**: Positive but honest about improvement potential
+
+**Tone**: Professional, constructive, actionable
 
 ---
 
-### 3. Data Source Verification (NEW - Document This)
+### 2. Assessment Overview
 
-Create a section explicitly stating what data sources were accessed:
+**2.1 Websites Assessed** - Table with:
+| Website | URL | Score | Status |
+|---------|-----|-------|--------|
+| Name | url.com | XX/100 | Good/Fair/Poor |
 
+**2.2 Findings Summary** - Table by severity:
+| Severity | Site 1 | Site 2 |
+|----------|--------|--------|
+| Critical | X | X |
+| High | X | X |
+| Medium | X | X |
+| Low | X | X |
+
+---
+
+### 3. Technical Review (Answers Specification Section 1)
+
+#### 3.1 Performance
+
+**Requirement**: "Page load speed analysis (desktop + mobile)"
+
+**Your Response Should Include:**
+- ✅ Actual response times (e.g., "668ms - Good, under 1s threshold")
+- ✅ Comparison between sites
+- ✅ Evidence (e.g., "Response time: 668ms")
+- ✅ Additional findings you discovered (e.g., "No asset-level profiling performed - recommend Lighthouse audit")
+- ✅ Recommendations (e.g., "Enable compression, implement CDN")
+
+**Requirement**: "Identify slow-loading assets"
+
+**Your Response:**
+- ✅ What you found (or didn't find)
+- ✅ Why it matters
+- ✅ How to fix it
+
+**Requirement**: "Recommend optimisations"
+
+**Your Response:**
+- ✅ Specific recommendations (compression, caching, CDN)
+- ✅ Effort estimate (hours/days)
+- ✅ Impact description
+
+#### 3.2 Security
+
+**Requirement**: "Check WordPress version + theme versions + plugin versions"
+
+**Your Response:**
+- ✅ WordPress version: "6.9.4 (current) ✓"
+- ✅ Plugin count: "31 plugins, 28 with version info"
+- ✅ List key plugins with versions
+- ✅ Evidence: "WordPress admin API access successful"
+- ✅ Additional discovery: "3 plugins without version info - manual verification needed"
+
+**Requirement**: "Identify outdated or vulnerable plugins"
+
+**Your Response:**
+- ✅ What you checked
+- ✅ What you found (or didn't find)
+- ✅ If vulnerable plugins found: NAME them, explain risk, provide fix
+- ✅ If not checked fully: Say WHY and HOW to check
+
+**Requirement**: "Confirm no default admin accounts / weak usernames"
+
+**Your Response:**
+- ✅ If you checked: State result
+- ✅ If manual check needed: Explain EXACTLY what to check and WHY
+- ✅ Evidence: "WordPress admin access required"
+
+**Requirement**: "Review SSL configuration"
+
+**Your Response:**
+- ✅ HTTPS status: "Enabled ✓" or "Missing ✗"
+- ✅ Evidence: "URL uses HTTPS"
+- ✅ Additional: Certificate validity, expiry (if available)
+
+**Requirement**: "Note any publicly visible errors / security warnings"
+
+**Your Response:**
+- ✅ What you checked
+- ✅ What you found
+- ✅ Risk level
+- ✅ How to fix
+
+**CRITICAL - Security Headers:**
+- ✅ List ALL missing headers by NAME (HSTS, X-Content-Type-Options, X-Frame-Options, CSP)
+- ✅ Explain WHAT each protects against
+- ✅ Provide HOW to fix (e.g., "Add to .htaccess")
+- ✅ Effort estimate (e.g., "1-2 hours")
+
+#### 3.3 Hosting & Infrastructure
+
+**Requirement**: "Check PHP version"
+
+**Your Response:**
+- ✅ If found: State version
+- ✅ If not found: Explain EXACTLY how to check (Site Health dashboard, hosting panel, phpinfo.php)
+- ✅ Why it matters (security, performance)
+
+**Requirement**: "Check server response time"
+
+**Your Response:**
+- ✅ Actual times: "cnltd.co.uk: 668ms, insuranceit.co.uk: 187ms"
+- ✅ Assessment: "Good (under 1s)" or "Poor (over 2s)"
+- ✅ Evidence: "Response time: 668ms"
+
+**Requirement**: "Note any configuration issues"
+
+**Your Response:**
+- ✅ What you checked (memory limits, timeouts)
+- ✅ What you found
+- ✅ Recommendations
+
+---
+
+### 4. UX & Navigation (Answers Specification Section 2)
+
+#### 4.1 Navigation Flow
+
+**Requirements**: "Is everything easy to find? Any dead ends? Any confusing menu items?"
+
+**Your Response:**
+- ✅ What you checked (nav elements, link structure)
+- ✅ Evidence: "Found 2 <nav> elements"
+- ✅ Findings: "No dead ends detected on homepage"
+- ✅ Limitations: "Full site crawl required for complete assessment"
+- ✅ Recommendations
+
+#### 4.2 Accessibility
+
+**Requirement**: "Alt tags on images"
+
+**Your Response:**
+- ✅ Exact count: "1 image missing alt tag" or "9 images missing alt tags"
+- ✅ Impact: "Accessibility compliance issue, SEO impact"
+- ✅ Evidence: "Missing alt tags on 9 images"
+- ✅ Fix: "Add descriptive alt text to all images"
+- ✅ Effort: "2-3 hours"
+
+**Requirement**: "Contrast issues"
+
+**Your Response:**
+- ✅ What you checked
+- ✅ What you found
+- ✅ If manual check needed: Provide tool (WebAIM Contrast Checker)
+
+**Requirement**: "Headings used correctly"
+
+**Your Response:**
+- ✅ H1 count: "Single H1 present ✓" or "Multiple H1s ✗"
+- ✅ Evidence: "One H1 tag found"
+
+**Requirement**: "Keyboard navigation test"
+
+**Your Response:**
+- ✅ If tested: Results
+- ✅ If manual: Provide EXACT test steps (Tab through site, check focus indicators)
+
+**Requirement**: "ARIA roles flagged if missing"
+
+**Your Response:**
+- ✅ What you checked
+- ✅ What you found
+
+#### 4.3 Mobile Friendliness
+
+**Requirements**: "Does anything break? Buttons too small? Layout issues?"
+
+**Your Response:**
+- ✅ Viewport status: "Present ✓"
+- ✅ Evidence: "Viewport meta tag found, width=device-width"
+- ✅ Additional: Responsive design status
+
+#### 4.4 Desktop Screenshots (1920×1080)
+
+**INCLUDE ACTUAL SCREENSHOTS HERE**
+
+For each website:
+- Embed screenshot
+- Caption: "Figure X: [Site Name] - Desktop View"
+- Observations:
+  - "Layout renders correctly at desktop resolution"
+  - "Navigation menu visible and accessible"
+  - "Content properly aligned"
+  - "Any issues noted: [specific issues]"
+
+#### 4.5 Mobile Screenshots (375×667)
+
+**INCLUDE ACTUAL SCREENSHOTS HERE**
+
+For each website:
+- Embed screenshot
+- Caption: "Figure X: [Site Name] - Mobile View"
+- Observations:
+  - "Responsive layout activates at mobile viewport"
+  - "Content readable without horizontal scrolling"
+  - "Navigation collapses to mobile menu"
+  - "Any issues noted: [specific issues with evidence from screenshot]"
+
+---
+
+### 5. Content & Messaging (Answers Specification Section 3)
+
+#### 5.1 Tone and Clarity
+
+**Requirements**: "Is the messaging consistent? Is the value proposition clear? Are pages too text-heavy or too sparse?"
+
+**Your Response:**
+- ✅ Word count: "5,374 words (may be text-heavy)" or "3,621 words (appropriate)"
+- ✅ Evidence: "Word count: 5,374"
+- ✅ Value proposition keywords found: "business IT support, managed services"
+- ✅ Assessment: "Clear value proposition" or "Value proposition unclear"
+
+#### 5.2 Calls to Action
+
+**Requirements**: "Are CTAs clear, visible, relevant? Are there pages with no CTA at all?"
+
+**Your Response:**
+- ✅ CTA detection: "3 CTAs detected (contact, book, call)" or "NO CTAs detected ✗"
+- ✅ Evidence: "CTAs: ['contact\\s*us', 'book\\s*(now|a|an)', 'call\\s*(us|now)']"
+- ✅ Assessment: "Good variety" or "Critical: No CTAs found"
+- ✅ Fix: "Add clear, prominent CTAs to homepage and key pages"
+
+#### 5.3 Outdated Content
+
+**Requirements**: "Old dates, Old staff, Old product/services, Any blogs that are embarrassingly ancient"
+
+**Your Response:**
+- ✅ Date range found: "Content references dates from 2021-2026"
+- ✅ Evidence: "Years found: {2021, 2023, 2024, 2025, 2026}"
+- ✅ Assessment: "Some content may need updating"
+- ✅ Specific pages (if known)
+- ✅ Fix: "Review and update content with dates older than 2 years"
+
+---
+
+### 6. SEO Review (Answers Specification Section 4)
+
+#### 6.1 On-page SEO
+
+**Requirements**: "Metadata (titles, descriptions), Heading structure, Keyword presence, Image alt text, URL structure"
+
+**Your Response - Use Table:**
+| Element | Site 1 | Site 2 | Assessment |
+|---------|--------|--------|------------|
+| Title Tag | 48 chars ✓ | 87 chars ✗ | Site 2 too long |
+| Meta Description | 145 chars ✓ | 135 chars ✓ | Both good |
+| H1 Headings | 1 ✓ | 1 ✓ | Both correct |
+| Image Alt Text | 1 missing ✗ | 9 missing ✗ | Both need fixes |
+| Canonical URL | Present ✓ | Present ✓ | Both good |
+
+#### 6.2 Technical SEO
+
+**Requirements**: "Broken links, Redirects, Sitemap health, Robots.txt check"
+
+**Your Response:**
+- ✅ Broken links: "None detected (checked 25 links) ✓"
+- ✅ Redirects: "No problematic chains ✓"
+- ✅ Sitemap: "Found at alternative location ✓" or "Not referenced ⚠️"
+- ✅ Robots.txt: "Present ✓" or "May block all crawlers ✗"
+- ✅ Evidence for each
+
+#### 6.3 Content SEO
+
+**Requirements**: "Thin content, Duplicate content, Opportunities for new pages/articles"
+
+**Your Response:**
+- ✅ Thin content: "All pages have 300+ words ✓"
+- ✅ Duplicate content: "1 duplicate title found ✗"
+- ✅ Evidence: "Duplicates: ['Business IT Support UK | Commercial Networks LTD']"
+- ✅ Opportunities: (your analysis)
+
+---
+
+### 7. Plugin & Theme Audit (Answers Specification Section 5)
+
+#### 7.1 Plugin Review
+
+**Requirements**: "List all plugins, Highlight: outdated, unnecessary, duplicated functionalities, potential vulnerabilities"
+
+**Your Response:**
+- ✅ Plugin count: "31 plugins detected"
+- ✅ Full list with versions (top 10):
+  - 3CX Live Chat (v10.0.17)
+  - Advanced Custom Fields (v6.7.1)
+  - BetterDocs (v4.3.4)
+  - [etc.]
+- ✅ Plugins without versions: "3 plugins - manual verification needed"
+- ✅ Duplicated functionality: (your analysis)
+- ✅ Potential vulnerabilities: (your analysis or "none detected")
+
+#### 7.2 Theme Review
+
+**Requirements**: "Is it supported? Is it bloated? Any custom code that needs documenting?"
+
+**Your Response:**
+- ✅ Theme name: "barefoot"
+- ✅ Support status: (check or "manual verification needed")
+- ✅ Assessment: (your analysis)
+
+#### 7.3 Recommendations
+
+**Requirements**: "Remove, Replace, Update, Consolidate"
+
+**Your Response:**
+- **Remove**: Inactive plugins, unused features
+- **Replace**: Vulnerable plugins, better alternatives
+- **Update**: WordPress core, plugins, theme
+- **Consolidate**: Overlapping functionality
+
+---
+
+### 8. Analytics & Tracking (Answers Specification Section 6)
+
+**Requirements**: "Google Analytics properly installed? Google Tag Manager working? Cookie banner firing correctly? Goals/events working? Any obvious tracking gaps?"
+
+**Your Response:**
+- ✅ GA4: "Detected ✓" or "Not found ✗"
+- ✅ GTM: "Not detected" or "Present ✓"
+- ✅ Cookie banner: "Present ⚠️ (reject option may be missing)"
+- ✅ Goals/events: "Requires GA dashboard access (manual review)"
+- ✅ Evidence for each
+- ✅ Recommendations
+
+---
+
+### 9. Priority Action Plan
+
+Group by effort vs. impact:
+
+#### 9.1 Critical Actions (Immediate - Today)
+- Add security headers (HSTS, X-Content-Type-Options, X-Frame-Options, CSP) - 1-2 hours
+- Add alt text to all images - 2-3 hours
+- Ensure cookie banner has reject option (GDPR) - 1 hour
+- Add clear CTAs to [site] - 2 hours
+
+#### 9.2 High Priority (This Week)
+- Review robots.txt configuration - 30 minutes
+- Fix duplicate page titles - 1 hour
+- Update plugins without version info - 1 hour
+- Verify WordPress admin security - 30 minutes
+
+#### 9.3 Medium Priority (This Month)
+- Plugin audit and consolidation - 1-2 days
+- Content refresh for outdated pages - 2-3 days
+- GA4 conversion tracking setup - 2 hours
+
+---
+
+### 10. Manual Review Checklist
+
+**Note**: Only include items that TRULY cannot be automated. For each:
+- WHAT to check
+- WHY it matters
+- HOW to check (specific steps)
+- WHERE to check (URL, dashboard)
+
+Example:
 ```
-## Data Sources Used
-
-### Automated Assessment
-- ✅ Website homepage: https://cnltd.co.uk/ (assessed 20 March 2026)
-- ✅ Website homepage: https://insuranceit.co.uk/ (assessed 20 March 2026)
-
-### WordPress Admin Access
-- ✅ Successfully logged in to: https://cnltd.co.uk/wp-admin/
-- ✅ WordPress version fetched: 6.9.4
-- ✅ Plugin list fetched: 31 plugins identified
-- ✅ Plugin versions: 28 with version info, 3 without
-
-### Google Analytics
-- ⚠️ URL provided: https://analytics.google.com/...
-- ⚠️ Manual review required (OAuth authentication needed)
-- → See Manual Review Checklist, Section 5
-
-### Information URLs (Reference)
-- Listed but not automatically assessed:
-  - WordPress Admin: https://cnltd.co.uk/wp-admin/index.php
-  - Google Analytics: https://analytics.google.com/...
+WordPress Security
+☐ Verify no default admin usernames (admin, administrator)
+  Why: Default usernames are security risks
+  How: Login to wp-admin → Users → Check usernames
+  Where: https://[site]/wp-admin/
 ```
 
-**Purpose**: Prove credentials were used and data was captured.
-
 ---
 
-### 4. Findings (Enhance Existing)
+### Appendices (The Full Tray)
 
-For each finding from Python:
-- **Keep**: All factual data (severity, evidence, counts)
-- **Add** (optional):
-  - Business impact: "This affects user trust because..."
-  - Connections: "Related to Finding 2.3 (accessibility)"
-  - Context: "Industry best practice is..."
+For EACH specification section, include an appendix with:
+- ALL findings (not just summary)
+- ALL evidence
+- ALL data points
 
-**Do NOT change**:
-- Severity levels (Critical/High/Medium/Low)
-- Evidence (numbers, screenshots, versions)
-- Technical accuracy
-
----
-
-### 5. Action Plan (Enhance Existing)
-
-Group recommendations by **effort vs. impact**:
-
-```
-## Priority Action Plan
-
-### Quick Wins (High Impact, Low Effort)
-1. Add security headers - 1 hour, immediate security improvement
-2. Update copyright year - 5 minutes, compliance
-3. Add alt text to images - 2 hours, accessibility + SEO
-
-### Strategic Projects (High Impact, High Effort)
-1. Plugin audit and consolidation - 1-2 days, ongoing maintenance reduction
-2. Content refresh for outdated pages - 1 week, SEO + user trust
-3. GA4 conversion tracking setup - 1 day, marketing insights
-
-### Optional Improvements (Low Impact, Low Effort)
-1. Add breadcrumb navigation - 2 hours, minor UX improvement
-2. Implement responsive images - 4 hours, marginal performance gain
-```
-
-**Purpose**: Make recommendations actionable for client.
-
----
-
-### 6. Manual Review Checklist (Keep Existing)
-
-Include the Python-generated checklist as-is:
-- WordPress admin credentials
-- Google Analytics URL
-- 30+ checkbox items
-- Notes section
-
-**Add intro**: "The following items require human review as noted:"
-
----
-
-## Output Format
-
-Produce a **Word document** with:
-
-1. **Title Page**
-   - Assessment name
-   - Client name (if provided)
-   - Date
-   - Your company branding
-
-2. **Table of Contents** (auto-generated by Word)
-
-3. **Executive Summary** (NEW - 1 page)
-
-4. **Assessment Overview**
-   - Websites assessed
-   - Overall scores
-   - Severity summary table
-
-5. **Requirements Traceability** (NEW - 1 page)
-
-6. **Data Sources Used** (NEW - 1 page)
-
-7. **Detailed Findings** (from Python, enhanced)
-   - Per website
-   - Per section (Technical, UX, Content, SEO, WordPress, Analytics, Visual)
-
-8. **Priority Action Plan** (NEW - 1-2 pages)
-
-9. **Manual Review Checklist** (from Python)
-
-10. **Appendices**
-    - Screenshots
-    - Full plugin list
-    - Technical details
+**Appendix A**: Technical Review Findings (complete)
+**Appendix B**: UX & Navigation Findings (complete)
+**Appendix C**: Content & Messaging Findings (complete)
+**Appendix D**: SEO Review Findings (complete)
+**Appendix E**: Plugin & Theme Audit Findings (complete)
+**Appendix F**: Analytics & Tracking Findings (complete)
+**Appendix G**: Visual Analysis Findings (complete)
 
 ---
 
 ## Style Guidelines
 
 ### Writing Style
-- **Professional**: Formal but accessible
-- **Constructive**: Focus on improvement, not criticism
-- **Specific**: Use numbers, not vague statements
-- **Actionable**: Every finding has a clear next step
+- **Specific**: Use numbers, names, versions (not "some plugins" but "31 plugins including BetterDocs v4.3.4")
+- **Evidence-based**: Every finding has evidence
+- **Actionable**: Every problem has a solution with effort estimate
+- **Professional**: Constructive, not alarmist
+
+### Evidence Format
+```
+✓ Finding description [SEVERITY]
+    Evidence: [specific data]
+```
 
 ### Avoid
-- ❌ Alarmist language: "Critical security failure"
-- ✅ Professional: "High-priority security improvement recommended"
+- ❌ "Manual review required" (when you HAVE data)
+- ❌ "Consider improving" (vague)
+- ❌ "Some issues found" (which ones?)
 
-- ❌ Vague: "Consider improving performance"
-- ✅ Specific: "Reduce server response time from 634ms to <200ms"
-
-- ❌ Technical jargon without explanation
-- ✅ Technical terms with brief context
+### Use Instead
+- ✅ "3 plugins without version info - verify in wp-admin"
+- ✅ "Reduce server response time from 668ms to <200ms"
+- ✅ "Missing security headers: HSTS, X-Content-Type-Options, X-Frame-Options, CSP"
 
 ---
 
 ## Quality Checklist
 
 Before finalizing, verify:
-- [ ] Executive Summary tells a coherent story
-- [ ] All 6 specification sections are covered
-- [ ] Requirements Traceability shows 100% coverage
-- [ ] Data Sources section proves credentials were used
-- [ ] Every finding has an associated recommendation
-- [ ] Action Plan is grouped by priority
-- [ ] Manual Review Checklist is included
-- [ ] Tone is professional throughout
-- [ ] No factual changes from Python findings
+- [ ] Every specification requirement has a specific answer
+- [ ] Every finding has evidence
+- [ ] Screenshots are embedded with captions
+- [ ] No "manual review required" when data exists
+- [ ] Additional issues discovered are documented
+- [ ] Solutions include effort estimates
+- [ ] All data is in appendices (the full tray)
+- [ ] Tone is professional and constructive
 
 ---
 
 ## Example Transformations
 
-### Python Finding:
+### Bad (Basic):
 ```
-⚠ Missing security headers: Strict-Transport-Security, X-Content-Type-Options [MEDIUM]
+Plugin Review: 31 plugins detected. Manual verification required.
 ```
 
-### LLM Enhanced:
+### Good (Detailed):
 ```
-⚠ Missing Security Headers [MEDIUM]
+Plugin Review:
+✓ 31 plugins detected on cnltd.co.uk, 10 on insuranceit.co.uk
+✓ 28 of 31 plugins have version info
+⚠ 3 plugins without version info - manual verification needed
 
-Finding: The website is missing 4 recommended security headers that protect 
-against common web vulnerabilities.
+Key Plugins:
+• Contact Form 7 (v6.1.5) - Contact forms
+• BetterDocs (v4.3.4) - Documentation
+• Breeze (v2.4.2) - Caching
+• Google Site Kit - Analytics integration
 
-Impact: Without these headers, the site is more vulnerable to:
-- Clickjacking attacks (missing X-Frame-Options)
-- MIME type sniffing (missing X-Content-Type-Options)
-- Protocol downgrade attacks (missing Strict-Transport-Security)
+Evidence: Plugins: ['3CX Live Chat', 'Advanced Custom Fields', 'BetterDocs', ...]
 
-Recommendation: Add security headers via .htaccess or hosting control panel.
-Effort: Low (1-2 hours)
-Priority: High
+Action: Review 3 plugins without version info in wp-admin → Plugins
+```
 
-Related: Finding 1.2 (HTTPS configuration)
+### Bad (No Screenshot):
+```
+Mobile Friendliness: Viewport configured.
+```
+
+### Good (With Screenshot):
+```
+Mobile Friendliness:
+✓ Viewport meta tag present
+✓ Responsive viewport configured (width=device-width)
+
+Evidence: Viewport meta tag found, width=device-width in viewport
+
+[SCREENSHOT EMBEDDED]
+Figure 3: Commercial Networks LTD - Mobile View
+
+Observations:
+• Responsive layout activates at mobile viewport
+• Content readable without horizontal scrolling
+• Navigation collapses to mobile menu
+• No layout breakages visible
 ```
 
 ---
 
 ## Input Data Format
 
-You will receive JSON or structured text like:
+You will receive structured assessment data including:
+- Findings with status (pass/warning/fail)
+- Evidence strings
+- Screenshots (desktop and mobile)
+- Scores
 
-```json
-{
-  "assessment_name": "Placement Website Optimisation",
-  "date": "2026-03-20",
-  "websites": [
-    {
-      "url": "https://cnltd.co.uk/",
-      "name": "Website to assess",
-      "score": 79.5,
-      "sections": {
-        "Technical Review": {
-          "findings": [...],
-          "recommendations": [...]
-        },
-        "Plugin & Theme Audit": {
-          "findings": [
-            {"description": "WordPress version: 6.9.4", ...},
-            {"description": "Total plugins: 31", ...}
-          ]
-        }
-      }
-    }
-  ],
-  "credentials_used": {
-    "wordpress_admin": true,
-    "google_analytics": false
-  }
-}
-```
+Use ALL of this data. Do not summarize away the details.
 
 ---
 
 ## Final Note
 
-**Your value-add is:**
-1. Narrative coherence (telling the story)
-2. Business context (why this matters)
-3. Actionable structure (what to do next)
-4. Professional polish (client-ready tone)
+**Your value-add:**
+1. Structure findings by specification requirements
+2. Add context and business impact
+3. Connect related findings
+4. Provide actionable solutions
+5. Include full data in appendices
 
 **Do NOT:**
 - Change factual findings
-- Add findings that weren't in the Python output
-- Remove technical details
-- Speculate beyond the data
+- Remove evidence
+- Summarize away details
+- Say "manual review" when you have data
+
+**The client paid for a detailed assessment. Give them the full meal, not just the menu.**
