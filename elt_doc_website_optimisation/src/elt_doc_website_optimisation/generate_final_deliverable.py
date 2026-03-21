@@ -565,10 +565,10 @@ Day 5: Add CTAs to insuranceit.co.uk"""
     doc.add_paragraph("Complete visual analysis findings including color contrast, font sizing, and link styling assessment.")
     
     doc.add_heading("Appendix H: Embedded Screenshots", level=2)
-    doc.add_paragraph("Screenshots are embedded in Section 4 (UX & Navigation):")
+    doc.add_paragraph("Screenshots are embedded in Section 4 (UX & Navigation) of this document:")
     doc.add_paragraph("• Figure 1: Desktop View (1920×1080) - Shows layout at desktop resolution")
     doc.add_paragraph("• Figure 2: Mobile View (375×667) - Shows responsive layout at mobile resolution")
-    doc.add_paragraph(f"\nOriginal screenshot files saved to: {screenshots_dir}")
+    doc.add_paragraph("\nNote: This document is self-contained. All screenshots are embedded within Section 4.")
     
     # Save document
     doc.save(str(output_path))
