@@ -28,30 +28,55 @@ View the current assessment configuration:
 uv run elt-doc-website-optimisation preview
 ```
 
-### Run Assessment (Stage 1: Python)
+### Complete Workflow (Three Stages)
 
-Run the full website assessment and generate a Word report:
+#### Stage 1: Python Deterministic Assessment
 
 ```bash
 uv run elt-doc-website-optimisation run
 ```
 
-This produces: `~/Downloads/website_optimisation_assessment.docx`
+**Output:** `~/Downloads/website_optimisation_assessment.docx`
 
-### Enhance Report (Stage 2: LLM)
+**What Python captures:**
+- 74+ findings with evidence
+- WordPress version, plugin lists
+- Security headers, SSL status
+- Screenshots (desktop + mobile)
+- Broken links, robots.txt, sitemap
 
-Prepare the report for LLM-based enhancement:
+#### Stage 2: Extract Data for LLM
 
 ```bash
 uv run elt-doc-website-optimisation enhance ~/Downloads/website_optimisation_assessment.docx
 ```
 
-This:
-1. Extracts structured findings from the Python report
-2. Creates an enhancement prompt (saved to `~/Downloads/enhancement_prompt.txt`)
-3. The prompt includes all findings + instructions for LLM
+**Output:** `~/Downloads/enhancement_prompt.txt`
 
-**Next:** Submit the prompt file to your LLM API (Claude, GPT-4, etc.) to generate the final client-ready document.
+**What this does:**
+- Extracts all Python findings to structured JSON
+- Includes instructions for LLM analysis
+
+#### Stage 3: Generate Final Client Deliverable
+
+**Option A - Use Python Script:**
+```bash
+uv run python src/elt_doc_website_optimisation/generate_final_deliverable.py
+```
+
+**Option B - Use LLM API:**
+Submit `enhancement_prompt.txt` + `prompts/final_client_deliverable.txt` to your LLM API (Claude, GPT-4, etc.)
+
+**Output:** `~/Downloads/website_optimisation_FINAL_CLIENT_DELIVERABLE.docx`
+
+**What's included:**
+- Python findings (the WHAT)
+- LLM deep analysis (the WHY, SO WHAT, NOW WHAT)
+- Security fix code (.htaccess rules)
+- Cost estimates (£)
+- Implementation roadmap (day-by-day)
+- Risk scoring (CVSS-style)
+- Industry benchmarking
 
 ### Custom Config File
 
@@ -165,9 +190,9 @@ The assessment generates a Word document (`*.docx`) containing:
 
 ---
 
-## Two-Stage Workflow (Multi-Hop)
+## Three-Stage Workflow (Blended Approach)
 
-### Stage 1: Python Assessment (Deterministic)
+### Stage 1: Python Deterministic Assessment
 
 ```bash
 uv run elt-doc-website-optimisation run
@@ -178,14 +203,14 @@ uv run elt-doc-website-optimisation run
 - ✅ Captures WordPress admin data (version, plugins)
 - ✅ Detects Google Analytics
 - ✅ Takes screenshots
-- ✅ Generates findings with evidence
-- ✅ Creates recommendations (template-based)
+- ✅ Generates 74+ findings with evidence
+- ✅ Creates template recommendations
 
 **Output:** `~/Downloads/website_optimisation_assessment.docx`
 
 ---
 
-### Stage 2: LLM Enhancement (Narrative Polish)
+### Stage 2: Data Extraction
 
 ```bash
 uv run elt-doc-website-optimisation enhance ~/Downloads/website_optimisation_assessment.docx
@@ -196,29 +221,55 @@ uv run elt-doc-website-optimisation enhance ~/Downloads/website_optimisation_ass
 2. Creates enhancement prompt (`~/Downloads/enhancement_prompt.txt`)
 3. Prompt includes all findings + instructions for LLM
 
-**Next:** Submit the prompt to your LLM API (Claude, GPT-4, etc.)
-
-**What LLM adds:**
-- ✨ Executive Summary (narrative, 3-4 paragraphs)
-- ✨ Requirements Traceability Matrix (proof all specs covered)
-- ✨ Data Sources section (proof credentials used)
-- ✨ Priority Action Plan (grouped by effort/impact)
-- ✨ Professional tone and business context
-- ✨ Connected insights across findings
-
-**Output:** `~/Downloads/enhanced_report.docx`
+**Output:** `~/Downloads/enhancement_prompt.txt` (structured JSON + instructions)
 
 ---
 
-### When to Use Each Stage
+### Stage 3: LLM Deep Analysis + Blend
 
-| Scenario | Stage 1 Only | Stage 1 + Stage 2 |
-|----------|--------------|-------------------|
+**Option A - Python Script:**
+```bash
+uv run python src/elt_doc_website_optimisation/generate_final_deliverable.py
+```
+
+**Option B - LLM API:**
+Submit `enhancement_prompt.txt` + `prompts/final_client_deliverable.txt` to your LLM
+
+**What LLM adds:**
+- ✨ Security fix code (.htaccess rules for headers)
+- ✨ Cost estimates (£75-150 per task)
+- ✨ Implementation roadmap (day-by-day week 1 plan)
+- ✨ Risk scoring (CVSS-style, e.g., 6.5/10)
+- ✨ Industry benchmarking (vs <200ms standard)
+- ✨ Plugin vulnerability analysis (CVE references)
+- ✨ Business impact explanations
+- ✨ Prioritised action plan with ROI
+
+**Output:** `~/Downloads/website_optimisation_FINAL_CLIENT_DELIVERABLE.docx`
+
+---
+
+### What's the Difference?
+
+| Aspect | Python Only | Python + LLM |
+|--------|-------------|--------------|
+| Security headers | "Missing: HSTS, X-Content-Type-Options..." | "Missing + .htaccess fix code + 1-2 hours + £75-150 + P1 priority" |
+| Plugins | "31 plugins detected" | "31 plugins + BetterDocs has XSS vulnerability (CVE-2024-XXXX) + update immediately" |
+| Performance | "668ms response time" | "668ms + industry standard <200ms + enable compression for 60-80% reduction" |
+| Recommendations | "Add security headers" | "Add headers + code snippet + cost + risk if not fixed + testing instructions" |
+| Roadmap | "This week, this month" | "Day 1: headers, Day 2: robots.txt, Day 3: alt text..." |
+
+---
+
+### When to Use Each Approach
+
+| Scenario | Python Only | Python + LLM |
+|----------|-------------|--------------|
 | Internal audit | ✅ Sufficient | Overkill |
 | Technical team review | ✅ Fine | Nice-to-have |
 | **Client delivery** | ⚠️ Functional | ✅ **Recommended** |
 | Board/executive report | ❌ Too technical | ✅ **Required** |
-| Premium consulting | ❌ Basic | ✅ **Expected** |
+| Premium consulting (£5k+) | ❌ Basic | ✅ **Expected** |
 
 ---
 
