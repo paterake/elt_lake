@@ -16,10 +16,14 @@ from elt_doc_website_optimisation.models.assessment import (
 from elt_doc_website_optimisation.screenshot import ScreenshotCapture
 from elt_doc_website_optimisation.analyzers.analytics import AnalyticsAnalyzer
 from elt_doc_website_optimisation.analyzers.content import ContentAnalyzer
+from elt_doc_website_optimisation.analyzers.crawler import SiteCrawler
 from elt_doc_website_optimisation.analyzers.seo import SEOAnalyzer
+from elt_doc_website_optimisation.analyzers.seo_technical import SEOTechnicalAnalyzer
 from elt_doc_website_optimisation.analyzers.technical import TechnicalAnalyzer
 from elt_doc_website_optimisation.analyzers.ux_navigation import UXNavigationAnalyzer
+from elt_doc_website_optimisation.analyzers.visual import VisualAnalyzer
 from elt_doc_website_optimisation.analyzers.wordpress import WordPressAnalyzer
+from elt_doc_website_optimisation.analyzers.wordpress_admin import WordPressAdminAnalyzer
 from elt_doc_website_optimisation.report.generator import ReportGenerator
 
 
@@ -70,7 +74,7 @@ class AssessmentOrchestrator:
         )
 
         # 1. Technical Review
-        print("\n[1/6] Technical Review...")
+        print("\n[1/7] Technical Review...")
         technical = TechnicalAnalyzer(website.url)
         if technical.fetch():
             result.sections["Technical Review"] = technical.analyze()
@@ -88,41 +92,65 @@ class AssessmentOrchestrator:
             )
 
         # 2. UX & Navigation (includes screenshots)
-        print("[2/6] UX & Navigation...")
+        print("[2/7] UX & Navigation...")
         ux = UXNavigationAnalyzer(website.url)
         if ux.fetch():
             ux_result = ux.analyze()
-            
+
             # Save screenshots
             if ux.screenshot_desktop:
                 desktop_path = screenshots_dir / f"{website.name}_desktop.png"
                 desktop_path.write_bytes(ux.screenshot_desktop)
                 ux_result.screenshots.append(desktop_path)
-            
+
             if ux.screenshot_mobile:
                 mobile_path = screenshots_dir / f"{website.name}_mobile.png"
                 mobile_path.write_bytes(ux.screenshot_mobile)
                 ux_result.screenshots.append(mobile_path)
-            
+
             result.sections["UX & Navigation"] = ux_result
         else:
             result.sections["UX & Navigation"] = SectionResult(name="UX & Navigation")
 
         # 3. Content & Messaging
-        print("[3/6] Content & Messaging...")
+        print("[3/7] Content & Messaging...")
         content = ContentAnalyzer(website.url, ux.html if hasattr(ux, 'html') else "")
         result.sections["Content & Messaging"] = content.analyze()
 
-        # 4. SEO Review
-        print("[4/6] SEO Review...")
+        # 4. SEO Review (On-page)
+        print("[4/7] SEO Review (On-page)...")
         seo = SEOAnalyzer(website.url, ux.html if hasattr(ux, 'html') else "")
         result.sections["SEO Review"] = seo.analyze()
 
-        # 5. Plugin & Theme Audit (WordPress)
-        print("[5/6] Plugin & Theme Audit...")
+        # 4b. SEO Technical (broken links, robots.txt, sitemap)
+        print("[5/7] SEO Technical (broken links, robots.txt)...")
+        seo_tech = SEOTechnicalAnalyzer(website.url, ux.html if hasattr(ux, 'html') else "")
+        seo_tech_result = seo_tech.analyze()
+        
+        # Merge SEO Technical findings into SEO Review section
+        if "SEO Review" in result.sections:
+            result.sections["SEO Review"].findings.extend(seo_tech_result.findings)
+            result.sections["SEO Review"].recommendations.extend(seo_tech_result.recommendations)
+        else:
+            result.sections["SEO Review"] = seo_tech_result
+
+        # 6. Plugin & Theme Audit (WordPress)
+        print("[6/9] Plugin & Theme Audit...")
         wordpress = WordPressAnalyzer(website.url, self.config.credentials)
         if wordpress.detect_wordpress():
-            result.sections["Plugin & Theme Audit"] = wordpress.analyze()
+            wp_result = wordpress.analyze()
+            
+            # Also try WordPress admin login for detailed audit
+            print("    → Attempting WordPress admin login...")
+            wp_admin = WordPressAdminAnalyzer(website.url, self.config.credentials)
+            wp_admin_result = wp_admin.analyze()
+            wp_admin.close()
+            
+            # Merge admin findings
+            wp_result.findings.extend(wp_admin_result.findings)
+            wp_result.recommendations.extend(wp_admin_result.recommendations)
+            
+            result.sections["Plugin & Theme Audit"] = wp_result
         else:
             result.sections["Plugin & Theme Audit"] = SectionResult(
                 name="Plugin & Theme Audit",
@@ -136,10 +164,27 @@ class AssessmentOrchestrator:
                 )],
             )
 
-        # 6. Analytics & Tracking
-        print("[6/6] Analytics & Tracking...")
+        # 7. Analytics & Tracking
+        print("[7/9] Analytics & Tracking...")
         analytics = AnalyticsAnalyzer(website.url, ux.html if hasattr(ux, 'html') else "")
         result.sections["Analytics & Tracking"] = analytics.analyze()
+
+        # 8. Visual Analysis (colors, fonts)
+        print("[8/9] Visual Analysis...")
+        visual = VisualAnalyzer(website.url, ux.html if hasattr(ux, 'html') else "")
+        result.sections["Visual Analysis"] = visual.analyze()
+
+        # 9. Multi-Page Crawl (SEO across site)
+        print("[9/9] Multi-Page Crawl...")
+        crawler = SiteCrawler(website.url, max_pages=10)
+        crawler_result = crawler.analyze()
+        
+        # Merge crawler findings into SEO Review section
+        if "SEO Review" in result.sections:
+            result.sections["SEO Review"].findings.extend(crawler_result.findings)
+            result.sections["SEO Review"].recommendations.extend(crawler_result.recommendations)
+        else:
+            result.sections["SEO Review"] = crawler_result
 
         # Calculate overall score
         result.overall_score = self._calculate_score(result)

@@ -53,12 +53,13 @@ class ReportGenerator:
         self._add_title_page()
         self._add_executive_summary(results)
         self._add_table_of_contents()
-        
+
         for result in results:
             self._add_website_assessment(result, screenshots_dir)
-        
+
         self._add_overall_recommendations(results)
-        
+        self._add_manual_review_checklist(results)
+
         # Save document
         self.doc.save(str(self.config.output_path))
         return self.config.output_path
@@ -264,11 +265,11 @@ class ReportGenerator:
     def _add_overall_recommendations(self, results: list[AssessmentResult]):
         """Add overall recommendations section."""
         self.doc.add_heading("Overall Recommendations", level=1)
-        
+
         self.doc.add_paragraph(
             "Based on the comprehensive assessment, the following priority actions are recommended:"
         )
-        
+
         # Collect high-priority recommendations
         high_priority = []
         for result in results:
@@ -276,13 +277,13 @@ class ReportGenerator:
                 for rec in section.recommendations:
                     if rec.priority == "high":
                         high_priority.append((result.website_name, rec))
-        
+
         if high_priority:
             self.doc.add_heading("High Priority Actions", level=2)
             for website_name, rec in high_priority[:10]:  # Top 10
                 para = self.doc.add_paragraph(style="List Bullet")
                 para.add_run(f"[{website_name}] {rec.description}")
-        
+
         # Next steps
         self.doc.add_heading("Next Steps", level=2)
         next_steps = [
@@ -292,9 +293,98 @@ class ReportGenerator:
             "Assign ownership for each action item",
             "Schedule follow-up assessment in 3-6 months",
         ]
-        
+
         for step in next_steps:
             self.doc.add_paragraph(step, style="List Bullet")
+
+    def _add_manual_review_checklist(self, results: list[AssessmentResult]):
+        """Add manual review checklist for items requiring human assessment."""
+        self.doc.add_page_break()
+        self.doc.add_heading("Manual Review Checklist", level=1)
+        
+        self.doc.add_paragraph(
+            "The following items require manual review as they cannot be fully automated. "
+            "Use the provided credentials and links to complete the assessment."
+        )
+        
+        # Credentials section
+        if self.config.credentials:
+            self.doc.add_heading("WordPress Admin Access", level=2)
+            self.doc.add_paragraph(
+                f"URL: {self.config.information_urls[0].url if self.config.information_urls else 'N/A'}",
+                style="Intense Quote"
+            )
+            self.doc.add_paragraph(
+                f"Username: {self.config.credentials.username}\n"
+                f"Password: {self.config.credentials.password}",
+                style="No Spacing"
+            )
+        
+        # Analytics access
+        analytics_urls = [u for u in self.config.information_urls if "analytics" in u.url.lower()]
+        if analytics_urls:
+            self.doc.add_heading("Google Analytics", level=2)
+            for url in analytics_urls:
+                self.doc.add_paragraph(f"URL: {url.url}", style="Intense Quote")
+        
+        # Checklist items
+        self.doc.add_heading("Items Requiring Manual Review", level=2)
+        
+        checklist_items = [
+            ("Visual Design & Layout", [
+                "Check for layout breakages on mobile devices",
+                "Verify button sizes are touch-friendly (min 44x44px)",
+                "Assess color contrast for WCAG AA compliance",
+                "Review overall visual design and branding consistency",
+            ]),
+            ("Content Quality", [
+                "Check for outdated staff/team member information",
+                "Review product/service descriptions for accuracy",
+                "Identify old blog posts that need updating or archiving",
+                "Assess messaging consistency across all pages",
+            ]),
+            ("WordPress Security", [
+                "Verify no default admin usernames (admin, administrator)",
+                "Check for weak passwords or shared accounts",
+                "Review user roles and permissions",
+                "Check for publicly visible error messages",
+            ]),
+            ("Technical SEO", [
+                "Review full site for duplicate content issues",
+                "Check redirect chains using browser dev tools",
+                "Verify canonical tags on all important pages",
+                "Review internal linking structure",
+            ]),
+            ("Analytics & Tracking", [
+                "Log into Google Analytics to verify goals/events setup",
+                "Check for tracking gaps in conversion funnels",
+                "Verify Google Tag Manager container is firing correctly",
+                "Review cookie consent integration with analytics",
+            ]),
+            ("Navigation & UX", [
+                "Test complete user journeys for dead ends",
+                "Identify confusing menu items or navigation paths",
+                "Test keyboard navigation throughout the site",
+                "Verify search functionality (if available)",
+            ]),
+        ]
+        
+        for category, items in checklist_items:
+            self.doc.add_heading(category, level=3)
+            for item in items:
+                para = self.doc.add_paragraph(style="List Bullet")
+                para.add_run(f"☐ {item}")  # Empty checkbox
+        
+        # Notes section
+        self.doc.add_heading("Manual Review Notes", level=2)
+        self.doc.add_paragraph(
+            "Use the space below to record findings from manual review:",
+            style="No Spacing"
+        )
+        
+        # Add blank lines for notes
+        for _ in range(10):
+            self.doc.add_paragraph("_", style="No Spacing")
 
     def _get_score_color(self, score: float) -> RGBColor:
         """Get color based on score."""
