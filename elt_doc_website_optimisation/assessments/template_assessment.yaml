@@ -1,0 +1,33 @@
+# Template Assessment Configuration
+# Copy this file for new clients and update the values
+
+assessment:
+  name: "[Client Name] Website Optimisation"
+  description: "Assess [client] website on laptop and phone"
+
+urls:
+  # Websites to assess (category: assess)
+  - url: "https://[client-website].com/"
+    name: "[Client] Homepage"
+    category: "assess"
+
+  # Information URLs (category: information) - for manual reference
+  - url: "https://[client-website].com/wp-admin/"
+    name: "WordPress Admin"
+    category: "information"
+
+  - url: "https://analytics.google.com/..."
+    name: "Google Analytics"
+    category: "information"
+
+# Note: Specification documents are no longer needed at runtime.
+# The Python code contains all requirements hardcoded.
+# If you have additional requirements for a client, add them as comments here.
+
+# WordPress credentials (path relative to this file)
+credentials: "../../.credentials/[client]_wordpress.yaml"
+
+# Output report location
+output:
+  folder: "~/Downloads"
+  name: "[client]_website_optimisation_assessment.docx"

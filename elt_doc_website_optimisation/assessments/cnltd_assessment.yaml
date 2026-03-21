@@ -23,18 +23,9 @@ urls:
     name: "Additional information"
     category: "information"
 
-Documents:
-  - name: "website_optimisation_part1.jpeg"
-    folder: "~/Downloads"
-    description: "Specification Part 1"
-    sequence: "1"
-    category: "requirement"
-
-  - name: "website_optimisation_part2.jpeg"
-    folder: "~/Downloads"
-    description: "Specification Part 2"
-    sequence: "2"
-    category: "requirement"
+# Note: Original specification documents (website_optimisation_part{1,2}.jpeg)
+# were used to build the assessment framework. The Python code now contains
+# all 58 requirements hardcoded - JPEGs are no longer needed at runtime.
 
 credentials: "../../.credentials/website_optimisation.yaml"
 

@@ -64,42 +64,24 @@ uv run elt-doc-website-optimisation preview --config /path/to/config.yaml
 
 ## Configuration
 
-Edit `config/website_optimisation.yaml` to configure:
+Assessment configs live in `assessments/` directory:
 
-- **Websites to assess** - URLs with category `assess`
-- **Information URLs** - Reference URLs (e.g., WordPress admin, Analytics)
-- **Requirements** - Specification documents in `~/Downloads`
-- **Credentials** - Path to credentials YAML file
-- **Output** - Where to save the generated report
+```
+assessments/
+├── cnltd_assessment.yaml        # Current client
+└── template_assessment.yaml     # Copy for new clients
+```
 
-### Example Configuration
+### Create New Client Config
 
-```yaml
-assessment:
-  name: "Website Optimisation"
-  description: "Assess websites on laptop and phone"
+```bash
+# Copy template
+cp assessments/template_assessment.yaml assessments/acme_assessment.yaml
 
-urls:
-  - url: "https://example.com/"
-    name: "Example Site"
-    category: "assess"
-
-  - url: "https://example.com/wp-admin/"
-    name: "WordPress Admin"
-    category: "information"
-
-Documents:
-  - name: "spec_part1.jpeg"
-    folder: "~/Downloads"
-    description: "Specification Part 1"
-    sequence: "1"
-    category: "requirement"
-
-credentials: "../../.credentials/website_optimisation.yaml"
-
-output:
-  folder: "~/Downloads"
-  name: "assessment_report.docx"
+# Edit with client details
+# - Website URLs
+# - WordPress credentials path
+# - Output path
 ```
 
 ## Output

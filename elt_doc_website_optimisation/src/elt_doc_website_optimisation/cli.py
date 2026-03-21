@@ -28,7 +28,7 @@ def run(config: Path | None):
     """Run website assessment and generate report."""
     # Default config path
     if config is None:
-        config = Path(__file__).parent.parent.parent / "config" / "website_optimisation.yaml"
+        config = Path(__file__).parent.parent.parent / "assessments" / "cnltd_assessment.yaml"
 
     if not config.exists():
         click.echo(f"Error: Config file not found: {config}", err=True)
@@ -100,7 +100,7 @@ def enhance(input_doc: Path, output: Path | None, prompt: Path | None):
 def preview(config: Path | None):
     """Preview assessment configuration."""
     if config is None:
-        config = Path(__file__).parent.parent.parent / "config" / "website_optimisation.yaml"
+        config = Path(__file__).parent.parent.parent / "assessments" / "cnltd_assessment.yaml"
 
     if not config.exists():
         click.echo(f"Error: Config file not found: {config}", err=True)
