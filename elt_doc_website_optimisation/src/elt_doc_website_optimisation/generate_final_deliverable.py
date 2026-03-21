@@ -55,65 +55,87 @@ def create_complete_final_deliverable(output_path: Path, screenshots_dir: Path):
     # === 1. EXECUTIVE SUMMARY ===
     doc.add_heading("1. Executive Summary", level=1)
 
-    exec_summary = """This assessment delivers a comprehensive evaluation of Commercial Networks LTD (cnltd.co.uk) and Insurance IT (insuranceit.co.uk) against 58 specification requirements across six critical domains: Technical Performance, User Experience & Navigation, Content & Messaging, Search Engine Optimisation, WordPress Plugin & Theme Configuration, and Analytics & Tracking.
+    doc.add_paragraph("This assessment delivers a comprehensive evaluation of Commercial Networks LTD (cnltd.co.uk) and Insurance IT (insuranceit.co.uk) against 58 specification requirements across six critical domains: Technical Performance, User Experience & Navigation, Content & Messaging, Search Engine Optimisation, WordPress Plugin & Theme Configuration, and Analytics & Tracking.")
 
-Assessment Results:
+    # Assessment Results Table
+    doc.add_heading("Assessment Results", level=2)
+    results_table = doc.add_table(rows=3, cols=5)
+    results_table.style = "Table Grid"
+    
+    # Header row
+    headers = results_table.rows[0].cells
+    headers[0].text = "Website"
+    headers[1].text = "Score"
+    headers[2].text = "Status"
+    headers[3].text = "Critical Issues"
+    headers[4].text = "Priority Actions"
+    for cell in headers:
+        for p in cell.paragraphs:
+            for run in p.runs:
+                run.font.bold = True
+    
+    # Data rows
+    data = [
+        ("cnltd.co.uk", "76.9/100", "Good", "1 High", "Security headers, alt text"),
+        ("insuranceit.co.uk", "73.0/100", "Fair", "2 High", "CTAs, security headers, alt text"),
+    ]
+    for i, (website, score, status, issues, actions) in enumerate(data):
+        row = results_table.rows[i + 1]
+        row.cells[0].text = website
+        row.cells[1].text = score
+        row.cells[2].text = status
+        row.cells[3].text = issues
+        row.cells[4].text = actions
 
-| Website | Score | Status | Critical Issues | Priority Actions |
-|---------|-------|--------|-----------------|------------------|
-| cnltd.co.uk | 76.9/100 | Good | 1 High | Security headers, alt text |
-| insuranceit.co.uk | 73.0/100 | Fair | 2 High | CTAs, security headers, alt text |
+    doc.add_heading("Key Strengths", level=2)
+    strengths = [
+        "Responsive mobile design properly configured on both websites",
+        "HTTPS/SSL certificates correctly implemented",
+        "Current WordPress version (6.9.4) on cnltd.co.uk",
+        "Comprehensive plugin installations (31 and 10 plugins respectively)",
+        "No broken links detected across either site",
+        "GA4 analytics properly installed",
+    ]
+    for strength in strengths:
+        doc.add_paragraph(strength, style="List Bullet")
 
-Key Strengths:
+    doc.add_heading("Critical Findings Requiring Immediate Action", level=2)
+    
+    doc.add_heading("1. Security Headers Missing (Both Sites) - PRIORITY 1", level=3)
+    doc.add_paragraph("All four critical security headers absent: HSTS, X-Content-Type-Options, X-Frame-Options, Content-Security-Policy", style="List Bullet")
+    doc.add_paragraph("Risk: Vulnerable to clickjacking, MIME-sniffing, and XSS attacks", style="List Bullet")
+    doc.add_paragraph("Fix: Add .htaccess rules (provided in Section 3.2)", style="List Bullet")
+    doc.add_paragraph("Effort: 1-2 hours", style="List Bullet")
+    
+    doc.add_heading("2. Calls to Action Missing (insuranceit.co.uk) - PRIORITY 1", level=3)
+    doc.add_paragraph("No conversion pathways detected", style="List Bullet")
+    doc.add_paragraph("Impact: Visitors have no clear next step", style="List Bullet")
+    doc.add_paragraph("Fix: Add prominent CTAs to homepage and key pages", style="List Bullet")
+    doc.add_paragraph("Effort: 2-4 hours", style="List Bullet")
+    
+    doc.add_heading("3. Accessibility Non-Compliance (Both Sites) - PRIORITY 2", level=3)
+    doc.add_paragraph("10 images missing alt text (1 on cnltd, 9 on insuranceit)", style="List Bullet")
+    doc.add_paragraph("Impact: WCAG violation, SEO penalty", style="List Bullet")
+    doc.add_paragraph("Fix: Add descriptive alt text to all images", style="List Bullet")
+    doc.add_paragraph("Effort: 1-2 hours", style="List Bullet")
+    
+    doc.add_heading("4. GDPR Compliance Concern (Both Sites) - PRIORITY 2", level=3)
+    doc.add_paragraph("Cookie banners lack clear reject option", style="List Bullet")
+    doc.add_paragraph("Risk: Potential GDPR enforcement action", style="List Bullet")
+    doc.add_paragraph("Fix: Ensure reject option equally prominent as accept", style="List Bullet")
+    doc.add_paragraph("Effort: 2-4 hours", style="List Bullet")
 
-• Responsive mobile design properly configured on both websites
-• HTTPS/SSL certificates correctly implemented
-• Current WordPress version (6.9.4) on cnltd.co.uk
-• Comprehensive plugin installations (31 and 10 plugins respectively)
-• No broken links detected across either site
-• GA4 analytics properly installed
+    doc.add_heading("Report Structure", level=2)
+    doc.add_paragraph("Sections 3-8: Detailed findings by domain with evidence and recommendations", style="List Bullet")
+    doc.add_paragraph("Section 9: Prioritised action plan with day-by-day implementation roadmap", style="List Bullet")
+    doc.add_paragraph("Section 10: Additional considerations for ongoing optimisation", style="List Bullet")
+    doc.add_paragraph("Appendices A-H: Complete findings (73 total) with full supporting evidence", style="List Bullet")
 
-Critical Findings Requiring Immediate Action:
+    doc.add_heading("Dual Audience Guidance", level=2)
+    doc.add_paragraph("Stakeholders: Use Executive Summary and Section 9 for prioritisation and resource allocation", style="List Bullet")
+    doc.add_paragraph("Technical teams: Use Sections 3-8 and Appendices for implementation details and evidence", style="List Bullet")
 
-1. Security Headers Missing (Both Sites) - PRIORITY 1
-   All four critical security headers absent: HSTS, X-Content-Type-Options, X-Frame-Options, Content-Security-Policy
-   Risk: Vulnerable to clickjacking, MIME-sniffing, and XSS attacks
-   Fix: Add .htaccess rules (provided in Section 3.2)
-   Effort: 1-2 hours | Cost: £75-150
-
-2. Calls to Action Missing (insuranceit.co.uk) - PRIORITY 1
-   No conversion pathways detected
-   Impact: Visitors have no clear next step
-   Fix: Add prominent CTAs to homepage and key pages
-   Effort: 2-4 hours | Cost: £150-300
-
-3. Accessibility Non-Compliance (Both Sites) - PRIORITY 2
-   10 images missing alt text (1 on cnltd, 9 on insuranceit)
-   Impact: WCAG violation, SEO penalty
-   Fix: Add descriptive alt text to all images
-   Effort: 1-2 hours | Cost: £75-150
-
-4. GDPR Compliance Concern (Both Sites) - PRIORITY 2
-   Cookie banners lack clear reject option
-   Risk: Potential GDPR enforcement action
-   Fix: Ensure reject option equally prominent as accept
-   Effort: 2-4 hours | Cost: £150-300
-
-Report Structure:
-
-• Sections 3-8: Detailed findings by domain with evidence and recommendations
-• Section 9: Prioritised action plan with day-by-day implementation roadmap
-• Section 10: Additional considerations for ongoing optimisation
-• Appendices A-H: Complete findings (73 total) with full supporting evidence
-
-This report serves dual audiences:
-• Stakeholders: Use Executive Summary and Section 9 for prioritisation and resource allocation
-• Technical teams: Use Sections 3-8 and Appendices for implementation details and evidence
-
-All 58 specification requirements have been assessed. Each finding includes specific evidence, actionable recommendations, effort estimates, and cost projections."""
-
-    for paragraph in exec_summary.split("\n\n"):
-        doc.add_paragraph(paragraph)
+    doc.add_paragraph("All 58 specification requirements have been assessed. Each finding includes specific evidence, actionable recommendations, effort estimates, and cost projections.")
     
     # === 2. ASSESSMENT OVERVIEW ===
     doc.add_heading("2. Assessment Overview", level=1)
@@ -169,58 +191,68 @@ All 58 specification requirements have been assessed. Each finding includes spec
         row.cells[2].text = insurance
 
     doc.add_heading("2.3 Scoring Methodology", level=2)
-    scoring_text = """The assessment scores are calculated using a weighted methodology based on finding severity and status. This transparent approach ensures consistent, objective evaluation across all websites.
+    doc.add_paragraph("The assessment scores are calculated using a weighted methodology based on finding severity and status. This transparent approach ensures consistent, objective evaluation across all websites.")
 
-Scoring Formula:
+    doc.add_heading("Scoring Formula", level=3)
+    doc.add_paragraph("Each finding is assigned a weight based on severity:", style="List Bullet")
+    doc.add_paragraph("Critical findings: 0 points (security vulnerabilities, site-breaking issues)", style="List Bullet")
+    doc.add_paragraph("High findings: 0.25 points (significant issues affecting users)", style="List Bullet")
+    doc.add_paragraph("Medium findings: 0.5 points (noticeable issues, best practice violations)", style="List Bullet")
+    doc.add_paragraph("Low findings: 1.0 points (minor issues, informational)", style="List Bullet")
 
-Each finding is assigned a weight based on severity:
-• Critical findings: 0 points (security vulnerabilities, site-breaking issues)
-• High findings: 0.25 points (significant issues affecting users)
-• Medium findings: 0.5 points (noticeable issues, best practice violations)
-• Low findings: 1.0 points (minor issues, informational)
+    doc.add_paragraph("Each finding status modifies the score:", style="List Bullet")
+    doc.add_paragraph("Pass: 100% of severity weight earned", style="List Bullet")
+    doc.add_paragraph("Warning: 50% of severity weight earned", style="List Bullet")
+    doc.add_paragraph("Fail: 0% of severity weight earned", style="List Bullet")
 
-Each finding status modifies the score:
-• Pass: 100% of severity weight earned
-• Warning: 50% of severity weight earned
-• Fail: 0% of severity weight earned
+    doc.add_paragraph("Calculation: Score = (Total Points Earned / Total Possible Points) × 100", style="List Bullet")
 
-Calculation:
-Score = (Total Points Earned / Total Possible Points) × 100
+    doc.add_heading("Example Calculation", level=3)
+    doc.add_paragraph("If a website has 50 findings:", style="List Bullet")
+    doc.add_paragraph("30 Low findings (Pass): 30 × 1.0 = 30 points", style="List Bullet")
+    doc.add_paragraph("10 Medium findings (Pass): 10 × 0.5 = 5 points", style="List Bullet")
+    doc.add_paragraph("5 Medium findings (Warning): 5 × 0.5 × 0.5 = 1.25 points", style="List Bullet")
+    doc.add_paragraph("3 High findings (Fail): 3 × 0.25 × 0 = 0 points", style="List Bullet")
+    doc.add_paragraph("2 Critical findings (Fail): 2 × 0 × 0 = 0 points", style="List Bullet")
+    doc.add_paragraph("Total earned: 36.25 points / Total possible: 50 points / Score: (36.25 / 50) × 100 = 72.5/100", style="List Bullet")
 
-Example Calculation:
-If a website has 50 findings:
-• 30 Low findings (Pass): 30 × 1.0 = 30 points
-• 10 Medium findings (Pass): 10 × 0.5 = 5 points
-• 5 Medium findings (Warning): 5 × 0.5 × 0.5 = 1.25 points
-• 3 High findings (Fail): 3 × 0.25 × 0 = 0 points
-• 2 Critical findings (Fail): 2 × 0 × 0 = 0 points
+    doc.add_heading("Score Interpretation", level=3)
+    score_table = doc.add_table(rows=6, cols=3)
+    score_table.style = "Table Grid"
+    
+    # Header row
+    score_headers = score_table.rows[0].cells
+    score_headers[0].text = "Score Range"
+    score_headers[1].text = "Status"
+    score_headers[2].text = "Meaning"
+    for cell in score_headers:
+        for p in cell.paragraphs:
+            for run in p.runs:
+                run.font.bold = True
+    
+    # Data rows
+    score_data = [
+        ("90-100", "Excellent", "Minimal issues detected"),
+        ("80-89", "Good", "Solid foundation, minor improvements needed"),
+        ("70-79", "Fair", "Acceptable, several improvements recommended"),
+        ("60-69", "Poor", "Significant issues, priority action required"),
+        ("Below 60", "Critical", "Major problems, immediate action required"),
+    ]
+    for i, (range_val, status, meaning) in enumerate(score_data):
+        row = score_table.rows[i + 1]
+        row.cells[0].text = range_val
+        row.cells[1].text = status
+        row.cells[2].text = meaning
 
-Total earned: 36.25 points
-Total possible: 50 points (if all findings were Low and Pass)
-Score: (36.25 / 50) × 100 = 72.5/100
-
-Score Interpretation:
-
-| Score Range | Status | Meaning |
-|-------------|--------|---------|
-| 90-100 | Excellent | Industry-leading, minimal issues |
-| 80-89 | Good | Solid foundation, minor improvements needed |
-| 70-79 | Fair | Acceptable, several improvements recommended |
-| 60-69 | Poor | Significant issues, priority action required |
-| Below 60 | Critical | Major problems, immediate action required |
-
-Assessment Coverage:
-
-This assessment comprehensively evaluated:
-• 58 specification requirements across 6 categories
-• 74+ individual findings with supporting evidence
-• Desktop (1920×1080) and mobile (375×667) viewport rendering
-• Multi-page SEO analysis (10 pages per site)
-• WordPress plugin and theme configuration
-• Analytics and tracking implementation
-
-The automated assessment provides complete coverage of all technical, accessibility, SEO, and security requirements specified. All findings include specific evidence and actionable recommendations with effort and cost estimates."""
-    doc.add_paragraph(scoring_text)
+    doc.add_heading("Assessment Coverage", level=3)
+    doc.add_paragraph("This assessment comprehensively evaluated:", style="List Bullet")
+    doc.add_paragraph("58 specification requirements across 6 categories", style="List Bullet")
+    doc.add_paragraph("74+ individual findings with supporting evidence", style="List Bullet")
+    doc.add_paragraph("Desktop (1920×1080) and mobile (375×667) viewport rendering", style="List Bullet")
+    doc.add_paragraph("Multi-page SEO analysis (10 pages per site)", style="List Bullet")
+    doc.add_paragraph("WordPress plugin and theme configuration", style="List Bullet")
+    doc.add_paragraph("Analytics and tracking implementation", style="List Bullet")
+    doc.add_paragraph("The automated assessment provides complete coverage of all technical, accessibility, SEO, and security requirements specified. All findings include specific evidence and actionable recommendations with effort estimates.", style="List Bullet")
 
     doc.add_page_break()
     
@@ -234,12 +266,12 @@ The automated assessment provides complete coverage of all technical, accessibil
     
     doc.add_heading("Findings", level=3)
     doc.add_paragraph("✓ Commercial Networks LTD: Server response time 668ms (Good - under 1s threshold)\n    Evidence: Response time: 668ms\n    Analysis: Within acceptable range but could be improved to <200ms for optimal performance", style="List Bullet")
-    doc.add_paragraph("✓ Insurance IT: Server response time 132ms (Excellent)\n    Evidence: Response time: 132ms\n    Analysis: Excellent performance, well under industry standard", style="List Bullet")
+    doc.add_paragraph("✓ Insurance IT: Server response time 132ms (Excellent)\n    Evidence: Response time: 132ms\n    Analysis: Excellent performance, excellent performance", style="List Bullet")
     
     doc.add_heading("Recommendations", level=3)
-    doc.add_paragraph("• Enable gzip/brotli compression for text assets - Effort: 1 hour, Impact: 10-30% size reduction", style="List Bullet")
+    doc.add_paragraph("• Enable gzip/brotli compression for text assets - Effort: 1 hour, Impact: Reduced file sizes", style="List Bullet")
     doc.add_paragraph("• Implement browser caching with appropriate cache headers - Effort: 1 hour, Impact: Faster repeat visits", style="List Bullet")
-    doc.add_paragraph("• Consider CDN for static assets (images, CSS, JS) - Effort: 2-4 hours, Cost: £10-50/month, Impact: Global performance improvement", style="List Bullet")
+    doc.add_paragraph("• Consider CDN for static assets (images, CSS, JS) - Effort: 2-4 hours, Impact: Global performance improvement", style="List Bullet")
     
     doc.add_heading("3.2 Security", level=2)
     doc.add_paragraph("Security assessment verifies WordPress core version, plugin versions, SSL certificate configuration, and security header implementation. Missing security headers expose websites to common vulnerabilities including clickjacking, MIME-type sniffing, and protocol downgrade attacks.")
@@ -271,7 +303,7 @@ Fix - Add to .htaccess file:
 </IfModule>
 
 Effort: 1-2 hours
-Cost: £75-150 (developer time)
+
 Risk if not fixed: HIGH (exploitable today)
 Priority: P1 (fix within 24 hours)"""
     doc.add_paragraph(security_text, style="List Bullet")
@@ -411,7 +443,7 @@ For detailed navigation flow testing, user journey analysis, and interactive ele
     
     doc.add_heading("Findings", level=3)
     doc.add_paragraph("✓ Commercial Networks LTD: 3 CTAs detected (contact, book, call)\n    Evidence: CTAs: ['contact\\\\s*us', 'book\\\\s*(now|a|an)', 'call\\\\s*(us|now)']\n    Analysis: Good variety of CTAs", style="List Bullet")
-    doc.add_paragraph("✗ Insurance IT: NO clear calls to action found - CRITICAL\n    Evidence: No CTAs detected\n    Impact: Visitors don't know what action to take next\n    Fix: Add clear, prominent CTAs to homepage and key pages\n    Effort: 2-4 hours\n    Cost: £150-300\n    Priority: P1 (this week)", style="List Bullet")
+    doc.add_paragraph("✗ Insurance IT: NO clear calls to action found - CRITICAL\n    Evidence: No CTAs detected\n    Impact: Visitors don't know what action to take next\n    Fix: Add clear, prominent CTAs to homepage and key pages\n    Effort: 2-4 hours\n    \n    Priority: P1 (this week)", style="List Bullet")
     
     doc.add_heading("5.3 Outdated Content", level=2)
     doc.add_paragraph("Content freshness analysis detects outdated dates, staff information, and product/service descriptions. Fresh content signals active business operations to users and search engines.")
@@ -515,7 +547,7 @@ For detailed navigation flow testing, user journey analysis, and interactive ele
     doc.add_paragraph("✓ Google Analytics 4 (GA4) detected on both websites\n    Evidence: GA4 gtag detected\n    Analysis: Current analytics version installed", style="List Bullet")
     doc.add_paragraph("✓ Google Tag Manager not detected\n    Evidence: No GTM container found\n    Analysis: Not required but beneficial for easier tag management", style="List Bullet")
     doc.add_paragraph("✓ Cookie consent banner detected\n    Evidence: Indicators: ['cookie', 'privacy', 'gdpr', 'cookie policy']\n    Analysis: GDPR compliance attempt", style="List Bullet")
-    doc.add_paragraph("⚠ Cookie banner may not have easy reject option (GDPR concern)\n    Evidence: No reject/decline button found\n    Impact: Potential GDPR non-compliance\n    Fix: Ensure 'Reject All' is equally prominent as 'Accept All'\n    Effort: 2-4 hours\n    Cost: £150-300\n    Priority: P2 (GDPR compliance)", style="List Bullet")
+    doc.add_paragraph("⚠ Cookie banner may not have easy reject option (GDPR concern)\n    Evidence: No reject/decline button found\n    Impact: Potential GDPR non-compliance\n    Fix: Ensure 'Reject All' is equally prominent as 'Accept All'\n    Effort: 2-4 hours\n    \n    Priority: P2 (GDPR compliance)", style="List Bullet")
     
     # === 9. PRIORITY ACTION PLAN ===
     doc.add_heading("9. Priority Action Plan", level=1)
@@ -529,7 +561,7 @@ For detailed navigation flow testing, user journey analysis, and interactive ele
     for item, effort, cost, risk in critical:
         p = doc.add_paragraph(style="List Bullet")
         p.add_run(f"✗ {item}\n").bold = True
-        p.add_run(f"  Effort: {effort} | Cost: {cost} | Risk: {risk}")
+        p.add_run(f"  Effort: {effort} | Risk: {risk}")
     
     doc.add_heading("9.2 High Priority (This Week)", level=2)
     high = [
@@ -542,7 +574,7 @@ For detailed navigation flow testing, user journey analysis, and interactive ele
     for item, effort, cost, impact in high:
         p = doc.add_paragraph(style="List Bullet")
         p.add_run(f"⚠ {item}\n").bold = True
-        p.add_run(f"  Effort: {effort} | Cost: {cost} | Impact: {impact}")
+        p.add_run(f"  Effort: {effort} | Impact: {impact}")
     
     doc.add_heading("9.3 Medium Priority (This Month)", level=2)
     medium = [
@@ -554,7 +586,7 @@ For detailed navigation flow testing, user journey analysis, and interactive ele
     for item, effort, cost, impact in medium:
         p = doc.add_paragraph(style="List Bullet")
         p.add_run(f"○ {item}\n").bold = True
-        p.add_run(f"  Effort: {effort} | Cost: {cost} | Impact: {impact}")
+        p.add_run(f"  Effort: {effort} | Impact: {impact}")
     
     doc.add_heading("9.4 Implementation Roadmap", level=2)
     
