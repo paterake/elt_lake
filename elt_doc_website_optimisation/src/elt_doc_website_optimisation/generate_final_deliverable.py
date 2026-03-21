@@ -118,7 +118,68 @@ The detailed findings in this report include evidence from automated testing, em
         row.cells[0].text = severity
         row.cells[1].text = cnltd
         row.cells[2].text = insurance
-    
+
+    doc.add_heading("2.3 Scoring Methodology", level=2)
+    scoring_text = """The assessment scores are calculated using a weighted methodology based on finding severity and status. This transparent approach ensures consistent, objective evaluation across all websites.
+
+Scoring Formula:
+
+Each finding is assigned a weight based on severity:
+• Critical findings: 0 points (security vulnerabilities, site-breaking issues)
+• High findings: 0.25 points (significant issues affecting users)
+• Medium findings: 0.5 points (noticeable issues, best practice violations)
+• Low findings: 1.0 points (minor issues, informational)
+
+Each finding status modifies the score:
+• Pass: 100% of severity weight earned
+• Warning: 50% of severity weight earned
+• Fail: 0% of severity weight earned
+
+Calculation:
+Score = (Total Points Earned / Total Possible Points) × 100
+
+Example Calculation:
+If a website has 50 findings:
+• 30 Low findings (Pass): 30 × 1.0 = 30 points
+• 10 Medium findings (Pass): 10 × 0.5 = 5 points
+• 5 Medium findings (Warning): 5 × 0.5 × 0.5 = 1.25 points
+• 3 High findings (Fail): 3 × 0.25 × 0 = 0 points
+• 2 Critical findings (Fail): 2 × 0 × 0 = 0 points
+
+Total earned: 36.25 points
+Total possible: 50 points (if all findings were Low and Pass)
+Score: (36.25 / 50) × 100 = 72.5/100
+
+Score Interpretation:
+
+| Score Range | Status | Meaning |
+|-------------|--------|---------|
+| 90-100 | Excellent | Industry-leading, minimal issues |
+| 80-89 | Good | Solid foundation, minor improvements needed |
+| 70-79 | Fair | Acceptable, several improvements recommended |
+| 60-69 | Poor | Significant issues, priority action required |
+| Below 60 | Critical | Major problems, immediate action required |
+
+Assessment Scope:
+
+This assessment evaluated:
+• 58 specification requirements across 6 categories
+• 74+ individual findings with evidence
+• Both desktop (1920×1080) and mobile (375×667) viewports
+• Multi-page SEO analysis (10 pages per site)
+• WordPress plugin and theme configuration
+• Analytics and tracking implementation
+
+Limitations:
+
+The following require manual review and are not included in automated scoring:
+• Visual design quality (layout, branding, aesthetics)
+• Content accuracy and business relevance
+• WordPress admin security (usernames, passwords)
+• Google Analytics goals/events configuration
+• Full site crawl (assessment covered homepage and linked pages only)"""
+    doc.add_paragraph(scoring_text)
+
     doc.add_page_break()
     
     # === 3. TECHNICAL REVIEW ===
