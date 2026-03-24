@@ -7,23 +7,23 @@ SELECT
      , t.nrm_supplier_name             supplier_name
      , t.nrm_agg_supplier_number       reference_id   
      , t.nrm_supplier_category         supplier_category
-     , NULL                            business_entity_name
-     , NULL                            do_not_reimburse_contingent_worker_expense_reports
-     , NULL                            worktag_only
-     , NULL                            integration_system
-     , NULL                            external_entity_id
-     , NULL                            supplier_source
-     , NULL                            supplier_change_source
-     , NULL                            submit
-     , NULL                            spend_category_or_hierarchy_plus
-     , NULL                            supplier_security_segment
-     , NULL                            create_supplier_from_customer
-     , NULL                            create_supplier_from_financial_institution
-     , NULL                            create_supplier_from_tax_authority
-     , NULL                            create_supplier_from_investor
-     , NULL                            customer_account_number
-     , NULL                            certificate_of_insurance_date
-     , NULL                            duns_number
-     , NULL                            unique_entity_identifier
+     , CAST(NULL AS VARCHAR)           business_entity_name
+     , CAST(NULL AS VARCHAR)           do_not_reimburse_contingent_worker_expense_reports
+     , CAST(NULL AS VARCHAR)           worktag_only
+     , CAST(NULL AS VARCHAR)           integration_system
+     , CAST(NULL AS VARCHAR)           external_entity_id
+     , CAST(NULL AS VARCHAR)           supplier_source
+     , CAST(NULL AS VARCHAR)           supplier_change_source
+     , CAST(NULL AS VARCHAR)           submit
+     , CAST(NULL AS VARCHAR)           spend_category_or_hierarchy_plus
+     , CAST(NULL AS VARCHAR)           supplier_security_segment
+     , CAST(NULL AS VARCHAR)           create_supplier_from_customer
+     , CAST(NULL AS VARCHAR)           create_supplier_from_financial_institution
+     , CAST(NULL AS VARCHAR)           create_supplier_from_tax_authority
+     , CAST(NULL AS VARCHAR)           create_supplier_from_investor
+     , CAST(NULL AS VARCHAR)           customer_account_number
+     , CAST(NULL AS VARCHAR)           certificate_of_insurance_date
+     , CAST(NULL AS VARCHAR)           duns_number
+     , CAST(NULL AS VARCHAR)           unique_entity_identifier
   FROM src_fin_supplier                t
 ;

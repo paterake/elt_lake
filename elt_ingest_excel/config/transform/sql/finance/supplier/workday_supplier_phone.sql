@@ -97,7 +97,7 @@ SELECT s.supplier_id                                                       suppl
      , r.phone_code                                                        international_phone_code
      , s.parsed_phone.area_code                                            area_code
      , s.parsed_phone.phone_number                                         phone_number
-     , NULL                                                                phone_number_extension
+     , CAST(NULL AS VARCHAR)                                               phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
          THEN 'Fax'
@@ -109,10 +109,10 @@ SELECT s.supplier_id                                                       suppl
          THEN 'Yes'
          ELSE 'No'
        END                                                                 primary_flag
-     , NULL                                                                phone_type
-     , NULL                                                                use_for
-     , NULL                                                                use_for_tenanted
-     , NULL                                                                phone_comments
+     , CAST(NULL AS VARCHAR)                                               phone_type
+     , CAST(NULL AS VARCHAR)                                               use_for
+     , CAST(NULL AS VARCHAR)                                               use_for_tenanted
+     , CAST(NULL AS VARCHAR)                                               phone_comments
  FROM cte_phone_parse                  s
       LEFT OUTER JOIN
       ref_country                      r

@@ -74,7 +74,7 @@ SELECT s.supplier_id                          supplier_id
 SELECT s.supplier_id                                                       supplier_id
      , s.supplier_name                                                     supplier_name
      , TRIM(LOWER(s.email_address))                                        email_address
-     , NULL                                                                email_comment
+     , CAST(NULL AS VARCHAR)                                               email_comment
      , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
            PARTITION BY s.supplier_id, s.suffix
                ORDER BY s.email_address
@@ -90,13 +90,13 @@ SELECT s.supplier_id                                                       suppl
          THEN 'Yes'
          ELSE 'No'
        END                                                                 default_po
-     , NULL                                                                email_type
+     , CAST(NULL AS VARCHAR)                                               email_type
      , 'SHIPPING|BILLING|REMIT'                                            use_for
-     , NULL                                                                use_for_tenanted
-     , NULL                                                                delete_flag
-     , NULL                                                                do_not_replace_all
-     , NULL                                                                additional_comments
-     , NULL                                                                email
+     , CAST(NULL AS VARCHAR)                                               use_for_tenanted
+     , CAST(NULL AS VARCHAR)                                               delete_flag
+     , CAST(NULL AS VARCHAR)                                               do_not_replace_all
+     , CAST(NULL AS VARCHAR)                                               additional_comments
+     , CAST(NULL AS VARCHAR)                                               email
   FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'

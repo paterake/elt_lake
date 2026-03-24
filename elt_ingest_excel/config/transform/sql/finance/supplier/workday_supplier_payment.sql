@@ -43,12 +43,12 @@ SELECT
          THEN 'Wire|Manual'
          ELSE 'Manual'
        END                                               payment_types_accepted
-     , NULL                                              shipping_terms
-     , NULL                                              always_separate_payments
-     , NULL                                              do_not_pay_during_bank_account_updates
-     , NULL                                              exclude_freight_amount_from_supplier_invoice_discount
-     , NULL                                              exclude_other_charge_from_supplier_invoice_discount
-     , NULL                                              exclude_tax_amount_from_supplier_invoice_discount
+     , CAST(NULL AS VARCHAR)                             shipping_terms
+     , CAST(NULL AS VARCHAR)                             always_separate_payments
+     , CAST(NULL AS VARCHAR)                             do_not_pay_during_bank_account_updates
+     , CAST(NULL AS VARCHAR)                             exclude_freight_amount_from_supplier_invoice_discount
+     , CAST(NULL AS VARCHAR)                             exclude_other_charge_from_supplier_invoice_discount
+     , CAST(NULL AS VARCHAR)                             exclude_tax_amount_from_supplier_invoice_discount
   FROM src_fin_supplier                t
  WHERE t.nrm_payment_terms_id          IS NOT NULL
        )

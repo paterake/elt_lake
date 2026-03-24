@@ -25,7 +25,7 @@ SELECT
      , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                        primary_tax_id
      , fn_nvl2(t.nrm_tax_id_number, NULL, 'Yes')                        transaction_tax_id
      , t.nrm_country_name                                               tax_status_country
-     , NULL                                                             tax_status
+     , CAST(NULL AS VARCHAR)                                            tax_status
      , CASE
          WHEN UPPER(t.nrm_country_code) = 'GB'
          THEN CASE
@@ -51,14 +51,14 @@ SELECT
                 ELSE 'Supplier of Goods - VAT/GST Registered in this Country'
               END
        END                                                              transaction_tax_status
-     , NULL                                                             withholding_tax_status
-     , NULL                                                             tax_authority_form_type
-     , NULL                                                             irs_1099_supplier
-     , NULL                                                             tax_document_date
-     , NULL                                                             default_tax_code
-     , NULL                                                             default_withholding_tax_code
-     , NULL                                                             fatca
-     , NULL                                                             business_entity_tax_id
+     , CAST(NULL AS VARCHAR)                                            withholding_tax_status
+     , CAST(NULL AS VARCHAR)                                            tax_authority_form_type
+     , CAST(NULL AS VARCHAR)                                            irs_1099_supplier
+     , CAST(NULL AS VARCHAR)                                            tax_document_date
+     , CAST(NULL AS VARCHAR)                                            default_tax_code
+     , CAST(NULL AS VARCHAR)                                            default_withholding_tax_code
+     , CAST(NULL AS VARCHAR)                                            fatca
+     , CAST(NULL AS VARCHAR)                                            business_entity_tax_id
   FROM src_fin_supplier                t
        LEFT OUTER JOIN
        ref_country_tax_id_type_mapping dm
