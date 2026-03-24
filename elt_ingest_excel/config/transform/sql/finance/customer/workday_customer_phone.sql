@@ -136,5 +136,6 @@ SELECT s.customer_id                                                       custo
       LEFT OUTER JOIN 
       ref_country                      r
           ON r.country_code            = s.parsed_phone.phone_country_code
- WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
+ WHERE s.parsed_phone.phone_number           IS NOT NULL
+   AND LENGTH(s.parsed_phone.phone_number)   >= 4
 ;

@@ -114,7 +114,9 @@ SELECT s.supplier_id                                                       suppl
      , NULL                                                                use_for_tenanted
      , NULL                                                                phone_comments
  FROM cte_phone_parse                  s
-     LEFT OUTER JOIN 
-     ref_country                      r
-         ON r.country_code            = s.parsed_phone.phone_country_code
+      LEFT OUTER JOIN
+      ref_country                      r
+          ON r.country_code            = s.parsed_phone.phone_country_code
+ WHERE s.parsed_phone.phone_number           IS NOT NULL
+   AND LENGTH(s.parsed_phone.phone_number)   >= 4
 ;
