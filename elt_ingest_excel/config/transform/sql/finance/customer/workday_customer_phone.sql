@@ -105,8 +105,8 @@ SELECT s.customer_id                                                       custo
      , r.country_name                                                      phone_country
      , r.country_code                                                      country_code
      , r.phone_code                                                        international_phone_code
-     , s.parsed_phone.area_code                                            area_code
-     , s.parsed_phone.phone_number                                         phone_number
+     , CAST(NULL AS VARCHAR)                                               area_code
+     , s.parsed_phone.area_code || s.parsed_phone.phone_number             phone_number
      , CASE
          WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
          THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
@@ -138,4 +138,14 @@ SELECT s.customer_id                                                       custo
           ON r.country_code            = s.parsed_phone.phone_country_code
  WHERE s.parsed_phone.phone_number           IS NOT NULL
    AND LENGTH(s.parsed_phone.phone_number)   >= 4
+ ORDER BY 
+       customer_id
+     , primary_flag DESC
+     , CASE phone_device_type
+         WHEN 'Landline'   THEN 1
+         WHEN 'Mobile'     THEN 2
+         WHEN 'Fax'        THEN 3
+         ELSE 4
+       END
+     , phone_id
 ;

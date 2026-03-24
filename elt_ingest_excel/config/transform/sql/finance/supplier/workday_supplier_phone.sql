@@ -122,5 +122,11 @@ SELECT s.supplier_id                                                       suppl
  ORDER BY 
        supplier_id
      , primary_flag DESC
-     , phone_id       
+     , CASE phone_device_type
+         WHEN 'Landline'   THEN 1
+         WHEN 'Mobile'     THEN 2
+         WHEN 'Fax'        THEN 3
+         ELSE 4
+       END
+     , phone_id
 ;
