@@ -12,7 +12,7 @@ SELECT
      , CAST(NULL AS VARCHAR)                                                  defaulted_business_site_address
      , CAST(NULL AS VARCHAR)                                                  delete_flag
      , CAST(NULL AS VARCHAR)                                                  do_not_replace_all
-     , t.nrm_created_date                                                     last_modified
+     , strftime(CAST(t.nrm_created_date AS DATE), '%d/%m/%Y')                 last_modified
      , CAST(NULL AS VARCHAR)                                                  descriptor
      , ROW_NUMBER() OVER (
            PARTITION BY t.supplier_id
