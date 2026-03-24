@@ -37,6 +37,6 @@ SELECT
                 ELSE 'Non EU Company Not VAT registered in this country'
               END
        END                                                                      transaction_tax_status
-     , NULL                                                                     withholding_tax_status
+     , CAST(NULL AS VARCHAR)                                                    withholding_tax_status
   FROM src_fin_customer                                                         c
 ;

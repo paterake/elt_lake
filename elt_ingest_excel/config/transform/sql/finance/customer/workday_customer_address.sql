@@ -7,13 +7,13 @@ CREATE TABLE workday_customer_address
 SELECT
        t.customer_id                                                          customer_id
      , t.nrm_customer_name                                                    customer_name
-     , NULL                                                                   formatted_address
-     , NULL                                                                   address_format_type
-     , NULL                                                                   defaulted_business_site_address
-     , NULL                                                                   delete_flag
-     , NULL                                                                   do_not_replace_all
-     , NULL                                                                   last_modified
-     , NULL                                                                   descriptor
+     , CAST(NULL AS VARCHAR)                                                  formatted_address
+     , CAST(NULL AS VARCHAR)                                                  address_format_type
+     , CAST(NULL AS VARCHAR)                                                  defaulted_business_site_address
+     , CAST(NULL AS VARCHAR)                                                  delete_flag
+     , CAST(NULL AS VARCHAR)                                                  do_not_replace_all
+     , CAST(NULL AS VARCHAR)                                                  last_modified
+     , CAST(NULL AS VARCHAR)                                                  descriptor
      , ROW_NUMBER() OVER (
            PARTITION BY t.customer_id
                ORDER BY u.address.nrm_address_code
@@ -30,9 +30,9 @@ SELECT
      , u.address.nrm_country_name                                             country
      , u.address.nrm_country_code                                             country_code
      , u.address.nrm_region                                                   region
-     , NULL                                                                   subregion
+     , CAST(NULL AS VARCHAR)                                                  subregion
      , u.address.nrm_city                                                     city
-     , NULL                                                                   submunicipality
+     , CAST(NULL AS VARCHAR)                                                  submunicipality
      , u.address.nrm_address_line_1                                           address_line_1
      , u.address.nrm_address_line_2                                           address_line_2
      , u.address.nrm_address_line_3                                           address_line_3
@@ -40,14 +40,14 @@ SELECT
      , u.address.nrm_postal_code                                              postal_code
      , 'Yes'                                                                  is_public
      , 'Yes'                                                                  is_primary
-     , NULL                                                                   address_type   
-     , NULL                                                                   effective_date
-     , NULL                                                                   use_for
-     , NULL                                                                   use_for_tenanted
-     , NULL                                                                   customer_comment
-     , NULL                                                                   number_of_days
-     , NULL                                                                   municipality_local
-     , NULL                                                                   optional_address
+     , CAST(NULL AS VARCHAR)                                                  address_type   
+     , CAST(NULL AS VARCHAR)                                                  effective_date
+     , CAST(NULL AS VARCHAR)                                                  use_for
+     , CAST(NULL AS VARCHAR)                                                  use_for_tenanted
+     , CAST(NULL AS VARCHAR)                                                  customer_comment
+     , CAST(NULL AS VARCHAR)                                                  number_of_days
+     , CAST(NULL AS VARCHAR)                                                  municipality_local
+     , CAST(NULL AS VARCHAR)                                                  optional_address
   FROM src_fin_customer                         t
      , UNNEST(nrm_array_customer_address) u(address)
  WHERE COALESCE( NULLIF(TRIM(u.address.nrm_address_line_1), '')

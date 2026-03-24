@@ -77,17 +77,17 @@ SELECT s.customer_id                                                     custome
            PARTITION BY s.customer_id, s.suffix ORDER BY s.email_address
        )                                                                 email_id
      , TRIM(LOWER(s.email_address))                                      email_address
-     , NULL                                                              email_comment
+     , CAST(NULL AS VARCHAR)                                             email_comment
      , 'Yes'                                                             is_public
      , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
             THEN 'Yes' ELSE 'No' END                                     is_primary
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
-     , NULL                                                              use_for_tenanted
-     , NULL                                                              delete_flag
-     , NULL                                                              do_not_replace_all
-     , NULL                                                              additional_comment
-     , NULL                                                              email
+     , CAST(NULL AS VARCHAR)                                             use_for_tenanted
+     , CAST(NULL AS VARCHAR)                                             delete_flag
+     , CAST(NULL AS VARCHAR)                                             do_not_replace_all
+     , CAST(NULL AS VARCHAR)                                             additional_comment
+     , CAST(NULL AS VARCHAR)                                             email
   FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'

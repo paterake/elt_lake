@@ -112,7 +112,7 @@ SELECT s.customer_id                                                       custo
          THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
          ELSE s.phone_number_raw
        END                                                                 formatted_phone_number
-     , NULL                                                                phone_number_extension
+     , CAST(NULL AS VARCHAR)                                               phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
          THEN 'Fax'
@@ -124,14 +124,14 @@ SELECT s.customer_id                                                       custo
          ELSE 'No' 
        END                                                                 is_primary
      , s.phone_type                                                        phone_type
-     , NULL                                                                use_for
-     , NULL                                                                use_for_tenanted
-     , NULL                                                                tenant_formatted_phone
-     , NULL                                                                international_formatted_phone
-     , NULL                                                                delete_flag
-     , NULL                                                                do_not_replace_all
-     , NULL                                                                phone_comment
-     , NULL                                                                phone
+     , CAST(NULL AS VARCHAR)                                               use_for
+     , CAST(NULL AS VARCHAR)                                               use_for_tenanted
+     , CAST(NULL AS VARCHAR)                                               tenant_formatted_phone
+     , CAST(NULL AS VARCHAR)                                               international_formatted_phone
+     , CAST(NULL AS VARCHAR)                                               delete_flag
+     , CAST(NULL AS VARCHAR)                                               do_not_replace_all
+     , CAST(NULL AS VARCHAR)                                               phone_comment
+     , CAST(NULL AS VARCHAR)                                               phone
  FROM cte_phone_parse                  s
       LEFT OUTER JOIN 
       ref_country                      r

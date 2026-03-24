@@ -10,23 +10,23 @@ SELECT
      , c.nrm_country_name                             bank_country
      , c.nrm_currency_code                            currency
      , 'CHECKING'                                     bank_account_type
-     , NULL                                           bank_name
-     , NULL                                           name_on_account
-     , NULL                                           bank_account_number
+     , CAST(NULL AS VARCHAR)                          bank_name
+     , CAST(NULL AS VARCHAR)                          name_on_account
+     , CAST(NULL AS VARCHAR)                          bank_account_number
      , TRIM(c.short_name) || ' Intermediary'          bank_account_nickname
-     , NULL                                           routing_transit_number
-     , NULL                                           iban
-     , NULL                                           swift_bank_identification_code
-     , NULL                                           roll_number
-     , NULL                                           check_digit
-     , NULL                                           branch_id
-     , NULL                                           branch_name
+     , CAST(NULL AS VARCHAR)                          routing_transit_number
+     , CAST(NULL AS VARCHAR)                          iban
+     , CAST(NULL AS VARCHAR)                          swift_bank_identification_code
+     , CAST(NULL AS VARCHAR)                          roll_number
+     , CAST(NULL AS VARCHAR)                          check_digit
+     , CAST(NULL AS VARCHAR)                          branch_id
+     , CAST(NULL AS VARCHAR)                          branch_name
      , CASE
          WHEN UPPER(TRIM(c.inactive)) = 'NO'         
          THEN 'No'
          ELSE 'Yes'
        END                                            inactive
-     , NULL                                           bank_instructions
+     , CAST(NULL AS VARCHAR)                          bank_instructions
   FROM src_fin_customer                c
  WHERE c.checkbook_id IS NOT NULL
    AND TRIM(c.checkbook_id) != ''

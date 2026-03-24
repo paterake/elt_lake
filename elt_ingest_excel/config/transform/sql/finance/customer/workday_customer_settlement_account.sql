@@ -10,16 +10,16 @@ SELECT
      , c.nrm_currency_code                                                 currency
      , COALESCE(NULLIF(TRIM(c.statement_name), ''), c.nrm_customer_name)   bank_account_nickname
      , 'Checking'                                                          bank_account_type
-     , NULL                                                                bank_name
-     , NULL                                                                routing_transit_number
-     , NULL                                                                branch_id
-     , NULL                                                                branch_name
-     , NULL                                                                bank_account_number
-     , NULL                                                                check_digit
+     , CAST(NULL AS VARCHAR)                                               bank_name
+     , CAST(NULL AS VARCHAR)                                               routing_transit_number
+     , CAST(NULL AS VARCHAR)                                               branch_id
+     , CAST(NULL AS VARCHAR)                                               branch_name
+     , CAST(NULL AS VARCHAR)                                               bank_account_number
+     , CAST(NULL AS VARCHAR)                                               check_digit
      , COALESCE(NULLIF(TRIM(c.statement_name), ''), c.nrm_customer_name)   name_on_account
-     , NULL                                                                roll_number
-     , NULL                                                                iban
-     , NULL                                                                swift_bank_identification_code
+     , CAST(NULL AS VARCHAR)                                               roll_number
+     , CAST(NULL AS VARCHAR)                                               iban
+     , CAST(NULL AS VARCHAR)                                               swift_bank_identification_code
      , CASE
          WHEN c.nrm_currency_code = 'GBP'
          THEN 'BACS|EFT|Manual'
@@ -40,11 +40,11 @@ SELECT
          THEN 'Wire'
          ELSE 'BACS'
        END                                                                 payment_types
-     , NULL                                                                for_supplier_connections_only
-     , NULL                                                                requires_prenote
-     , NULL                                                                payment_type_prenote
-     , NULL                                                                inactive
-     , NULL                                                                bank_instructions
+     , CAST(NULL AS VARCHAR)                                               for_supplier_connections_only
+     , CAST(NULL AS VARCHAR)                                               requires_prenote
+     , CAST(NULL AS VARCHAR)                                               payment_type_prenote
+     , CAST(NULL AS VARCHAR)                                               inactive
+     , CAST(NULL AS VARCHAR)                                               bank_instructions
   FROM src_fin_customer                c
  WHERE c.checkbook_id IS NOT NULL
    AND TRIM(c.checkbook_id) != ''

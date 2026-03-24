@@ -15,8 +15,8 @@ SELECT
          THEN 'Manual'
          ELSE 'Manual'
        END                                               default_payment_type
-     , NULL                                              interest_rule
-     , NULL                                              late_fee_rule
+     , CAST(NULL AS VARCHAR)                             interest_rule
+     , CAST(NULL AS VARCHAR)                             late_fee_rule
   FROM src_fin_customer                                  c
        LEFT OUTER JOIN
        ref_source_payment_terms                          m

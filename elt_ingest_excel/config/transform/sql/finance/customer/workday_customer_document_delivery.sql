@@ -5,8 +5,8 @@ CREATE TABLE workday_customer_document_delivery
 SELECT
        c.customer_id                                  customer_id
      , c.nrm_customer_name                            customer_name
-     , NULL                                           always_separate_payments
-     , NULL                                           remit_from_customer
+     , CAST(NULL AS VARCHAR)                          always_separate_payments
+     , CAST(NULL AS VARCHAR)                          remit_from_customer
      , CASE
          WHEN NULLIF(TRIM(c.email_to_address), '') IS NOT NULL
          THEN 'Email'
@@ -19,15 +19,15 @@ SELECT
          ELSE 'Print'
        END                                            statement_delivery_method
      , TRIM(LOWER(c.email_to_address))                statement_notification_email_recipients
-     , NULL                                           dunning_delivery_method
-     , NULL                                           dunning_letter_notification_email_recipients
-     , NULL                                           electronic_invoicing_start_date
-     , NULL                                           electronic_invoicing_government_issued_customer_id
-     , NULL                                           electronic_invoicing_intermediary_vendor_id
-     , NULL                                           electronic_invoicing_vendor_issued_customer_id
-     , NULL                                           mandate_required
-     , NULL                                           direct_debit_payment_type
-     , NULL                                           default_mandate
+     , CAST(NULL AS VARCHAR)                          dunning_delivery_method
+     , CAST(NULL AS VARCHAR)                          dunning_letter_notification_email_recipients
+     , CAST(NULL AS VARCHAR)                          electronic_invoicing_start_date
+     , CAST(NULL AS VARCHAR)                          electronic_invoicing_government_issued_customer_id
+     , CAST(NULL AS VARCHAR)                          electronic_invoicing_intermediary_vendor_id
+     , CAST(NULL AS VARCHAR)                          electronic_invoicing_vendor_issued_customer_id
+     , CAST(NULL AS VARCHAR)                          mandate_required
+     , CAST(NULL AS VARCHAR)                          direct_debit_payment_type
+     , CAST(NULL AS VARCHAR)                          default_mandate
   FROM src_fin_customer                c
  WHERE NULLIF(UPPER(TRIM(c.email_to_address)), '') IS NOT NULL
 ;
