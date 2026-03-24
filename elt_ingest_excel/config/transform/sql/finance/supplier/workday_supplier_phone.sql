@@ -95,8 +95,8 @@ SELECT s.supplier_id                                                       suppl
      , r.country_name                                                      phone_country
      , r.country_code                                                      country_code
      , r.phone_code                                                        international_phone_code
-     , s.parsed_phone.area_code                                            area_code
-     , s.parsed_phone.phone_number                                         phone_number
+     , CAST(NULL AS VARCHAR)                                               area_code
+     , s.parsed_phone.area_code || s.parsed_phone.phone_number             phone_number
      , CAST(NULL AS VARCHAR)                                               phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
@@ -119,4 +119,8 @@ SELECT s.supplier_id                                                       suppl
           ON r.country_code            = s.parsed_phone.phone_country_code
  WHERE s.parsed_phone.phone_number           IS NOT NULL
    AND LENGTH(s.parsed_phone.phone_number)   >= 4
+ ORDER BY 
+       supplier_id
+     , primary_flag DESC
+     , phone_id       
 ;
