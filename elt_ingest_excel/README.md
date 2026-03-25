@@ -43,6 +43,44 @@ uv run python examples/fin_workday_ref.py
 
 ```
 
+## Running Excel VBA validations (macOS)
+
+This runs the validation macros inside the generated .xlsm workbook and unhides the Validation Results sheet.
+
+Prerequisites:
+- Microsoft Excel installed (macOS)
+- Macros enabled for the workbook (Excel may prompt you the first time you open it)
+
+List available VBA entry points offline (best-effort, no Excel required):
+
+```bash
+cd elt_ingest_excel
+uv run python -m elt_ingest_excel.macro.excel_macro_runner \
+  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
+  --list-macros
+```
+
+List macros via Excel (recommended, accurate):
+
+```bash
+cd elt_ingest_excel
+uv run python -m elt_ingest_excel.macro.excel_macro_runner \
+  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
+  --list-macros-excel \
+  --excel-visible
+```
+
+Run the validation macro and unhide Validation Results:
+
+```bash
+cd elt_ingest_excel
+uv run python -m elt_ingest_excel.macro.excel_macro_runner \
+  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
+  --macro 'workday_fin_creditor_supplier_active_v1.xlsm!runSpecificValidationsFromSheet' \
+  --unhide-sheet "Validation Results" \
+  --excel-visible
+```
+
 
 ## Tests
 
