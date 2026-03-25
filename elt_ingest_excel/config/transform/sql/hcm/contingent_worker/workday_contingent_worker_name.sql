@@ -28,5 +28,5 @@ SELECT
      , NULL                                              suffix_id
   FROM src_hcm_contingent_worker       t
  ORDER BY
-       t.worker_id
+       worker_id
 ;
