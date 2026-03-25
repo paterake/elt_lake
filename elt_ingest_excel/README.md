@@ -52,19 +52,41 @@ This allows you to find and fix data quality issues before sending the workbook 
 - Microsoft Excel installed (macOS)
 - Macros enabled for the workbook
 
-**Quick Start:**
+**One-time setup: Unhide ValidationManifest sheet**
+
+The ValidationManifest sheet contains the validation rules but is hidden by default.
+Before running validations, unhide it and add rules for your sheets:
+
+```bash
+cd elt_ingest_excel
+
+# Unhide ValidationManifest sheet
+uv run python examples/unhide_validation_manifest.py --excel-visible
+```
+
+Then in Excel:
+1. Open the `ValidationManifest` sheet (now visible at the end of sheet tabs)
+2. Add validation rules for your data sheets (e.g., 'Supplier Name')
+3. Save the workbook
+
+**Run Validation:**
 
 ```bash
 cd elt_ingest_excel
 
 # Run all validations
-uv run python -m elt_ingest_excel.macro.vba_runner \
-  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm
+uv run python examples/fin_supplier_creditor_validate.py
+
+# Run specific validation macro
+uv run python examples/fin_supplier_creditor_validate.py \
+  --macro runSpecificValidationsFromSheet
 
 # Run with Excel visible (to watch progress)
-uv run python -m elt_ingest_excel.macro.vba_runner \
-  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
-  --excel-visible
+uv run python examples/fin_supplier_creditor_validate.py --excel-visible
+
+# Override workbook path
+uv run python examples/fin_supplier_creditor_validate.py \
+  --workbook /path/to/other_workbook.xlsm
 ```
 
 **Your Complete Workflow:**
@@ -77,15 +99,7 @@ uv run python examples/fin_supplier_creditor.py --run-to-phase PUBLISH
 uv run python examples/fin_supplier_creditor_validate.py
 
 # 3. Open workbook and review "Validation Results" sheet
-#    Fix any SQL transforms if needed, then repeat from step 1
-```
-
-**List Available Macros:**
-
-```bash
-uv run python examples/run_vba_validation.py \
-  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
-  --list-macros
+#    Fix any data issues if needed, then repeat from step 1
 ```
 
 For full documentation see [VBA_VALIDATION_RUNNER.md](VBA_VALIDATION_RUNNER.md).

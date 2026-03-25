@@ -4,7 +4,7 @@
 from base_validator import create_parser, run_validation_wrapper
 
 # Configuration - update these values for your environment
-WORKBOOK_PATH = "~/Documents/workday_fin_creditor_supplier_active_v1.xlsm"
+WORKBOOK_PATH = "~/Documents/workday_fin_creditor_supplier_active_v5.xlsm"
 MACRO_NAME = "runAllValidationsFromSheet"
 UNHIDE_SHEET = "Validation Results"
 

@@ -4,12 +4,25 @@ Run and analyze VBA validation macros in your Workday Supplier/Creditor Excel wo
 
 ## Overview
 
-This module provides two tools:
-
-1. **VBA Runner** - Execute the validation macros that 3+ uses
-2. **VBA Analyzer** - List and document macros in any workbook
+This module provides tools to run the validation macros that 3+ uses to validate workbooks.
 
 ## Quick Start
+
+### One-time Setup: Unhide ValidationManifest
+
+The ValidationManifest sheet contains validation rules but is hidden by default.
+
+```bash
+cd elt_ingest_excel
+
+# Unhide ValidationManifest sheet
+uv run python examples/unhide_validation_manifest.py --excel-visible
+```
+
+Then in Excel:
+1. Open the `ValidationManifest` sheet (at the end of sheet tabs)
+2. Add validation rules for your data sheets
+3. Save the workbook
 
 ### Run Validation
 
@@ -37,7 +50,7 @@ uv run python examples/fin_supplier_creditor_validate.py \
 
 # Different macro
 uv run python examples/fin_supplier_creditor_validate.py \
-    --macro runSpecificValidationsFromSheet
+    --macro runAllValidationsFromSheet
 ```
 
 ### Your Complete Workflow
