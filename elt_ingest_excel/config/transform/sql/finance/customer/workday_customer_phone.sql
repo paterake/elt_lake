@@ -122,7 +122,7 @@ SELECT s.customer_id                                                       custo
      , CASE WHEN s.phone_type = 'primary' AND s.rnk_phone_number = 1
          THEN 'Yes' 
          ELSE 'No' 
-       END                                                                 is_primary
+       END                                                                 primary_flag
      , s.phone_type                                                        phone_type
      , CAST(NULL AS VARCHAR)                                               use_for
      , CAST(NULL AS VARCHAR)                                               use_for_tenanted

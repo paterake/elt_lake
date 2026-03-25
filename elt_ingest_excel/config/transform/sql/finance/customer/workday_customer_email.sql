@@ -80,7 +80,7 @@ SELECT s.customer_id                                                     custome
      , CAST(NULL AS VARCHAR)                                             email_comment
      , 'Yes'                                                             is_public
      , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
-            THEN 'Yes' ELSE 'No' END                                     is_primary
+            THEN 'Yes' ELSE 'No' END                                     primary_flag
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , CAST(NULL AS VARCHAR)                                             use_for_tenanted
