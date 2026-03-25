@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS workday_customer_groups
 ;
 CREATE TABLE workday_customer_groups
     AS
+  WITH cte_group
+    AS (
 SELECT
        TRIM(c.customer_id)                            customer_id
      , c.nrm_customer_name                            customer_name
@@ -23,4 +25,9 @@ SELECT
        ref_workday_group_additional                   r
           ON r.source_type                            = 'customer'
          AND UPPER(TRIM(r.source_value))              = UPPER(TRIM(c.customer_class))
+    )
+SELECT *
+  FROM cte_group
+ ORDER BY
+       customer_id
 ;

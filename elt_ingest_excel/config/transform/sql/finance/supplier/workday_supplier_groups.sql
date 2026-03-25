@@ -28,6 +28,6 @@ SELECT
     )
 SELECT *
   FROM cte_group
- GROUP BY
+ ORDER BY
        supplier_id
 ;

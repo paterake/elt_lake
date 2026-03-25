@@ -39,4 +39,6 @@ SELECT
        END                                                                      transaction_tax_status
      , CAST(NULL AS VARCHAR)                                                    withholding_tax_status
   FROM src_fin_customer                                                         c
+ ORDER BY
+       customer_id
 ;

@@ -79,7 +79,7 @@ SELECT t.customer_id
      , t.address_line_4
      , t.postal_code
      , t.is_public
-     , CASE t.address_id_rnk WHEN 1 THEN 'Yes' ELSE 'No' END                                 is_primary
+     , CASE t.address_id_rnk WHEN 1 THEN 'Yes' ELSE 'No' END                        is_primary
      , t.address_type   
      , t.effective_date
      , t.use_for
@@ -89,4 +89,8 @@ SELECT t.customer_id
      , t.municipality_local
      , t.optional_address
   FROM cte_address                     t
+ ORDER BY 
+       customer_id
+     , is_primary DESC
+     , address_id
 ;

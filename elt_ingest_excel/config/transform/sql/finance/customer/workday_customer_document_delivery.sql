@@ -30,4 +30,6 @@ SELECT
      , CAST(NULL AS VARCHAR)                          default_mandate
   FROM src_fin_customer                c
  WHERE NULLIF(UPPER(TRIM(c.email_to_address)), '') IS NOT NULL
+ ORDER BY 
+       customer_id
 ;

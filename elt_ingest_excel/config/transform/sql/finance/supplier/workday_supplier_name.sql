@@ -26,6 +26,6 @@ SELECT
      , CAST(NULL AS VARCHAR)           duns_number
      , CAST(NULL AS VARCHAR)           unique_entity_identifier
   FROM src_fin_supplier                t
- GROUP BY
+ ORDER BY
        supplier_id
 ;

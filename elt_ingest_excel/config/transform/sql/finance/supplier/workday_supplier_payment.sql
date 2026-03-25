@@ -64,6 +64,6 @@ SELECT t.supplier_id
      , t.exclude_other_charge_from_supplier_invoice_discount
      , t.exclude_tax_amount_from_supplier_invoice_discount
   FROM cte_supplier_paymment           t
- GROUP BY
+ ORDER BY
        supplier_id
 ;

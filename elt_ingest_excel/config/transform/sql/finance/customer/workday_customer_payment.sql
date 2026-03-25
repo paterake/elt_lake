@@ -21,4 +21,6 @@ SELECT
        LEFT OUTER JOIN
        ref_source_payment_terms                          m
          ON  UPPER(m.source_payment_terms)               = UPPER(TRIM(c.payment_terms_id))
+ ORDER BY
+       customer_id
 ;

@@ -91,4 +91,8 @@ SELECT s.customer_id                                                     custome
   FROM cte_email_rnk s
  WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
    AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+ ORDER BY 
+       customer_id
+     , primary_flag DESC
+     , email_id
 ;

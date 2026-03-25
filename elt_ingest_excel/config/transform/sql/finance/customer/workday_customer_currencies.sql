@@ -8,4 +8,6 @@ SELECT
      , c.nrm_currency_code                            accepted_currencies_plus
      , c.nrm_currency_code                            default_currency
   FROM src_fin_customer                c
+ ORDER BY 
+       customer_id
 ;

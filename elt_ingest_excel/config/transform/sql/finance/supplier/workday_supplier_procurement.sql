@@ -30,6 +30,6 @@ SELECT
      , CAST(NULL AS VARCHAR)                             edit_portal_taxes
      , CAST(NULL AS VARCHAR)                             change_order_issue_option
   FROM src_fin_supplier                t
- GROUP BY
+ ORDER BY
        supplier_id
 ;

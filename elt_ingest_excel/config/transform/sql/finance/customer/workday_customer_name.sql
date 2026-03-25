@@ -20,4 +20,6 @@ SELECT
      , CAST(NULL AS VARCHAR)           create_customer_from_tax_authority
      , CAST(NULL AS VARCHAR)           create_customer_from_investor
   FROM src_fin_customer                t
+ ORDER BY
+       customer_id
 ;

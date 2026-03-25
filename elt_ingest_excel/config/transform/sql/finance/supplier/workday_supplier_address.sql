@@ -90,5 +90,7 @@ SELECT t.supplier_id
      , t.municipality_local
   FROM cte_address                     t
  ORDER BY 
-       t.supplier_id
+       supplier_id
+     , is_primary DESC
+     , address_id
 ;
