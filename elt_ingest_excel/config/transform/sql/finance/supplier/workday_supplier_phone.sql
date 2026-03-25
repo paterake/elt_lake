@@ -96,7 +96,7 @@ SELECT s.supplier_id                                                       suppl
      , r.country_code                                                      country_code
      , r.phone_code                                                        international_phone_code
      , CAST(NULL AS VARCHAR)                                               area_code
-     , s.parsed_phone.area_code || s.parsed_phone.phone_number             phone_number
+     , s.parsed_phone.full_phone_number                                    phone_number
      , CAST(NULL AS VARCHAR)                                               phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
@@ -117,8 +117,8 @@ SELECT s.supplier_id                                                       suppl
       LEFT OUTER JOIN
       ref_country                      r
           ON r.country_code            = s.parsed_phone.phone_country_code
- WHERE s.parsed_phone.phone_number           IS NOT NULL
-   AND LENGTH(s.parsed_phone.phone_number)   >= 4
+ WHERE s.parsed_phone.full_phone_number         IS NOT NULL
+   AND LENGTH(s.parsed_phone.full_phone_number) >= 7
  ORDER BY 
        supplier_id
      , primary_flag DESC

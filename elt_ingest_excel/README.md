@@ -105,6 +105,47 @@ uv run python examples/fin_supplier_creditor_validate.py
 For full documentation see [VBA_VALIDATION_RUNNER.md](VBA_VALIDATION_RUNNER.md).
 
 
+## Creating the EIB workbook
+
+The Supplier/Creditor `.xlsm` workbook contains an `InitiateSPECAdvanceLoad` macro that generates the EIB output (same as the "Create Specific EIBs" button on the EIB View sheet).
+
+**One-time prerequisite:** The `TempCreator` VBA module has `Option Private Module` which blocks external calls. Remove it once:
+
+1. Open the workbook in Excel
+2. Press `Option+F11` to open the VBA Editor
+3. In the Project pane: expand the workbook → **Modules → TempCreator**
+4. Delete the line: `Option Private Module`
+5. Save (`Cmd+S`) and close the VBA Editor
+
+```bash
+cd elt_ingest_excel
+
+# Generate EIB workbook (saves in-place, unhides EIB View sheet)
+uv run python examples/fin_supplier_creditor_create_eib.py
+
+# Run with Excel visible (to watch progress)
+uv run python examples/fin_supplier_creditor_create_eib.py --excel-visible
+
+# Override workbook path
+uv run python examples/fin_supplier_creditor_create_eib.py \
+  --workbook /path/to/other_workbook.xlsm
+```
+
+After the macro completes, check the **EIB View** sheet in the workbook for the generated EIB data.
+
+**Full workflow with EIB creation:**
+
+```bash
+# 1. Run the ETL pipeline
+uv run python examples/fin_supplier_creditor.py --run-to-phase PUBLISH
+
+# 2. Run validations
+uv run python examples/fin_supplier_creditor_validate.py
+
+# 3. Create EIB workbook
+uv run python examples/fin_supplier_creditor_create_eib.py
+```
+
 ## Tests
 
 ```bash

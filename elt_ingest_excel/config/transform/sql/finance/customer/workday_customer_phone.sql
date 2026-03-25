@@ -106,7 +106,7 @@ SELECT s.customer_id                                                       custo
      , r.country_code                                                      country_code
      , r.phone_code                                                        international_phone_code
      , CAST(NULL AS VARCHAR)                                               area_code
-     , s.parsed_phone.area_code || s.parsed_phone.phone_number             phone_number
+     , s.parsed_phone.full_phone_number                                    phone_number
      , CASE
          WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
          THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
@@ -136,8 +136,8 @@ SELECT s.customer_id                                                       custo
       LEFT OUTER JOIN 
       ref_country                      r
           ON r.country_code            = s.parsed_phone.phone_country_code
- WHERE s.parsed_phone.phone_number           IS NOT NULL
-   AND LENGTH(s.parsed_phone.phone_number)   >= 4
+ WHERE s.parsed_phone.full_phone_number         IS NOT NULL
+   AND LENGTH(s.parsed_phone.full_phone_number) >= 7
  ORDER BY 
        customer_id
      , primary_flag DESC

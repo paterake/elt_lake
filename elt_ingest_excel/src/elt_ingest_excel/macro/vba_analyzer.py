@@ -100,6 +100,7 @@ class VbaMacroAnalyzer:
             r"runValidationsFromRibbon",
             r"deleteValidationSheet",
             r"Worksheet_Change",
+            r"exportWorkbooks",
         ]
 
         for pattern in known_patterns:

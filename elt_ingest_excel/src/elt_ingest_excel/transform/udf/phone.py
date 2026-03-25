@@ -37,7 +37,7 @@ def _try_parse(phone_str: str, country_code: str | None):
             continue
         tried.add(key)
         stripped = number
-        for _ in range(4):
+        for _ in range(5):
             try:
                 p = phonenumbers.parse(stripped, region)
                 if phonenumbers.is_valid_number(p):
@@ -113,6 +113,7 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
                     "phone_country_code": None,
                     "area_code": None,
                     "phone_number": None,
+                    "full_phone_number": None,
                     "device_type": "Landline",
                 }
             phone_country_code = domicile
@@ -121,6 +122,7 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
                     "phone_country_code": phone_country_code,
                     "area_code": None,
                     "phone_number": None,
+                    "full_phone_number": None,
                     "device_type": "Landline",
                 }
             if len(digits) > 3:
@@ -133,6 +135,7 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
                 "phone_country_code": phone_country_code,
                 "area_code": area,
                 "phone_number": local,
+                "full_phone_number": area + local,
                 "device_type": "Landline",
             }
         country_code_int = parsed.country_code
@@ -199,10 +202,14 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
             device = "Landline"
         else:
             device = None
+        full_phone_number = (area or "") + (local or "")
+        if not full_phone_number:
+            full_phone_number = None
         return {
             "phone_country_code": phone_country_code,
             "area_code": area,
             "phone_number": local,
+            "full_phone_number": full_phone_number,
             "device_type": device,
         }
 
@@ -211,7 +218,13 @@ def register(conn: "duckdb.DuckDBPyConnection") -> None:
         udf_parse_phone,
         [VARCHAR, VARCHAR],
         duckdb.struct_type(
-            {"phone_country_code": "VARCHAR", "area_code": "VARCHAR", "phone_number": "VARCHAR", "device_type": "VARCHAR"}
+            {
+                "phone_country_code": "VARCHAR",
+                "area_code": "VARCHAR",
+                "phone_number": "VARCHAR",
+                "full_phone_number": "VARCHAR",
+                "device_type": "VARCHAR",
+            }
         ),
         null_handling="special",
     )
