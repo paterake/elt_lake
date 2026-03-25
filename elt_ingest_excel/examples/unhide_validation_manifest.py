@@ -7,7 +7,7 @@ from pathlib import Path
 from elt_ingest_excel.macro.excel_macro_runner import run_excel_vba_macro
 
 # Configuration
-WORKBOOK_PATH = "~/Documents/workday_fin_creditor_supplier_active_v5.xlsm"
+WORKBOOK_PATH = "~/Documents/workday_fin_creditor_supplier_active_v1.xlsm"
 SHEETS_TO_UNHIDE = ["ValidationManifest", "Validation Results"]
 
 
