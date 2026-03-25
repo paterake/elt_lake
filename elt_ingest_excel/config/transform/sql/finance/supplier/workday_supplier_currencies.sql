@@ -8,4 +8,6 @@ SELECT
      , t.nrm_currency_code             accepted_currencies_plus
      , t.nrm_currency_code             default_currency
   FROM src_fin_supplier                t
+ ORDER BY 
+       t.supplier_id
 ;

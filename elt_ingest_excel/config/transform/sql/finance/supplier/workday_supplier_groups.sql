@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS workday_supplier_groups
 ;
 CREATE TABLE workday_supplier_groups 
     AS
+  WITH cte_group
+    AS (
 SELECT
        t.supplier_id                                  supplier_id
      , t.nrm_supplier_name                            supplier_name
@@ -23,4 +25,9 @@ SELECT
        ref_workday_group_additional                   r
           ON r.source_type                            = 'supplier'
          AND UPPER(TRIM(r.source_value))              = UPPER(TRIM(t.vendor_class_id))
+    )
+SELECT *
+  FROM cte_group
+ GROUP BY
+       supplier_id
 ;

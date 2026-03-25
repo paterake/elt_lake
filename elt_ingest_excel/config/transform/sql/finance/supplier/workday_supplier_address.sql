@@ -89,4 +89,6 @@ SELECT t.supplier_id
      , t.number_of_days
      , t.municipality_local
   FROM cte_address                     t
+ ORDER BY 
+       t.supplier_id
 ;

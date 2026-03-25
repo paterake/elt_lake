@@ -69,4 +69,6 @@ SELECT
      , t.bank_instructions
   FROM cte_supplier_rank t
  WHERE t.rnk = 1
+ GROUP BY
+       supplier_id
 ;

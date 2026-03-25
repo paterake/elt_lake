@@ -64,4 +64,6 @@ SELECT
        ref_country_tax_id_type_mapping dm
          ON  dm.country_code           = t.nrm_country_code
          AND dm.is_default             = TRUE
+ GROUP BY
+       supplier_id
 ;
