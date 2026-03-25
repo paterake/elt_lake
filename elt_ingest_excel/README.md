@@ -45,41 +45,50 @@ uv run python examples/fin_workday_ref.py
 
 ## Running Excel VBA validations (macOS)
 
-This runs the validation macros inside the generated .xlsm workbook and unhides the Validation Results sheet.
+Run the validation macros that 3+ uses to validate the generated `.xlsm` workbook.
+This allows you to find and fix data quality issues before sending the workbook to 3+.
 
-Prerequisites:
+**Prerequisites:**
 - Microsoft Excel installed (macOS)
-- Macros enabled for the workbook (Excel may prompt you the first time you open it)
+- Macros enabled for the workbook
 
-List available VBA entry points offline (best-effort, no Excel required):
+**Quick Start:**
 
 ```bash
 cd elt_ingest_excel
-uv run python -m elt_ingest_excel.macro.excel_macro_runner \
-  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
+
+# Run all validations
+uv run python -m elt_ingest_excel.macro.vba_runner \
+  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm
+
+# Run with Excel visible (to watch progress)
+uv run python -m elt_ingest_excel.macro.vba_runner \
+  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
+  --excel-visible
+```
+
+**Your Complete Workflow:**
+
+```bash
+# 1. Run your ETL pipeline
+uv run python examples/fin_supplier_creditor.py --run-to-phase PUBLISH
+
+# 2. Run validation (NEW - removes 3+ latency)
+uv run python examples/fin_supplier_creditor_validate.py
+
+# 3. Open workbook and review "Validation Results" sheet
+#    Fix any SQL transforms if needed, then repeat from step 1
+```
+
+**List Available Macros:**
+
+```bash
+uv run python examples/run_vba_validation.py \
+  --workbook ~/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
   --list-macros
 ```
 
-List macros via Excel (recommended, accurate):
-
-```bash
-cd elt_ingest_excel
-uv run python -m elt_ingest_excel.macro.excel_macro_runner \
-  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
-  --list-macros-excel \
-  --excel-visible
-```
-
-Run the validation macro and unhide Validation Results:
-
-```bash
-cd elt_ingest_excel
-uv run python -m elt_ingest_excel.macro.excel_macro_runner \
-  --workbook /Users/rpatel/Documents/workday_fin_creditor_supplier_active_v1.xlsm \
-  --macro 'workday_fin_creditor_supplier_active_v1.xlsm!runSpecificValidationsFromSheet' \
-  --unhide-sheet "Validation Results" \
-  --excel-visible
-```
+For full documentation see [VBA_VALIDATION_RUNNER.md](VBA_VALIDATION_RUNNER.md).
 
 
 ## Tests
