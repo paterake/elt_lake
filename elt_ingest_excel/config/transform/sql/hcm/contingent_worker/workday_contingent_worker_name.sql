@@ -26,5 +26,7 @@ SELECT
      , NULL                                              title_id
      , NULL                                              prefix_id
      , NULL                                              suffix_id
-  FROM src_hcm_contingent_worker t
+  FROM src_hcm_contingent_worker       t
+ ORDER BY
+       t.worker_id
 ;

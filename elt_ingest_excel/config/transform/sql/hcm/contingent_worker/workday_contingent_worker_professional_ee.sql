@@ -70,4 +70,6 @@ SELECT
      , NULL                                                                contract_contingent
      , NULL                                                                additional_job
   FROM src_hcm_contingent_worker       t
+ ORDER BY
+       t.worker_id
 ;

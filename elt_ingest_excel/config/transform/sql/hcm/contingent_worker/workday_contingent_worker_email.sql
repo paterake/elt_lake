@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS workday_contingent_worker_email
 ;
 CREATE TABLE workday_contingent_worker_email
     AS
+  WITH cte_worker
+    AS (
 SELECT
        t.contingent_worker_id                            worker_id
      , t.nrm_first_name                                  first_name
@@ -25,6 +27,9 @@ SELECT
      , 'N'                                               is_primary
   FROM src_hcm_contingent_worker t
  WHERE t.nrm_primary_email             IS NOT NULL
-;
-
+       )
+SELECT t.*
+  FROM cte_worker                      t
+ ORDER BY
+       t.worker_id
 ;

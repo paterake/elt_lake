@@ -14,19 +14,19 @@ SELECT m.employee_id                            employee_id
      , cte_match
     AS (
 SELECT
-       t.contingent_worker_id                   worker_id
-     , NULL                                     position_id
-     , COALESCE(m.employee_id, md.employee_id)  worker_id_of_direct_manager
-     , COALESCE(m.first_name , md.first_name )  manager_first_name
-     , COALESCE(m.last_name  , md.last_name  )  manager_last_name
-     , t.nrm_first_name                         first_name
-     , t.nrm_last_name                          last_name
-     , 'Contingent Worker'                      worker_type
-     , NULL                                     manager_position_id
-     , NULL                                     supervisory_org_code
-     , NULL                                     supervisory_org_name
-     , NULL                                     supervisory_id
-     , NULL                                     staffing_model
+       t.contingent_worker_id                                              worker_id
+     , NULL                                                                position_id
+     , COALESCE(m.employee_id, cwm.contingent_worker_id, md.employee_id)   worker_id_of_direct_manager
+     , COALESCE(m.first_name , cwm.nrm_first_name      , md.first_name )   manager_first_name
+     , COALESCE(m.last_name  , cwm.nrm_last_name       , md.last_name  )   manager_last_name
+     , t.nrm_first_name                                                    first_name
+     , t.nrm_last_name                                                     last_name
+     , 'Contingent Worker'                                                 worker_type
+     , NULL                                                                manager_position_id
+     , NULL                                                                supervisory_org_code
+     , NULL                                                                supervisory_org_name
+     , NULL                                                                supervisory_id
+     , NULL                                                                staffing_model
      , CASE 
         WHEN LOWER(m.email_address)             = LOWER(t.nrm_manager_email_address)
          AND LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
@@ -41,7 +41,7 @@ SELECT
         WHEN LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
         THEN 5
         ELSE 999
-       END                                      match_priority
+       END                                                                 match_priority
   FROM src_hcm_contingent_worker                t
        CROSS JOIN 
        cte_manager_default                      md
@@ -50,6 +50,13 @@ SELECT
           ON LOWER(m.manager_name)              = LOWER(t.nrm_manager_name)
           OR LOWER(m.email_address)             = LOWER(t.nrm_manager_email_address)
           OR LOWER(m.email_address)             = LOWER(t.nrm_manager_email)
+       LEFT OUTER JOIN 
+       src_hcm_contingent_worker                cwm
+          ON LOWER(cwm.nrm_first_name || ' ' || cwm.nrm_last_name) = LOWER(t.nrm_manager_name)
+          OR LOWER(cwm.nrm_primary_email)       = LOWER(t.nrm_manager_email_address)
+          OR LOWER(cwm.nrm_primary_email)       = LOWER(t.nrm_manager_email)
+          OR LOWER(cwm.nrm_secondary_email)     = LOWER(t.nrm_manager_email_address)
+          OR LOWER(cwm.nrm_secondary_email)     = LOWER(t.nrm_manager_email)
        )
      , cte_match_rnk
     AS (
@@ -74,4 +81,6 @@ SELECT
   FROM cte_match_rnk                            t
  WHERE t.rnk                                    = 1
    AND t.worker_id_of_direct_manager            IS NOT NULL
+ ORDER BY
+       t.worker_id
 ;
