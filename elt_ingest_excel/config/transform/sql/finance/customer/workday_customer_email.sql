@@ -55,6 +55,7 @@ SELECT
                    )                            unique_email_rnk
   FROM cte_email_split                          t
  WHERE NULLIF(TRIM(t.email_address), '')        IS NOT NULL
+   AND t.email_address                          ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
        )  
      , cte_email_rnk
     AS (
@@ -65,8 +66,13 @@ SELECT s.customer_id                          customer_id
      , s.suffix                               suffix
      , ROW_NUMBER() OVER (
            PARTITION BY s.customer_id
-                      , s.email_type
-               ORDER BY s.email_address
+               ORDER BY CASE s.email_type
+                           WHEN 'to'  THEN 1
+                           WHEN 'cc'  THEN 2
+                           WHEN 'bcc' THEN 3
+                           ELSE 4
+                        END 
+                      , s.email_address
        )                                      email_rank
   FROM cte_email_unique s
  WHERE s.unique_email_rnk                     = 1
@@ -79,8 +85,7 @@ SELECT s.customer_id                                                     custome
      , TRIM(LOWER(s.email_address))                                      email_address
      , CAST(NULL AS VARCHAR)                                             email_comment
      , 'Yes'                                                             is_public
-     , CASE WHEN s.email_type = 'to' AND s.email_rank = 1
-            THEN 'Yes' ELSE 'No' END                                     primary_flag
+     , CASE s.email_rank WHEN 1 THEN 'Yes' ELSE 'No' END                 primary_flag
      , s.email_type                                                      email_type
      , 'Business'                                                        use_for
      , CAST(NULL AS VARCHAR)                                             use_for_tenanted
@@ -89,8 +94,6 @@ SELECT s.customer_id                                                     custome
      , CAST(NULL AS VARCHAR)                                             additional_comment
      , CAST(NULL AS VARCHAR)                                             email
   FROM cte_email_rnk s
- WHERE NULLIF(TRIM(s.email_address), '') IS NOT NULL
-   AND s.email_address ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
  ORDER BY 
        customer_id
      , primary_flag DESC
