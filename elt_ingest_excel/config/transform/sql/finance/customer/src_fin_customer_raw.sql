@@ -113,13 +113,13 @@ SELECT t.*
     FROM cte_customer_rank             t
        )
 SELECT 
-       r.country_code                                             nrm_country_code
-     , r.language_code                                            nrm_language_code
-     , r.currency_code                                            nrm_currency_code
-     , r.phone_code                                               nrm_phone_code
-     , r.tax_id_type                                              nrm_tax_id_type
-     , r.country_name                                             nrm_country_name
-     , COALESCE(rco.target_value, rx.instance, rxo.instance)      nrm_region
+       r.country_code                                                                     nrm_country_code
+     , r.language_code                                                                    nrm_language_code
+     , r.currency_code                                                                    nrm_currency_code
+     , r.phone_code                                                                       nrm_phone_code
+     , r.tax_id_type                                                                      nrm_tax_id_type
+     , r.country_name                                                                     nrm_country_name
+     , COALESCE(rco.target_value, rx.instance, rxo.instance)                              nrm_region
      , SPLIT_PART(
        CASE
         WHEN r0.post_town           IS NOT NULL
@@ -130,19 +130,20 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(c.city), '')
        END
-       , ',', 1)                                                                       nrm_city
-     , c.addr_unique_list[1]                                                           nrm_address_line_1
-     , c.addr_unique_list[2]                                                           nrm_address_line_2
-     , c.addr_unique_list[3]                                                           nrm_address_line_3
-     , CAST(NULL AS STRING)                                                            nrm_address_line_4
-     , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                                     nrm_payment_terms_id
-     , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                                      nrm_tax_schedule_id
+       , ',', 1)                                                                          nrm_city
+     , c.addr_unique_list[1]                                                              nrm_address_line_1
+     , c.addr_unique_list[2]                                                              nrm_address_line_2
+     , c.addr_unique_list[3]                                                              nrm_address_line_3
+     , CAST(NULL AS STRING)                                                               nrm_address_line_4
+     , NULLIF(TRIM(UPPER(c.payment_terms_id)), '')                                        nrm_payment_terms_id
+     , NULLIF(TRIM(UPPER(c.tax_schedule_id)), '')                                         nrm_tax_schedule_id
      , CASE
          WHEN REGEXP_REPLACE(TRIM(COALESCE(c.tax_registration_number, '')), '[^0-9A-Za-z]', '') ~ '^\d+$'
          THEN NULLIF(REGEXP_REPLACE(TRIM(COALESCE(c.tax_registration_number, '')), '[^0-9A-Za-z]', ''), '')
-       END                                                                             nrm_tax_registration_number
-     , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                       nrm_address_code
-     , COALESCE(cc.target_value, 'Miscellaneous')                                      nrm_customer_category
+       END                                                                                nrm_tax_registration_number
+     , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                          nrm_address_code
+     , COALESCE(cc.target_value, 'Miscellaneous')                                         nrm_customer_category
+     , CASE WHEN r0.postcode IS NULL THEN 'N' ELSE 'Y' END                                nrm_postal_code_valid
      , c.*
  FROM cte_customer_addr_clean                   c
        -- First try: match on country name (higher population)
