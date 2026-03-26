@@ -54,8 +54,8 @@ SELECT
                , NULLIF(TRIM(u.address.nrm_address_line_2), '')
                , NULLIF(TRIM(u.address.nrm_address_line_3), '')) IS NOT NULL
    AND NULLIF(TRIM(u.address.nrm_address_line_1), '') NOT IN ('[Not Known]') 
-   AND NULLIF(TRIM(u.address.nrm_postal_code)   , '') IS NOT NULL
-   AND NULLIF(TRIM(u.address.nrm_region)        , '') IS NOT NULL
+ --AND NULLIF(TRIM(u.address.nrm_postal_code)   , '') IS NOT NULL
+ --AND NULLIF(TRIM(u.address.nrm_region)        , '') IS NOT NULL
        )
 SELECT t.customer_id
      , t.customer_name

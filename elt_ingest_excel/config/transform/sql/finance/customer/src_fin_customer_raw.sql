@@ -148,13 +148,13 @@ SELECT
      , r0.town_area                                                                       nrm_postcode_town
      , r0.region                                                                          nrm_postcode_region
      , c.*
- FROM cte_customer_addr_clean                   c
+ FROM cte_customer_addr_clean                         c
        -- Get the Royal Mail postcode for UK addresses
        LEFT OUTER JOIN
        ref_post_code_district                         r0
           ON (
-               UPPER(TRIM(t.nrm_postal_code))         LIKE UPPER(TRIM(r0.postcode) || ' %')  -- Matches 'MK19 5AH' to 'MK19'
-            OR UPPER(TRIM(t.nrm_postal_code))         =    UPPER(TRIM(r0.postcode))          -- Matches 'MK19'     to 'MK19'
+               UPPER(TRIM(c.nrm_postal_code))         LIKE UPPER(TRIM(r0.postcode) || ' %')  -- Matches 'MK19 5AH' to 'MK19'
+            OR UPPER(TRIM(c.nrm_postal_code))         =    UPPER(TRIM(r0.postcode))          -- Matches 'MK19'     to 'MK19'
              )
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
