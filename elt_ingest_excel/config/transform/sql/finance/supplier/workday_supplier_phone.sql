@@ -80,12 +80,30 @@ SELECT s.*
   FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
-    , cte_phone_parse
-   AS (
+     , cte_phone_parse
+    AS (
 SELECT t.*
      , udf_parse_phone(t.phone_number, t.supplier_country_code)            parsed_phone
   FROM cte_cleaned   t
-      )
+       )
+     , cte_phone_rnk
+    AS (
+SELECT t.*
+     , ROW_NUMBER() OVER (
+           PARTITION BY t.supplier_id
+               ORDER BY CASE t.phone_type
+                           WHEN 'primary'    THEN 1
+                           WHEN 'secondary'  THEN 2
+                           WHEN 'tertiary'   THEN 3
+                           WHEN 'fax'        THEN 4
+                           ELSE 5
+                        END 
+                      , t.parsed_phone.full_phone_number
+       )                                     phone_rank
+  FROM cte_phone_parse   t
+ WHERE t.parsed_phone.full_phone_number         IS NOT NULL
+   AND LENGTH(t.parsed_phone.full_phone_number) >= 7
+       )
 SELECT s.supplier_id                                                       supplier_id
      , s.supplier_name                                                     supplier_name
      , s.supplier_id || s.suffix || '_' || ROW_NUMBER() OVER (
@@ -104,21 +122,15 @@ SELECT s.supplier_id                                                       suppl
          ELSE s.parsed_phone.device_type
        END                                                                 phone_device_type
      , 'Yes'                                                               public_flag
-     , CASE
-         WHEN s.phone_type = 'primary'
-         THEN 'Yes'
-         ELSE 'No'
-       END                                                                 primary_flag
+     , CASE s.phone_rank WHEN 1 THEN 'Yes' ELSE 'No' END                   primary_flag
      , CAST(NULL AS VARCHAR)                                               phone_type
      , CAST(NULL AS VARCHAR)                                               use_for
      , CAST(NULL AS VARCHAR)                                               use_for_tenanted
      , CAST(NULL AS VARCHAR)                                               phone_comments
- FROM cte_phone_parse                  s
+ FROM cte_phone_rnk                    s
       LEFT OUTER JOIN
       ref_country                      r
           ON r.country_code            = s.parsed_phone.phone_country_code
- WHERE s.parsed_phone.full_phone_number         IS NOT NULL
-   AND LENGTH(s.parsed_phone.full_phone_number) >= 7
  ORDER BY 
        supplier_id
      , primary_flag DESC

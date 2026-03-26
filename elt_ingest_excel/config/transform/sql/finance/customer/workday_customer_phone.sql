@@ -62,16 +62,6 @@ SELECT DISTINCT
   FROM cte_customer_phone p
      , UNNEST(STRING_SPLIT(p.phone_raw, ';')) u(phone)
        )
-     , cte_phone_split_rnk
-    AS (
-SELECT ROW_NUMBER() OVER (
-           PARTITION BY p.customer_id, p.phone_type
-               ORDER BY p.phone_number_raw
-       )                                                                   rnk_phone_number
-     , p.*
-  FROM cte_phone_split p
- WHERE NULLIF(TRIM(p.phone_number_raw), '') IS NOT NULL
-       )
     , cte_cleaned
     AS (
 SELECT s.*
@@ -87,15 +77,33 @@ SELECT s.*
               )
          ELSE REGEXP_REPLACE(s.phone_number_raw, '^0+', '')
        END                                                                 phone_number
-  FROM cte_phone_split_rnk                 s
+  FROM cte_phone_split s
  WHERE NULLIF(TRIM(s.phone_number_raw), '') IS NOT NULL
        )
-    , cte_phone_parse
-   AS (
+     , cte_phone_parse
+    AS (
 SELECT t.*
      , udf_parse_phone(t.phone_number, t.customer_country_code)            parsed_phone
-  FROM cte_cleaned                     t
-      )
+  FROM cte_cleaned   t
+       )
+     , cte_phone_rnk
+    AS (
+SELECT t.*
+     , ROW_NUMBER() OVER (
+           PARTITION BY t.customer_id
+               ORDER BY CASE t.phone_type
+                           WHEN 'primary'    THEN 1
+                           WHEN 'secondary'  THEN 2
+                           WHEN 'tertiary'   THEN 3
+                           WHEN 'fax'        THEN 4
+                           ELSE 5
+                        END 
+                      , t.parsed_phone.full_phone_number
+       )                                     phone_rank
+  FROM cte_phone_parse   t
+ WHERE t.parsed_phone.full_phone_number         IS NOT NULL
+   AND LENGTH(t.parsed_phone.full_phone_number) >= 7
+       )
 SELECT s.customer_id                                                       customer_id
      , s.customer_name                                                     customer_name
      , TRIM(s.customer_id) || s.suffix || '_' || ROW_NUMBER() OVER (
@@ -107,11 +115,7 @@ SELECT s.customer_id                                                       custo
      , r.phone_code                                                        international_phone_code
      , CAST(NULL AS VARCHAR)                                               area_code
      , s.parsed_phone.full_phone_number                                    phone_number
-     , CASE
-         WHEN s.phone_number_raw LIKE s.international_phone_code || '%'
-         THEN REGEXP_REPLACE(s.phone_number_raw, '^' || s.international_phone_code, '')
-         ELSE s.phone_number_raw
-       END                                                                 formatted_phone_number
+     , s.parsed_phone.full_phone_number                                    formatted_phone_number
      , CAST(NULL AS VARCHAR)                                               phone_number_extension
      , CASE
          WHEN s.phone_type = 'fax'
@@ -119,10 +123,7 @@ SELECT s.customer_id                                                       custo
          ELSE s.parsed_phone.device_type
        END                                                                 phone_device_type
      , 'Yes'                                                               is_public
-     , CASE WHEN s.phone_type = 'primary' AND s.rnk_phone_number = 1
-         THEN 'Yes' 
-         ELSE 'No' 
-       END                                                                 primary_flag
+     , CASE s.phone_rank WHEN 1 THEN 'Yes' ELSE 'No' END                   primary_flag
      , s.phone_type                                                        phone_type
      , CAST(NULL AS VARCHAR)                                               use_for
      , CAST(NULL AS VARCHAR)                                               use_for_tenanted
@@ -132,12 +133,10 @@ SELECT s.customer_id                                                       custo
      , CAST(NULL AS VARCHAR)                                               do_not_replace_all
      , CAST(NULL AS VARCHAR)                                               phone_comment
      , CAST(NULL AS VARCHAR)                                               phone
- FROM cte_phone_parse                  s
+ FROM cte_phone_rnk                    s
       LEFT OUTER JOIN 
       ref_country                      r
           ON r.country_code            = s.parsed_phone.phone_country_code
- WHERE s.parsed_phone.full_phone_number         IS NOT NULL
-   AND LENGTH(s.parsed_phone.full_phone_number) >= 7
  ORDER BY 
        customer_id
      , primary_flag DESC
