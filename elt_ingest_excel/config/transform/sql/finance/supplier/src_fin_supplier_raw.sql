@@ -100,14 +100,14 @@ SELECT t.*
      , cte_supplier_clean
     AS (
 SELECT 
-       r.country_code                                                               nrm_country_code
-     , r.language_code                                                              nrm_language_code
-     , r.currency_code                                                              nrm_currency_code
-     , r.phone_code                                                                 nrm_phone_code
-     , r.tax_id_type                                                                nrm_tax_id_type
-     , r.country_name                                                               nrm_country_name
-     , COALESCE(scm.supplier_category, 'Miscellaneous')                             nrm_supplier_category
-     , COALESCE(rco.target_value, rx.instance, rxo.instance)                        nrm_region
+       r.country_code                                                                     nrm_country_code
+     , r.language_code                                                                    nrm_language_code
+     , r.currency_code                                                                    nrm_currency_code
+     , r.phone_code                                                                       nrm_phone_code
+     , r.tax_id_type                                                                      nrm_tax_id_type
+     , r.country_name                                                                     nrm_country_name
+     , COALESCE(scm.supplier_category, 'Miscellaneous')                                   nrm_supplier_category
+     , COALESCE(rco.target_value, rx.instance, rxo.instance)                              nrm_region
      , SPLIT_PART(
        CASE
         WHEN r0.post_town           IS NOT NULL
@@ -118,38 +118,41 @@ SELECT
         THEN r4.town_city_name
         ELSE NULLIF(TRIM(t.city), '')
        END
-       , ',', 1)                                                                       nrm_city
-     , t.addr_unique_list[1]                                                           nrm_address_line_1
-     , t.addr_unique_list[2]                                                           nrm_address_line_2
-     , t.addr_unique_list[3]                                                           nrm_address_line_3
-     , t.addr_unique_list[4]                                                           nrm_address_line_4
-     , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')        nrm_address_code
-     , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                      nrm_tax_schedule_id
-     , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                      nrm_tax_id_number
+       , ',', 1)                                                                          nrm_city
+     , t.addr_unique_list[1]                                                              nrm_address_line_1
+     , t.addr_unique_list[2]                                                              nrm_address_line_2
+     , t.addr_unique_list[3]                                                              nrm_address_line_3
+     , t.addr_unique_list[4]                                                              nrm_address_line_4
+     , COALESCE(NULLIF(TRIM(UPPER(t.vendor_address_code_primary)), ''), 'MAIN')           nrm_address_code
+     , NULLIF(UPPER(TRIM(t.tax_schedule_id)), '')                                         nrm_tax_schedule_id
+     , NULLIF(UPPER(TRIM(t.tax_id_number  )), '')                                         nrm_tax_id_number
      , CASE
          WHEN REGEXP_REPLACE(TRIM(COALESCE(t.tax_registration_number, '')), '[^0-9A-Za-z]', '') ~ '^\d+$'
          THEN NULLIF(REGEXP_REPLACE(TRIM(COALESCE(t.tax_registration_number, '')), '[^0-9A-Za-z]', ''), '')
-       END                                                                             nrm_tax_registration_number
-     , pt.workday_payment_terms                                                        nrm_payment_terms_id
-     , rbsc.bank_name_primary                                                          nrm_bank_name
-     , NULLIF(TRIM(t.eft_bank_code), '')                                               nrm_bank_sort_code
-     , COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name)            nrm_bank_account_name
-     , NULLIF(TRIM(REPLACE(t.eft_bank_account, ' ', '')), '')                          nrm_bank_account_number
+       END                                                                                nrm_tax_registration_number
+     , pt.workday_payment_terms                                                           nrm_payment_terms_id
+     , rbsc.bank_name_primary                                                             nrm_bank_name
+     , NULLIF(TRIM(t.eft_bank_code), '')                                                  nrm_bank_sort_code
+     , NULLIF(COALESCE(NULLIF(TRIM(t.vendor_check_name), ''), t.nrm_supplier_name), '')   nrm_bank_account_name
+     , NULLIF(TRIM(REPLACE(t.eft_bank_account, ' ', '')), '')                             nrm_bank_account_number
      , CASE
          WHEN r.country_code IN ('GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'SE', 'DK', 'FI')
-         THEN TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
+         THEN NULLIF(TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', '')), '')
          WHEN r.country_code = 'US'
-         THEN TRIM(REPLACE(REPLACE(t.eft_transit_routing_no, ' ', ''), '-', ''))
-         ELSE TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', ''))
-       END                                                                             nrm_bank_code_routing_number
-     , NULLIF(TRIM(REPLACE(REPLACE(UPPER(t.iban), ' ', ''), '-', '')), '')             nrm_bank_iban
-     , NULLIF(TRIM(UPPER(t.swift_address)), '')                                        nrm_bank_swift_code
-     , NULLIF(TRIM(t.building_society_roll_no), '')                                    nrm_bank_roll_number
-     , NULLIF(TRIM(t.eft_bank_check_digit), '')                                        nrm_bank_check_digit
-     , NULLIF(TRIM(t.eft_bank_branch_code), '')                                        nrm_bank_branch_id
-     , NULLIF(TRIM(t.eft_bank_branch), '')                                             nrm_bank_branch_name
-     , NULLIF(TRIM(t.eft_transfer_method), '')                                         nrm_bank_transfer_method
-     , CASE WHEN r0.postcode IS NULL THEN 'N' ELSE 'Y' END                             nrm_postal_code_valid
+         THEN COALESCE(
+                NULLIF(TRIM(REPLACE(REPLACE(t.eft_transit_routing_no, ' ', ''), '-', '')), '')
+              , NULLIF(TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', '')), '')
+              )
+         ELSE NULLIF(TRIM(REPLACE(REPLACE(t.eft_bank_code, ' ', ''), '-', '')), '')
+       END                                                                                nrm_bank_code_routing_number
+     , NULLIF(TRIM(REPLACE(REPLACE(UPPER(t.iban), ' ', ''), '-', '')), '')                nrm_bank_iban
+     , NULLIF(TRIM(UPPER(t.swift_address)), '')                                           nrm_bank_swift_code
+     , NULLIF(TRIM(t.building_society_roll_no), '')                                       nrm_bank_roll_number
+     , NULLIF(TRIM(t.eft_bank_check_digit), '')                                           nrm_bank_check_digit
+     , NULLIF(TRIM(t.eft_bank_branch_code), '')                                           nrm_bank_branch_id
+     , NULLIF(TRIM(t.eft_bank_branch), '')                                                nrm_bank_branch_name
+     , NULLIF(TRIM(t.eft_transfer_method), '')                                            nrm_bank_transfer_method
+     , CASE WHEN r0.postcode IS NULL THEN 'N' ELSE 'Y' END                                nrm_postal_code_valid
      , t.*
   FROM cte_supplier_addr_clean                  t
        -- First try: match on country name (higher population)
