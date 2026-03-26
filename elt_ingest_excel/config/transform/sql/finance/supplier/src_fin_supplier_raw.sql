@@ -94,7 +94,7 @@ SELECT t.*
        , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_2    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
        , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.address_3    , '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
        , NULLIF(NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(t.addressline_4, '[\"`<>|;{}]', '', 'g'), '\\s+', ' ', 'g'), ',+$', '')), '[Not Known]'), '')
-       ], x -> x IS NOT NULL))                                           addr_unique_list
+       ], x -> x IS NOT NULL))                                                            addr_unique_list
   FROM cte_supplier_nrm                      t
        )
      , cte_supplier_clean
@@ -153,6 +153,9 @@ SELECT
      , NULLIF(TRIM(t.eft_bank_branch), '')                                                nrm_bank_branch_name
      , NULLIF(TRIM(t.eft_transfer_method), '')                                            nrm_bank_transfer_method
      , CASE WHEN r0.postcode IS NULL THEN 'N' ELSE 'Y' END                                nrm_postal_code_valid
+     , r0.postcode                                                                        nrm_postcode_prefix
+     , r0.town_area                                                                       nrm_postcode_town
+     , r0.region                                                                          nrm_postcode_region
      , t.*
   FROM cte_supplier_addr_clean                  t
        -- First try: match on country name (higher population)

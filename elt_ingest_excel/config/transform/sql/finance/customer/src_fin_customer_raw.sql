@@ -144,6 +144,9 @@ SELECT
      , COALESCE(NULLIF(TRIM(UPPER(c.address_code)), ''), 'MAIN')                          nrm_address_code
      , COALESCE(cc.target_value, 'Miscellaneous')                                         nrm_customer_category
      , CASE WHEN r0.postcode IS NULL THEN 'N' ELSE 'Y' END                                nrm_postal_code_valid
+     , r0.postcode                                                                        nrm_postcode_prefix
+     , r0.town_area                                                                       nrm_postcode_town
+     , r0.region                                                                          nrm_postcode_region
      , c.*
  FROM cte_customer_addr_clean                   c
        -- First try: match on country name (higher population)
