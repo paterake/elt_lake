@@ -157,7 +157,14 @@ SELECT
      , r0.town_area                                                                       nrm_postcode_town
      , r0.region                                                                          nrm_postcode_region
      , t.*
-  FROM cte_supplier_addr_clean                  t
+  FROM cte_supplier_addr_clean                        t
+       -- Get the Royal Mail postcode for UK addresses
+       LEFT OUTER JOIN
+       ref_post_code_district                         r0
+          ON (
+               UPPER(TRIM(t.nrm_postal_code))         LIKE UPPER(TRIM(r0.postcode) || ' %')  -- Matches 'MK19 5AH' to 'MK19'
+            OR UPPER(TRIM(t.nrm_postal_code))         =    UPPER(TRIM(r0.postcode))          -- Matches 'MK19'     to 'MK19'
+             ) 
        -- First try: match on country name (higher population)
        LEFT OUTER JOIN
        ref_source_country_name_mapping                m_name
@@ -169,7 +176,12 @@ SELECT
        -- Join to reference table using: name match > code match > default GB
        LEFT OUTER JOIN
        ref_country                                    r
-         ON UPPER(TRIM(r.country_code))               = UPPER(TRIM(COALESCE(m_name.country_code, m_code.country_code, 'GB')))
+         ON UPPER(TRIM(r.country_code))               = CASE
+                                                         WHEN r0.region = 'Jersey'        THEN 'JE'
+                                                         WHEN r0.region = 'Guernsey'      THEN 'GG'
+                                                         WHEN r0.region = 'Isle of Man'   THEN 'IM'         
+                                                         ELSE UPPER(TRIM(COALESCE(m_name.country_code, m_code.country_code, 'GB')))
+                                                        END
        -- Supplier category normalization
        LEFT OUTER JOIN
        ref_supplier_category                          scm
@@ -183,12 +195,6 @@ SELECT
         ref_bank_sort_code_prefix_mapping             rbsc
           ON rbsc.sort_code_prefix                    = SUBSTR(NULLIF(TRIM(t.eft_bank_code), ''), 1, 2)
        -- Address handling
-       LEFT OUTER JOIN
-       ref_post_code_district                         r0
-          ON (
-               UPPER(TRIM(t.nrm_postal_code))         LIKE UPPER(TRIM(r0.postcode) || ' %')  -- Matches 'MK19 5AH' to 'MK19'
-            OR UPPER(TRIM(t.nrm_postal_code))         =    UPPER(TRIM(r0.postcode))          -- Matches 'MK19'     to 'MK19'
-             ) 
        LEFT OUTER JOIN
        ref_post_code_workday_region                   r01
           ON UPPER(TRIM(r01.post_code_region))        = UPPER(TRIM(r0.region))
