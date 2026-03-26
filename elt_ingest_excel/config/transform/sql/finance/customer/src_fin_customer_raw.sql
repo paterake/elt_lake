@@ -27,14 +27,14 @@ SELECT DISTINCT
              -- Normalizes multiple spaces to single space
              NULLIF(
                  REGEXP_REPLACE(
-                     REGEXP_EXTRACT(UPPER(REGEXP_REPLACE(t.post_code, '[, -]', ' ', 'g')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
+                     REGEXP_EXTRACT(UPPER(REGEXP_REPLACE(t.post_code, '[,.-]', ' ', 'g')), '([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})'),
                      '\s+', ' ', 'g'
                  ),
                  ''
              ),
              -- Fallback: Just take the first part (e.g. 'AL5' from 'AL5, Herts') if regex failed
              -- Also replace hyphen with space in the fallback to handle 'IM2- 1AD' if regex fails (though regex should catch it)
-             NULLIF(TRIM(REPLACE(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '-', ' ')), '')
+             NULLIF(TRIM(REGEXP_REPLACE(REGEXP_REPLACE(UPPER(TRIM(SPLIT_PART(t.post_code, ',', 1))), '[.-]', ' ', 'g'), '\s+', ' ', 'g')), '')
         )
        END                                                                                            nrm_postal_code_clean
      , t.*
