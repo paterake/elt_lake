@@ -105,4 +105,3 @@ When a module performs several activities, model them as explicit phases (exampl
   - running `PUBLISH` implies `INGEST` and `TRANSFORM`
 - The orchestrator supports running or skipping aspects of the process via config/CLI in a structured way (no scattered flags)
 - Each phase implementation lives in its own module(s) and is testable independently
-

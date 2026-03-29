@@ -8,7 +8,7 @@
 - Always alias tables and prefix columns with the alias
 - Align major clauses vertically for easy eye tracing
 - Format CTEs with leading commas and consistent indentation
- - Alias column rules for SELECT (see below)
+- Alias column rules for SELECT (see below)
 
 ## SELECT Example
 

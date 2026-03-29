@@ -4,7 +4,7 @@ This file captures the core conventions and rules for the `elt_lake` project.
 
 ## SQL Formatting
 
-- All SQL should follow the formatting rules in `TRAE_SQL.md`.
+- All SQL should follow the formatting rules in `ai_context/TRAE_SQL.md`.
 - Use the house formatter (or the `sql-format-3space` skill) when reformatting SQL.
 
 ## Excel Column / Cell Values
@@ -21,5 +21,5 @@ This file captures the core conventions and rules for the `elt_lake` project.
 
 ## Python Module Structure
 
-- All Python modules must follow the house rules in `TRAE_PYTHON_MODULE_STRUCTURE.md`.
+- All Python modules must follow the house rules in `ai_context/TRAE_PYTHON_MODULE_STRUCTURE.md`.
 - Use the `python-module-structure-uv` skill when starting or refactoring a Python module.
